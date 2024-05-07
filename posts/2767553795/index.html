@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.2.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha256-wiz7ZSCn/btzhjKDQBms9Hx4sSeUYsDrTLg7roPstac=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"www.hanksvba.com","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.19.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":"mac"},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":false,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜尋...","empty":"我們無法找到任何有關 ${query} 的搜索結果","hits_time":"${hits} 找到 ${time} 個結果","hits":"找到 ${hits} 個結果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="前言 縱斷面發展來源 AutoCAD VBA 縱斷面繪製自動化 開發過程中的小問題 縱斷面繪製時會針對需要文字說明的樁號進行插旗繪製，可能會造成插旗文字出現重疊的原因有兩個  插旗說明樁號距離太近(0+200、0+205) 繪製X軸比例太小(1:1000 vs 1:5000)  繪製過程會考量圖紙輸出的舒適度，最小字高通常會以3.4.5為原則，文字說明會固定以30度呈現">
+<meta property="og:type" content="article">
+<meta property="og:title" content="縱斷面插旗文字重疊問題">
+<meta property="og:url" content="https://www.hanksvba.com/posts/2767553795/">
+<meta property="og:site_name" content="Hank&#39;s Blog">
+<meta property="og:description" content="前言 縱斷面發展來源 AutoCAD VBA 縱斷面繪製自動化 開發過程中的小問題 縱斷面繪製時會針對需要文字說明的樁號進行插旗繪製，可能會造成插旗文字出現重疊的原因有兩個  插旗說明樁號距離太近(0+200、0+205) 繪製X軸比例太小(1:1000 vs 1:5000)  繪製過程會考量圖紙輸出的舒適度，最小字高通常會以3.4.5為原則，文字說明會固定以30度呈現">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:image" content="https://www.hanksvba.com/posts/2767553795/image.png">
+<meta property="og:image" content="https://www.hanksvba.com/posts/2767553795/SAMPLE.JPG">
+<meta property="og:image" content="https://www.hanksvba.com/posts/2767553795/SAMPLE2.JPG">
+<meta property="article:published_time" content="2024-05-06T02:12:23.000Z">
+<meta property="article:modified_time" content="2024-05-06T02:12:23.000Z">
+<meta property="article:author" content="Hank Lin">
+<meta property="article:tag" content="AutoCAD VBA">
+<meta property="article:tag" content="ProgeCAD VBA">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://www.hanksvba.com/posts/2767553795/image.png">
+
+
+<link rel="canonical" href="https://www.hanksvba.com/posts/2767553795/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-TW","comments":true,"permalink":"https://www.hanksvba.com/posts/2767553795/","path":"posts/2767553795/","title":"縱斷面插旗文字重疊問題"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>縱斷面插旗文字重疊問題 | Hank's Blog</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切換導航欄" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Hank's Blog</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">工程人的設計監造VBA工具交流區</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜尋" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-首頁"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首頁</a></li><li class="menu-item menu-item-關於"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>關於</a></li><li class="menu-item menu-item-標籤"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>標籤</a></li><li class="menu-item menu-item-分類"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分類</a></li><li class="menu-item menu-item-文章"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>文章</a></li>
+  </ul>
+</nav>
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目錄
+        </li>
+        <li class="sidebar-nav-overview">
+          本站概要
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%89%8D%E8%A8%80"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%B8%B1%E6%96%B7%E9%9D%A2%E7%99%BC%E5%B1%95%E4%BE%86%E6%BA%90"><span class="nav-number">1.1.</span> <span class="nav-text">縱斷面發展來源</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%96%8B%E7%99%BC%E9%81%8E%E7%A8%8B%E4%B8%AD%E7%9A%84%E5%B0%8F%E5%95%8F%E9%A1%8C"><span class="nav-number">1.2.</span> <span class="nav-text">開發過程中的小問題</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AF%84%E4%BE%8B%E8%AA%AA%E6%98%8E"><span class="nav-number">2.</span> <span class="nav-text">範例說明</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B5%81%E7%A8%8B%E8%A7%A3%E8%AA%AA"><span class="nav-number">3.</span> <span class="nav-text">流程解說</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BE%8C%E7%BA%8C%E5%88%A9%E7%94%A8"><span class="nav-number">4.</span> <span class="nav-text">後續利用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%A8%8B%E5%BC%8F%E7%A2%BC"><span class="nav-number">5.</span> <span class="nav-text">程式碼</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A8%A1%E7%B5%84module"><span class="nav-number">5.1.</span> <span class="nav-text">模組(module)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%89%A9%E4%BB%B6%E9%A1%9E%E5%88%A5%E6%A8%A1%E7%B5%84clsacad"><span class="nav-number">5.2.</span> <span class="nav-text">物件類別模組(clsACAD)</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Hank Lin"
+      src="/images/avatar_custom.png">
+  <p class="site-author-name" itemprop="name">Hank Lin</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">7</span>
+          <span class="site-state-item-name">文章</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">分類</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">10</span>
+        <span class="site-state-item-name">標籤</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="mailto:apple84026113@gmail.com" title="E-Mail → mailto:apple84026113@gmail.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.youtube.com/channel/UCWmy5KaK7Leg6lLUlWBPaSw" title="YouTube → https:&#x2F;&#x2F;www.youtube.com&#x2F;channel&#x2F;UCWmy5KaK7Leg6lLUlWBPaSw" rel="noopener me" target="_blank"><i class="fab fa-youtube fa-fw"></i>YouTube</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/images/LINE_QRCODE.png" title="LINE → &#x2F;images&#x2F;LINE_QRCODE.png" rel="noopener me"><i class="fab fa-line fa-fw"></i>LINE</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://reurl.cc/RyvvaZ" title="LINE社群 → https:&#x2F;&#x2F;reurl.cc&#x2F;RyvvaZ" rel="noopener me" target="_blank"><i class="fas fa-comment fa-fw"></i>LINE社群</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://hankvba.blogspot.com/" title="(舊)Blogger → https:&#x2F;&#x2F;hankvba.blogspot.com&#x2F;" rel="noopener me" target="_blank"><i class="fab fa-blogger fa-fw"></i>(舊)Blogger</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-TW">
+    <link itemprop="mainEntityOfPage" href="https://www.hanksvba.com/posts/2767553795/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar_custom.png">
+      <meta itemprop="name" content="Hank Lin">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hank's Blog">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="縱斷面插旗文字重疊問題 | Hank's Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          縱斷面插旗文字重疊問題
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">發表於</span>
+
+      <time title="創建時間：2024-05-06 10:12:23" itemprop="dateCreated datePublished" datetime="2024-05-06T10:12:23+08:00">2024-05-06</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分類於</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E5%B0%88%E6%A1%88%E9%96%8B%E7%99%BC/" itemprop="url" rel="index"><span itemprop="name">專案開發</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E5%B0%88%E6%A1%88%E9%96%8B%E7%99%BC/%E5%8E%9F%E7%90%86/" itemprop="url" rel="index"><span itemprop="name">原理</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="閱讀次數" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">閱讀次數：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h2 id="前言">前言</h2>
+<h3 id="縱斷面發展來源">縱斷面發展來源</h3>
+<p><a
+target="_blank" rel="noopener" href="https://hankvba.blogspot.com/2018/03/autocad-vba.html">AutoCAD VBA
+縱斷面繪製自動化</a></p>
+<h3 id="開發過程中的小問題">開發過程中的小問題</h3>
+<p>縱斷面繪製時會針對需要文字說明的樁號進行插旗繪製，可能會造成插旗文字出現重疊的原因有兩個</p>
+<ol type="1">
+<li>插旗說明樁號距離太近(0+200、0+205)</li>
+<li>繪製X軸比例太小(1:1000 vs 1:5000)</li>
+</ol>
+<p>繪製過程會考量圖紙輸出的舒適度，最小字高通常會以<strong>3.4.5</strong>為原則，文字說明會固定以30度呈現</p>
+<blockquote>
+<p>當距離太近時可以透過調整X軸比例讓間距拉開，橫向會重疊的時候就進行上下位移，方便讀者觀看。</p>
+</blockquote>
+<p>因此本篇就是要透過VBA抓取說明文字的外框及下線，自動調整文字重疊內容，以下進行說明:</p>
+<span id="more"></span>
+<hr />
+<h2 id="範例說明">範例說明</h2>
+<figure>
+<img src="image.png" alt="Fig1. 插旗文字說明" />
+<figcaption aria-hidden="true">Fig1. 插旗文字說明</figcaption>
+</figure>
+<h2 id="流程解說">流程解說</h2>
+<p>一般插旗文字都是屬於旋轉至第一象限的內容(0度~90度)</p>
+<ol type="1">
+<li>透過CAD VBA內建指令GetBoundingBox找到邊界點。</li>
+<li>透過幾何圖形學及三角函數關係進行列式。</li>
+<li>用一元二次聯立方程式解析參數。</li>
+<li>代回原本第一象限的正確點位。</li>
+<li>引入clsACAD進行LINE物件繪製。</li>
+</ol>
+<figure>
+<img src="SAMPLE.JPG" alt="Fig2. 文字外框、點位幾何關係" />
+<figcaption aria-hidden="true">Fig2. 文字外框、點位幾何關係</figcaption>
+</figure>
+<figure>
+<img src="SAMPLE2.JPG" alt="Fig3. 上下底線繪製成果" />
+<figcaption aria-hidden="true">Fig3. 上下底線繪製成果</figcaption>
+</figure>
+<h2 id="後續利用">後續利用</h2>
+<p>確認<strong>下一文字外框點</strong>是否位於這次文字框中，進行重疊文字判識，如不符合則再上下位移即可。</p>
+<figure class="highlight vb"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">Function</span> checkPtFromBorders(midX,midY,BorderPTs) <span class="keyword">as</span> <span class="type">boolean</span></span><br><span class="line"></span><br><span class="line">Border_minX = <span class="built_in">CDbl</span>(BorderPTs(<span class="number">0</span>))</span><br><span class="line">Border_minY = <span class="built_in">CDbl</span>(BorderPTs(<span class="number">1</span>))</span><br><span class="line">Border_maxX = <span class="built_in">CDbl</span>(BorderPTs(<span class="number">2</span>))</span><br><span class="line">Border_maxY = <span class="built_in">CDbl</span>(BorderPTs(<span class="number">3</span>))</span><br><span class="line"></span><br><span class="line"><span class="keyword">If</span> midX &gt;= Border_minX <span class="built_in">And</span> midX &lt;= Border_maxX <span class="built_in">And</span> midY &gt;= Border_minY <span class="built_in">And</span> midY &lt;= Border_maxY <span class="keyword">Then</span></span><br><span class="line">    </span><br><span class="line">    checkPtFromBorders = <span class="literal">true</span></span><br><span class="line">    <span class="keyword">Exit</span> <span class="keyword">For</span></span><br><span class="line">    </span><br><span class="line"><span class="keyword">End</span> <span class="keyword">If</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">End</span> <span class="keyword">Function</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h2 id="程式碼">程式碼</h2>
+<h3 id="模組module">模組(module)</h3>
+<figure class="highlight vb"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">Sub</span> test_getBoundingBox()</span><br><span class="line"></span><br><span class="line">    <span class="comment">&#x27;適用於第一象限</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">Dim</span> CAD <span class="keyword">As</span> <span class="built_in">New</span> clsACAD</span><br><span class="line">    <span class="keyword">Dim</span> L <span class="keyword">As</span> <span class="type">Double</span></span><br><span class="line">    <span class="keyword">Dim</span> H <span class="keyword">As</span> <span class="type">Double</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">Set</span> sset2 = CAD.CreateSSET()</span><br><span class="line">    <span class="keyword">Set</span> entobj = sset2(<span class="number">0</span>)</span><br><span class="line">    </span><br><span class="line">    rotate_degree = entobj.Rotation * <span class="number">180</span> / <span class="number">3.14</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">Call</span> entobj.GetBoundingBox(Min, Max)</span><br><span class="line">    </span><br><span class="line">    X0 = Min(<span class="number">0</span>)</span><br><span class="line">    Y0 = Min(<span class="number">1</span>)</span><br><span class="line">    X1 = Max(<span class="number">0</span>)</span><br><span class="line">    Y1 = Max(<span class="number">1</span>)</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">Call</span> CAD.AddPoint(Min)</span><br><span class="line">    <span class="keyword">Call</span> CAD.AddPoint(Max)</span><br><span class="line">    </span><br><span class="line">    <span class="comment">&#x27;---一元二次聯立方程式---</span></span><br><span class="line">    </span><br><span class="line">    a1 = Sin(rotate_degree / <span class="number">180</span> * <span class="number">3.14</span>)</span><br><span class="line">    b1 = Cos(rotate_degree / <span class="number">180</span> * <span class="number">3.14</span>)</span><br><span class="line">    c1 = Y1 - Y0</span><br><span class="line">    </span><br><span class="line">    a2 = Cos(rotate_degree / <span class="number">180</span> * <span class="number">3.14</span>)</span><br><span class="line">    b2 = Sin(rotate_degree / <span class="number">180</span> * <span class="number">3.14</span>)</span><br><span class="line">    c2 = X1 - X0</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">Call</span> SolveLinearEquations(a1, b1, c1, a2, b2, c2, L, H)</span><br><span class="line">    </span><br><span class="line">    <span class="comment">&#x27;------底線------</span></span><br><span class="line">    </span><br><span class="line">    Xpt_LD = X0 + H * Sin(rotate_degree / <span class="number">180</span> * <span class="number">3.14</span>)</span><br><span class="line">    Ypt_LD = Y0</span><br><span class="line">    </span><br><span class="line">    Xpt_RD = X1</span><br><span class="line">    Ypt_RD = Y1 - H * Cos(rotate_degree / <span class="number">180</span> * <span class="number">3.14</span>)</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">Call</span> CAD.AddLineCO(Xpt_LD, Ypt_LD, Xpt_RD, Ypt_RD)</span><br><span class="line">    </span><br><span class="line">    <span class="comment">&#x27;-------頂線------</span></span><br><span class="line">    </span><br><span class="line">    Xpt_LU = X0</span><br><span class="line">    Ypt_LU = Y0 + H * Cos(rotate_degree / <span class="number">180</span> * <span class="number">3.14</span>)</span><br><span class="line">    </span><br><span class="line">    Xpt_RU = X1 - H * Sin(rotate_degree / <span class="number">180</span> * <span class="number">3.14</span>)</span><br><span class="line">    Ypt_RU = Y1</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">Call</span> CAD.AddLineCO(Xpt_LU, Ypt_LU, Xpt_RU, Ypt_RU)</span><br><span class="line"></span><br><span class="line">    </span><br><span class="line"><span class="keyword">End</span> <span class="keyword">Sub</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">Function</span> SolveLinearEquations(<span class="keyword">ByVal</span> a1 <span class="keyword">As</span> <span class="type">Double</span>, <span class="keyword">ByVal</span> b1 <span class="keyword">As</span> <span class="type">Double</span>, <span class="keyword">ByVal</span> c1 <span class="keyword">As</span> <span class="type">Double</span>, <span class="keyword">ByVal</span> a2 <span class="keyword">As</span> <span class="type">Double</span>, <span class="keyword">ByVal</span> b2 <span class="keyword">As</span> <span class="type">Double</span>, <span class="keyword">ByVal</span> c2 <span class="keyword">As</span> <span class="type">Double</span>, <span class="keyword">ByRef</span> x <span class="keyword">As</span> <span class="type">Double</span>, <span class="keyword">ByRef</span> y <span class="keyword">As</span> <span class="type">Double</span>) <span class="keyword">As</span> <span class="type">Boolean</span></span><br><span class="line">    <span class="keyword">Dim</span> determinant <span class="keyword">As</span> <span class="type">Double</span></span><br><span class="line">    </span><br><span class="line">    determinant = a1 * b2 - a2 * b1</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">If</span> determinant = <span class="number">0</span> <span class="keyword">Then</span></span><br><span class="line">        SolveLinearEquations = <span class="literal">False</span></span><br><span class="line">    <span class="keyword">Else</span></span><br><span class="line">        x = (c1 * b2 - c2 * b1) / determinant</span><br><span class="line">        y = (a1 * c2 - a2 * c1) / determinant</span><br><span class="line">        SolveLinearEquations = <span class="literal">True</span></span><br><span class="line">        </span><br><span class="line">    <span class="keyword">End</span> <span class="keyword">If</span></span><br><span class="line">    </span><br><span class="line"><span class="keyword">End</span> <span class="keyword">Function</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h3 id="物件類別模組clsacad">物件類別模組(clsACAD)</h3>
+<figure class="highlight vb"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">Private</span> mo <span class="keyword">As</span> <span class="type">Object</span></span><br><span class="line"><span class="keyword">Private</span> pa <span class="keyword">As</span> <span class="type">Object</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">Public</span> acadDoc <span class="keyword">As</span> <span class="type">Object</span></span><br><span class="line"><span class="keyword">Public</span> CADVer <span class="keyword">As</span> <span class="type">String</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">Private</span> <span class="keyword">Sub</span> Class_Initialize()</span><br><span class="line"></span><br><span class="line">strCAD = <span class="string">&quot;AutoCAD.application&quot;</span></span><br><span class="line">CADVer = <span class="string">&quot;AUTOCAD&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">Call</span> CADInit(strCAD)</span><br><span class="line"></span><br><span class="line"><span class="keyword">End</span> <span class="keyword">Sub</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">Private</span> <span class="keyword">Sub</span> CADInit(<span class="keyword">ByVal</span> strCAD <span class="keyword">As</span> <span class="type">String</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">On</span> <span class="keyword">Error</span> <span class="keyword">Resume</span> <span class="keyword">Next</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">Set</span> acadApp = GetObject(, strCAD) <span class="comment">&#x27;查看安裝</span></span><br><span class="line"><span class="keyword">If</span> Err &lt;&gt; <span class="number">0</span> <span class="keyword">Then</span> <span class="keyword">Set</span> acadApp = CreateObject(strCAD)</span><br><span class="line">acadApp.Visible = <span class="literal">True</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">On</span> <span class="keyword">Error</span> <span class="keyword">GoTo</span> <span class="number">0</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">Set</span> mo = acadApp.ActiveDocument.ModelSpace</span><br><span class="line"><span class="keyword">Set</span> pa = acadApp.ActiveDocument.PaperSpace</span><br><span class="line"><span class="keyword">Set</span> acadDoc = acadApp.ActiveDocument</span><br><span class="line"></span><br><span class="line"><span class="keyword">End</span> <span class="keyword">Sub</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">Function</span> AddPoint(pt) <span class="keyword">As</span> <span class="type">Object</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">If</span> CADVer = <span class="string">&quot;ICAD&quot;</span> <span class="keyword">Then</span></span><br><span class="line">    <span class="keyword">Set</span> AddPoint = mo.AddPointEntity(tranPoint(pt))</span><br><span class="line"><span class="keyword">Else</span></span><br><span class="line">    <span class="keyword">Set</span> AddPoint = mo.AddPoint(tranPoint(pt))</span><br><span class="line"><span class="keyword">End</span> <span class="keyword">If</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">End</span> <span class="keyword">Function</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">Function</span> AddLineCO(X1, Y1, X2, Y2) <span class="keyword">As</span> <span class="type">Object</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">Dim</span> spt(<span class="number">2</span>) <span class="keyword">As</span> <span class="type">Double</span></span><br><span class="line"><span class="keyword">Dim</span> ept(<span class="number">2</span>) <span class="keyword">As</span> <span class="type">Double</span></span><br><span class="line">spt(<span class="number">0</span>) = X1: spt(<span class="number">1</span>) = Y1</span><br><span class="line">ept(<span class="number">0</span>) = X2: ept(<span class="number">1</span>) = Y2</span><br><span class="line"></span><br><span class="line"><span class="keyword">Set</span> AddLineCO = AddLine(spt, ept)</span><br><span class="line"></span><br><span class="line"><span class="keyword">End</span> <span class="keyword">Function</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">Function</span> AddLine(spt, ept) <span class="keyword">As</span> <span class="type">Object</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">Set</span> AddLine = mo.AddLine(tranPoint(spt), tranPoint(ept))</span><br><span class="line"></span><br><span class="line"><span class="keyword">End</span> <span class="keyword">Function</span></span><br><span class="line"></span><br><span class="line"><span class="comment">&#x27;=============transform ICAD about point and points======================</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">Function</span> tranPoint(<span class="keyword">ByVal</span> CADpt)</span><br><span class="line"></span><br><span class="line"><span class="keyword">If</span> CADVer &lt;&gt; <span class="string">&quot;ICAD&quot;</span> <span class="keyword">Then</span> tranPoint = CADpt: <span class="keyword">Exit</span> <span class="keyword">Function</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">Set</span> tranPoint = Library.CreatePoint(CADpt(<span class="number">0</span>), CADpt(<span class="number">1</span>), CADpt(<span class="number">2</span>))</span><br><span class="line"></span><br><span class="line"><span class="keyword">End</span> <span class="keyword">Function</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>作者： </strong>Hank Lin
+  </li>
+  <li class="post-copyright-link">
+      <strong>文章連結：</strong>
+      <a href="https://www.hanksvba.com/posts/2767553795/" title="縱斷面插旗文字重疊問題">https://www.hanksvba.com/posts/2767553795/</a>
+  </li>
+  <li class="post-copyright-license">
+      <strong>版權聲明： </strong>本網誌所有文章除特別聲明外，均採用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 許可協議。轉載請註明出處！
+  </li>
+</ul>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/AutoCAD-VBA/" rel="tag"><i class="fa fa-tag"></i> AutoCAD VBA</a>
+              <a href="/tags/ProgeCAD-VBA/" rel="tag"><i class="fa fa-tag"></i> ProgeCAD VBA</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/posts/3619695554/" rel="prev" title="VBA自學心得">
+                  <i class="fa fa-angle-left"></i> VBA自學心得
+                </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2024</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Hank Lin</span>
+  </div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="訪客總數">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="總瀏覽次數">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 強力驅動
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="back-to-top" role="button" aria-label="回到頂端">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/next-boot.js"></script>
+
+  
+  <script class="next-config" data-name="pdf" type="application/json">{"object_url":{"url":"https://cdnjs.cloudflare.com/ajax/libs/pdfobject/2.2.12/pdfobject.min.js","integrity":"sha256-g2xji1rlE3KsGVClvuxTbcR0Kn2+wtQADSff2Tbb4zA="},"url":"/lib/pdf/web/viewer"}</script>
+  <script src="/js/third-party/tags/pdf.js"></script>
+
+
+
+
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">false</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"ams","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+
+</body>
+</html>
