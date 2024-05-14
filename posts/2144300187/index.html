@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.2.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha256-wiz7ZSCn/btzhjKDQBms9Hx4sSeUYsDrTLg7roPstac=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"www.hanksvba.com","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.19.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":"mac"},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":false,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜尋...","empty":"我們無法找到任何有關 ${query} 的搜索結果","hits_time":"${hits} 找到 ${time} 個結果","hits":"找到 ${hits} 個結果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="前言 CAD版本有非常多種，我目前有接觸過的就有AutoCAD、ZWCAD以及現在正在使用中的ProgeCAD。 在使用VBA進行二次開發的過程，需要考量引用物件模型之間的差異，就目前開發經驗中，AutoCAD與ZWCAD可以透過修改引用名稱就可以有很好的轉換體驗，但是ProgeCAD的基底物件有比較不同的設計，故本篇要來解釋從AutoCAD的VBAcode如何透過我所撰寫的物件轉換函數進行相">
+<meta property="og:type" content="article">
+<meta property="og:title" content="不同版本間的CAD開發">
+<meta property="og:url" content="https://www.hanksvba.com/posts/2144300187/">
+<meta property="og:site_name" content="Hank&#39;s Blog">
+<meta property="og:description" content="前言 CAD版本有非常多種，我目前有接觸過的就有AutoCAD、ZWCAD以及現在正在使用中的ProgeCAD。 在使用VBA進行二次開發的過程，需要考量引用物件模型之間的差異，就目前開發經驗中，AutoCAD與ZWCAD可以透過修改引用名稱就可以有很好的轉換體驗，但是ProgeCAD的基底物件有比較不同的設計，故本篇要來解釋從AutoCAD的VBAcode如何透過我所撰寫的物件轉換函數進行相">
+<meta property="og:locale" content="zh_TW">
+<meta property="article:published_time" content="2024-05-12T04:26:09.000Z">
+<meta property="article:modified_time" content="2024-05-12T04:26:09.000Z">
+<meta property="article:author" content="Hank Lin">
+<meta property="article:tag" content="Streamlit">
+<meta property="article:tag" content="AutoCAD VBA">
+<meta property="article:tag" content="ProgeCAD VBA">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://www.hanksvba.com/posts/2144300187/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-TW","comments":true,"permalink":"https://www.hanksvba.com/posts/2144300187/","path":"posts/2144300187/","title":"不同版本間的CAD開發"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>不同版本間的CAD開發 | Hank's Blog</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切換導航欄" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Hank's Blog</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">工程人的設計監造VBA工具交流區</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜尋" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-首頁"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首頁</a></li><li class="menu-item menu-item-關於"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>關於</a></li><li class="menu-item menu-item-標籤"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>標籤</a></li><li class="menu-item menu-item-分類"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分類</a></li><li class="menu-item menu-item-文章"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>文章</a></li>
+  </ul>
+</nav>
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目錄
+        </li>
+        <li class="sidebar-nav-overview">
+          本站概要
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%89%8D%E8%A8%80"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%89%88%E6%9C%AC%E6%B2%BF%E9%9D%A9"><span class="nav-number">2.</span> <span class="nav-text">🎯版本沿革</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#autocad"><span class="nav-number">2.1.</span> <span class="nav-text">AutoCAD</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#zwcad"><span class="nav-number">2.2.</span> <span class="nav-text">ZWCAD</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#progecad"><span class="nav-number">2.3.</span> <span class="nav-text">ProgeCAD</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%96%8B%E7%99%BC%E5%B7%AE%E7%95%B0"><span class="nav-number">3.</span> <span class="nav-text">📌開發差異</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%AC%E5%85%B1%E8%AE%8A%E6%95%B8"><span class="nav-number">3.1.</span> <span class="nav-text">公共變數</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%80%A3%E6%8E%A5%E6%87%89%E7%94%A8%E7%A8%8B%E5%BC%8F"><span class="nav-number">3.2.</span> <span class="nav-text">連接應用程式</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%89%A9%E4%BB%B6%E7%9B%B8%E5%AE%B9%E8%BD%89%E6%8F%9B%E5%87%BD%E6%95%B8"><span class="nav-number">4.</span> <span class="nav-text">🌟物件相容轉換函數</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9F%BA%E6%9C%AC%E7%89%A9%E4%BB%B6"><span class="nav-number">4.1.</span> <span class="nav-text">基本物件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%80%9A%E7%94%A8%E9%A1%9E%E5%88%A5util"><span class="nav-number">4.2.</span> <span class="nav-text">通用類別(Util)</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%96%8B%E7%99%BC%E9%81%8E%E7%A8%8B%E4%B8%AD%E7%9A%84%E5%B0%8F%E5%95%8F%E9%A1%8C"><span class="nav-number">5.</span> <span class="nav-text">🐞開發過程中的小問題</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BB%BA%E8%AD%B0%E9%96%8B%E7%99%BC%E6%96%B9%E5%90%91"><span class="nav-number">6.</span> <span class="nav-text">👉建議開發方向</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#python%E8%BC%B8%E5%87%BAdxf%E9%A1%8C%E5%A4%96%E8%A9%B1"><span class="nav-number">7.</span> <span class="nav-text">💡Python輸出DXF(題外話)</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Hank Lin"
+      src="/images/avatar_custom.png">
+  <p class="site-author-name" itemprop="name">Hank Lin</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">8</span>
+          <span class="site-state-item-name">文章</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">分類</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">10</span>
+        <span class="site-state-item-name">標籤</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="mailto:apple84026113@gmail.com" title="E-Mail → mailto:apple84026113@gmail.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.youtube.com/channel/UCWmy5KaK7Leg6lLUlWBPaSw" title="YouTube → https:&#x2F;&#x2F;www.youtube.com&#x2F;channel&#x2F;UCWmy5KaK7Leg6lLUlWBPaSw" rel="noopener me" target="_blank"><i class="fab fa-youtube fa-fw"></i>YouTube</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/images/LINE_QRCODE.png" title="LINE → &#x2F;images&#x2F;LINE_QRCODE.png" rel="noopener me"><i class="fab fa-line fa-fw"></i>LINE</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://reurl.cc/RyvvaZ" title="LINE社群 → https:&#x2F;&#x2F;reurl.cc&#x2F;RyvvaZ" rel="noopener me" target="_blank"><i class="fas fa-comment fa-fw"></i>LINE社群</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://hankvba.blogspot.com/" title="(舊)Blogger → https:&#x2F;&#x2F;hankvba.blogspot.com&#x2F;" rel="noopener me" target="_blank"><i class="fab fa-blogger fa-fw"></i>(舊)Blogger</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-TW">
+    <link itemprop="mainEntityOfPage" href="https://www.hanksvba.com/posts/2144300187/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar_custom.png">
+      <meta itemprop="name" content="Hank Lin">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hank's Blog">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="不同版本間的CAD開發 | Hank's Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          不同版本間的CAD開發
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">發表於</span>
+
+      <time title="創建時間：2024-05-12 12:26:09" itemprop="dateCreated datePublished" datetime="2024-05-12T12:26:09+08:00">2024-05-12</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分類於</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5/" itemprop="url" rel="index"><span itemprop="name">基本概念</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5/%E5%B0%88%E6%A1%88%E6%88%90%E6%9E%9C/" itemprop="url" rel="index"><span itemprop="name">專案成果</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="閱讀次數" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">閱讀次數：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h2 id="前言">前言</h2>
+<p>CAD版本有非常多種，我目前有接觸過的就有AutoCAD、ZWCAD以及現在正在使用中的ProgeCAD。</p>
+<p>在使用VBA進行二次開發的過程，需要考量<strong>引用物件模型</strong>之間的差異，就目前開發經驗中，AutoCAD與ZWCAD可以透過修改引用名稱就可以有很好的轉換體驗，但是ProgeCAD的<strong>基底物件</strong>有比較不同的設計，故本篇要來解釋從AutoCAD的VBAcode如何透過我所撰寫的物件轉換函數進行相容，讓程式碼在ProgeCAD也可以順利動起來。</p>
+<p><a
+target="_blank" rel="noopener" href="https://hankvba.blogspot.com/2021/07/cadlibraryclsacad.html">🔗HanksVBA學習歷程-不同CAD版本間也可以引用的Library(clsACAD)</a></p>
+<span id="more"></span>
+<h2 id="版本沿革">🎯版本沿革</h2>
+<h3 id="autocad">AutoCAD</h3>
+<p>AutoCAD為Autodesk公司旗下產品，產品比較沒有異常，程式碼範例豐富，社群支援完整度較高，同時也是最昂貴的軟體。</p>
+<h3 id="zwcad">ZWCAD</h3>
+<p>ZWCAD為中望公司旗下產品，其實與AutoCAD都大同小異，費用比AutoCAD來的便宜，可惜政府機關不能接受中資，怕有資安疑慮。</p>
+<h3 id="progecad">ProgeCAD</h3>
+<p>ProgeCAD總部設立於義大利，採用IntelliCAD引擎驅動，就使用上不知怎麼說，就是覺得與AutoCAD少了一味，程式碼的運作比較緩慢，有些介面會跟AutoCAD有些許落差。</p>
+<h2 id="開發差異">📌開發差異</h2>
+<p>之前的專案大多都是用於AutoCAD運作，自從機關買斷ProgeCAD之後，為了把程式碼移轉到ProgeCAD進行，需要了解一下程式碼開發之間的差異。</p>
+<h3 id="公共變數">公共變數</h3>
+<p>公共變數的目的是為了能夠在各個function中相互傳遞變數使用</p>
+<figure class="highlight vb"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">Private</span> mo <span class="keyword">As</span> <span class="type">Object</span></span><br><span class="line"><span class="keyword">Private</span> pa <span class="keyword">As</span> <span class="type">Object</span></span><br><span class="line"><span class="keyword">Public</span> acadDoc <span class="keyword">As</span> <span class="type">Object</span></span><br><span class="line"><span class="keyword">Public</span> CADVer <span class="keyword">As</span> <span class="type">String</span></span><br></pre></td></tr></table></figure>
+<h3 id="連接應用程式">連接應用程式</h3>
+<p>這裡我在Sheets("總表")上面做了一個選單，讓使用者可以挑選要啟用哪個後期繫結字串，strCAD為VBA呼叫CAD應用程式連接字串，CADVer為各function連接後的細微調整判斷。</p>
+<figure class="highlight vb"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">Private</span> <span class="keyword">Sub</span> Class_Initialize()</span><br><span class="line"></span><br><span class="line"><span class="keyword">If</span> Sheets(<span class="string">&quot;總表&quot;</span>).optAutoCAD = <span class="literal">True</span> <span class="keyword">Then</span></span><br><span class="line"></span><br><span class="line">    strCAD = <span class="string">&quot;AutoCAD.application&quot;</span></span><br><span class="line">    CADVer = <span class="string">&quot;AUTOCAD&quot;</span></span><br><span class="line">    </span><br><span class="line"><span class="keyword">ElseIf</span> Sheets(<span class="string">&quot;總表&quot;</span>).optZWCAD = <span class="literal">True</span> <span class="keyword">Then</span></span><br><span class="line">    </span><br><span class="line">    strCAD = <span class="string">&quot;ZWCAD.Application&quot;</span></span><br><span class="line">    CADVer = <span class="string">&quot;ZWCAD&quot;</span></span><br><span class="line">    </span><br><span class="line"><span class="keyword">ElseIf</span> Sheets(<span class="string">&quot;總表&quot;</span>).optICAD = <span class="literal">True</span> <span class="keyword">Then</span></span><br><span class="line"></span><br><span class="line">    strCAD = <span class="string">&quot;ICAD.application&quot;</span></span><br><span class="line">    CADVer = <span class="string">&quot;ICAD&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">End</span> <span class="keyword">If</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">Call</span> CADInit(strCAD)</span><br><span class="line"></span><br><span class="line"><span class="keyword">End</span> <span class="keyword">Sub</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">Private</span> <span class="keyword">Sub</span> CADInit(<span class="keyword">ByVal</span> strCAD <span class="keyword">As</span> <span class="type">String</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">On</span> <span class="keyword">Error</span> <span class="keyword">Resume</span> <span class="keyword">Next</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">Set</span> acadApp = GetObject(, strCAD) <span class="comment">&#x27;查看安裝</span></span><br><span class="line"><span class="keyword">If</span> Err &lt;&gt; <span class="number">0</span> <span class="keyword">Then</span> <span class="keyword">Set</span> acadApp = CreateObject(strCAD)</span><br><span class="line">acadApp.Visible = <span class="literal">True</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">On</span> <span class="keyword">Error</span> <span class="keyword">GoTo</span> <span class="number">0</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">Set</span> mo = acadApp.ActiveDocument.ModelSpace</span><br><span class="line"><span class="keyword">Set</span> pa = acadApp.ActiveDocument.PaperSpace</span><br><span class="line"><span class="keyword">Set</span> acadDoc = acadApp.ActiveDocument</span><br><span class="line"></span><br><span class="line"><span class="keyword">End</span> <span class="keyword">Sub</span></span><br></pre></td></tr></table></figure>
+<h2 id="物件相容轉換函數">🌟物件相容轉換函數</h2>
+<ul>
+<li>AutoCAD的點物件是以一個陣列(array)儲存(0,1,2)double變數而成。</li>
+<li>AutoCAD的線物件則分為LightWeightPolyline跟3dPolyline
+<ul>
+<li>LightWeigtPolyline是以一個陣列(vertice)<strong>至少</strong>儲存(0,1,2,3)生成，過程中不儲存高程，所以每2個值為一個點。</li>
+<li>3DPolyline是以一個陣列(vertice)<strong>至少</strong>儲存(0,1,2,3,4,5)生成，過程中儲存高程，所以每3個值為一個點。</li>
+</ul></li>
+<li>ProgeCAD的點物件是以一個點物件(Point)，由X,Y,Z三個屬性儲存其變數而成。</li>
+<li>ProgeCAD的線物件是以點群物件(Points)儲存點物件(Point)，取其變數而成。</li>
+</ul>
+<figure class="highlight vb"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">Function</span> tranPoint(<span class="keyword">ByVal</span> CADpt)</span><br><span class="line"></span><br><span class="line"><span class="keyword">If</span> CADVer &lt;&gt; <span class="string">&quot;ICAD&quot;</span> <span class="keyword">Then</span> tranPoint = CADpt: <span class="keyword">Exit</span> <span class="keyword">Function</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">Set</span> tranPoint = Library.CreatePoint(CADpt(<span class="number">0</span>), CADpt(<span class="number">1</span>), CADpt(<span class="number">2</span>))</span><br><span class="line"></span><br><span class="line"><span class="keyword">End</span> <span class="keyword">Function</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">Function</span> tranIPoint(<span class="keyword">ByVal</span> ICADpt)</span><br><span class="line"></span><br><span class="line"><span class="keyword">If</span> CADVer &lt;&gt; <span class="string">&quot;ICAD&quot;</span> <span class="keyword">Then</span> tranIPoint = ICADpt: <span class="keyword">Exit</span> <span class="keyword">Function</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">Dim</span> tmp(<span class="number">2</span>) <span class="keyword">As</span> <span class="type">Double</span></span><br><span class="line">tmp(<span class="number">0</span>) = ICADpt.X</span><br><span class="line">tmp(<span class="number">1</span>) = ICADpt.Y</span><br><span class="line">tmp(<span class="number">2</span>) = ICADpt.Z</span><br><span class="line"></span><br><span class="line">tranIPoint = tmp</span><br><span class="line"></span><br><span class="line"><span class="keyword">End</span> <span class="keyword">Function</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">Function</span> tranPoints(<span class="keyword">ByVal</span> vertices, <span class="keyword">Optional</span> cnt <span class="keyword">As</span> <span class="type">Byte</span> = <span class="number">3</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">If</span> CADVer &lt;&gt; <span class="string">&quot;ICAD&quot;</span> <span class="keyword">Then</span> tranPoints = vertices: <span class="keyword">Exit</span> <span class="keyword">Function</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">If</span> vertices(<span class="number">2</span>) = <span class="number">0</span> <span class="keyword">Then</span> cnt = <span class="number">3</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">Dim</span> myPline, myPoints, pt</span><br><span class="line">    </span><br><span class="line"><span class="keyword">Set</span> myPoints = Library.CreatePoints</span><br><span class="line"></span><br><span class="line"><span class="keyword">If</span> cnt = <span class="number">2</span> <span class="keyword">Then</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">For</span> i = <span class="number">0</span> <span class="keyword">To</span> UBound(vertices) <span class="keyword">Step</span> cnt</span><br><span class="line">    </span><br><span class="line">        <span class="keyword">Set</span> pt = Library.CreatePoint(vertices(i), vertices(i + <span class="number">1</span>))</span><br><span class="line">    </span><br><span class="line">        myPoints.Add</span><br><span class="line">        myPoints(myPoints.Count - <span class="number">1</span>).X = pt.X</span><br><span class="line">        myPoints(myPoints.Count - <span class="number">1</span>).Y = pt.Y</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">Next</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">Else</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">For</span> i = <span class="number">0</span> <span class="keyword">To</span> UBound(vertices) <span class="keyword">Step</span> cnt</span><br><span class="line">    </span><br><span class="line">        <span class="keyword">Set</span> pt = Library.CreatePoint(vertices(i), vertices(i + <span class="number">1</span>), vertices(i + <span class="number">2</span>))</span><br><span class="line">    </span><br><span class="line">        myPoints.Add</span><br><span class="line">        myPoints(myPoints.Count - <span class="number">1</span>).X = pt.X</span><br><span class="line">        myPoints(myPoints.Count - <span class="number">1</span>).Y = pt.Y</span><br><span class="line">        myPoints(myPoints.Count - <span class="number">1</span>).Z = pt.Z</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">Next</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">End</span> <span class="keyword">If</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">Set</span> tranPoints = myPoints</span><br><span class="line"></span><br><span class="line"><span class="keyword">End</span> <span class="keyword">Function</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">Function</span> tranIPoints(<span class="keyword">ByVal</span> myPoints)</span><br><span class="line"></span><br><span class="line"><span class="keyword">If</span> CADVer &lt;&gt; <span class="string">&quot;ICAD&quot;</span> <span class="keyword">Then</span> tranIPoints = myPoints: <span class="keyword">Exit</span> <span class="keyword">Function</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">Dim</span> vertices()</span><br><span class="line"><span class="keyword">ReDim</span> vertices(myPoints.Count * <span class="number">3</span> - <span class="number">1</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">For</span> <span class="keyword">Each</span> it <span class="keyword">In</span> myPoints</span><br><span class="line"></span><br><span class="line">vertices(<span class="number">0</span> + j) = it.X</span><br><span class="line">vertices(<span class="number">0</span> + j + <span class="number">1</span>) = it.Y</span><br><span class="line">vertices(<span class="number">0</span> + j + <span class="number">2</span>) = it.Z</span><br><span class="line"></span><br><span class="line">j = j + <span class="number">3</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">Next</span></span><br><span class="line"></span><br><span class="line">tranIPoints = vertices</span><br><span class="line"></span><br><span class="line"><span class="keyword">End</span> <span class="keyword">Function</span></span><br></pre></td></tr></table></figure>
+<h3 id="基本物件">基本物件</h3>
+<p>畫點、畫圓、畫線、寫文字</p>
+<figure class="highlight vb"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">Function</span> AddPoint(pt) <span class="keyword">As</span> <span class="type">Object</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">If</span> CADVer = <span class="string">&quot;ICAD&quot;</span> <span class="keyword">Then</span></span><br><span class="line">    <span class="keyword">Set</span> AddPoint = mo.AddPointEntity(tranPoint(pt))</span><br><span class="line"><span class="keyword">Else</span></span><br><span class="line">    <span class="keyword">Set</span> AddPoint = mo.AddPoint(tranPoint(pt))</span><br><span class="line"><span class="keyword">End</span> <span class="keyword">If</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">End</span> <span class="keyword">Function</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">Function</span> AddCircle(cpt, r) <span class="keyword">As</span> <span class="type">Object</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">Set</span> AddCircle = mo.AddCircle(tranPoint(cpt), r)</span><br><span class="line"></span><br><span class="line"><span class="keyword">End</span> <span class="keyword">Function</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">Function</span> AddLine(spt, ept) <span class="keyword">As</span> <span class="type">Object</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">Set</span> AddLine = mo.AddLine(tranPoint(spt), tranPoint(ept))</span><br><span class="line"></span><br><span class="line"><span class="keyword">End</span> <span class="keyword">Function</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">Function</span> AddLineCO(X1, Y1, X2, Y2) <span class="keyword">As</span> <span class="type">Object</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">Dim</span> spt(<span class="number">2</span>) <span class="keyword">As</span> <span class="type">Double</span></span><br><span class="line"><span class="keyword">Dim</span> ept(<span class="number">2</span>) <span class="keyword">As</span> <span class="type">Double</span></span><br><span class="line">spt(<span class="number">0</span>) = X1: spt(<span class="number">1</span>) = Y1</span><br><span class="line">ept(<span class="number">0</span>) = X2: ept(<span class="number">1</span>) = Y2</span><br><span class="line"></span><br><span class="line"><span class="keyword">Set</span> AddLineCO = AddLine(spt, ept)</span><br><span class="line"></span><br><span class="line"><span class="keyword">End</span> <span class="keyword">Function</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">Function</span> AddPolyLine(vertices) <span class="keyword">As</span> <span class="type">Object</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">Set</span> AddPolyLine = mo.AddPolyLine(tranPoints(vertices))</span><br><span class="line"></span><br><span class="line"><span class="keyword">End</span> <span class="keyword">Function</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">Function</span> Add3dPoly(vertices) <span class="comment">&#x27;20210604 new</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">Set</span> Add3dPoly = mo.Add3dPoly(tranPoints(vertices))</span><br><span class="line"></span><br><span class="line"><span class="keyword">End</span> <span class="keyword">Function</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">Function</span> AddLWPolyLine(vertices) <span class="keyword">As</span> <span class="type">Object</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">Set</span> AddLWPolyLine = mo.AddLightWeightPolyline(tranPoints(vertices, <span class="number">2</span>))</span><br><span class="line"></span><br><span class="line"><span class="keyword">End</span> <span class="keyword">Function</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">Function</span> AddArc(<span class="keyword">ByVal</span> Center, Radius <span class="keyword">As</span> <span class="type">Double</span>, StartAngle <span class="keyword">As</span> <span class="type">Double</span>, EndAngle <span class="keyword">As</span> <span class="type">Double</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">Set</span> AddArc = mo.AddArc(tranPoint(Center), Radius, StartAngle, EndAngle)</span><br><span class="line"></span><br><span class="line"><span class="keyword">End</span> <span class="keyword">Function</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">Function</span> AddText(<span class="keyword">ByVal</span> myText <span class="keyword">As</span> <span class="type">String</span>, <span class="keyword">ByVal</span> txtpt, <span class="keyword">ByVal</span> txtheight <span class="keyword">As</span> <span class="type">Double</span>, <span class="keyword">Optional</span> alignmode <span class="keyword">As</span> <span class="type">Byte</span> = <span class="number">1</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">Dim</span> mtextObj <span class="keyword">As</span> <span class="type">Object</span> <span class="comment">&#x27;IntelliCAD.Text</span></span><br><span class="line">    <span class="keyword">Dim</span> insPt</span><br><span class="line">    </span><br><span class="line">    insPt = txtpt</span><br><span class="line">    <span class="keyword">Set</span> txtobj = mo.AddText(myText, tranPoint(insPt), txtheight)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">If</span> CADVer = <span class="string">&quot;ICAD&quot;</span> <span class="keyword">Then</span></span><br><span class="line">    </span><br><span class="line">        <span class="keyword">Select</span> <span class="keyword">Case</span> alignmode</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">Case</span> <span class="number">1</span></span><br><span class="line">            txtobj.HorizontalAlignment = <span class="number">0</span>  <span class="comment">&#x27; acAlignmentMiddleLeft</span></span><br><span class="line">        <span class="keyword">Case</span> <span class="number">2</span></span><br><span class="line">            txtobj.HorizontalAlignment = <span class="number">4</span>  <span class="comment">&#x27; acAlignmentMiddleCenter</span></span><br><span class="line">        <span class="keyword">Case</span> <span class="number">3</span></span><br><span class="line">            txtobj.HorizontalAlignment = <span class="number">2</span> <span class="comment">&#x27; acAlignmentMiddleRight</span></span><br><span class="line">        </span><br><span class="line">        <span class="keyword">End</span> <span class="keyword">Select</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">Else</span></span><br><span class="line">    </span><br><span class="line">        <span class="keyword">Select</span> <span class="keyword">Case</span> alignmode</span><br><span class="line">    </span><br><span class="line">        <span class="keyword">Case</span> <span class="number">1</span></span><br><span class="line">            txtobj.Alignment = <span class="number">9</span> <span class="comment">&#x27; acAlignmentMiddleLeft</span></span><br><span class="line">        <span class="keyword">Case</span> <span class="number">2</span></span><br><span class="line">            txtobj.Alignment = <span class="number">10</span> <span class="comment">&#x27; acAlignmentMiddleCenter</span></span><br><span class="line">        <span class="keyword">Case</span> <span class="number">3</span></span><br><span class="line">            txtobj.Alignment = <span class="number">11</span> <span class="comment">&#x27; acAlignmentMiddleRight</span></span><br><span class="line">            </span><br><span class="line">        <span class="keyword">End</span> <span class="keyword">Select</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">End</span> <span class="keyword">If</span></span><br><span class="line">    </span><br><span class="line">    txtobj.TextAlignmentPoint = tranPoint(insPt)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">Set</span> AddText = txtobj</span><br><span class="line"></span><br><span class="line"><span class="keyword">End</span> <span class="keyword">Function</span></span><br></pre></td></tr></table></figure>
+<h3 id="通用類別util">通用類別(Util)</h3>
+<p>通用類別用於與應用程式間的互動居多，包含取得點、取得文字。也包含CAD物件本身所提供的無法分類屬性，也會放入通用類別。</p>
+<figure class="highlight vb"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">Function</span> GetPoint(<span class="keyword">ByVal</span> prompt <span class="keyword">As</span> <span class="type">String</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">If</span> CADVer = <span class="string">&quot;ICAD&quot;</span> <span class="keyword">Then</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">Set</span> o = IntelliCAD.ActiveDocument.Utility.GetPoint(, prompt)</span><br><span class="line">    GetPoint = tranIPoint(o)</span><br><span class="line"></span><br><span class="line"><span class="keyword">Else</span></span><br><span class="line">    GetPoint = acadDoc.Utility.GetPoint(, prompt)</span><br><span class="line"><span class="keyword">End</span> <span class="keyword">If</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">End</span> <span class="keyword">Function</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">Function</span> GetString(<span class="keyword">ByVal</span> prompt <span class="keyword">As</span> <span class="type">String</span>)</span><br><span class="line"></span><br><span class="line">GetString = acadDoc.Utility.GetString(<span class="literal">False</span>, prompt &amp; vbNewLine)</span><br><span class="line"></span><br><span class="line"><span class="keyword">End</span> <span class="keyword">Function</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">Function</span> GetBoundingBox(<span class="keyword">ByVal</span> entobj, MinX, MinY, MaxX, MaxY)</span><br><span class="line"></span><br><span class="line"><span class="keyword">If</span> CADVer = <span class="string">&quot;ICAD&quot;</span> <span class="keyword">Then</span> <span class="keyword">Call</span> GetBoundingBox_ICAD(entobj, MinX, MinY, MaxX, MaxY): <span class="keyword">Exit</span> <span class="keyword">Function</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">Call</span> entobj.GetBoundingBox(Min, Max)</span><br><span class="line"></span><br><span class="line">MinX = Min(<span class="number">0</span>): MinY = Min(<span class="number">1</span>)</span><br><span class="line">MaxX = Max(<span class="number">0</span>): MaxY = Max(<span class="number">1</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">End</span> <span class="keyword">Function</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">Function</span> GetBoundingBox_ICAD(<span class="keyword">ByVal</span> entobj, MinX, MinY, MaxX, MaxY)</span><br><span class="line"></span><br><span class="line"><span class="keyword">Dim</span> Min <span class="keyword">As</span> <span class="type">Object</span></span><br><span class="line"><span class="keyword">Dim</span> Max <span class="keyword">As</span> <span class="type">Object</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">Call</span> entobj.GetBoundingBox(Min, Max)</span><br><span class="line"></span><br><span class="line">MinX = Min.X: MinY = Min.Y</span><br><span class="line">MaxX = Max.X: MaxY = Max.Y</span><br><span class="line"></span><br><span class="line"><span class="keyword">End</span> <span class="keyword">Function</span></span><br></pre></td></tr></table></figure>
+<h2 id="開發過程中的小問題">🐞開發過程中的小問題</h2>
+<p>填充線也是常用於標示圖形的功能之一，這裡的AddHatch我一直試不出來，當初猜測可能是常數的問題<strong>vicHatchPatternTypePreDefined</strong>，結果還是一樣...</p>
+<p>不同應用程式之間有時候<strong>常數設定會有所不同</strong>，包含<strong>排序的方式</strong>也可能會不同，像是在做selectionset(選擇集)的時候，AutoCAD可以很清楚知道順序，但是ProgeCAD似乎沒有一定的規則可言。</p>
+<figure class="highlight vb"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">Sub</span> Hatch(<span class="keyword">ByVal</span> obj <span class="keyword">As</span> <span class="type">Object</span>, <span class="keyword">ByVal</span> Ratio <span class="keyword">As</span> <span class="type">Double</span>, <span class="keyword">ByVal</span> ptrName <span class="keyword">As</span> <span class="type">String</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">&#x27;usually use &quot;SOLID&quot;,&quot;ANSI32&quot;,&quot;AR-CONC&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">If</span> CADVer = <span class="string">&quot;ICAD&quot;</span> <span class="keyword">Then</span> <span class="keyword">Exit</span> <span class="keyword">Sub</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">Dim</span> hatchobj <span class="keyword">As</span> <span class="type">Object</span> <span class="comment">&#x27;AcadHatch</span></span><br><span class="line"><span class="keyword">Dim</span> outerloop(<span class="number">0</span> <span class="keyword">To</span> <span class="number">0</span>) <span class="keyword">As</span> <span class="type">Object</span> <span class="comment">&#x27;AcadEntity</span></span><br><span class="line"></span><br><span class="line">PatternName = ptrName</span><br><span class="line"></span><br><span class="line"><span class="keyword">Set</span> hatchobj = mo.AddHatch(<span class="number">0</span>, PatternName, <span class="literal">True</span>)</span><br><span class="line"><span class="comment">&#x27;Set hatchobj = mo.AddHatch(vicHatchPatternTypePreDefined, PatternName, True)</span></span><br><span class="line"></span><br><span class="line">hatchobj.PatternScale = <span class="number">1</span> / Ratio * <span class="number">4</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">Set</span> outerloop(<span class="number">0</span>) = obj</span><br><span class="line"></span><br><span class="line"><span class="keyword">On</span> <span class="keyword">Error</span> <span class="keyword">Resume</span> <span class="keyword">Next</span></span><br><span class="line"></span><br><span class="line">hatchobj.AppendOuterLoop (outerloop)</span><br><span class="line"></span><br><span class="line"><span class="keyword">End</span> <span class="keyword">Sub</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">Function</span> AddMixText(<span class="keyword">ByVal</span> s <span class="keyword">As</span> <span class="type">String</span>, <span class="keyword">ByVal</span> txtpt, <span class="keyword">ByVal</span> txtheight <span class="keyword">As</span> <span class="type">Double</span>, _</span><br><span class="line">                    <span class="keyword">Optional</span> alignmode <span class="keyword">As</span> <span class="type">Byte</span> = <span class="number">1</span>, <span class="keyword">Optional</span> dashmode <span class="keyword">As</span> <span class="type">Integer</span> = <span class="number">0</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">Dim</span> txtobj <span class="keyword">As</span> <span class="type">Object</span> <span class="comment">&#x27;AcadText</span></span><br><span class="line"><span class="keyword">Dim</span> circleobj <span class="keyword">As</span> <span class="type">Object</span> <span class="comment">&#x27;AcadCircle</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">Set</span> AddMixText = AddText(s, txtpt, txtheight, alignmode)</span><br><span class="line"></span><br><span class="line"><span class="keyword">With</span> mo</span><br><span class="line"></span><br><span class="line">    <span class="keyword">Dim</span> vertices(<span class="number">5</span>) <span class="keyword">As</span> <span class="type">Double</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">If</span> dashmode = <span class="number">0</span> <span class="keyword">Then</span> <span class="keyword">Exit</span> <span class="keyword">Function</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">Call</span> GetBoundingBox(AddMixText, MinX, MinY, MaxX, MaxY)</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">For</span> i = <span class="number">1</span> <span class="keyword">To</span> dashmode</span><br><span class="line">    </span><br><span class="line">        vertices(<span class="number">0</span>) = MinX</span><br><span class="line">        vertices(<span class="number">1</span>) = MinY - txtheight / <span class="number">2</span> - txtheight / <span class="number">2</span> * <span class="number">0.5</span> * i</span><br><span class="line">        </span><br><span class="line">        vertices(<span class="number">3</span>) = MaxX</span><br><span class="line">        vertices(<span class="number">4</span>) = vertices(<span class="number">1</span>)</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">Set</span> plineobj = AddPolyLine(vertices)</span><br><span class="line">        </span><br><span class="line">        <span class="comment">&#x27;******整體寬度尚未解決******</span></span><br><span class="line">        </span><br><span class="line">        <span class="keyword">If</span> CADVer &lt;&gt; <span class="string">&quot;ICAD&quot;</span> <span class="keyword">Then</span> plineobj.ConstantWidth = txtheight / <span class="number">10</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">Next</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">End</span> <span class="keyword">With</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">End</span> <span class="keyword">Function</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">Function</span> CreateSSET(<span class="keyword">Optional</span> <span class="keyword">ByVal</span> sname <span class="keyword">As</span> <span class="type">String</span> = <span class="string">&quot;SS1&quot;</span>, <span class="keyword">Optional</span> <span class="keyword">ByVal</span> ftypetmp <span class="keyword">As</span> Variant = <span class="string">&quot;&quot;</span>, <span class="keyword">Optional</span> <span class="keyword">ByVal</span> fdatatmp <span class="keyword">As</span> Variant = <span class="string">&quot;&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">&#x27;****PorgeCAD中似乎沒辦法做到過濾的條件?*****</span></span><br><span class="line"></span><br><span class="line"><span class="comment">&#x27;0:object type</span></span><br><span class="line"><span class="comment">&#x27;2:object name</span></span><br><span class="line"><span class="comment">&#x27;8:layer name</span></span><br><span class="line"><span class="comment">&#x27;62:color number(0 to 256)</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">Dim</span> FilterType() <span class="keyword">As</span> <span class="type">Integer</span></span><br><span class="line"><span class="keyword">Dim</span> FilterData() <span class="keyword">As</span> Variant</span><br><span class="line"></span><br><span class="line"><span class="keyword">On</span> <span class="keyword">Error</span> <span class="keyword">Resume</span> <span class="keyword">Next</span>: acadDoc.SelectionSets(sname).Delete: <span class="keyword">On</span> <span class="keyword">Error</span> <span class="keyword">GoTo</span> <span class="number">0</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">Set</span> sset = acadDoc.SelectionSets.Add(sname)</span><br><span class="line"></span><br><span class="line"><span class="keyword">If</span> ftypetmp = <span class="string">&quot;&quot;</span> <span class="keyword">Then</span></span><br><span class="line"></span><br><span class="line">    sset.SelectOnScreen</span><br><span class="line">    </span><br><span class="line"><span class="keyword">Else</span></span><br><span class="line"></span><br><span class="line">    ft = Split(ftypetmp, <span class="string">&quot;,&quot;</span>)</span><br><span class="line">    fd = Split(fdatatmp, <span class="string">&quot;,&quot;</span>)</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">ReDim</span> FilterType(<span class="number">0</span> <span class="keyword">To</span> UBound(ft))</span><br><span class="line">    <span class="keyword">ReDim</span> FilterData(<span class="number">0</span> <span class="keyword">To</span> UBound(fd))</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">For</span> i = <span class="number">0</span> <span class="keyword">To</span> UBound(ft)</span><br><span class="line">    </span><br><span class="line">        FilterType(i) = ft(i)</span><br><span class="line">        FilterData(i) = fd(i)</span><br><span class="line">        </span><br><span class="line">    <span class="keyword">Next</span></span><br><span class="line">    </span><br><span class="line">    sset.SelectOnScreen FilterType, FilterData</span><br><span class="line">    </span><br><span class="line"><span class="keyword">End</span> <span class="keyword">If</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">Set</span> CreateSSET = sset</span><br><span class="line"></span><br><span class="line"><span class="keyword">End</span> <span class="keyword">Function</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">Sub</span> SetXdataToObj(<span class="keyword">ByVal</span> obj <span class="keyword">As</span> <span class="type">Object</span>, <span class="keyword">ByVal</span> xdata <span class="keyword">As</span> <span class="type">String</span>) <span class="comment">&#x27;提供綁入字串使用</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">If</span> CADVer = <span class="string">&quot;ICAD&quot;</span> <span class="keyword">Then</span> <span class="keyword">Exit</span> <span class="keyword">Sub</span>  <span class="comment">&#x27;中心線樁無法提供</span></span><br><span class="line"><span class="comment">&#x27;*****用Handle處理?!***</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">Dim</span> DataType(<span class="number">0</span> <span class="keyword">To</span> <span class="number">1</span>) <span class="keyword">As</span> <span class="type">Integer</span></span><br><span class="line"><span class="keyword">Dim</span> Data(<span class="number">0</span> <span class="keyword">To</span> <span class="number">1</span>) <span class="keyword">As</span> Variant</span><br><span class="line"></span><br><span class="line">DataType(<span class="number">0</span>) = <span class="number">1001</span>: Data(<span class="number">0</span>) = xdata</span><br><span class="line">DataType(<span class="number">1</span>) = <span class="number">1000</span>: Data(<span class="number">1</span>) = <span class="string">&quot;&quot;</span></span><br><span class="line"></span><br><span class="line">obj.SetXData DataType, Data</span><br><span class="line"></span><br><span class="line"><span class="keyword">End</span> <span class="keyword">Sub</span></span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h2 id="建議開發方向">👉建議開發方向</h2>
+<p><strong>通用才是王道</strong>，不管使用哪種應用程式，只要可以彼此匯入、匯出，最後都只是差在介面使用的習慣以及各應用程式獨立提供的功能而已。</p>
+<p>如同前言所述，CAD版本有非常多種類型，在預算上若有所考量，其實也有FreeCAD、LibreCAD...等等開源選項。但若今天把大多數的開發時間都投在<strong>某一個CAD版本</strong>身上，未來如果公司要更換版本時，轉換成本會隨著你的開發時間而呈指數上升，程式碼越複雜問題越難查出來。</p>
+<p>當今天開發人員已經決定要投資在CAD的二次開發上，我有幾點建議</p>
+<ol type="1">
+<li>確認文件是否豐富</li>
+<li>社群平台是否有良好的支援</li>
+<li>基底應用程式是否有細微bug</li>
+<li>產出內容盡量以dxf為主</li>
+</ol>
+<p>掌握好上面幾點，就差不多可以開始挑選CAD的題目，慢慢嘗試，遇到問題就看文件、不行就問別人，只要沒有本身的bug，基本上CAD的開發應該可以完成80%的工作流程，搭配dxf的產出內容，未來轉換也是沒有問題的。</p>
+<h2 id="python輸出dxf題外話">💡Python輸出DXF(題外話)</h2>
+<p>python的ezdxf套件是我最近在使用streamlit開發時在使用，文件也算是相當詳細，這是一個<strong>單純用python所製作的CSV轉DXF專案</strong>，對於點資料轉成點物件應該有幫助，下載DXF之後只要匯入自己的CAD版本就可以進行後續使用了!</p>
+<p><a target="_blank" rel="noopener" href="https://csv2dxf.streamlit.app/">🔗CSV轉DXF-Streamlit</a></p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>作者： </strong>Hank Lin
+  </li>
+  <li class="post-copyright-link">
+      <strong>文章連結：</strong>
+      <a href="https://www.hanksvba.com/posts/2144300187/" title="不同版本間的CAD開發">https://www.hanksvba.com/posts/2144300187/</a>
+  </li>
+  <li class="post-copyright-license">
+      <strong>版權聲明： </strong>本網誌所有文章除特別聲明外，均採用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 許可協議。轉載請註明出處！
+  </li>
+</ul>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/Streamlit/" rel="tag"><i class="fa fa-tag"></i> Streamlit</a>
+              <a href="/tags/AutoCAD-VBA/" rel="tag"><i class="fa fa-tag"></i> AutoCAD VBA</a>
+              <a href="/tags/ProgeCAD-VBA/" rel="tag"><i class="fa fa-tag"></i> ProgeCAD VBA</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/posts/2767553795/" rel="prev" title="縱斷面插旗文字重疊問題">
+                  <i class="fa fa-angle-left"></i> 縱斷面插旗文字重疊問題
+                </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2024</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Hank Lin</span>
+  </div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="訪客總數">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="總瀏覽次數">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 強力驅動
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="back-to-top" role="button" aria-label="回到頂端">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/next-boot.js"></script>
+
+  
+  <script class="next-config" data-name="pdf" type="application/json">{"object_url":{"url":"https://cdnjs.cloudflare.com/ajax/libs/pdfobject/2.2.12/pdfobject.min.js","integrity":"sha256-g2xji1rlE3KsGVClvuxTbcR0Kn2+wtQADSff2Tbb4zA="},"url":"/lib/pdf/web/viewer"}</script>
+  <script src="/js/third-party/tags/pdf.js"></script>
+
+
+
+
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">false</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"ams","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+
+</body>
+</html>
