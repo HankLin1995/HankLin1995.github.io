@@ -4,7 +4,7 @@
   <url>
     <loc>https://www.hanksvba.com/posts/3212778286/</loc>
     
-    <lastmod>2024-05-14</lastmod>
+    <lastmod>2024-05-15</lastmod>
     
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
@@ -128,20 +128,6 @@
 
   
   <url>
-    <loc>https://www.hanksvba.com/tags/Excel-VBA/</loc>
-    <lastmod>2024-05-15</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://www.hanksvba.com/tags/Blog/</loc>
-    <lastmod>2024-05-15</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
     <loc>https://www.hanksvba.com/tags/AutoCAD-VBA/</loc>
     <lastmod>2024-05-15</lastmod>
     <changefreq>weekly</changefreq>
@@ -163,14 +149,14 @@
   </url>
   
   <url>
-    <loc>https://www.hanksvba.com/tags/python/</loc>
+    <loc>https://www.hanksvba.com/tags/Blog/</loc>
     <lastmod>2024-05-15</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
-    <loc>https://www.hanksvba.com/tags/ExcelVBA/</loc>
+    <loc>https://www.hanksvba.com/tags/Excel-VBA/</loc>
     <lastmod>2024-05-15</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -191,6 +177,20 @@
   </url>
   
   <url>
+    <loc>https://www.hanksvba.com/tags/python/</loc>
+    <lastmod>2024-05-15</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://www.hanksvba.com/tags/ExcelVBA/</loc>
+    <lastmod>2024-05-15</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
     <loc>https://www.hanksvba.com/tags/%E7%9B%A3%E9%80%A0%E5%A0%B1%E8%A1%A8/</loc>
     <lastmod>2024-05-15</lastmod>
     <changefreq>weekly</changefreq>
@@ -200,14 +200,14 @@
 
   
   <url>
-    <loc>https://www.hanksvba.com/categories/%E5%B0%88%E6%A1%88%E9%96%8B%E7%99%BC/</loc>
+    <loc>https://www.hanksvba.com/categories/%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5/</loc>
     <lastmod>2024-05-15</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
-    <loc>https://www.hanksvba.com/categories/%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5/</loc>
+    <loc>https://www.hanksvba.com/categories/%E5%B0%88%E6%A1%88%E9%96%8B%E7%99%BC/</loc>
     <lastmod>2024-05-15</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
