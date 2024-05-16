@@ -18,19 +18,19 @@
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"www.hanksvba.com","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.19.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":"mac"},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":false,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜尋...","empty":"我們無法找到任何有關 ${query} 的搜索結果","hits_time":"${hits} 找到 ${time} 個結果","hits":"找到 ${hits} 個結果"}}</script><script src="/js/config.js"></script>
 
-    <meta name="description" content="前言 CAD版本有非常多種，我目前有接觸過的就有AutoCAD、ZWCAD以及現在正在使用中的ProgeCAD。 在使用VBA進行二次開發的過程，需要考量引用物件模型之間的差異，就目前開發經驗中，AutoCAD與ZWCAD可以透過修改引用名稱就可以有很好的轉換體驗，但是ProgeCAD的基底物件有比較不同的設計，故本篇要來解釋從AutoCAD的VBAcode如何透過我所撰寫的物件轉換函數進行相">
+    <meta name="description" content="🙌前言 CAD版本有非常多種，我目前有接觸過的就有AutoCAD、ZWCAD以及現在正在使用中的ProgeCAD。 在使用VBA進行二次開發的過程，需要考量引用物件模型之間的差異，就目前開發經驗中，AutoCAD與ZWCAD可以透過修改引用名稱就可以有很好的轉換體驗，但是ProgeCAD的基底物件有比較不同的設計，故本篇要來解釋從AutoCAD的VBAcode如何透過我所撰寫的物件轉換函數進">
 <meta property="og:type" content="article">
 <meta property="og:title" content="不同版本間的CAD開發">
 <meta property="og:url" content="https://www.hanksvba.com/posts/2144300187/">
 <meta property="og:site_name" content="Hank&#39;s Blog">
-<meta property="og:description" content="前言 CAD版本有非常多種，我目前有接觸過的就有AutoCAD、ZWCAD以及現在正在使用中的ProgeCAD。 在使用VBA進行二次開發的過程，需要考量引用物件模型之間的差異，就目前開發經驗中，AutoCAD與ZWCAD可以透過修改引用名稱就可以有很好的轉換體驗，但是ProgeCAD的基底物件有比較不同的設計，故本篇要來解釋從AutoCAD的VBAcode如何透過我所撰寫的物件轉換函數進行相">
+<meta property="og:description" content="🙌前言 CAD版本有非常多種，我目前有接觸過的就有AutoCAD、ZWCAD以及現在正在使用中的ProgeCAD。 在使用VBA進行二次開發的過程，需要考量引用物件模型之間的差異，就目前開發經驗中，AutoCAD與ZWCAD可以透過修改引用名稱就可以有很好的轉換體驗，但是ProgeCAD的基底物件有比較不同的設計，故本篇要來解釋從AutoCAD的VBAcode如何透過我所撰寫的物件轉換函數進">
 <meta property="og:locale" content="zh_TW">
 <meta property="article:published_time" content="2024-05-12T04:26:09.000Z">
 <meta property="article:modified_time" content="2024-05-12T04:26:09.000Z">
 <meta property="article:author" content="Hank Lin">
+<meta property="article:tag" content="Streamlit">
 <meta property="article:tag" content="AutoCAD VBA">
 <meta property="article:tag" content="ProgeCAD VBA">
-<meta property="article:tag" content="Streamlit">
 <meta name="twitter:card" content="summary">
 
 
@@ -114,7 +114,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%89%8D%E8%A8%80"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%89%88%E6%9C%AC%E6%B2%BF%E9%9D%A9"><span class="nav-number">2.</span> <span class="nav-text">🎯版本沿革</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#autocad"><span class="nav-number">2.1.</span> <span class="nav-text">AutoCAD</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#zwcad"><span class="nav-number">2.2.</span> <span class="nav-text">ZWCAD</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#progecad"><span class="nav-number">2.3.</span> <span class="nav-text">ProgeCAD</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%96%8B%E7%99%BC%E5%B7%AE%E7%95%B0"><span class="nav-number">3.</span> <span class="nav-text">📌開發差異</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%AC%E5%85%B1%E8%AE%8A%E6%95%B8"><span class="nav-number">3.1.</span> <span class="nav-text">公共變數</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%80%A3%E6%8E%A5%E6%87%89%E7%94%A8%E7%A8%8B%E5%BC%8F"><span class="nav-number">3.2.</span> <span class="nav-text">連接應用程式</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%89%A9%E4%BB%B6%E7%9B%B8%E5%AE%B9%E8%BD%89%E6%8F%9B%E5%87%BD%E6%95%B8"><span class="nav-number">4.</span> <span class="nav-text">🌟物件相容轉換函數</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9F%BA%E6%9C%AC%E7%89%A9%E4%BB%B6"><span class="nav-number">4.1.</span> <span class="nav-text">基本物件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%80%9A%E7%94%A8%E9%A1%9E%E5%88%A5util"><span class="nav-number">4.2.</span> <span class="nav-text">通用類別(Util)</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%96%8B%E7%99%BC%E9%81%8E%E7%A8%8B%E4%B8%AD%E7%9A%84%E5%B0%8F%E5%95%8F%E9%A1%8C"><span class="nav-number">5.</span> <span class="nav-text">🐞開發過程中的小問題</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BB%BA%E8%AD%B0%E9%96%8B%E7%99%BC%E6%96%B9%E5%90%91"><span class="nav-number">6.</span> <span class="nav-text">👉建議開發方向</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#python%E8%BC%B8%E5%87%BAdxf%E9%A1%8C%E5%A4%96%E8%A9%B1"><span class="nav-number">7.</span> <span class="nav-text">💡Python輸出DXF(題外話)</span></a></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%89%8D%E8%A8%80"><span class="nav-number">1.</span> <span class="nav-text">🙌前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%89%88%E6%9C%AC%E6%B2%BF%E9%9D%A9"><span class="nav-number">2.</span> <span class="nav-text">🎯版本沿革</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#autocad"><span class="nav-number">2.1.</span> <span class="nav-text">AutoCAD</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#zwcad"><span class="nav-number">2.2.</span> <span class="nav-text">ZWCAD</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#progecad"><span class="nav-number">2.3.</span> <span class="nav-text">ProgeCAD</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%96%8B%E7%99%BC%E5%B7%AE%E7%95%B0"><span class="nav-number">3.</span> <span class="nav-text">📌開發差異</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%AC%E5%85%B1%E8%AE%8A%E6%95%B8"><span class="nav-number">3.1.</span> <span class="nav-text">公共變數</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%80%A3%E6%8E%A5%E6%87%89%E7%94%A8%E7%A8%8B%E5%BC%8F"><span class="nav-number">3.2.</span> <span class="nav-text">連接應用程式</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%89%A9%E4%BB%B6%E7%9B%B8%E5%AE%B9%E8%BD%89%E6%8F%9B%E5%87%BD%E6%95%B8"><span class="nav-number">4.</span> <span class="nav-text">🌟物件相容轉換函數</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9F%BA%E6%9C%AC%E7%89%A9%E4%BB%B6"><span class="nav-number">4.1.</span> <span class="nav-text">基本物件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%80%9A%E7%94%A8%E9%A1%9E%E5%88%A5util"><span class="nav-number">4.2.</span> <span class="nav-text">通用類別(Util)</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%96%8B%E7%99%BC%E9%81%8E%E7%A8%8B%E4%B8%AD%E7%9A%84%E5%B0%8F%E5%95%8F%E9%A1%8C"><span class="nav-number">5.</span> <span class="nav-text">🐞開發過程中的小問題</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BB%BA%E8%AD%B0%E9%96%8B%E7%99%BC%E6%96%B9%E5%90%91"><span class="nav-number">6.</span> <span class="nav-text">👉建議開發方向</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#python%E8%BC%B8%E5%87%BAdxf%E9%A1%8C%E5%A4%96%E8%A9%B1"><span class="nav-number">7.</span> <span class="nav-text">💡Python輸出DXF(題外話)</span></a></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -129,7 +129,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">9</span>
+          <span class="site-state-item-count">10</span>
           <span class="site-state-item-name">文章</span>
         </a>
       </div>
@@ -245,7 +245,7 @@
     
     
     
-    <div class="post-body" itemprop="articleBody"><h2 id="前言">前言</h2>
+    <div class="post-body" itemprop="articleBody"><h2 id="前言">🙌前言</h2>
 <p>CAD版本有非常多種，我目前有接觸過的就有AutoCAD、ZWCAD以及現在正在使用中的ProgeCAD。</p>
 <p>在使用VBA進行二次開發的過程，需要考量<strong>引用物件模型</strong>之間的差異，就目前開發經驗中，AutoCAD與ZWCAD可以透過修改引用名稱就可以有很好的轉換體驗，但是ProgeCAD的<strong>基底物件</strong>有比較不同的設計，故本篇要來解釋從AutoCAD的VBAcode如何透過我所撰寫的物件轉換函數進行相容，讓程式碼在ProgeCAD也可以順利動起來。</p>
 <p><a
@@ -328,9 +328,9 @@ target="_blank" rel="noopener" href="https://hankvba.blogspot.com/2021/07/cadlib
 </div>
 
           <div class="post-tags">
+              <a href="/tags/Streamlit/" rel="tag"><i class="fa fa-tag"></i> Streamlit</a>
               <a href="/tags/AutoCAD-VBA/" rel="tag"><i class="fa fa-tag"></i> AutoCAD VBA</a>
               <a href="/tags/ProgeCAD-VBA/" rel="tag"><i class="fa fa-tag"></i> ProgeCAD VBA</a>
-              <a href="/tags/Streamlit/" rel="tag"><i class="fa fa-tag"></i> Streamlit</a>
           </div>
 
         

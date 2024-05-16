@@ -18,16 +18,16 @@
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"www.hanksvba.com","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.19.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":"mac"},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":false,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜尋...","empty":"我們無法找到任何有關 ${query} 的搜索結果","hits_time":"${hits} 找到 ${time} 個結果","hits":"找到 ${hits} 個結果"}}</script><script src="/js/config.js"></script>
 
-    <meta name="description" content="前言 工程價格資料庫作業辦法有明定，新台幣1000萬元以上之公共工程於決標日起30日內必須將資料傳輸到主管機關，資料內容:  得標廠商之契約單價 經機關核定之預算單價 其他經主管機關指定者  包含詳細價目表、單價分析表及資源統計表。 最容易達成的方式便是透過公共工程經費電腦估價系統(PCCES)進行預算書與契約編制。 因為大家都使用同一套系統，那麼輸出格式就能夠通用，後續要將契約">
+    <meta name="description" content="🙌前言 工程價格資料庫作業辦法有明定，新台幣1000萬元以上之公共工程於決標日起30日內必須將資料傳輸到主管機關，資料內容:  得標廠商之契約單價 經機關核定之預算單價 其他經主管機關指定者  包含詳細價目表、單價分析表及資源統計表。 最容易達成的方式便是透過公共工程經費電腦估價系統(PCCES)進行預算書與契約編制。 因為大家都使用同一套系統，那麼輸出格式就能夠通用，後續要將">
 <meta property="og:type" content="article">
 <meta property="og:title" content="監造報表-數量計算-引用來源">
 <meta property="og:url" content="https://www.hanksvba.com/posts/3212778286/">
 <meta property="og:site_name" content="Hank&#39;s Blog">
-<meta property="og:description" content="前言 工程價格資料庫作業辦法有明定，新台幣1000萬元以上之公共工程於決標日起30日內必須將資料傳輸到主管機關，資料內容:  得標廠商之契約單價 經機關核定之預算單價 其他經主管機關指定者  包含詳細價目表、單價分析表及資源統計表。 最容易達成的方式便是透過公共工程經費電腦估價系統(PCCES)進行預算書與契約編制。 因為大家都使用同一套系統，那麼輸出格式就能夠通用，後續要將契約">
+<meta property="og:description" content="🙌前言 工程價格資料庫作業辦法有明定，新台幣1000萬元以上之公共工程於決標日起30日內必須將資料傳輸到主管機關，資料內容:  得標廠商之契約單價 經機關核定之預算單價 其他經主管機關指定者  包含詳細價目表、單價分析表及資源統計表。 最容易達成的方式便是透過公共工程經費電腦估價系統(PCCES)進行預算書與契約編制。 因為大家都使用同一套系統，那麼輸出格式就能夠通用，後續要將">
 <meta property="og:locale" content="zh_TW">
 <meta property="og:image" content="https://www.hanksvba.com/posts/3212778286/upload_33eb45717c5bc11304ad3865fbf5d446.png">
 <meta property="article:published_time" content="2024-05-14T07:33:06.446Z">
-<meta property="article:modified_time" content="2024-05-15T01:57:20.297Z">
+<meta property="article:modified_time" content="2024-05-16T03:04:01.245Z">
 <meta property="article:author" content="Hank Lin">
 <meta property="article:tag" content="Excel VBA">
 <meta property="article:tag" content="監造報表">
@@ -115,7 +115,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%89%8D%E8%A8%80"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%A0%90%E7%AE%97%E6%9B%B8%E7%AF%84%E4%BE%8B"><span class="nav-number">2.</span> <span class="nav-text">📔預算書範例</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%AC%E5%85%B1%E5%B7%A5%E7%A8%8B"><span class="nav-number">2.1.</span> <span class="nav-text">公共工程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%9D%9E%E5%85%AC%E5%85%B1%E5%B7%A5%E7%A8%8B"><span class="nav-number">2.2.</span> <span class="nav-text">非公共工程</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A5%91%E7%B4%84%E9%A0%85%E7%9B%AE"><span class="nav-number">3.</span> <span class="nav-text">契約項目</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8C%AF%E5%85%A5%E5%85%A7%E5%AE%B9"><span class="nav-number">4.</span> <span class="nav-text">匯入內容</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#xml"><span class="nav-number">4.1.</span> <span class="nav-text">XML</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#xls"><span class="nav-number">4.2.</span> <span class="nav-text">XLS</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#pcces%E5%A5%91%E7%B4%84%E9%A0%85%E7%9B%AE%E5%BE%8C%E8%99%95%E7%90%86"><span class="nav-number">4.3.</span> <span class="nav-text">PCCES契約項目後處理</span></a></li></ol></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%89%8D%E8%A8%80"><span class="nav-number">1.</span> <span class="nav-text">🙌前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%A0%90%E7%AE%97%E6%9B%B8%E7%AF%84%E4%BE%8B"><span class="nav-number">2.</span> <span class="nav-text">📔預算書範例</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%AC%E5%85%B1%E5%B7%A5%E7%A8%8B"><span class="nav-number">2.1.</span> <span class="nav-text">公共工程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%9D%9E%E5%85%AC%E5%85%B1%E5%B7%A5%E7%A8%8B"><span class="nav-number">2.2.</span> <span class="nav-text">非公共工程</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A5%91%E7%B4%84%E9%A0%85%E7%9B%AE"><span class="nav-number">3.</span> <span class="nav-text">契約項目</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8C%AF%E5%85%A5%E5%85%A7%E5%AE%B9"><span class="nav-number">4.</span> <span class="nav-text">匯入內容</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#xml"><span class="nav-number">4.1.</span> <span class="nav-text">XML</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#xls"><span class="nav-number">4.2.</span> <span class="nav-text">XLS</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#pcces%E5%A5%91%E7%B4%84%E9%A0%85%E7%9B%AE%E5%BE%8C%E8%99%95%E7%90%86"><span class="nav-number">4.3.</span> <span class="nav-text">PCCES契約項目後處理</span></a></li></ol></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -130,7 +130,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">9</span>
+          <span class="site-state-item-count">10</span>
           <span class="site-state-item-name">文章</span>
         </a>
       </div>
@@ -221,7 +221,7 @@
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">更新於</span>
-      <time title="修改時間：2024-05-15 09:57:20" itemprop="dateModified" datetime="2024-05-15T09:57:20+08:00">2024-05-15</time>
+      <time title="修改時間：2024-05-16 11:04:01" itemprop="dateModified" datetime="2024-05-16T11:04:01+08:00">2024-05-16</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -249,7 +249,7 @@
     
     
     
-    <div class="post-body" itemprop="articleBody"><h2 id="前言">前言</h2>
+    <div class="post-body" itemprop="articleBody"><h2 id="前言">🙌前言</h2>
 <p>工程價格資料庫作業辦法有明定，新台幣1000萬元以上之<strong>公共工程</strong>於決標日起30日內必須將資料傳輸到主管機關，資料內容:</p>
 <ol type="1">
 <li>得標廠商之契約單價</li>
@@ -350,6 +350,9 @@ target="_blank" rel="noopener" href="https://hankvba.blogspot.com/2024/02/excel-
                 </a>
             </div>
             <div class="post-nav-item">
+                <a href="/posts/2699779571/" rel="next" title="監造報表-數量計算-數量填寫">
+                  監造報表-數量計算-數量填寫 <i class="fa fa-angle-right"></i>
+                </a>
             </div>
           </div>
     </footer>

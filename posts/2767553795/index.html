@@ -18,12 +18,12 @@
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"www.hanksvba.com","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.19.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":"mac"},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":false,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜尋...","empty":"我們無法找到任何有關 ${query} 的搜索結果","hits_time":"${hits} 找到 ${time} 個結果","hits":"找到 ${hits} 個結果"}}</script><script src="/js/config.js"></script>
 
-    <meta name="description" content="前言 👉縱斷面發展來源 AutoCAD VBA 縱斷面繪製自動化 🐞開發過程中的小問題 縱斷面繪製時會針對需要文字說明的樁號進行插旗繪製，可能會造成插旗文字出現重疊的原因有兩個  插旗說明樁號距離太近(0+200、0+205) 繪製X軸比例太小(1:1000 vs 1:5000)  繪製過程會考量圖紙輸出的舒適度，最小字高通常會以3.4.5為原則，文字說明會固定以30度呈現">
+    <meta name="description" content="🙌前言 👉縱斷面發展來源 AutoCAD VBA 縱斷面繪製自動化 🐞開發過程中的小問題 縱斷面繪製時會針對需要文字說明的樁號進行插旗繪製，可能會造成插旗文字出現重疊的原因有兩個  插旗說明樁號距離太近(0+200、0+205) 繪製X軸比例太小(1:1000 vs 1:5000)  繪製過程會考量圖紙輸出的舒適度，最小字高通常會以3.4.5為原則，文字說明會固定以30度">
 <meta property="og:type" content="article">
 <meta property="og:title" content="縱斷面插旗文字重疊問題">
 <meta property="og:url" content="https://www.hanksvba.com/posts/2767553795/">
 <meta property="og:site_name" content="Hank&#39;s Blog">
-<meta property="og:description" content="前言 👉縱斷面發展來源 AutoCAD VBA 縱斷面繪製自動化 🐞開發過程中的小問題 縱斷面繪製時會針對需要文字說明的樁號進行插旗繪製，可能會造成插旗文字出現重疊的原因有兩個  插旗說明樁號距離太近(0+200、0+205) 繪製X軸比例太小(1:1000 vs 1:5000)  繪製過程會考量圖紙輸出的舒適度，最小字高通常會以3.4.5為原則，文字說明會固定以30度呈現">
+<meta property="og:description" content="🙌前言 👉縱斷面發展來源 AutoCAD VBA 縱斷面繪製自動化 🐞開發過程中的小問題 縱斷面繪製時會針對需要文字說明的樁號進行插旗繪製，可能會造成插旗文字出現重疊的原因有兩個  插旗說明樁號距離太近(0+200、0+205) 繪製X軸比例太小(1:1000 vs 1:5000)  繪製過程會考量圖紙輸出的舒適度，最小字高通常會以3.4.5為原則，文字說明會固定以30度">
 <meta property="og:locale" content="zh_TW">
 <meta property="og:image" content="https://www.hanksvba.com/posts/2767553795/image.png">
 <meta property="og:image" content="https://www.hanksvba.com/posts/2767553795/SAMPLE.JPG">
@@ -117,7 +117,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%89%8D%E8%A8%80"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%B8%B1%E6%96%B7%E9%9D%A2%E7%99%BC%E5%B1%95%E4%BE%86%E6%BA%90"><span class="nav-number">1.1.</span> <span class="nav-text">👉縱斷面發展來源</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%96%8B%E7%99%BC%E9%81%8E%E7%A8%8B%E4%B8%AD%E7%9A%84%E5%B0%8F%E5%95%8F%E9%A1%8C"><span class="nav-number">1.2.</span> <span class="nav-text">🐞開發過程中的小問題</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AF%84%E4%BE%8B%E8%AA%AA%E6%98%8E"><span class="nav-number">2.</span> <span class="nav-text">📌範例說明</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B5%81%E7%A8%8B%E8%A7%A3%E8%AA%AA"><span class="nav-number">3.</span> <span class="nav-text">🔷流程解說</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B9%BE%E4%BD%95%E9%97%9C%E4%BF%82"><span class="nav-number">4.</span> <span class="nav-text">🌟幾何關係</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%A8%8B%E5%BC%8F%E7%A2%BC"><span class="nav-number">5.</span> <span class="nav-text">⚡程式碼</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A8%A1%E7%B5%84module"><span class="nav-number">5.1.</span> <span class="nav-text">模組(module)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%89%A9%E4%BB%B6%E9%A1%9E%E5%88%A5%E6%A8%A1%E7%B5%84clsacad"><span class="nav-number">5.2.</span> <span class="nav-text">物件類別模組(clsACAD)</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BE%8C%E7%BA%8C%E5%88%A9%E7%94%A8"><span class="nav-number">6.</span> <span class="nav-text">👉後續利用</span></a></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%89%8D%E8%A8%80"><span class="nav-number">1.</span> <span class="nav-text">🙌前言</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%B8%B1%E6%96%B7%E9%9D%A2%E7%99%BC%E5%B1%95%E4%BE%86%E6%BA%90"><span class="nav-number">1.1.</span> <span class="nav-text">👉縱斷面發展來源</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%96%8B%E7%99%BC%E9%81%8E%E7%A8%8B%E4%B8%AD%E7%9A%84%E5%B0%8F%E5%95%8F%E9%A1%8C"><span class="nav-number">1.2.</span> <span class="nav-text">🐞開發過程中的小問題</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AF%84%E4%BE%8B%E8%AA%AA%E6%98%8E"><span class="nav-number">2.</span> <span class="nav-text">📌範例說明</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B5%81%E7%A8%8B%E8%A7%A3%E8%AA%AA"><span class="nav-number">3.</span> <span class="nav-text">🔷流程解說</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B9%BE%E4%BD%95%E9%97%9C%E4%BF%82"><span class="nav-number">4.</span> <span class="nav-text">🌟幾何關係</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%A8%8B%E5%BC%8F%E7%A2%BC"><span class="nav-number">5.</span> <span class="nav-text">⚡程式碼</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A8%A1%E7%B5%84module"><span class="nav-number">5.1.</span> <span class="nav-text">模組(module)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%89%A9%E4%BB%B6%E9%A1%9E%E5%88%A5%E6%A8%A1%E7%B5%84clsacad"><span class="nav-number">5.2.</span> <span class="nav-text">物件類別模組(clsACAD)</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BE%8C%E7%BA%8C%E5%88%A9%E7%94%A8"><span class="nav-number">6.</span> <span class="nav-text">👉後續利用</span></a></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -132,7 +132,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">9</span>
+          <span class="site-state-item-count">10</span>
           <span class="site-state-item-name">文章</span>
         </a>
       </div>
@@ -244,7 +244,7 @@
     
     
     
-    <div class="post-body" itemprop="articleBody"><h2 id="前言">前言</h2>
+    <div class="post-body" itemprop="articleBody"><h2 id="前言">🙌前言</h2>
 <h3 id="縱斷面發展來源">👉縱斷面發展來源</h3>
 <p><a
 target="_blank" rel="noopener" href="https://hankvba.blogspot.com/2018/03/autocad-vba.html">AutoCAD VBA
