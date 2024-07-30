@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.2.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha256-wiz7ZSCn/btzhjKDQBms9Hx4sSeUYsDrTLg7roPstac=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"www.hanksvba.com","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.19.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":"mac"},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":false,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜尋...","empty":"我們無法找到任何有關 ${query} 的搜索結果","hits_time":"${hits} 找到 ${time} 個結果","hits":"找到 ${hits} 個結果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="前言 工程特性如為帶狀工程，比如:水溝、道路等等，通常會以橫斷面法作為土方計算的數量依據，此指土方計算不外乎為:挖方、填方、回填方、CLSM之類。 在繪製土方基本資料時，面積的框選便會是決定數量很重要的部分，實務上的土方計算流程為: 圖層設定:  原地面線 結構線 開挖線 填方線 開挖面積 挖方面積   繪製挖方面積時，將原地面線與開挖線隔離顯示，透過BO或HATCH生成">
+<meta property="og:type" content="article">
+<meta property="og:title" content="VBA橫斷面法面積批次處理">
+<meta property="og:url" content="https://www.hanksvba.com/posts/2533511128/">
+<meta property="og:site_name" content="Hank&#39;s Blog">
+<meta property="og:description" content="前言 工程特性如為帶狀工程，比如:水溝、道路等等，通常會以橫斷面法作為土方計算的數量依據，此指土方計算不外乎為:挖方、填方、回填方、CLSM之類。 在繪製土方基本資料時，面積的框選便會是決定數量很重要的部分，實務上的土方計算流程為: 圖層設定:  原地面線 結構線 開挖線 填方線 開挖面積 挖方面積   繪製挖方面積時，將原地面線與開挖線隔離顯示，透過BO或HATCH生成">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:image" content="https://www.hanksvba.com/posts/2533511128/upload_0667e12aec332c0df8989682a27406ac.png">
+<meta property="og:image" content="https://www.hanksvba.com/posts/2533511128/upload_600f965523bfbad7cbb664384cbd23e1.png">
+<meta property="og:image" content="https://www.hanksvba.com/posts/2533511128/upload_85c9fc6b507cc57c8285967bf25cd55b.png">
+<meta property="article:published_time" content="2024-07-04T14:01:48.000Z">
+<meta property="article:modified_time" content="2024-07-04T14:01:48.000Z">
+<meta property="article:author" content="Hank Lin">
+<meta property="article:tag" content="AutoCAD VBA">
+<meta property="article:tag" content="Excel VBA">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://www.hanksvba.com/posts/2533511128/upload_0667e12aec332c0df8989682a27406ac.png">
+
+
+<link rel="canonical" href="https://www.hanksvba.com/posts/2533511128/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-TW","comments":true,"permalink":"https://www.hanksvba.com/posts/2533511128/","path":"posts/2533511128/","title":"VBA橫斷面法面積批次處理"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>VBA橫斷面法面積批次處理 | Hank's Blog</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切換導航欄" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Hank's Blog</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">工程人的設計監造VBA工具交流區</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜尋" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-首頁"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首頁</a></li><li class="menu-item menu-item-關於"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>關於</a></li><li class="menu-item menu-item-標籤"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>標籤</a></li><li class="menu-item menu-item-分類"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分類</a></li><li class="menu-item menu-item-文章"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>文章</a></li>
+  </ul>
+</nav>
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目錄
+        </li>
+        <li class="sidebar-nav-overview">
+          本站概要
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%89%8D%E8%A8%80"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#vba%E6%89%B9%E6%AC%A1%E8%99%95%E7%90%86%E6%B5%81%E7%A8%8B"><span class="nav-number">2.</span> <span class="nav-text">VBA批次處理流程</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%BB%E8%A6%81%E4%BB%8B%E9%9D%A2"><span class="nav-number">2.1.</span> <span class="nav-text">主要介面</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BB%BA%E7%AB%8B%E6%A8%81%E8%99%9F%E5%A4%96%E6%A1%86"><span class="nav-number">2.2.</span> <span class="nav-text">建立樁號外框</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%BB%9E%E9%81%B8%E9%9D%A2%E7%A9%8D"><span class="nav-number">2.3.</span> <span class="nav-text">點選面積</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%A4%E6%96%B7%E9%9D%A2%E7%A9%8D%E6%AD%B8%E5%B1%AC"><span class="nav-number">2.4.</span> <span class="nav-text">判斷面積歸屬</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%95%B8%E6%93%9A%E5%9B%9E%E6%AD%B8%E5%9C%96%E9%9D%A2"><span class="nav-number">2.5.</span> <span class="nav-text">數據回歸圖面</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%94%9F%E6%88%90%E5%A0%B1%E5%91%8A"><span class="nav-number">2.6.</span> <span class="nav-text">生成報告</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9B%B4%E5%A4%9A%E7%B4%B0%E7%AF%80"><span class="nav-number">3.</span> <span class="nav-text">更多細節</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Hank Lin"
+      src="/images/avatar_custom.png">
+  <p class="site-author-name" itemprop="name">Hank Lin</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">20</span>
+          <span class="site-state-item-name">文章</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">4</span>
+        <span class="site-state-item-name">分類</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">13</span>
+        <span class="site-state-item-name">標籤</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="mailto:apple84026113@gmail.com" title="E-Mail → mailto:apple84026113@gmail.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.youtube.com/channel/UCWmy5KaK7Leg6lLUlWBPaSw" title="YouTube → https:&#x2F;&#x2F;www.youtube.com&#x2F;channel&#x2F;UCWmy5KaK7Leg6lLUlWBPaSw" rel="noopener me" target="_blank"><i class="fab fa-youtube fa-fw"></i>YouTube</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/images/LINE_QRCODE.png" title="LINE → &#x2F;images&#x2F;LINE_QRCODE.png" rel="noopener me"><i class="fab fa-line fa-fw"></i>LINE</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://reurl.cc/RyvvaZ" title="LINE社群 → https:&#x2F;&#x2F;reurl.cc&#x2F;RyvvaZ" rel="noopener me" target="_blank"><i class="fas fa-comment fa-fw"></i>LINE社群</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://hankvba.blogspot.com/" title="舊網站 → https:&#x2F;&#x2F;hankvba.blogspot.com&#x2F;" rel="noopener me" target="_blank"><i class="fab fa-blogger fa-fw"></i>舊網站</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://portaly.cc/hanksvba/support/" title="小額贊助 → https:&#x2F;&#x2F;portaly.cc&#x2F;hanksvba&#x2F;support&#x2F;" rel="noopener me" target="_blank"><i class="fas fa-handshake fa-fw"></i>小額贊助</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-TW">
+    <link itemprop="mainEntityOfPage" href="https://www.hanksvba.com/posts/2533511128/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar_custom.png">
+      <meta itemprop="name" content="Hank Lin">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hank's Blog">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="VBA橫斷面法面積批次處理 | Hank's Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          VBA橫斷面法面積批次處理
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">發表於</span>
+
+      <time title="創建時間：2024-07-04 22:01:48" itemprop="dateCreated datePublished" datetime="2024-07-04T22:01:48+08:00">2024-07-04</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分類於</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E5%B0%88%E6%A1%88%E9%96%8B%E7%99%BC/" itemprop="url" rel="index"><span itemprop="name">專案開發</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="閱讀次數" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">閱讀次數：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h2 id="前言">前言</h2>
+<p>工程特性如為帶狀工程，比如:水溝、道路等等，通常會以橫斷面法作為土方計算的數量依據，此指土方計算不外乎為:挖方、填方、回填方、CLSM之類。</p>
+<p>在繪製土方基本資料時，面積的框選便會是決定數量很重要的部分，實務上的土方計算流程為:</p>
+<p>圖層設定:</p>
+<ul>
+<li>原地面線</li>
+<li>結構線</li>
+<li>開挖線</li>
+<li>填方線</li>
+<li>開挖面積</li>
+<li>挖方面積</li>
+</ul>
+<ol type="1">
+<li>繪製挖方面積時，將原地面線與開挖線隔離顯示，透過BO或HATCH生成面積</li>
+<li>繪製填方面積時，將回填線、結構線、開挖線隔離顯示，透過BO或HATCH生成面積</li>
+</ol>
+<blockquote>
+<p>封閉聚合線</p>
+</blockquote>
+<p>CAD內建指令'BO'會出現一張介面，可以藉由點選內部點生成封閉聚合線，指令'-BO'則可以略過介面的程序直接點選，此時封閉聚合線會有'面積'屬性。</p>
+<blockquote>
+<p>填充線</p>
+</blockquote>
+<p>CAD內建指令'HATCH'可以點選內部點生成填充線，此時填充線會有'面積'屬性，須注意之前測試過<strong>HATCH可能會有些許的誤差</strong>，這個也不清楚原因為何...</p>
+<span id="more"></span>
+<h2 id="vba批次處理流程">VBA批次處理流程</h2>
+<p>正常的作業流程會將每一個樁號底下的面積逐筆紀錄作加總，算完的數據會修改到橫斷面上所記載的挖方面積數字、填方面積數字，後續再將這些數字填報到土方計算表，稍有恍神則容易出錯，也因此若這些內容都可以用CAD中對應圖元的面積屬性進行處理，並且將資料傳輸到土方計算表及回歸到圖面修訂記載數字，這會讓整個土方計算作業簡單很多。</p>
+<blockquote>
+<p>目標為希望能夠框選一次範圍，就將所有的面積計算完畢並且放置於對應的樁號，省下作業時間!!!</p>
+</blockquote>
+<p>要將圖面進行批次處理時，會需要進行下列步驟搭配VBA執行便能順利完成</p>
+<h3 id="主要介面">主要介面</h3>
+<figure>
+<img src="upload_0667e12aec332c0df8989682a27406ac.png"
+alt="橫斷面圖範例" />
+<figcaption aria-hidden="true">橫斷面圖範例</figcaption>
+</figure>
+<figure>
+<img src="upload_600f965523bfbad7cbb664384cbd23e1.png"
+alt="資料庫介面" />
+<figcaption aria-hidden="true">資料庫介面</figcaption>
+</figure>
+<h3 id="建立樁號外框">建立樁號外框</h3>
+<p>每一個橫斷面圖都會有它所代表的樁號名稱及橫斷面圖範圍(此處是指BORDER欄位)，將外框完成之後做適當的放大縮小，目標是讓所有與該樁號相關的土方面積'形心'都能被完整包覆在框框裡面，後續要判斷面積歸屬時可以順利執行。</p>
+<h3 id="點選面積">點選面積</h3>
+<p>面積部分有兩種實作方式</p>
+<ol type="1">
+<li><p>如前言所述用不同的圖層來預先定義面積歸屬項目(挖方、填方)並且透過BO或HATCH來點擊'內部點'，但這樣還是免不了會有手動處理的部分。</p></li>
+<li><p>用幾何數學方法來處理，原地面線是f(x)，開挖線是g(x)，開挖線先將兩端用CAD中的IntersectWith做延伸後，在用f(x)與g(x)的幾何關係計算面積，相關VBA程式碼實作如下:</p></li>
+</ol>
+<figure class="highlight vb"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br><span class="line">201</span><br><span class="line">202</span><br><span class="line">203</span><br><span class="line">204</span><br><span class="line">205</span><br><span class="line">206</span><br><span class="line">207</span><br><span class="line">208</span><br><span class="line">209</span><br><span class="line">210</span><br><span class="line">211</span><br><span class="line">212</span><br><span class="line">213</span><br><span class="line">214</span><br><span class="line">215</span><br><span class="line">216</span><br><span class="line">217</span><br><span class="line">218</span><br><span class="line">219</span><br><span class="line">220</span><br><span class="line">221</span><br><span class="line">222</span><br><span class="line">223</span><br><span class="line">224</span><br><span class="line">225</span><br><span class="line">226</span><br><span class="line">227</span><br><span class="line">228</span><br><span class="line">229</span><br><span class="line">230</span><br><span class="line">231</span><br><span class="line">232</span><br><span class="line">233</span><br><span class="line">234</span><br><span class="line">235</span><br><span class="line">236</span><br><span class="line">237</span><br><span class="line">238</span><br><span class="line">239</span><br><span class="line">240</span><br><span class="line">241</span><br><span class="line">242</span><br><span class="line">243</span><br><span class="line">244</span><br><span class="line">245</span><br><span class="line">246</span><br><span class="line">247</span><br><span class="line">248</span><br><span class="line">249</span><br><span class="line">250</span><br><span class="line">251</span><br><span class="line">252</span><br><span class="line">253</span><br><span class="line">254</span><br><span class="line">255</span><br><span class="line">256</span><br><span class="line">257</span><br><span class="line">258</span><br><span class="line">259</span><br><span class="line">260</span><br><span class="line">261</span><br><span class="line">262</span><br><span class="line">263</span><br><span class="line">264</span><br><span class="line">265</span><br><span class="line">266</span><br><span class="line">267</span><br><span class="line">268</span><br><span class="line">269</span><br><span class="line">270</span><br><span class="line">271</span><br><span class="line">272</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&#x27;===Main Function===</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">Sub</span> plotDigLine(<span class="keyword">ByVal</span> EG <span class="keyword">As</span> <span class="type">Object</span>, <span class="keyword">ByVal</span> EGVertices)</span><br><span class="line"></span><br><span class="line"><span class="keyword">Dim</span> IsIntersect <span class="keyword">As</span> <span class="type">Boolean</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">Call</span> CAD.GetBoundingBox(buttomCONC, MinX, MinY, MaxX, MaxY)</span><br><span class="line"></span><br><span class="line"><span class="keyword">Dim</span> vertices(<span class="number">4</span> * <span class="number">2</span> - <span class="number">1</span>) <span class="keyword">As</span> <span class="type">Double</span></span><br><span class="line"></span><br><span class="line">vertices(<span class="number">0</span>) = MinX - <span class="number">300</span> - <span class="number">30</span></span><br><span class="line">vertices(<span class="number">1</span>) = MinY + <span class="number">100</span></span><br><span class="line">vertices(<span class="number">2</span>) = MinX - <span class="number">300</span></span><br><span class="line">vertices(<span class="number">3</span>) = MinY</span><br><span class="line">vertices(<span class="number">4</span>) = MaxX + <span class="number">300</span></span><br><span class="line">vertices(<span class="number">5</span>) = MinY</span><br><span class="line">vertices(<span class="number">6</span>) = MaxX + <span class="number">300</span> + <span class="number">30</span></span><br><span class="line">vertices(<span class="number">7</span>) = MinY + <span class="number">100</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">Set</span> DL = CAD.AddLWPolyLine(vertices)</span><br><span class="line"><span class="keyword">Call</span> CAD.setLayer(DL, <span class="string">&quot;CAL&quot;</span>)</span><br><span class="line"><span class="comment">&#x27;DL.Layer = &quot;CAL&quot; &#x27; &quot;橫斷面-挖方線&quot;</span></span><br><span class="line"></span><br><span class="line">retpt = myFunc.SortPTArray(CAD.IntersectWith(DL, EG, <span class="number">1</span>, IsIntersect))</span><br><span class="line"></span><br><span class="line"><span class="keyword">If</span> IsIntersect = <span class="literal">False</span> <span class="keyword">Then</span> <span class="keyword">Exit</span> <span class="keyword">Sub</span></span><br><span class="line"></span><br><span class="line">vertices(<span class="number">0</span>) = retpt(<span class="number">0</span>, <span class="number">0</span>)</span><br><span class="line">vertices(<span class="number">1</span>) = retpt(<span class="number">0</span>, <span class="number">1</span>)</span><br><span class="line"></span><br><span class="line">vertices(<span class="number">6</span>) = retpt(UBound(retpt, <span class="number">1</span>), <span class="number">0</span>) <span class="comment">&#x27;- 3 + 1)</span></span><br><span class="line">vertices(<span class="number">7</span>) = retpt(UBound(retpt, <span class="number">1</span>), <span class="number">1</span>) <span class="comment">&#x27;- 3 + 2)</span></span><br><span class="line"></span><br><span class="line"><span class="comment">&#x27;========以邊界為基準================</span></span><br><span class="line"></span><br><span class="line"><span class="comment">&#x27;vertices(0) = EGVertices(0)</span></span><br><span class="line"><span class="comment">&#x27;vertices(1) = EGVertices(1)</span></span><br><span class="line"><span class="comment">&#x27;vertices(6) = EGVertices(UBound(EGVertices) - 1)</span></span><br><span class="line"><span class="comment">&#x27;vertices(7) = EGVertices(UBound(EGVertices))</span></span><br><span class="line"></span><br><span class="line"><span class="comment">&#x27;====================================</span></span><br><span class="line"></span><br><span class="line">DL.Delete</span><br><span class="line"></span><br><span class="line"><span class="keyword">Set</span> DL2 = CAD.AddLWPolyLine(vertices)</span><br><span class="line"></span><br><span class="line">DL2.Layer = <span class="string">&quot;CAL&quot;</span> <span class="comment">&#x27;&quot;橫斷面-挖方線&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">&#x27;============匯入挖方面積==================</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">Dim</span> stoneObj <span class="keyword">As</span> <span class="built_in">New</span> clsStone</span><br><span class="line"></span><br><span class="line">DLArea = stoneObj.getDLArea(EG, DL2)</span><br><span class="line"></span><br><span class="line"><span class="keyword">With</span> Sheets(<span class="string">&quot;中心線&quot;</span>)</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">Set</span> rng = .Columns(<span class="number">1</span>).Find(loc)</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">If</span> <span class="built_in">Not</span> rng <span class="built_in">Is</span> <span class="literal">Nothing</span> <span class="keyword">Then</span></span><br><span class="line">    </span><br><span class="line">    r = rng.Row</span><br><span class="line">    .Cells(r, <span class="number">5</span>) = DLArea</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">End</span> <span class="keyword">If</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">End</span> <span class="keyword">With</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">End</span> <span class="keyword">Sub</span></span><br><span class="line"></span><br><span class="line"><span class="comment">&#x27;====clsCAD===</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">Function</span> IntersectWith(<span class="keyword">ByVal</span> PL1, <span class="keyword">ByVal</span> PL2, <span class="keyword">ByVal</span> mode <span class="keyword">As</span> <span class="type">Byte</span>, <span class="keyword">ByRef</span> IsIntersect <span class="keyword">As</span> <span class="type">Boolean</span>)</span><br><span class="line"></span><br><span class="line">IsIntersect = <span class="literal">False</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">Dim</span> coll <span class="keyword">As</span> <span class="built_in">New</span> Collection</span><br><span class="line"></span><br><span class="line"><span class="keyword">If</span> CADVer = <span class="string">&quot;ICAD&quot;</span> <span class="keyword">Then</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">On</span> <span class="keyword">Error</span> <span class="keyword">GoTo</span> ERRORHANDLE <span class="comment">&#x27;20210901 錯誤偵測</span></span><br><span class="line">    <span class="keyword">Set</span> retpt = PL1.IntersectWith(PL2, mode) <span class="comment">&#x27;acExtendThisEntity)</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">For</span> <span class="keyword">Each</span> it <span class="keyword">In</span> retpt</span><br><span class="line">    </span><br><span class="line">        coll.Add it.x</span><br><span class="line">        coll.Add it.y</span><br><span class="line">        coll.Add it.Z</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">Next</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">If</span> coll <span class="built_in">Is</span> <span class="literal">Nothing</span> <span class="keyword">Then</span></span><br><span class="line"><span class="symbol">ERRORHANDLE:</span></span><br><span class="line">        <span class="comment">&#x27;intersectWith = &quot;EMPTY&quot;</span></span><br><span class="line">    <span class="keyword">Else</span></span><br><span class="line">        IntersectWith = myFunc.tranColl2Array(coll)</span><br><span class="line">        IsIntersect = <span class="literal">True</span></span><br><span class="line">    <span class="keyword">End</span> <span class="keyword">If</span></span><br><span class="line">    </span><br><span class="line"><span class="keyword">Else</span></span><br><span class="line"></span><br><span class="line">    retpt = PL1.IntersectWith(PL2, mode) <span class="comment">&#x27;acExtendThisEntity)</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">If</span> UBound(retpt) = -<span class="number">1</span> <span class="keyword">Then</span></span><br><span class="line">       <span class="comment">&#x27; IntersectWith = &quot;EMPTY&quot;</span></span><br><span class="line">    <span class="keyword">Else</span></span><br><span class="line">        IntersectWith = retpt</span><br><span class="line">        IsIntersect = <span class="literal">True</span></span><br><span class="line">    <span class="keyword">End</span> <span class="keyword">If</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">End</span> <span class="keyword">If</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">End</span> <span class="keyword">Function</span></span><br><span class="line"></span><br><span class="line"><span class="comment">&#x27;====clsStone===</span></span><br><span class="line"></span><br><span class="line"><span class="comment">&#x27;<span class="doctag">TODO:</span></span></span><br><span class="line"><span class="comment">&#x27;1.sort X coordinate</span></span><br><span class="line"><span class="comment">&#x27;2.define border</span></span><br><span class="line"><span class="comment">&#x27;3.decide X-value</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">Function</span> getDLArea(<span class="keyword">ByVal</span> EG, <span class="keyword">ByVal</span> DL)</span><br><span class="line"></span><br><span class="line"><span class="keyword">Set</span> PLobj1 = RevisePL(EG)</span><br><span class="line">EG.Delete</span><br><span class="line"></span><br><span class="line">PL1_X = myFunc.tranColl2Array(getcoll(PLobj1, <span class="string">&quot;X&quot;</span>))</span><br><span class="line">PL1_Y = myFunc.tranColl2Array(getcoll(PLobj1, <span class="string">&quot;Y&quot;</span>))</span><br><span class="line"></span><br><span class="line"><span class="keyword">Set</span> PLobj2 = RevisePL(DL)</span><br><span class="line">DL.Delete</span><br><span class="line"></span><br><span class="line">PL2_X = myFunc.tranColl2Array(getcoll(PLobj2, <span class="string">&quot;X&quot;</span>))</span><br><span class="line">PL2_Y = myFunc.tranColl2Array(getcoll(PLobj2, <span class="string">&quot;Y&quot;</span>))</span><br><span class="line"></span><br><span class="line"><span class="keyword">Call</span> defineBorder(PL1_X, PL2_X, BL, BR)</span><br><span class="line"></span><br><span class="line">getDLArea = calculateArea_test(PL1_X, PL1_Y, PL2_X, PL2_Y, BL, BR)</span><br><span class="line"></span><br><span class="line"><span class="keyword">End</span> <span class="keyword">Function</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">Function</span> RevisePL(<span class="keyword">ByVal</span> PLobj) <span class="comment">&#x27;由左至右排序</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">Dim</span> coll <span class="keyword">As</span> <span class="built_in">New</span> Collection</span><br><span class="line"></span><br><span class="line">co = <span class="number">3</span></span><br><span class="line"><span class="keyword">If</span> TypeName(PLobj) <span class="built_in">Like</span> <span class="string">&quot;*LWPolyline&quot;</span> <span class="keyword">Then</span> co = <span class="number">2</span>  <span class="comment">&#x27;IIcadLightWeightPolyline</span></span><br><span class="line"></span><br><span class="line">arr = CAD.tranIPoints(PLobj.coordinates)</span><br><span class="line"></span><br><span class="line">Debug.Print TypeName(PLobj)</span><br><span class="line"></span><br><span class="line">X1 = arr(<span class="number">0</span>)</span><br><span class="line">Xn = arr(UBound(arr) - co + <span class="number">1</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">If</span> X1 &gt; Xn <span class="keyword">Then</span></span><br><span class="line">    <span class="keyword">Set</span> RevisePL = CAD.ReverseLine(<span class="keyword">ByVal</span> PLobj)</span><br><span class="line"><span class="keyword">Else</span></span><br><span class="line">    <span class="keyword">Set</span> RevisePL = PLobj</span><br><span class="line"><span class="keyword">End</span> <span class="keyword">If</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">For</span> i = <span class="number">0</span> <span class="keyword">To</span> UBound(arr) - co <span class="keyword">Step</span> co</span><br><span class="line"></span><br><span class="line">    X1 = arr(i)</span><br><span class="line">    X2 = arr(i + co)</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">If</span> X1 = X2 <span class="keyword">Then</span> arr(i + co) = arr(i + co) + <span class="number">0.001</span> <span class="comment">&#x27;若為垂直則微調往右偏移</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">Next</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">Set</span> RevisePL = CAD.AddLWPolyLine(arr)</span><br><span class="line">RevisePL.Layer = PLobj.Layer</span><br><span class="line"></span><br><span class="line"><span class="keyword">End</span> <span class="keyword">Function</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">Function</span> calculateArea_test(<span class="keyword">ByVal</span> PL1_X, <span class="keyword">ByVal</span> PL1_Y, <span class="keyword">ByVal</span> PL2_X, <span class="keyword">ByVal</span> PL2_Y, <span class="keyword">ByVal</span> BL, <span class="keyword">ByVal</span> BR)</span><br><span class="line"></span><br><span class="line">X_sort = myFunc.BubbleSort_array(myFunc.combineArray(PL1_X, PL2_X))</span><br><span class="line"></span><br><span class="line"><span class="keyword">For</span> i = LBound(X_sort) <span class="keyword">To</span> UBound(X_sort) - <span class="number">1</span></span><br><span class="line">    </span><br><span class="line">    X1 = X_sort(i)</span><br><span class="line">    X2 = X_sort(i + <span class="number">1</span>)</span><br><span class="line">    </span><br><span class="line">    dx = X2 - X1</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">If</span> X1 &gt;= BL <span class="built_in">And</span> X2 &lt;= BR <span class="keyword">Then</span></span><br><span class="line">        </span><br><span class="line">        Y1f = getYbyX(X1, PL1_X, PL1_Y)</span><br><span class="line">        Y2f = getYbyX(X1, PL2_X, PL2_Y)</span><br><span class="line">        </span><br><span class="line">        dYf = Y1f - Y2f</span><br><span class="line">        </span><br><span class="line">        Y1b = getYbyX(X2, PL1_X, PL1_Y)</span><br><span class="line">        Y2b = getYbyX(X2, PL2_X, PL2_Y)</span><br><span class="line">        </span><br><span class="line">        dYb = Y1b - Y2b</span><br><span class="line"></span><br><span class="line">        <span class="keyword">If</span> dYf &gt; <span class="number">0</span> <span class="built_in">And</span> dYb &lt; <span class="number">0</span> <span class="keyword">Then</span> <span class="comment">&#x27;與基準線交叉(正到負)</span></span><br><span class="line">        </span><br><span class="line">            X_intersect = getIntersectX(X1, X2, Y1f, Y1b, Y2f, Y2b)</span><br><span class="line">            dA = dYf * (X_intersect - X1) / <span class="number">2</span></span><br><span class="line">            <span class="comment">&#x27;Set lineObj = CAD.AddLineCO(X1, Y1f, X1, Y2f)</span></span><br><span class="line">            </span><br><span class="line">        <span class="keyword">ElseIf</span> dYf &lt; <span class="number">0</span> <span class="built_in">And</span> dYb &gt; <span class="number">0</span> <span class="keyword">Then</span> <span class="comment">&#x27;與基準線交叉(負到正)</span></span><br><span class="line">        </span><br><span class="line">            X_intersect = getIntersectX(X1, X2, Y1f, Y1b, Y2f, Y2b)</span><br><span class="line">            dA = dYb * (X2 - X_intersect) / <span class="number">2</span></span><br><span class="line">            <span class="comment">&#x27;Set lineObj = CAD.AddLineCO(X2, Y1b, X2, Y2b)</span></span><br><span class="line">            </span><br><span class="line">        <span class="keyword">ElseIf</span> dYf &gt;= <span class="number">0</span> <span class="built_in">And</span> dYb &gt;= <span class="number">0</span> <span class="keyword">Then</span> <span class="comment">&#x27;皆在基準線下方</span></span><br><span class="line">        </span><br><span class="line">            dA = (dYf + dYb) * dx / <span class="number">2</span></span><br><span class="line">            <span class="comment">&#x27;Set lineObj = CAD.AddLineCO(X1, Y1f, X1, Y2f)</span></span><br><span class="line">            <span class="comment">&#x27;Set lineObj = CAD.AddLineCO(X2, Y1b, X2, Y2b)</span></span><br><span class="line">        </span><br><span class="line">        <span class="keyword">Else</span></span><br><span class="line">            dA = <span class="number">0</span></span><br><span class="line">        </span><br><span class="line">        <span class="keyword">End</span> <span class="keyword">If</span></span><br><span class="line">        </span><br><span class="line">        <span class="comment">&#x27;Debug.Print &quot;dYf=&quot; &amp; dYf &amp; &quot;,dYb=&quot; &amp; dYb &amp; &quot;,dA=&quot; &amp; dA</span></span><br><span class="line">        sA = sA + dA</span><br><span class="line">        </span><br><span class="line">    <span class="keyword">End</span> <span class="keyword">If</span></span><br><span class="line">    </span><br><span class="line"><span class="keyword">Next</span></span><br><span class="line"></span><br><span class="line">calculateArea_test = Round(sA / <span class="number">1000000</span>, <span class="number">2</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">End</span> <span class="keyword">Function</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">Function</span> getIntersectX(<span class="keyword">ByVal</span> X1 <span class="keyword">As</span> <span class="type">Double</span>, <span class="keyword">ByVal</span> X2 <span class="keyword">As</span> <span class="type">Double</span>, _</span><br><span class="line">                        <span class="keyword">ByVal</span> Y1f <span class="keyword">As</span> <span class="type">Double</span>, <span class="keyword">ByVal</span> Y1b <span class="keyword">As</span> <span class="type">Double</span>, _</span><br><span class="line">                        <span class="keyword">ByVal</span> Y2f <span class="keyword">As</span> <span class="type">Double</span>, <span class="keyword">ByVal</span> Y2b <span class="keyword">As</span> <span class="type">Double</span>)</span><br><span class="line"></span><br><span class="line">dx = X2 - X1</span><br><span class="line"></span><br><span class="line">y1_slope = (Y1b - Y1f) / dx</span><br><span class="line">y2_slope = (Y2b - Y2f) / dx</span><br><span class="line"></span><br><span class="line">slope_change = Abs(y1_slope - y2_slope)</span><br><span class="line">dY_f = Abs(Y1f - Y2f)</span><br><span class="line"></span><br><span class="line">getIntersectX = X1 + dY_f / slope_change</span><br><span class="line"></span><br><span class="line"><span class="keyword">End</span> <span class="keyword">Function</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">Function</span> getYbyX(<span class="keyword">ByVal</span> x <span class="keyword">As</span> <span class="type">Double</span>, <span class="keyword">ByVal</span> PL_X, <span class="keyword">ByVal</span> PL_Y)</span><br><span class="line"></span><br><span class="line"><span class="keyword">For</span> i = LBound(PL_X) <span class="keyword">To</span> UBound(PL_X) - <span class="number">1</span></span><br><span class="line">    </span><br><span class="line">    X1 = PL_X(i)</span><br><span class="line">    X2 = PL_X(i + <span class="number">1</span>)</span><br><span class="line">    Y1 = PL_Y(i)</span><br><span class="line">    Y2 = PL_Y(i + <span class="number">1</span>)</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">If</span> X1 = X2 <span class="keyword">Then</span> X2 = X2 + <span class="number">0.001</span>: <span class="keyword">Stop</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">If</span> x &gt;= X1 <span class="built_in">And</span> x &lt;= X2 <span class="keyword">Then</span></span><br><span class="line">        </span><br><span class="line">        s1 = x - X1</span><br><span class="line">        s2 = X2 - x</span><br><span class="line">        getYbyX = (s1 * Y2 + s2 * Y1) / (s1 + s2)</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">Exit</span> <span class="keyword">For</span></span><br><span class="line">      </span><br><span class="line">    <span class="keyword">End</span> <span class="keyword">If</span></span><br><span class="line">    </span><br><span class="line"><span class="keyword">Next</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">End</span> <span class="keyword">Function</span></span><br></pre></td></tr></table></figure>
+<h3 id="判斷面積歸屬">判斷面積歸屬</h3>
+<p>面積歸屬的判定方法為該封閉聚合線的形心點或填充線的形心點位於哪個樁號外框中，判定屬於哪個外框後取出面積並做挖方加總或填方加總(看取出的圖層是哪一種)，關於點與外框的位置判定關係請參考下列程式碼:</p>
+<p>此處範例是用HATCH的面積取出其值，ssetAreas先做好Hatch的篩選才進行後續內容，有需要者可以改用polyline</p>
+<figure class="highlight vb"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">Sub</span> CalcCABA() <span class="comment">&#x27;20210720 update</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">Set</span> ssetAreas = CAD.CreateSSET(<span class="string">&quot;HA&quot;</span>, <span class="string">&quot;0&quot;</span>, <span class="string">&quot;Hatch&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">For</span> <span class="keyword">Each</span> ssetArea <span class="keyword">In</span> ssetAreas</span><br><span class="line"></span><br><span class="line">    <span class="comment">&#x27;<span class="doctag">TODO:</span></span></span><br><span class="line">    <span class="comment">&#x27;1.getMidPoint</span></span><br><span class="line">    <span class="comment">&#x27;2.searchLoc</span></span><br><span class="line">    <span class="comment">&#x27;3.getAreaCol</span></span><br><span class="line">    <span class="comment">&#x27;4.keyinArea</span></span><br><span class="line">    </span><br><span class="line">    r = getRowFromBorder(ssetArea)</span><br><span class="line">    c = getColFromLayerName(ssetArea)</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">If</span> r &lt;&gt; <span class="string">&quot;&quot;</span> <span class="built_in">And</span> c &lt;&gt; <span class="string">&quot;&quot;</span> <span class="keyword">Then</span> shtCL.Cells(r, c) = ssetArea.area / <span class="number">1000000</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">Next</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">End</span> <span class="keyword">Sub</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">Function</span> getColFromLayerName(<span class="keyword">ByVal</span> ha)</span><br><span class="line"></span><br><span class="line"><span class="keyword">With</span> shtCL</span><br><span class="line"></span><br><span class="line">    CD = ha.Layer <span class="comment">&#x27;橫斷面-挖方</span></span><br><span class="line">    </span><br><span class="line">    targetColName = Split(CD, <span class="string">&quot;-&quot;</span>)(<span class="number">1</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">Set</span> rng = .Rows(<span class="number">2</span>).Find(targetColName)</span><br><span class="line">    </span><br><span class="line">    getColFromLayerName = rng.Column</span><br><span class="line"></span><br><span class="line"><span class="keyword">End</span> <span class="keyword">With</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">End</span> <span class="keyword">Function</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">Function</span> getRowFromBorder(<span class="keyword">ByVal</span> ha)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">Call</span> CAD.GetBoundingBox(ha, MinX, MinY, MaxX, MaxY)</span><br><span class="line">    midX = (MinX + MaxX) / <span class="number">2</span></span><br><span class="line">    midY = (MinY + MaxY) / <span class="number">2</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">With</span> shtCL</span><br><span class="line"></span><br><span class="line">        lr = .Cells(.Rows.Count, <span class="number">1</span>).<span class="keyword">End</span>(xlUp).Row</span><br><span class="line">    </span><br><span class="line">        <span class="keyword">For</span> r = <span class="number">3</span> <span class="keyword">To</span> lr</span><br><span class="line">        </span><br><span class="line">            BorderPTs = Split(.Cells(r, <span class="number">3</span>), <span class="string">&quot;,&quot;</span>)</span><br><span class="line">            </span><br><span class="line">            <span class="keyword">If</span> UBound(BorderPTs) = <span class="number">3</span> <span class="keyword">Then</span></span><br><span class="line">        </span><br><span class="line">                Border_minX = <span class="built_in">CDbl</span>(BorderPTs(<span class="number">0</span>))</span><br><span class="line">                Border_minY = <span class="built_in">CDbl</span>(BorderPTs(<span class="number">1</span>))</span><br><span class="line">                Border_maxX = <span class="built_in">CDbl</span>(BorderPTs(<span class="number">2</span>))</span><br><span class="line">                Border_maxY = <span class="built_in">CDbl</span>(BorderPTs(<span class="number">3</span>))</span><br><span class="line">                </span><br><span class="line">                <span class="keyword">If</span> midX &gt;= Border_minX <span class="built_in">And</span> midX &lt;= Border_maxX <span class="built_in">And</span> midY &gt;= Border_minY <span class="built_in">And</span> midY &lt;= Border_maxY <span class="keyword">Then</span></span><br><span class="line">                    </span><br><span class="line">                    getRowFromBorder = r</span><br><span class="line">                    <span class="keyword">Exit</span> <span class="keyword">For</span></span><br><span class="line">                    </span><br><span class="line">                <span class="keyword">End</span> <span class="keyword">If</span></span><br><span class="line">            </span><br><span class="line">            <span class="keyword">End</span> <span class="keyword">If</span></span><br><span class="line">            </span><br><span class="line">        <span class="keyword">Next</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">End</span> <span class="keyword">With</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">End</span> <span class="keyword">Function</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h3 id="數據回歸圖面">數據回歸圖面</h3>
+<p>我這裡是採用屬性圖塊方式處理，如果不要那麼麻煩也可以用最簡單的text判定樁號的形心位置後，做相對文字偏移並且加入挖方填方面積文字就可以了，這樣可以有效避免沒有圖塊的問題。</p>
+<figure class="highlight vb"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">Sub</span> DrawCABA_Main() <span class="comment">&#x27;將橫斷面說明的CL、CA、BA刪除後重整</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">Set</span> sset = CAD.CreateSSET(<span class="string">&quot;Title&quot;</span>, <span class="string">&quot;8&quot;</span>, <span class="string">&quot;TITLE&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">For</span> <span class="keyword">Each</span> it <span class="keyword">In</span> sset</span><br><span class="line">        </span><br><span class="line">    <span class="keyword">If</span> TypeName(it) = <span class="string">&quot;IAcadBlockReference&quot;</span> <span class="keyword">Then</span></span><br><span class="line">    </span><br><span class="line">        myAttr = it.GetAttributes</span><br><span class="line">        HSecLoc = myAttr(<span class="number">0</span>).TextString</span><br><span class="line">        </span><br><span class="line">        s = returnCABA(HSecLoc)</span><br><span class="line">        </span><br><span class="line">        tmp = Split(s, <span class="string">&quot;,&quot;</span>)</span><br><span class="line">        </span><br><span class="line">        myAttr(<span class="number">1</span>).TextString = tmp(<span class="number">0</span>)</span><br><span class="line">        myAttr(<span class="number">2</span>).TextString = <span class="string">&quot;挖方=&quot;</span> &amp; Round(tmp(<span class="number">1</span>), <span class="number">2</span>) &amp; <span class="string">&quot; m2&quot;</span></span><br><span class="line">        myAttr(<span class="number">3</span>).TextString = <span class="string">&quot;填方=&quot;</span> &amp; Round(tmp(<span class="number">2</span>), <span class="number">2</span>) &amp; <span class="string">&quot; m2&quot;</span></span><br><span class="line">        <span class="comment">&#x27;myAttr(4).TextString = &quot;CLSM=&quot; &amp; Round(tmp(3), 2) &amp; &quot; m2&quot;</span></span><br><span class="line">        </span><br><span class="line">    </span><br><span class="line">    <span class="keyword">End</span> <span class="keyword">If</span></span><br><span class="line"></span><br><span class="line"><span class="symbol">ERRORHANDLE:</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">Next</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">End</span> <span class="keyword">Sub</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">Private</span> <span class="keyword">Function</span> returnCABA(<span class="keyword">ByVal</span> HSecLoc <span class="keyword">As</span> <span class="type">String</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">With</span> shtCL</span><br><span class="line"></span><br><span class="line">    <span class="keyword">Set</span> rng = .Cells.Find(HSecLoc)</span><br><span class="line">    </span><br><span class="line">    r = rng.Row</span><br><span class="line">    </span><br><span class="line">    deltaH = .Cells(r, <span class="number">2</span> + <span class="number">2</span>)</span><br><span class="line">    CA = .Cells(r, <span class="number">3</span> + <span class="number">2</span>)</span><br><span class="line">    BA = .Cells(r, <span class="number">4</span> + <span class="number">2</span>)</span><br><span class="line">    RA = .Cells(r, <span class="number">5</span> + <span class="number">2</span>)</span><br><span class="line">    </span><br><span class="line">    returnCABA = deltaH &amp; <span class="string">&quot;,&quot;</span> &amp; CA &amp; <span class="string">&quot;,&quot;</span> &amp; BA &amp; <span class="string">&quot;,&quot;</span> &amp; RA</span><br><span class="line"></span><br><span class="line"><span class="keyword">End</span> <span class="keyword">With</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">End</span> <span class="keyword">Function</span></span><br></pre></td></tr></table></figure>
+<h3 id="生成報告">生成報告</h3>
+<p>這裡就是單純的對格子塞資料計算總數而已，僅提供成果供參。</p>
+<figure>
+<img src="upload_85c9fc6b507cc57c8285967bf25cd55b.png"
+alt="土方報告成果" />
+<figcaption aria-hidden="true">土方報告成果</figcaption>
+</figure>
+<h2 id="更多細節">更多細節</h2>
+<p>有需要更多技術細節內容再請來信討論或LINE進行聯繫。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>作者： </strong>Hank Lin
+  </li>
+  <li class="post-copyright-link">
+      <strong>文章連結：</strong>
+      <a href="https://www.hanksvba.com/posts/2533511128/" title="VBA橫斷面法面積批次處理">https://www.hanksvba.com/posts/2533511128/</a>
+  </li>
+  <li class="post-copyright-license">
+      <strong>版權聲明： </strong>本網誌所有文章除特別聲明外，均採用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 許可協議。轉載請註明出處！
+  </li>
+</ul>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/AutoCAD-VBA/" rel="tag"><i class="fa fa-tag"></i> AutoCAD VBA</a>
+              <a href="/tags/Excel-VBA/" rel="tag"><i class="fa fa-tag"></i> Excel VBA</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/posts/1384887565/" rel="prev" title="openpyxl照片處理筆記">
+                  <i class="fa fa-angle-left"></i> openpyxl照片處理筆記
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/posts/213685522/" rel="next" title="Streamlit做手繪簽名">
+                  Streamlit做手繪簽名 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2024</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Hank Lin</span>
+  </div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="訪客總數">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="總瀏覽次數">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 強力驅動
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="back-to-top" role="button" aria-label="回到頂端">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/next-boot.js"></script>
+
+  
+  <script class="next-config" data-name="pdf" type="application/json">{"object_url":{"url":"https://cdnjs.cloudflare.com/ajax/libs/pdfobject/2.2.12/pdfobject.min.js","integrity":"sha256-g2xji1rlE3KsGVClvuxTbcR0Kn2+wtQADSff2Tbb4zA="},"url":"/lib/pdf/web/viewer"}</script>
+  <script src="/js/third-party/tags/pdf.js"></script>
+
+
+
+
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">false</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"ams","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+
+</body>
+</html>

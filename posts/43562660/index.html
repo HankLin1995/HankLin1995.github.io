@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.2.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha256-wiz7ZSCn/btzhjKDQBms9Hx4sSeUYsDrTLg7roPstac=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"www.hanksvba.com","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.19.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":"mac"},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":false,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜尋...","empty":"我們無法找到任何有關 ${query} 的搜索結果","hits_time":"${hits} 找到 ${time} 個結果","hits":"找到 ${hits} 個結果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="前言 工程進行期間會有很多不同的任務，每個任務會有自己所需要花費的金額、起始日期、持續天數，藉由這些任務的組合可以統整出工程的預定進度情況，將不同任務繪製在同一個時間軸上可以清楚的了解到現階段有那些任務應該要被完成以及未來還有哪些任務需要完成，對於任務單純的工程很有大的助益。 前陣子在開發施工日誌的時候，如果採用施工計畫書上的每15日累積進度做內差取值會比較容易失真，後來想想，其實這個累積進度">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Streamlit工程進度甘特圖">
+<meta property="og:url" content="https://www.hanksvba.com/posts/43562660/">
+<meta property="og:site_name" content="Hank&#39;s Blog">
+<meta property="og:description" content="前言 工程進行期間會有很多不同的任務，每個任務會有自己所需要花費的金額、起始日期、持續天數，藉由這些任務的組合可以統整出工程的預定進度情況，將不同任務繪製在同一個時間軸上可以清楚的了解到現階段有那些任務應該要被完成以及未來還有哪些任務需要完成，對於任務單純的工程很有大的助益。 前陣子在開發施工日誌的時候，如果採用施工計畫書上的每15日累積進度做內差取值會比較容易失真，後來想想，其實這個累積進度">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:image" content="https://www.hanksvba.com/posts/43562660/upload_a58406d159b6d33c6dfc15715aef2378.png">
+<meta property="article:published_time" content="2024-07-07T07:23:04.000Z">
+<meta property="article:modified_time" content="2024-07-07T07:23:04.000Z">
+<meta property="article:author" content="Hank Lin">
+<meta property="article:tag" content="Streamlit">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://www.hanksvba.com/posts/43562660/upload_a58406d159b6d33c6dfc15715aef2378.png">
+
+
+<link rel="canonical" href="https://www.hanksvba.com/posts/43562660/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-TW","comments":true,"permalink":"https://www.hanksvba.com/posts/43562660/","path":"posts/43562660/","title":"Streamlit工程進度甘特圖"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Streamlit工程進度甘特圖 | Hank's Blog</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切換導航欄" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Hank's Blog</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">工程人的設計監造VBA工具交流區</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜尋" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-首頁"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首頁</a></li><li class="menu-item menu-item-關於"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>關於</a></li><li class="menu-item menu-item-標籤"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>標籤</a></li><li class="menu-item menu-item-分類"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分類</a></li><li class="menu-item menu-item-文章"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>文章</a></li>
+  </ul>
+</nav>
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目錄
+        </li>
+        <li class="sidebar-nav-overview">
+          本站概要
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%89%8D%E8%A8%80"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%93%8D%E4%BD%9C%E4%BB%8B%E9%9D%A2"><span class="nav-number">2.</span> <span class="nav-text">操作介面</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%B6%B2%E9%A0%81%E9%80%A3%E7%B5%90"><span class="nav-number">3.</span> <span class="nav-text">網頁連結</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%8C%E6%95%B4%E5%81%9A%E6%B3%95"><span class="nav-number">4.</span> <span class="nav-text">完整做法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%96%8B%E7%99%BC%E9%81%8E%E7%A8%8B%E7%B4%80%E9%8C%84"><span class="nav-number">5.</span> <span class="nav-text">開發過程紀錄</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Hank Lin"
+      src="/images/avatar_custom.png">
+  <p class="site-author-name" itemprop="name">Hank Lin</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">20</span>
+          <span class="site-state-item-name">文章</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">4</span>
+        <span class="site-state-item-name">分類</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">13</span>
+        <span class="site-state-item-name">標籤</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="mailto:apple84026113@gmail.com" title="E-Mail → mailto:apple84026113@gmail.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.youtube.com/channel/UCWmy5KaK7Leg6lLUlWBPaSw" title="YouTube → https:&#x2F;&#x2F;www.youtube.com&#x2F;channel&#x2F;UCWmy5KaK7Leg6lLUlWBPaSw" rel="noopener me" target="_blank"><i class="fab fa-youtube fa-fw"></i>YouTube</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/images/LINE_QRCODE.png" title="LINE → &#x2F;images&#x2F;LINE_QRCODE.png" rel="noopener me"><i class="fab fa-line fa-fw"></i>LINE</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://reurl.cc/RyvvaZ" title="LINE社群 → https:&#x2F;&#x2F;reurl.cc&#x2F;RyvvaZ" rel="noopener me" target="_blank"><i class="fas fa-comment fa-fw"></i>LINE社群</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://hankvba.blogspot.com/" title="舊網站 → https:&#x2F;&#x2F;hankvba.blogspot.com&#x2F;" rel="noopener me" target="_blank"><i class="fab fa-blogger fa-fw"></i>舊網站</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://portaly.cc/hanksvba/support/" title="小額贊助 → https:&#x2F;&#x2F;portaly.cc&#x2F;hanksvba&#x2F;support&#x2F;" rel="noopener me" target="_blank"><i class="fas fa-handshake fa-fw"></i>小額贊助</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-TW">
+    <link itemprop="mainEntityOfPage" href="https://www.hanksvba.com/posts/43562660/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar_custom.png">
+      <meta itemprop="name" content="Hank Lin">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hank's Blog">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="Streamlit工程進度甘特圖 | Hank's Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Streamlit工程進度甘特圖
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">發表於</span>
+
+      <time title="創建時間：2024-07-07 15:23:04" itemprop="dateCreated datePublished" datetime="2024-07-07T15:23:04+08:00">2024-07-07</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分類於</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E5%B0%88%E6%A1%88%E6%88%90%E6%9E%9C/" itemprop="url" rel="index"><span itemprop="name">專案成果</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="閱讀次數" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">閱讀次數：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h2 id="前言">前言</h2>
+<p>工程進行期間會有很多不同的任務，每個任務會有自己所需要花費的金額、起始日期、持續天數，藉由這些任務的組合可以統整出工程的預定進度情況，將不同任務繪製在同一個時間軸上可以清楚的了解到現階段有那些任務應該要被完成以及未來還有哪些任務需要完成，對於任務單純的工程很有大的助益。</p>
+<p>前陣子在開發施工日誌的時候，如果採用施工計畫書上的每15日累積進度做內差取值會比較容易失真，後來想想，其實這個累積進度的來源也是按照甘特圖的比例所得出的結果?但總歸如何，還是花了一些時間熟悉一下matplotlib的做圖套件，並且搭配streamlit前端介面做一個雲端服務，目標是希望能夠產出<strong>工程甘特圖</strong>及<strong>每日進度的CSV檔案</strong>，未來可以匯入其他的日報VBA工具。</p>
+<span id="more"></span>
+<h2 id="操作介面">操作介面</h2>
+<figure>
+<img src="upload_a58406d159b6d33c6dfc15715aef2378.png" alt="操作介面" />
+<figcaption aria-hidden="true">操作介面</figcaption>
+</figure>
+<ol type="1">
+<li>進入系統之後左側為任務編輯區塊，右側為甘特圖</li>
+<li>任務編輯區塊可以進行新增、刪除、編輯</li>
+<li>每次的更動都會重新生成甘特圖，下載CSV也會即時更新</li>
+</ol>
+<p>如有看不懂的地方可以點選<strong>影片操作教學</strong></p>
+<h2 id="網頁連結">網頁連結</h2>
+<p><a target="_blank" rel="noopener" href="https://progress.streamlit.app/"><span class="github-emoji"
+data-alias="link" style=""
+data-fallback-src="https://github.githubassets.com/images/icons/emoji/unicode/1f517.png?v8">🔗</span>
+工程進度V0.1.0 網頁連結</a></p>
+<h2 id="完整做法">完整做法</h2>
+<blockquote>
+<p>Github上面的是已經精挑細選過的程式碼，製作期間有陸陸續續砍掉一些功能，可以參照下面的註解處。</p>
+</blockquote>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br><span class="line">201</span><br><span class="line">202</span><br><span class="line">203</span><br><span class="line">204</span><br><span class="line">205</span><br><span class="line">206</span><br><span class="line">207</span><br><span class="line">208</span><br><span class="line">209</span><br><span class="line">210</span><br><span class="line">211</span><br><span class="line">212</span><br><span class="line">213</span><br><span class="line">214</span><br><span class="line">215</span><br><span class="line">216</span><br><span class="line">217</span><br><span class="line">218</span><br><span class="line">219</span><br><span class="line">220</span><br><span class="line">221</span><br><span class="line">222</span><br><span class="line">223</span><br><span class="line">224</span><br><span class="line">225</span><br><span class="line">226</span><br><span class="line">227</span><br><span class="line">228</span><br><span class="line">229</span><br><span class="line">230</span><br><span class="line">231</span><br><span class="line">232</span><br><span class="line">233</span><br><span class="line">234</span><br><span class="line">235</span><br><span class="line">236</span><br><span class="line">237</span><br><span class="line">238</span><br><span class="line">239</span><br><span class="line">240</span><br><span class="line">241</span><br><span class="line">242</span><br><span class="line">243</span><br><span class="line">244</span><br><span class="line">245</span><br><span class="line">246</span><br><span class="line">247</span><br><span class="line">248</span><br><span class="line">249</span><br><span class="line">250</span><br><span class="line">251</span><br><span class="line">252</span><br><span class="line">253</span><br><span class="line">254</span><br><span class="line">255</span><br><span class="line">256</span><br><span class="line">257</span><br><span class="line">258</span><br><span class="line">259</span><br><span class="line">260</span><br><span class="line">261</span><br><span class="line">262</span><br><span class="line">263</span><br><span class="line">264</span><br><span class="line">265</span><br><span class="line">266</span><br><span class="line">267</span><br><span class="line">268</span><br><span class="line">269</span><br><span class="line">270</span><br><span class="line">271</span><br><span class="line">272</span><br><span class="line">273</span><br><span class="line">274</span><br><span class="line">275</span><br><span class="line">276</span><br><span class="line">277</span><br><span class="line">278</span><br><span class="line">279</span><br><span class="line">280</span><br><span class="line">281</span><br><span class="line">282</span><br><span class="line">283</span><br><span class="line">284</span><br><span class="line">285</span><br><span class="line">286</span><br><span class="line">287</span><br><span class="line">288</span><br><span class="line">289</span><br><span class="line">290</span><br><span class="line">291</span><br><span class="line">292</span><br><span class="line">293</span><br><span class="line">294</span><br><span class="line">295</span><br><span class="line">296</span><br><span class="line">297</span><br><span class="line">298</span><br><span class="line">299</span><br><span class="line">300</span><br><span class="line">301</span><br><span class="line">302</span><br><span class="line">303</span><br><span class="line">304</span><br><span class="line">305</span><br><span class="line">306</span><br><span class="line">307</span><br><span class="line">308</span><br><span class="line">309</span><br><span class="line">310</span><br><span class="line">311</span><br><span class="line">312</span><br><span class="line">313</span><br><span class="line">314</span><br><span class="line">315</span><br><span class="line">316</span><br><span class="line">317</span><br><span class="line">318</span><br><span class="line">319</span><br><span class="line">320</span><br><span class="line">321</span><br><span class="line">322</span><br><span class="line">323</span><br><span class="line">324</span><br><span class="line">325</span><br><span class="line">326</span><br><span class="line">327</span><br><span class="line">328</span><br><span class="line">329</span><br><span class="line">330</span><br><span class="line">331</span><br><span class="line">332</span><br><span class="line">333</span><br><span class="line">334</span><br><span class="line">335</span><br><span class="line">336</span><br><span class="line">337</span><br><span class="line">338</span><br><span class="line">339</span><br><span class="line">340</span><br><span class="line">341</span><br><span class="line">342</span><br><span class="line">343</span><br><span class="line">344</span><br><span class="line">345</span><br><span class="line">346</span><br><span class="line">347</span><br><span class="line">348</span><br><span class="line">349</span><br><span class="line">350</span><br><span class="line">351</span><br><span class="line">352</span><br><span class="line">353</span><br><span class="line">354</span><br><span class="line">355</span><br><span class="line">356</span><br><span class="line">357</span><br><span class="line">358</span><br><span class="line">359</span><br><span class="line">360</span><br><span class="line">361</span><br><span class="line">362</span><br><span class="line">363</span><br><span class="line">364</span><br><span class="line">365</span><br><span class="line">366</span><br><span class="line">367</span><br><span class="line">368</span><br><span class="line">369</span><br><span class="line">370</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> streamlit <span class="keyword">as</span> st</span><br><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd</span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"><span class="keyword">import</span> matplotlib.dates <span class="keyword">as</span> mdates</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">from</span> matplotlib.font_manager <span class="keyword">import</span> FontProperties</span><br><span class="line"><span class="keyword">import</span> matplotlib.ticker <span class="keyword">as</span> ticker</span><br><span class="line"><span class="keyword">from</span> io <span class="keyword">import</span> BytesIO</span><br><span class="line"><span class="keyword">from</span> datetime <span class="keyword">import</span> date</span><br><span class="line"></span><br><span class="line"><span class="comment">### Init ###</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">main_zh</span>():</span><br><span class="line"></span><br><span class="line">    SYSTEM_VERSION=<span class="string">&quot;V1.0.0&quot;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># st.set_page_config(layout=&#x27;wide&#x27;)</span></span><br><span class="line"></span><br><span class="line">    font_prop = FontProperties(fname=<span class="string">&#x27;./NotoSansCJK-Regular.ttc&#x27;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 初始化數據，如果 st.session_state 中沒有存儲數據</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># btn_sample = st.button(&quot;載入測試案例&quot;)</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> <span class="string">&#x27;data&#x27;</span> <span class="keyword">not</span> <span class="keyword">in</span> st.session_state:</span><br><span class="line">        <span class="comment"># df = pd.DataFrame(columns=[&#x27;項目名稱&#x27;, &#x27;花費金額&#x27;, &#x27;起始日期&#x27;, &#x27;持續天數&#x27;, &#x27;結束日期&#x27;])</span></span><br><span class="line">    <span class="comment">#     st.session_state[&#x27;data&#x27;]=[</span></span><br><span class="line">    <span class="comment">#         &#123;&#x27;項目名稱&#x27;: &#x27;點我修改A&#x27;, &#x27;花費金額&#x27;: 1000, &#x27;起始日期&#x27;: &#x27;2024-07-01&#x27;, &#x27;持續天數&#x27;: 5, &#x27;結束日期&#x27;: &#x27;&#x27;&#125;,</span></span><br><span class="line">    <span class="comment">#         &#123;&#x27;項目名稱&#x27;: &#x27;點我修改B&#x27;, &#x27;花費金額&#x27;: 1000, &#x27;起始日期&#x27;: &#x27;2024-07-01&#x27;, &#x27;持續天數&#x27;: 5, &#x27;結束日期&#x27;: &#x27;&#x27;&#125;,</span></span><br><span class="line">    <span class="comment">#         &#123;&#x27;項目名稱&#x27;: &#x27;點我修改C&#x27;, &#x27;花費金額&#x27;: 1000, &#x27;起始日期&#x27;: &#x27;2024-07-01&#x27;, &#x27;持續天數&#x27;: 5, &#x27;結束日期&#x27;: &#x27;&#x27;&#125;</span></span><br><span class="line">    <span class="comment">#         ]</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># # st.json(st.session_state)</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># if btn_sample:</span></span><br><span class="line">        <span class="comment"># data = &#123;</span></span><br><span class="line">        <span class="comment">#     &#x27;項目名稱&#x27;: [&#x27;基礎構造&#x27;, &#x27;結構加固&#x27;, &#x27;地基工程&#x27;, &#x27;屋頂修復&#x27;, &#x27;室內裝修&#x27;, &#x27;電力系統升級&#x27;, &#x27;水利設施建設&#x27;, &#x27;道路擴建&#x27;, &#x27;綠化工程&#x27;, &#x27;消防安全系統&#x27;],</span></span><br><span class="line">        <span class="comment">#     &#x27;花費金額&#x27;: [50000, 120000, 80000, 100000, 60000, 70000, 90000, 110000, 80000, 90000],</span></span><br><span class="line">        <span class="comment">#     &#x27;起始日期&#x27;: [&#x27;2024-07-01&#x27;, &#x27;2024-07-15&#x27;, &#x27;2024-08-01&#x27;, &#x27;2024-07-01&#x27;, &#x27;2024-07-05&#x27;, &#x27;2024-07-20&#x27;, &#x27;2024-07-25&#x27;, &#x27;2024-08-05&#x27;, &#x27;2024-08-10&#x27;, &#x27;2024-08-15&#x27;],</span></span><br><span class="line">        <span class="comment">#     &#x27;持續天數&#x27;: [5, 12, 8, 10, 6, 7, 9, 11, 8, 9],</span></span><br><span class="line">        <span class="comment">#     &#x27;結束日期&#x27;: [&#x27;&#x27;] * 10</span></span><br><span class="line">        <span class="comment"># &#125;</span></span><br><span class="line"></span><br><span class="line">        <span class="comment"># st.session_state[&#x27;data&#x27;]=[]</span></span><br><span class="line"></span><br><span class="line">        sample_data = [</span><br><span class="line">        &#123;<span class="string">&#x27;項目名稱&#x27;</span>: <span class="string">&#x27;基礎構造&#x27;</span>, <span class="string">&#x27;花費金額&#x27;</span>: <span class="number">50000</span>, <span class="string">&#x27;起始日期&#x27;</span>: <span class="string">&#x27;2024-07-01&#x27;</span>, <span class="string">&#x27;持續天數&#x27;</span>: <span class="number">5</span>, <span class="string">&#x27;結束日期&#x27;</span>: <span class="string">&#x27;&#x27;</span>&#125;,</span><br><span class="line">        &#123;<span class="string">&#x27;項目名稱&#x27;</span>: <span class="string">&#x27;結構加固&#x27;</span>, <span class="string">&#x27;花費金額&#x27;</span>: <span class="number">120000</span>, <span class="string">&#x27;起始日期&#x27;</span>: <span class="string">&#x27;2024-07-15&#x27;</span>, <span class="string">&#x27;持續天數&#x27;</span>: <span class="number">12</span>, <span class="string">&#x27;結束日期&#x27;</span>: <span class="string">&#x27;&#x27;</span>&#125;,</span><br><span class="line">        &#123;<span class="string">&#x27;項目名稱&#x27;</span>: <span class="string">&#x27;地基工程&#x27;</span>, <span class="string">&#x27;花費金額&#x27;</span>: <span class="number">80000</span>, <span class="string">&#x27;起始日期&#x27;</span>: <span class="string">&#x27;2024-08-01&#x27;</span>, <span class="string">&#x27;持續天數&#x27;</span>: <span class="number">8</span>, <span class="string">&#x27;結束日期&#x27;</span>: <span class="string">&#x27;&#x27;</span>&#125;,</span><br><span class="line">        &#123;<span class="string">&#x27;項目名稱&#x27;</span>: <span class="string">&#x27;屋頂修復&#x27;</span>, <span class="string">&#x27;花費金額&#x27;</span>: <span class="number">100000</span>, <span class="string">&#x27;起始日期&#x27;</span>: <span class="string">&#x27;2024-07-01&#x27;</span>, <span class="string">&#x27;持續天數&#x27;</span>: <span class="number">10</span>, <span class="string">&#x27;結束日期&#x27;</span>: <span class="string">&#x27;&#x27;</span>&#125;,</span><br><span class="line">        &#123;<span class="string">&#x27;項目名稱&#x27;</span>: <span class="string">&#x27;室內裝修&#x27;</span>, <span class="string">&#x27;花費金額&#x27;</span>: <span class="number">60000</span>, <span class="string">&#x27;起始日期&#x27;</span>: <span class="string">&#x27;2024-07-05&#x27;</span>, <span class="string">&#x27;持續天數&#x27;</span>: <span class="number">6</span>, <span class="string">&#x27;結束日期&#x27;</span>: <span class="string">&#x27;&#x27;</span>&#125;,</span><br><span class="line">        &#123;<span class="string">&#x27;項目名稱&#x27;</span>: <span class="string">&#x27;電力系統升級&#x27;</span>, <span class="string">&#x27;花費金額&#x27;</span>: <span class="number">70000</span>, <span class="string">&#x27;起始日期&#x27;</span>: <span class="string">&#x27;2024-07-20&#x27;</span>, <span class="string">&#x27;持續天數&#x27;</span>: <span class="number">7</span>, <span class="string">&#x27;結束日期&#x27;</span>: <span class="string">&#x27;&#x27;</span>&#125;,</span><br><span class="line">        &#123;<span class="string">&#x27;項目名稱&#x27;</span>: <span class="string">&#x27;水利設施建設&#x27;</span>, <span class="string">&#x27;花費金額&#x27;</span>: <span class="number">90000</span>, <span class="string">&#x27;起始日期&#x27;</span>: <span class="string">&#x27;2024-07-25&#x27;</span>, <span class="string">&#x27;持續天數&#x27;</span>: <span class="number">9</span>, <span class="string">&#x27;結束日期&#x27;</span>: <span class="string">&#x27;&#x27;</span>&#125;,</span><br><span class="line">        &#123;<span class="string">&#x27;項目名稱&#x27;</span>: <span class="string">&#x27;道路擴建&#x27;</span>, <span class="string">&#x27;花費金額&#x27;</span>: <span class="number">110000</span>, <span class="string">&#x27;起始日期&#x27;</span>: <span class="string">&#x27;2024-08-05&#x27;</span>, <span class="string">&#x27;持續天數&#x27;</span>: <span class="number">11</span>, <span class="string">&#x27;結束日期&#x27;</span>: <span class="string">&#x27;&#x27;</span>&#125;,</span><br><span class="line">        &#123;<span class="string">&#x27;項目名稱&#x27;</span>: <span class="string">&#x27;綠化工程&#x27;</span>, <span class="string">&#x27;花費金額&#x27;</span>: <span class="number">80000</span>, <span class="string">&#x27;起始日期&#x27;</span>: <span class="string">&#x27;2024-08-10&#x27;</span>, <span class="string">&#x27;持續天數&#x27;</span>: <span class="number">8</span>, <span class="string">&#x27;結束日期&#x27;</span>: <span class="string">&#x27;&#x27;</span>&#125;,</span><br><span class="line">        &#123;<span class="string">&#x27;項目名稱&#x27;</span>: <span class="string">&#x27;消防安全系統&#x27;</span>, <span class="string">&#x27;花費金額&#x27;</span>: <span class="number">90000</span>, <span class="string">&#x27;起始日期&#x27;</span>: <span class="string">&#x27;2024-08-15&#x27;</span>, <span class="string">&#x27;持續天數&#x27;</span>: <span class="number">9</span>, <span class="string">&#x27;結束日期&#x27;</span>: <span class="string">&#x27;&#x27;</span>&#125;,</span><br><span class="line">        ]</span><br><span class="line"></span><br><span class="line">        </span><br><span class="line">        <span class="comment"># df = pd.DataFrame(data)</span></span><br><span class="line">        <span class="comment"># df[&#x27;起始日期&#x27;] = pd.to_datetime(df[&#x27;起始日期&#x27;])</span></span><br><span class="line">        <span class="comment"># df[&#x27;結束日期&#x27;] = df[&#x27;起始日期&#x27;] + pd.to_timedelta(df[&#x27;持續天數&#x27;], unit=&#x27;D&#x27;)</span></span><br><span class="line">        <span class="comment"># st.session_state.data = df</span></span><br><span class="line"></span><br><span class="line">        st.session_state[<span class="string">&#x27;data&#x27;</span>]=sample_data</span><br><span class="line"></span><br><span class="line">    <span class="comment"># for item in st.session_state[&#x27;data&#x27;]:</span></span><br><span class="line">    <span class="comment">#     st.write(item)</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># 從 st.session_state 中獲取 DataFrame</span></span><br><span class="line">    <span class="comment"># df = st.session_state.data.dropna(subset=[&#x27;持續天數&#x27;])</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    col1, col2 = st.columns([<span class="number">1</span>, <span class="number">2</span>])</span><br><span class="line"></span><br><span class="line">    <span class="keyword">with</span> col1:</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">        st.markdown(<span class="string">&quot;### :spiral_calendar_pad: 工程進度 &quot;</span>+SYSTEM_VERSION)</span><br><span class="line">        st.info(<span class="string">&quot;作者:**HankLin @202407**&quot;</span>)</span><br><span class="line">        st.markdown(<span class="string">&quot;---&quot;</span>)</span><br><span class="line"></span><br><span class="line">        <span class="comment"># 新增方式，回饋到 st.session_state</span></span><br><span class="line"></span><br><span class="line">        <span class="comment"># with st.form(&quot;C&quot;, True):</span></span><br><span class="line">        <span class="comment">#     myitem = st.text_input(&quot;施作項目:&quot;)</span></span><br><span class="line">        <span class="comment">#     mycost = st.number_input(&quot;花費金額:&quot;)</span></span><br><span class="line">        <span class="comment">#     mystart_date = st.date_input(&quot;開始日期:&quot;)</span></span><br><span class="line">        <span class="comment">#     mydays = st.number_input(&quot;持續天數&quot;)</span></span><br><span class="line">        <span class="comment">#     # st.json(st.session_state[&#x27;data&#x27;])</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">#     if st.form_submit_button(&quot;新增&quot;):</span></span><br><span class="line">        <span class="comment">#         new_item = &#123;</span></span><br><span class="line">        <span class="comment">#             # &#x27;項目編號&#x27;: max(df[&#x27;項目編號&#x27;], default=0) + 1,  # 自動分配新的項目編號</span></span><br><span class="line">        <span class="comment">#             &#x27;項目名稱&#x27;: myitem,</span></span><br><span class="line">        <span class="comment">#             &#x27;花費金額&#x27;: mycost,</span></span><br><span class="line">        <span class="comment">#             &#x27;起始日期&#x27;: pd.to_datetime(mystart_date),</span></span><br><span class="line">        <span class="comment">#             &#x27;持續天數&#x27;: mydays,</span></span><br><span class="line">        <span class="comment">#             &#x27;結束日期&#x27;: &quot;&quot;#pd.to_datetime(mystart_date) + pd.to_timedelta(mydays, unit=&#x27;D&#x27;)</span></span><br><span class="line">        <span class="comment">#         &#125;</span></span><br><span class="line">        <span class="comment">#         # df = pd.concat([df, pd.DataFrame([new_item])], ignore_index=True)</span></span><br><span class="line">        <span class="comment">#         # new_items=st.session_state[&#x27;data&#x27;].append(new_item)</span></span><br><span class="line">        <span class="comment">#         # st.json(st.session_state[&#x27;data&#x27;])</span></span><br><span class="line">        <span class="comment">#         # st.session_state.data = df</span></span><br><span class="line">        <span class="comment">#         st.session_state[&#x27;data&#x27;].append(new_item)</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">#         st.success(&quot;成功新增施工項目！&quot;)</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">        <span class="comment"># 總表（編輯方式），回饋到 st.session_state</span></span><br><span class="line">        st.markdown(<span class="string">&quot;##### 		<span class="github-emoji" alias="point_down" style="" fallback-src="https://github.githubassets.com/images/icons/emoji/unicode/1f447.png?v8">&#x1f447;</span> 施工項目填寫&quot;</span>)</span><br><span class="line"></span><br><span class="line">        <span class="comment"># st.json(st.session_state)</span></span><br><span class="line"></span><br><span class="line">        df=pd.DataFrame(st.session_state[<span class="string">&#x27;data&#x27;</span>])</span><br><span class="line"></span><br><span class="line">        <span class="comment"># st.write(len(df))</span></span><br><span class="line">        </span><br><span class="line">        df[<span class="string">&#x27;起始日期&#x27;</span>] = pd.to_datetime(df[<span class="string">&#x27;起始日期&#x27;</span>])</span><br><span class="line"></span><br><span class="line">        edited_df = st.data_editor(df, use_container_width=<span class="literal">True</span>,num_rows=<span class="string">&#x27;dynamic&#x27;</span>,</span><br><span class="line">                                column_config=&#123;</span><br><span class="line">                                    <span class="string">&quot;起始日期&quot;</span>: st.column_config.DateColumn(</span><br><span class="line">                                        <span class="string">&quot;起始日期&quot;</span>,</span><br><span class="line">                                        min_value=date(<span class="number">2024</span>, <span class="number">1</span>, <span class="number">1</span>),</span><br><span class="line">                                        max_value=date(<span class="number">2030</span>, <span class="number">1</span>, <span class="number">1</span>),</span><br><span class="line">                                        <span class="built_in">format</span>=<span class="string">&quot;YYYY-MM-DD&quot;</span>,</span><br><span class="line">                                        step=<span class="number">1</span>,</span><br><span class="line">                                    )</span><br><span class="line">                                &#125;,</span><br><span class="line">                                hide_index=<span class="literal">True</span>, column_order=(<span class="string">&quot;項目名稱&quot;</span>, <span class="string">&quot;花費金額&quot;</span>, <span class="string">&quot;起始日期&quot;</span>, <span class="string">&quot;持續天數&quot;</span>))</span><br><span class="line"></span><br><span class="line">        edited_df[<span class="string">&#x27;結束日期&#x27;</span>] = edited_df[<span class="string">&#x27;起始日期&#x27;</span>] + pd.to_timedelta(edited_df[<span class="string">&#x27;持續天數&#x27;</span>], unit=<span class="string">&#x27;D&#x27;</span>)</span><br><span class="line"></span><br><span class="line">        is_show_text=st.toggle(<span class="string">&quot;圖塊文字&quot;</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="comment">### 計算流程以下都沒問題，可以先引入session_state後開始</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># final_df=st.session_state.data</span></span><br><span class="line"></span><br><span class="line">    final_df=edited_df</span><br><span class="line">    <span class="comment"># final_df = edited_df.dropna(subset=[&#x27;持續天數&#x27;])</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> <span class="built_in">len</span>(final_df)==<span class="number">0</span>:</span><br><span class="line">        exit()</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        <span class="comment"># 計算每日耗費成本</span></span><br><span class="line">        total_cost = final_df[<span class="string">&#x27;花費金額&#x27;</span>].<span class="built_in">sum</span>()</span><br><span class="line">        start_date = final_df[<span class="string">&#x27;起始日期&#x27;</span>].<span class="built_in">min</span>()</span><br><span class="line">        end_date = final_df[<span class="string">&#x27;結束日期&#x27;</span>].<span class="built_in">max</span>()</span><br><span class="line">        date_range = pd.date_range(start=start_date, end=end_date, freq=<span class="string">&#x27;D&#x27;</span>)  <span class="comment"># 每日頻率</span></span><br><span class="line">        daily_cost = np.zeros(<span class="built_in">len</span>(date_range))</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> i, row <span class="keyword">in</span> final_df.iterrows():</span><br><span class="line">            cost_per_day = row[<span class="string">&#x27;花費金額&#x27;</span>] / row[<span class="string">&#x27;持續天數&#x27;</span>]</span><br><span class="line">            daily_cost[(date_range &gt; row[<span class="string">&#x27;起始日期&#x27;</span>]) &amp; (date_range &lt;= row[<span class="string">&#x27;結束日期&#x27;</span>])] += cost_per_day</span><br><span class="line"></span><br><span class="line">        <span class="comment"># 計算累積花費金額和每日進度百分比</span></span><br><span class="line">        cumulative_cost = np.cumsum(daily_cost)</span><br><span class="line"></span><br><span class="line">        daily_progress = (daily_cost / total_cost) * <span class="number">100</span></span><br><span class="line">        cumulative_progress = (cumulative_cost / total_cost) * <span class="number">100</span></span><br><span class="line"></span><br><span class="line">        csv_data = pd.DataFrame(&#123;</span><br><span class="line">            <span class="string">&#x27;日期&#x27;</span>: date_range,</span><br><span class="line">            <span class="string">&#x27;當日費用&#x27;</span>: daily_cost,</span><br><span class="line">            <span class="string">&#x27;累積費用&#x27;</span>: cumulative_cost,</span><br><span class="line">            <span class="string">&#x27;當日進度&#x27;</span>: daily_progress,</span><br><span class="line">            <span class="string">&#x27;累積進度&#x27;</span>: cumulative_progress</span><br><span class="line">        &#125;)</span><br><span class="line"></span><br><span class="line">        <span class="comment"># st.dataframe(csv_data)</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">with</span> col2:</span><br><span class="line"></span><br><span class="line">        <span class="comment"># plt.xticks(rotation=45)</span></span><br><span class="line"></span><br><span class="line">        fig, ax1 = plt.subplots(figsize=(<span class="number">14</span>, <span class="number">10</span>))</span><br><span class="line">        <span class="comment"># ax1=plt.xticks(rotation=45)</span></span><br><span class="line"></span><br><span class="line">        <span class="comment"># 畫甘特圖，調整顏色和透明度，加入格線</span></span><br><span class="line">        colors = plt.cm.Set3.colors  <span class="comment"># 使用單一色系</span></span><br><span class="line">        <span class="comment"># st.json(final_df.to_json())</span></span><br><span class="line">        cnt=<span class="number">0</span></span><br><span class="line">        <span class="keyword">for</span> i, row <span class="keyword">in</span> final_df.iterrows():</span><br><span class="line">            <span class="keyword">if</span> <span class="keyword">not</span> pd.isna(row[<span class="string">&quot;持續天數&quot;</span>]):</span><br><span class="line">                color = colors[i % <span class="built_in">len</span>(colors)]</span><br><span class="line">                ax1.barh(row[<span class="string">&#x27;項目名稱&#x27;</span>], row[<span class="string">&#x27;持續天數&#x27;</span>], left=row[<span class="string">&#x27;起始日期&#x27;</span>], height=<span class="number">0.3</span>, color=color)</span><br><span class="line">                <span class="keyword">if</span> is_show_text==<span class="literal">True</span>:</span><br><span class="line">                    ax1.text(row[<span class="string">&#x27;起始日期&#x27;</span>], cnt, <span class="string">f&quot;<span class="subst">&#123;row[<span class="string">&#x27;項目名稱&#x27;</span>]&#125;</span>: <span class="subst">&#123;<span class="built_in">int</span>(row[<span class="string">&#x27;持續天數&#x27;</span>])&#125;</span>天&quot;</span>, color=<span class="string">&#x27;black&#x27;</span>, verticalalignment=<span class="string">&#x27;center&#x27;</span>, fontsize=<span class="number">10</span>, fontproperties=font_prop)</span><br><span class="line">                cnt=cnt+<span class="number">1</span></span><br><span class="line"></span><br><span class="line">        <span class="comment"># 設置標籤和標題</span></span><br><span class="line">        ax1.set_xlabel(<span class="string">&#x27;日期&#x27;</span>, fontproperties=font_prop)</span><br><span class="line">        ax1.set_title(<span class="string">&#x27;施工進度甘特圖&#x27;</span>, fontproperties=font_prop)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> label <span class="keyword">in</span> ax1.get_yticklabels():</span><br><span class="line">            label.set_fontproperties(font_prop)</span><br><span class="line"></span><br><span class="line">        <span class="comment"># 在同一張圖上繪製每日累積進度圖並標示節點百分比</span></span><br><span class="line">        ax2 = ax1.twinx()</span><br><span class="line">        ax2.plot(date_range, cumulative_progress, marker=<span class="string">&#x27;o&#x27;</span>, linestyle=<span class="string">&#x27;-&#x27;</span>, color=<span class="string">&#x27;orange&#x27;</span>)</span><br><span class="line">        <span class="keyword">for</span> i, txt <span class="keyword">in</span> <span class="built_in">enumerate</span>(cumulative_progress):</span><br><span class="line">            <span class="keyword">if</span> i % <span class="number">5</span>== <span class="number">0</span> <span class="keyword">or</span> txt==<span class="number">100</span>:  <span class="comment"># 每10%標示一次</span></span><br><span class="line">                ax2.annotate(<span class="string">f&#x27;<span class="subst">&#123;<span class="built_in">int</span>(txt)&#125;</span>%&#x27;</span>, (date_range[i], cumulative_progress[i]), textcoords=<span class="string">&quot;offset points&quot;</span>, xytext=(<span class="number">0</span>,<span class="number">10</span>), ha=<span class="string">&#x27;center&#x27;</span>, fontproperties=font_prop)</span><br><span class="line"></span><br><span class="line">        ax2.set_ylabel(<span class="string">&#x27;累積進度百分比 (%)&#x27;</span>, fontproperties=font_prop)</span><br><span class="line">        ax2.yaxis.set_major_locator(ticker.MultipleLocator(base=<span class="number">10</span>))</span><br><span class="line">        <span class="comment"># 調整 x 軸日期顯示為每半個月</span></span><br><span class="line">        ax1.xaxis.set_major_locator(mdates.DayLocator(interval=<span class="number">10</span>))  <span class="comment"># 每10顯示一次日期</span></span><br><span class="line">        ax1.xaxis.set_minor_locator(mdates.DayLocator(interval=<span class="number">1</span>))  <span class="comment"># 每天都顯示日期</span></span><br><span class="line">        ax1.xaxis.set_major_formatter(mdates.DateFormatter(<span class="string">&#x27;%Y-%m-%d&#x27;</span>))</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">        <span class="comment"># 添加網格線</span></span><br><span class="line">        ax2.grid(<span class="literal">True</span>, which=<span class="string">&#x27;both&#x27;</span>, linestyle=<span class="string">&#x27;:&#x27;</span>, linewidth=<span class="number">0.5</span>)</span><br><span class="line"></span><br><span class="line">        <span class="comment"># 添加圖例，將位置調整到右下角</span></span><br><span class="line">        <span class="comment"># ax1.legend([&#x27;工程項目&#x27;], loc=&#x27;upper left&#x27;, prop=font_prop)</span></span><br><span class="line">        ax2.legend([<span class="string">&#x27;累積進度&#x27;</span>], loc=<span class="string">&#x27;lower right&#x27;</span>, prop=font_prop)</span><br><span class="line"></span><br><span class="line">        <span class="comment"># 調整圖形排版</span></span><br><span class="line">        fig.tight_layout()</span><br><span class="line"></span><br><span class="line">        ax1.set_xlim(start_date - pd.Timedelta(days=<span class="number">3</span>), end_date + pd.Timedelta(days=<span class="number">3</span>))</span><br><span class="line"></span><br><span class="line">        <span class="comment"># 顯示圖形</span></span><br><span class="line">        st.pyplot(fig)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 下載 CSV 按鈕</span></span><br><span class="line">    csv_data = pd.DataFrame(&#123;</span><br><span class="line">        <span class="string">&#x27;date&#x27;</span>: date_range,</span><br><span class="line">        <span class="string">&#x27;progress(%)&#x27;</span>: daily_progress/<span class="number">100</span>,</span><br><span class="line">        <span class="string">&#x27;sum_progress(%)&#x27;</span>: cumulative_progress/<span class="number">100</span></span><br><span class="line">    &#125;)</span><br><span class="line">    csv_data[<span class="string">&#x27;date&#x27;</span>] = csv_data[<span class="string">&#x27;date&#x27;</span>].dt.strftime(<span class="string">&#x27;%Y-%m-%d&#x27;</span>)  <span class="comment"># 將日期轉換為字串格式</span></span><br><span class="line">    csv_string = csv_data.to_csv(index=<span class="literal">False</span>, encoding=<span class="string">&#x27;utf-8-sig&#x27;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 提供下載按鈕</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">with</span> col1:</span><br><span class="line"></span><br><span class="line">        st.download_button(</span><br><span class="line">            label=<span class="string">&quot;下載 CSV 檔案&quot;</span>,</span><br><span class="line">            data=csv_string,</span><br><span class="line">            file_name=<span class="string">&#x27;progress_data.csv&#x27;</span>,</span><br><span class="line">            mime=<span class="string">&#x27;text/csv&#x27;</span></span><br><span class="line">        )</span><br><span class="line"></span><br><span class="line"><span class="comment"># def main_eng():</span></span><br><span class="line"><span class="comment">#     ### Initialization ###</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#     SYSTEM_VERSION = &quot;V1.0.0&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#     font_prop = FontProperties(fname=&#x27;./NotoSansCJK-Regular.ttc&#x27;)</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#     # Initialize data if not stored in st.session_state</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#     if &#x27;data&#x27; not in st.session_state:</span></span><br><span class="line"><span class="comment">#         sample_data = [</span></span><br><span class="line"><span class="comment">#             &#123;&#x27;project_name&#x27;: &#x27;Foundation Construction&#x27;, &#x27;cost&#x27;: 50000, &#x27;start_date&#x27;: &#x27;2024-07-01&#x27;, &#x27;duration_days&#x27;: 5, &#x27;end_date&#x27;: &#x27;&#x27;&#125;,</span></span><br><span class="line"><span class="comment">#             &#123;&#x27;project_name&#x27;: &#x27;Structural Reinforcement&#x27;, &#x27;cost&#x27;: 120000, &#x27;start_date&#x27;: &#x27;2024-07-15&#x27;, &#x27;duration_days&#x27;: 12, &#x27;end_date&#x27;: &#x27;&#x27;&#125;,</span></span><br><span class="line"><span class="comment">#             &#123;&#x27;project_name&#x27;: &#x27;Foundation Engineering&#x27;, &#x27;cost&#x27;: 80000, &#x27;start_date&#x27;: &#x27;2024-08-01&#x27;, &#x27;duration_days&#x27;: 8, &#x27;end_date&#x27;: &#x27;&#x27;&#125;,</span></span><br><span class="line"><span class="comment">#             &#123;&#x27;project_name&#x27;: &#x27;Roof Repair&#x27;, &#x27;cost&#x27;: 100000, &#x27;start_date&#x27;: &#x27;2024-07-01&#x27;, &#x27;duration_days&#x27;: 10, &#x27;end_date&#x27;: &#x27;&#x27;&#125;,</span></span><br><span class="line"><span class="comment">#             &#123;&#x27;project_name&#x27;: &#x27;Interior Decoration&#x27;, &#x27;cost&#x27;: 60000, &#x27;start_date&#x27;: &#x27;2024-07-05&#x27;, &#x27;duration_days&#x27;: 6, &#x27;end_date&#x27;: &#x27;&#x27;&#125;,</span></span><br><span class="line"><span class="comment">#             &#123;&#x27;project_name&#x27;: &#x27;Power System Upgrade&#x27;, &#x27;cost&#x27;: 70000, &#x27;start_date&#x27;: &#x27;2024-07-20&#x27;, &#x27;duration_days&#x27;: 7, &#x27;end_date&#x27;: &#x27;&#x27;&#125;,</span></span><br><span class="line"><span class="comment">#             &#123;&#x27;project_name&#x27;: &#x27;Water Facilities Construction&#x27;, &#x27;cost&#x27;: 90000, &#x27;start_date&#x27;: &#x27;2024-07-25&#x27;, &#x27;duration_days&#x27;: 9, &#x27;end_date&#x27;: &#x27;&#x27;&#125;,</span></span><br><span class="line"><span class="comment">#             &#123;&#x27;project_name&#x27;: &#x27;Road Expansion&#x27;, &#x27;cost&#x27;: 110000, &#x27;start_date&#x27;: &#x27;2024-08-05&#x27;, &#x27;duration_days&#x27;: 11, &#x27;end_date&#x27;: &#x27;&#x27;&#125;,</span></span><br><span class="line"><span class="comment">#             &#123;&#x27;project_name&#x27;: &#x27;Greening Project&#x27;, &#x27;cost&#x27;: 80000, &#x27;start_date&#x27;: &#x27;2024-08-10&#x27;, &#x27;duration_days&#x27;: 8, &#x27;end_date&#x27;: &#x27;&#x27;&#125;,</span></span><br><span class="line"><span class="comment">#             &#123;&#x27;project_name&#x27;: &#x27;Fire Safety System&#x27;, &#x27;cost&#x27;: 90000, &#x27;start_date&#x27;: &#x27;2024-08-15&#x27;, &#x27;duration_days&#x27;: 9, &#x27;end_date&#x27;: &#x27;&#x27;&#125;,</span></span><br><span class="line"><span class="comment">#         ]</span></span><br><span class="line">        </span><br><span class="line"><span class="comment">#         st.session_state[&#x27;data&#x27;] = sample_data</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#     # Display UI</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#     col1, col2 = st.columns([1, 2])</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#     with col1:</span></span><br><span class="line"><span class="comment">#         st.markdown(&quot;### :spiral_calendar_pad: Project Progress &quot; + SYSTEM_VERSION)</span></span><br><span class="line"><span class="comment">#         st.info(&quot;Author: **HankLin @202407**&quot;)</span></span><br><span class="line"><span class="comment">#         st.markdown(&quot;---&quot;)</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#         st.markdown(&quot;##### <span class="github-emoji" alias="point_down" style="" fallback-src="https://github.githubassets.com/images/icons/emoji/unicode/1f447.png?v8">&#x1f447;</span> Edit Construction Projects&quot;)</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#         df = pd.DataFrame(st.session_state[&#x27;data&#x27;])</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#         edited_df = st.data_editor(df, use_container_width=True, num_rows=&#x27;dynamic&#x27;,</span></span><br><span class="line"><span class="comment">#                                 column_config=&#123;</span></span><br><span class="line"><span class="comment">#                                     &quot;start_date&quot;: st.column_config.DateColumn(</span></span><br><span class="line"><span class="comment">#                                         &quot;Start Date&quot;,</span></span><br><span class="line"><span class="comment">#                                         min_value=date(2024, 1, 1),</span></span><br><span class="line"><span class="comment">#                                         max_value=date(2030, 1, 1),</span></span><br><span class="line"><span class="comment">#                                         format=&quot;YYYY-MM-DD&quot;,</span></span><br><span class="line"><span class="comment">#                                         step=1,</span></span><br><span class="line"><span class="comment">#                                     )</span></span><br><span class="line"><span class="comment">#                                 &#125;,</span></span><br><span class="line"><span class="comment">#                                 hide_index=True, column_order=(&quot;project_name&quot;, &quot;cost&quot;, &quot;start_date&quot;, &quot;duration_days&quot;))</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#         edited_df[&#x27;end_date&#x27;] = edited_df[&#x27;start_date&#x27;] + pd.to_timedelta(edited_df[&#x27;duration_days&#x27;], unit=&#x27;D&#x27;)</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#         is_show_text = st.toggle(&quot;Show Block Text&quot;)</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#     with col2:</span></span><br><span class="line"><span class="comment">#         fig, ax1 = plt.subplots(figsize=(14, 10))</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#         colors = plt.cm.Set3.colors</span></span><br><span class="line"><span class="comment">#         cnt = 0</span></span><br><span class="line"><span class="comment">#         for i, row in edited_df.iterrows():</span></span><br><span class="line"><span class="comment">#             if not pd.isna(row[&quot;duration_days&quot;]):</span></span><br><span class="line"><span class="comment">#                 color = colors[i % len(colors)]</span></span><br><span class="line"><span class="comment">#                 ax1.barh(row[&#x27;project_name&#x27;], row[&#x27;duration_days&#x27;], left=row[&#x27;start_date&#x27;], height=0.3, color=color)</span></span><br><span class="line"><span class="comment">#                 if is_show_text:</span></span><br><span class="line"><span class="comment">#                     ax1.text(row[&#x27;start_date&#x27;], cnt, f&quot;&#123;row[&#x27;project_name&#x27;]&#125;: &#123;int(row[&#x27;duration_days&#x27;])&#125; days&quot;, color=&#x27;black&#x27;, verticalalignment=&#x27;center&#x27;, fontsize=10, fontproperties=font_prop)</span></span><br><span class="line"><span class="comment">#                 cnt += 1</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#         ax1.set_xlabel(&#x27;Date&#x27;, fontproperties=font_prop)</span></span><br><span class="line"><span class="comment">#         ax1.set_title(&#x27;Construction Progress Gantt Chart&#x27;, fontproperties=font_prop)</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#         for label in ax1.get_yticklabels():</span></span><br><span class="line"><span class="comment">#             label.set_fontproperties(font_prop)</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#         ax2 = ax1.twinx()</span></span><br><span class="line"><span class="comment">#         ax2.plot(date_range, cumulative_progress, marker=&#x27;o&#x27;, linestyle=&#x27;-&#x27;, color=&#x27;orange&#x27;)</span></span><br><span class="line"><span class="comment">#         for i, txt in enumerate(cumulative_progress):</span></span><br><span class="line"><span class="comment">#             if i % 5 == 0 or txt == 100:</span></span><br><span class="line"><span class="comment">#                 ax2.annotate(f&#x27;&#123;int(txt)&#125;%&#x27;, (date_range[i], cumulative_progress[i]), textcoords=&quot;offset points&quot;, xytext=(0, 10), ha=&#x27;center&#x27;, fontproperties=font_prop)</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#         ax2.set_ylabel(&#x27;Cumulative Progress (%)&#x27;, fontproperties=font_prop)</span></span><br><span class="line"><span class="comment">#         ax2.yaxis.set_major_locator(ticker.MultipleLocator(base=10))</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#         ax1.xaxis.set_major_locator(mdates.DayLocator(interval=10))</span></span><br><span class="line"><span class="comment">#         ax1.xaxis.set_minor_locator(mdates.DayLocator(interval=1))</span></span><br><span class="line"><span class="comment">#         ax1.xaxis.set_major_formatter(mdates.DateFormatter(&#x27;%Y-%m-%d&#x27;))</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#         ax2.grid(True, which=&#x27;both&#x27;, linestyle=&#x27;:&#x27;, linewidth=0.5)</span></span><br><span class="line"><span class="comment">#         ax2.legend([&#x27;Cumulative Progress&#x27;], loc=&#x27;lower right&#x27;, prop=font_prop)</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#         fig.tight_layout()</span></span><br><span class="line"><span class="comment">#         ax1.set_xlim(start_date - pd.Timedelta(days=3), end_date + pd.Timedelta(days=3))</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#         st.pyplot(fig)</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#     # Download CSV button</span></span><br><span class="line"><span class="comment">#     csv_data = pd.DataFrame(&#123;</span></span><br><span class="line"><span class="comment">#         &#x27;date&#x27;: date_range,</span></span><br><span class="line"><span class="comment">#         &#x27;progress(%)&#x27;: daily_progress/100,</span></span><br><span class="line"><span class="comment">#         &#x27;sum_progress(%)&#x27;: cumulative_progress/100</span></span><br><span class="line"><span class="comment">#     &#125;)</span></span><br><span class="line"><span class="comment">#     csv_data[&#x27;date&#x27;] = csv_data[&#x27;date&#x27;].dt.strftime(&#x27;%Y-%m-%d&#x27;)</span></span><br><span class="line"><span class="comment">#     csv_string = csv_data.to_csv(index=False, encoding=&#x27;utf-8-sig&#x27;)</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#     with col1:</span></span><br><span class="line"><span class="comment">#         st.download_button(</span></span><br><span class="line"><span class="comment">#             label=&quot;Download CSV File&quot;,</span></span><br><span class="line"><span class="comment">#             data=csv_string,</span></span><br><span class="line"><span class="comment">#             file_name=&#x27;progress_data.csv&#x27;,</span></span><br><span class="line"><span class="comment">#             mime=&#x27;text/csv&#x27;</span></span><br><span class="line"><span class="comment">#         )</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&quot;__main__&quot;</span>:</span><br><span class="line">    </span><br><span class="line">    st.set_page_config(layout=<span class="string">&#x27;wide&#x27;</span>)</span><br><span class="line">    <span class="comment"># language_check=st.checkbox(&quot;English&quot;)</span></span><br><span class="line">    <span class="comment"># if language_check==True:</span></span><br><span class="line">        <span class="comment"># main_eng()</span></span><br><span class="line">    <span class="comment"># else:</span></span><br><span class="line">    main_zh()</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h2 id="開發過程紀錄">開發過程紀錄</h2>
+<ul>
+<li>在dataframe中處理日期要把字串類型的日期透過'pd.to_datetime'轉型才能用</li>
+<li>中文顯示會有問題的地方要先下載好字型檔讓'fontproperties'引用</li>
+<li>甘特圖與累積進度圖要交疊在同一張圖要透過'ax2=ax1.twinx()'才能連一起</li>
+<li>調整X軸座標顯示時，可以用'ax1.set_xlim(start_date -
+pd.Timedelta(days=3), end_date +
+pd.Timedelta(days=3))'來將前後各往外擴一些</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>作者： </strong>Hank Lin
+  </li>
+  <li class="post-copyright-link">
+      <strong>文章連結：</strong>
+      <a href="https://www.hanksvba.com/posts/43562660/" title="Streamlit工程進度甘特圖">https://www.hanksvba.com/posts/43562660/</a>
+  </li>
+  <li class="post-copyright-license">
+      <strong>版權聲明： </strong>本網誌所有文章除特別聲明外，均採用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 許可協議。轉載請註明出處！
+  </li>
+</ul>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/Streamlit/" rel="tag"><i class="fa fa-tag"></i> Streamlit</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/posts/213685522/" rel="prev" title="Streamlit做手繪簽名">
+                  <i class="fa fa-angle-left"></i> Streamlit做手繪簽名
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/posts/144473154/" rel="next" title="施工照片VBA-實作流程">
+                  施工照片VBA-實作流程 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2024</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Hank Lin</span>
+  </div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="訪客總數">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="總瀏覽次數">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 強力驅動
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="back-to-top" role="button" aria-label="回到頂端">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/next-boot.js"></script>
+
+  
+  <script class="next-config" data-name="pdf" type="application/json">{"object_url":{"url":"https://cdnjs.cloudflare.com/ajax/libs/pdfobject/2.2.12/pdfobject.min.js","integrity":"sha256-g2xji1rlE3KsGVClvuxTbcR0Kn2+wtQADSff2Tbb4zA="},"url":"/lib/pdf/web/viewer"}</script>
+  <script src="/js/third-party/tags/pdf.js"></script>
+
+
+
+
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">false</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"ams","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+
+</body>
+</html>

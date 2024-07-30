@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.2.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha256-wiz7ZSCn/btzhjKDQBms9Hx4sSeUYsDrTLg7roPstac=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"www.hanksvba.com","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.19.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":"mac"},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":false,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜尋...","empty":"我們無法找到任何有關 ${query} 的搜索結果","hits_time":"${hits} 找到 ${time} 個結果","hits":"找到 ${hits} 個結果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="前言  工程估算為提報計畫前的必要內容，所提報的概估經費關乎於計畫核定後是否會造成實際所需經費是否足夠、執行率會不會有問題。  工程估算方法有兩種:材料及類別  材料是將單元拆分為鋼筋、模板、混凝土...等等可以從標準斷面計算而得的內容。 類別是將工程拆分為渠道工程、道路工程、橋梁工程...等可以明確分類的內容。  本篇文章希望能夠藉由雲端介面的操作來達成以下幾點需求  工程">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Streamlit打造工程估算系統">
+<meta property="og:url" content="https://www.hanksvba.com/posts/2910899188/">
+<meta property="og:site_name" content="Hank&#39;s Blog">
+<meta property="og:description" content="前言  工程估算為提報計畫前的必要內容，所提報的概估經費關乎於計畫核定後是否會造成實際所需經費是否足夠、執行率會不會有問題。  工程估算方法有兩種:材料及類別  材料是將單元拆分為鋼筋、模板、混凝土...等等可以從標準斷面計算而得的內容。 類別是將工程拆分為渠道工程、道路工程、橋梁工程...等可以明確分類的內容。  本篇文章希望能夠藉由雲端介面的操作來達成以下幾點需求  工程">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:image" content="https://www.hanksvba.com/posts/2910899188/1.JPG">
+<meta property="og:image" content="https://www.hanksvba.com/posts/2910899188/2.JPG">
+<meta property="og:image" content="https://www.hanksvba.com/posts/2910899188/3.JPG">
+<meta property="og:image" content="https://www.hanksvba.com/posts/2910899188/4.JPG">
+<meta property="article:published_time" content="2024-06-19T14:32:24.000Z">
+<meta property="article:modified_time" content="2024-06-19T14:32:24.000Z">
+<meta property="article:author" content="Hank Lin">
+<meta property="article:tag" content="Streamlit">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://www.hanksvba.com/posts/2910899188/1.JPG">
+
+
+<link rel="canonical" href="https://www.hanksvba.com/posts/2910899188/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-TW","comments":true,"permalink":"https://www.hanksvba.com/posts/2910899188/","path":"posts/2910899188/","title":"Streamlit打造工程估算系統"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Streamlit打造工程估算系統 | Hank's Blog</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切換導航欄" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Hank's Blog</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">工程人的設計監造VBA工具交流區</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜尋" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-首頁"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首頁</a></li><li class="menu-item menu-item-關於"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>關於</a></li><li class="menu-item menu-item-標籤"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>標籤</a></li><li class="menu-item menu-item-分類"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分類</a></li><li class="menu-item menu-item-文章"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>文章</a></li>
+  </ul>
+</nav>
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目錄
+        </li>
+        <li class="sidebar-nav-overview">
+          本站概要
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%89%8D%E8%A8%80"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B7%A5%E7%A8%8B%E4%BC%B0%E7%AE%97%E6%96%B9%E6%B3%95"><span class="nav-number">2.</span> <span class="nav-text">工程估算方法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BC%B0%E5%A4%AA%E5%B0%91"><span class="nav-number">2.1.</span> <span class="nav-text">估太少</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BC%B0%E5%A4%AA%E5%A4%9A"><span class="nav-number">2.2.</span> <span class="nav-text">估太多</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%A1%9E%E5%88%A5%E8%A8%88%E7%AE%97%E5%85%A7%E5%AE%B9"><span class="nav-number">3.</span> <span class="nav-text">類別計算內容</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%B8%A0%E9%81%93%E5%B7%A5%E7%A8%8B%E7%89%88%E6%A9%8B%E5%B7%A5%E7%A8%8B"><span class="nav-number">3.1.</span> <span class="nav-text">渠道工程、版橋工程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%93%8B%E5%9C%9F%E7%89%86"><span class="nav-number">3.2.</span> <span class="nav-text">擋土牆</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%81%93%E8%B7%AF%E5%B7%A5%E7%A8%8B%E7%89%88%E6%A8%81%E5%B7%A5%E7%A8%8B"><span class="nav-number">3.3.</span> <span class="nav-text">道路工程、版樁工程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%9B%9C%E9%A0%85%E5%8F%8A%E5%85%B6%E4%BB%96"><span class="nav-number">3.4.</span> <span class="nav-text">雜項及其他</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%96%93%E6%8E%A5%E8%B2%BB%E7%94%A8"><span class="nav-number">3.5.</span> <span class="nav-text">間接費用</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%BC%B8%E5%87%BA%E5%A0%B1%E8%A1%A8"><span class="nav-number">4.</span> <span class="nav-text">輸出報表</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AF%A6%E4%BD%9C%E6%88%90%E6%9E%9C"><span class="nav-number">5.</span> <span class="nav-text">實作成果</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Hank Lin"
+      src="/images/avatar_custom.png">
+  <p class="site-author-name" itemprop="name">Hank Lin</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">20</span>
+          <span class="site-state-item-name">文章</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">4</span>
+        <span class="site-state-item-name">分類</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">13</span>
+        <span class="site-state-item-name">標籤</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="mailto:apple84026113@gmail.com" title="E-Mail → mailto:apple84026113@gmail.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.youtube.com/channel/UCWmy5KaK7Leg6lLUlWBPaSw" title="YouTube → https:&#x2F;&#x2F;www.youtube.com&#x2F;channel&#x2F;UCWmy5KaK7Leg6lLUlWBPaSw" rel="noopener me" target="_blank"><i class="fab fa-youtube fa-fw"></i>YouTube</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/images/LINE_QRCODE.png" title="LINE → &#x2F;images&#x2F;LINE_QRCODE.png" rel="noopener me"><i class="fab fa-line fa-fw"></i>LINE</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://reurl.cc/RyvvaZ" title="LINE社群 → https:&#x2F;&#x2F;reurl.cc&#x2F;RyvvaZ" rel="noopener me" target="_blank"><i class="fas fa-comment fa-fw"></i>LINE社群</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://hankvba.blogspot.com/" title="舊網站 → https:&#x2F;&#x2F;hankvba.blogspot.com&#x2F;" rel="noopener me" target="_blank"><i class="fab fa-blogger fa-fw"></i>舊網站</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://portaly.cc/hanksvba/support/" title="小額贊助 → https:&#x2F;&#x2F;portaly.cc&#x2F;hanksvba&#x2F;support&#x2F;" rel="noopener me" target="_blank"><i class="fas fa-handshake fa-fw"></i>小額贊助</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-TW">
+    <link itemprop="mainEntityOfPage" href="https://www.hanksvba.com/posts/2910899188/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar_custom.png">
+      <meta itemprop="name" content="Hank Lin">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hank's Blog">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="Streamlit打造工程估算系統 | Hank's Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Streamlit打造工程估算系統
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">發表於</span>
+
+      <time title="創建時間：2024-06-19 22:32:24" itemprop="dateCreated datePublished" datetime="2024-06-19T22:32:24+08:00">2024-06-19</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分類於</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E5%B0%88%E6%A1%88%E6%88%90%E6%9E%9C/" itemprop="url" rel="index"><span itemprop="name">專案成果</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="閱讀次數" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">閱讀次數：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h2 id="前言">前言</h2>
+<blockquote>
+<p>工程估算為提報計畫前的必要內容，所提報的概估經費關乎於計畫核定後是否會造成實際所需經費是否足夠、執行率會不會有問題。</p>
+</blockquote>
+<p>工程估算方法有兩種:材料及類別</p>
+<ul>
+<li>材料是將單元拆分為鋼筋、模板、混凝土...等等可以從標準斷面計算而得的內容。</li>
+<li>類別是將工程拆分為渠道工程、道路工程、橋梁工程...等可以明確分類的內容。</li>
+</ul>
+<p>本篇文章希望能夠藉由<strong>雲端介面</strong>的操作來達成以下幾點需求</p>
+<ol type="1">
+<li>工程估算方法將以往的<strong>材料</strong>導向為<strong>類別</strong>。</li>
+<li>各類別單元內容計算由程式接手，減少人力調配參數。</li>
+<li>輸出報表採用最新版本號，避免各地版本不一造成困擾。</li>
+<li>手機也能在工區現場獲得經費估算成果。</li>
+</ol>
+<span id="more"></span>
+<h2 id="工程估算方法">工程估算方法</h2>
+<p>工程估算方法不同是目前在處理計畫提報時常常造成提報經費與實際經費有落差的主因，經查發現原來是大多數人都用<strong>材料</strong>作為品項而非用<strong>工程類別</strong>作為品項，導致在估算過程容易忽略道路鋪面、擋土設施這類內容。</p>
+<h3 id="估太少">估太少</h3>
+<p>設計過程會需要東扣西扣，為了主體工程能夠收尾必須要捨棄掉某些也是很重要的項目。</p>
+<h3 id="估太多">估太多</h3>
+<p>會被檢討為什麼當初黑白估造成執行率不高，很多人都是因為被刁難過經費不能超過上限，所以就給他用力估下去，造成這樣的結果。</p>
+<h2 id="類別計算內容">類別計算內容</h2>
+<h3 id="渠道工程版橋工程">渠道工程、版橋工程</h3>
+<ul>
+<li>給定渠道長寬及長度，回推牆厚及所需鋼筋</li>
+<li>給定版橋長寬及座數，回推版厚及所需鋼筋</li>
+</ul>
+<h3 id="擋土牆">擋土牆</h3>
+<ul>
+<li>懸臂式擋土牆</li>
+<li>重力式擋土牆</li>
+</ul>
+<h3 id="道路工程版樁工程">道路工程、版樁工程</h3>
+<p>分為AC、再生AC、碎石級配、CLSM的各種排列組合，透過新增的方式來逐行增加，也可以進行刪除。</p>
+<h3 id="雜項及其他">雜項及其他</h3>
+<p>將前述內容加總後乘上<strong>雜項費用係數(預設為0.1)</strong></p>
+<h3 id="間接費用">間接費用</h3>
+<p>為前幾項的加總後乘上<strong>間接費用係數(預設為0.3)</strong>，這部分包含職安、環保、廠商利潤、工程管理費等</p>
+<h2 id="輸出報表">輸出報表</h2>
+<p>工作時如有需要輸出報表的時候，不外乎會採用word或者excel之類的工具，當版本有更新的時候會需要請同事重新下載使用，並在報表的某處壓一個<strong>版本號</strong>作為辨識，然而往往頒布適用的時候，還是會有不少同事以舊的版本提送報表。</p>
+<p>為解決上述版本差異問題，這次選擇利用雲端網頁作為可<strong>及時更新</strong>的報表輸出媒介，一旦計算規則改變或報表格式變化就能夠在同事輸入完基本資料之後，確保輸出的內容會是正確版的。</p>
+<h2 id="實作成果">實作成果</h2>
+<figure>
+<img src="1.JPG" alt="系統操作流程" />
+<figcaption aria-hidden="true">系統操作流程</figcaption>
+</figure>
+<hr />
+<figure>
+<img src="2.JPG" alt="工程基本資料" />
+<figcaption aria-hidden="true">工程基本資料</figcaption>
+</figure>
+<hr />
+<figure>
+<img src="3.JPG" alt="工程施作位置" />
+<figcaption aria-hidden="true">工程施作位置</figcaption>
+</figure>
+<hr />
+<figure>
+<img src="4.JPG" alt="工程內容概要" />
+<figcaption aria-hidden="true">工程內容概要</figcaption>
+</figure>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>作者： </strong>Hank Lin
+  </li>
+  <li class="post-copyright-link">
+      <strong>文章連結：</strong>
+      <a href="https://www.hanksvba.com/posts/2910899188/" title="Streamlit打造工程估算系統">https://www.hanksvba.com/posts/2910899188/</a>
+  </li>
+  <li class="post-copyright-license">
+      <strong>版權聲明： </strong>本網誌所有文章除特別聲明外，均採用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 許可協議。轉載請註明出處！
+  </li>
+</ul>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/Streamlit/" rel="tag"><i class="fa fa-tag"></i> Streamlit</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/posts/639809757/" rel="prev" title="Streamlit建置GoogleSheet簡易資料庫">
+                  <i class="fa fa-angle-left"></i> Streamlit建置GoogleSheet簡易資料庫
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/posts/777227760/" rel="next" title="Streamlit建立權限控管機制">
+                  Streamlit建立權限控管機制 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2024</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Hank Lin</span>
+  </div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="訪客總數">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="總瀏覽次數">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 強力驅動
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="back-to-top" role="button" aria-label="回到頂端">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/next-boot.js"></script>
+
+  
+  <script class="next-config" data-name="pdf" type="application/json">{"object_url":{"url":"https://cdnjs.cloudflare.com/ajax/libs/pdfobject/2.2.12/pdfobject.min.js","integrity":"sha256-g2xji1rlE3KsGVClvuxTbcR0Kn2+wtQADSff2Tbb4zA="},"url":"/lib/pdf/web/viewer"}</script>
+  <script src="/js/third-party/tags/pdf.js"></script>
+
+
+
+
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">false</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"ams","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+
+</body>
+</html>

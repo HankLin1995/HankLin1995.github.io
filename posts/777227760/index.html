@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.2.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha256-wiz7ZSCn/btzhjKDQBms9Hx4sSeUYsDrTLg7roPstac=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"www.hanksvba.com","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.19.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":"mac"},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":false,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜尋...","empty":"我們無法找到任何有關 ${query} 的搜索結果","hits_time":"${hits} 找到 ${time} 個結果","hits":"找到 ${hits} 個結果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="前言  權限控管顧名思義則是讓有登記的人可以進來雲端網頁中操作介面，這對於一些公司內部才能操作的內容有很大的幫助。  權限控管基本功能:  註冊 登入 忘記密碼 重置密碼  發送重置密碼時會隨意產生一組token，內容會包在電子郵件中寄送，這也算是一種多因素認證的機制。 本篇文章前端介面採用Python的Streamlit套件實作，後端邏輯則採用GAS實作，資料庫則採用Go">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Streamlit建立權限控管機制">
+<meta property="og:url" content="https://www.hanksvba.com/posts/777227760/">
+<meta property="og:site_name" content="Hank&#39;s Blog">
+<meta property="og:description" content="前言  權限控管顧名思義則是讓有登記的人可以進來雲端網頁中操作介面，這對於一些公司內部才能操作的內容有很大的幫助。  權限控管基本功能:  註冊 登入 忘記密碼 重置密碼  發送重置密碼時會隨意產生一組token，內容會包在電子郵件中寄送，這也算是一種多因素認證的機制。 本篇文章前端介面採用Python的Streamlit套件實作，後端邏輯則採用GAS實作，資料庫則採用Go">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:image" content="https://hackmd.io/_uploads/SkGgaL_LR.png">
+<meta property="article:published_time" content="2024-06-26T13:53:55.000Z">
+<meta property="article:modified_time" content="2024-06-26T13:53:55.000Z">
+<meta property="article:author" content="Hank Lin">
+<meta property="article:tag" content="Streamlit">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://hackmd.io/_uploads/SkGgaL_LR.png">
+
+
+<link rel="canonical" href="https://www.hanksvba.com/posts/777227760/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-TW","comments":true,"permalink":"https://www.hanksvba.com/posts/777227760/","path":"posts/777227760/","title":"Streamlit建立權限控管機制"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Streamlit建立權限控管機制 | Hank's Blog</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切換導航欄" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Hank's Blog</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">工程人的設計監造VBA工具交流區</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜尋" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-首頁"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首頁</a></li><li class="menu-item menu-item-關於"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>關於</a></li><li class="menu-item menu-item-標籤"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>標籤</a></li><li class="menu-item menu-item-分類"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分類</a></li><li class="menu-item menu-item-文章"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>文章</a></li>
+  </ul>
+</nav>
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目錄
+        </li>
+        <li class="sidebar-nav-overview">
+          本站概要
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%89%8D%E8%A8%80"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#gas%E7%AB%AF"><span class="nav-number">2.</span> <span class="nav-text">GAS端</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#users"><span class="nav-number">2.1.</span> <span class="nav-text">Users</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#resettokens"><span class="nav-number">2.2.</span> <span class="nav-text">ResetTokens</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#python%E7%AB%AF"><span class="nav-number">3.</span> <span class="nav-text">Python端</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#app.py"><span class="nav-number">3.1.</span> <span class="nav-text">app.py</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%93%88%E5%B8%8C%E5%8A%A0%E5%AF%86%E7%AE%97%E6%B3%95"><span class="nav-number">4.</span> <span class="nav-text">哈希加密算法</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Hank Lin"
+      src="/images/avatar_custom.png">
+  <p class="site-author-name" itemprop="name">Hank Lin</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">20</span>
+          <span class="site-state-item-name">文章</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">4</span>
+        <span class="site-state-item-name">分類</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">13</span>
+        <span class="site-state-item-name">標籤</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="mailto:apple84026113@gmail.com" title="E-Mail → mailto:apple84026113@gmail.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.youtube.com/channel/UCWmy5KaK7Leg6lLUlWBPaSw" title="YouTube → https:&#x2F;&#x2F;www.youtube.com&#x2F;channel&#x2F;UCWmy5KaK7Leg6lLUlWBPaSw" rel="noopener me" target="_blank"><i class="fab fa-youtube fa-fw"></i>YouTube</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/images/LINE_QRCODE.png" title="LINE → &#x2F;images&#x2F;LINE_QRCODE.png" rel="noopener me"><i class="fab fa-line fa-fw"></i>LINE</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://reurl.cc/RyvvaZ" title="LINE社群 → https:&#x2F;&#x2F;reurl.cc&#x2F;RyvvaZ" rel="noopener me" target="_blank"><i class="fas fa-comment fa-fw"></i>LINE社群</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://hankvba.blogspot.com/" title="舊網站 → https:&#x2F;&#x2F;hankvba.blogspot.com&#x2F;" rel="noopener me" target="_blank"><i class="fab fa-blogger fa-fw"></i>舊網站</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://portaly.cc/hanksvba/support/" title="小額贊助 → https:&#x2F;&#x2F;portaly.cc&#x2F;hanksvba&#x2F;support&#x2F;" rel="noopener me" target="_blank"><i class="fas fa-handshake fa-fw"></i>小額贊助</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-TW">
+    <link itemprop="mainEntityOfPage" href="https://www.hanksvba.com/posts/777227760/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar_custom.png">
+      <meta itemprop="name" content="Hank Lin">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hank's Blog">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="Streamlit建立權限控管機制 | Hank's Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Streamlit建立權限控管機制
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">發表於</span>
+
+      <time title="創建時間：2024-06-26 21:53:55" itemprop="dateCreated datePublished" datetime="2024-06-26T21:53:55+08:00">2024-06-26</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分類於</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E5%B0%88%E6%A1%88%E9%96%8B%E7%99%BC/" itemprop="url" rel="index"><span itemprop="name">專案開發</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="閱讀次數" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">閱讀次數：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h2 id="前言">前言</h2>
+<blockquote>
+<p>權限控管顧名思義則是讓有登記的人可以進來雲端網頁中操作介面，這對於一些公司內部才能操作的內容有很大的幫助。</p>
+</blockquote>
+<p>權限控管基本功能:</p>
+<ul>
+<li>註冊</li>
+<li>登入</li>
+<li>忘記密碼</li>
+<li>重置密碼</li>
+</ul>
+<p>發送重置密碼時會隨意產生一組token，內容會包在電子郵件中寄送，這也算是一種多因素認證的機制。</p>
+<p>本篇文章前端介面採用Python的Streamlit套件實作，後端邏輯則採用GAS實作，資料庫則採用GoogleSpreadSheet儲存。</p>
+<div class="note info"><p>正常的帳號密碼實作流程不建議採用明碼儲存，這裡只是一個實作的經驗，看之後密碼的部分要加鹽還是做哈希加密都可以再追加進去。</p>
+</div>
+<span id="more"></span>
+<h2 id="gas端">GAS端</h2>
+<p>先新增一個SpreadSheet並且將工作表設定如下:</p>
+<h3 id="users">Users</h3>
+<table>
+<thead>
+<tr class="header">
+<th>email</th>
+<th>username</th>
+<th>password</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>...</td>
+<td>...</td>
+<td>...</td>
+</tr>
+</tbody>
+</table>
+<h3 id="resettokens">ResetTokens</h3>
+<table>
+<thead>
+<tr class="header">
+<th>email</th>
+<th>token</th>
+<th>timestamp</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>...</td>
+<td>...</td>
+<td>...</td>
+</tr>
+</tbody>
+</table>
+<p>timestamp在GAS中的目的是為了要取得24小時內的token才能有效更改新密碼</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">doPost</span>(<span class="params">e</span>) &#123;</span><br><span class="line">  <span class="keyword">var</span> action = e.<span class="property">parameter</span>.<span class="property">action</span>;</span><br><span class="line">  <span class="keyword">var</span> email = e.<span class="property">parameter</span>.<span class="property">email</span>;</span><br><span class="line">  <span class="keyword">var</span> username = e.<span class="property">parameter</span>.<span class="property">username</span>;</span><br><span class="line">  <span class="keyword">var</span> password = e.<span class="property">parameter</span>.<span class="property">password</span>;</span><br><span class="line">  <span class="keyword">var</span> newPassword = e.<span class="property">parameter</span>.<span class="property">newPassword</span>;</span><br><span class="line">  <span class="keyword">var</span> token=e.<span class="property">parameter</span>.<span class="property">token</span>;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">try</span> &#123;</span><br><span class="line">    <span class="keyword">if</span> (action == <span class="string">&quot;register&quot;</span>) &#123;</span><br><span class="line">      <span class="keyword">return</span> <span class="title function_">registerUser</span>(email, username, password);</span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (action == <span class="string">&quot;login&quot;</span>) &#123;</span><br><span class="line">      <span class="keyword">return</span> <span class="title function_">loginUser</span>(username, password);</span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (action == <span class="string">&quot;forgotPassword&quot;</span>) &#123;</span><br><span class="line">      <span class="keyword">return</span> <span class="title function_">forgotPassword</span>(email);</span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (action == <span class="string">&quot;updatePassword&quot;</span>) &#123;</span><br><span class="line">      <span class="keyword">return</span> <span class="title function_">updatePassword</span>(username,token, newPassword);</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      <span class="keyword">return</span> <span class="title class_">ContentService</span>.<span class="title function_">createTextOutput</span>(<span class="title class_">JSON</span>.<span class="title function_">stringify</span>(&#123; <span class="attr">status</span>: <span class="string">&quot;error&quot;</span>, <span class="attr">message</span>: <span class="string">&quot;Invalid action&quot;</span> &#125;)).<span class="title function_">setMimeType</span>(<span class="title class_">ContentService</span>.<span class="property">MimeType</span>.<span class="property">JSON</span>);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125; <span class="keyword">catch</span> (error) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="title class_">ContentService</span>.<span class="title function_">createTextOutput</span>(<span class="title class_">JSON</span>.<span class="title function_">stringify</span>(&#123; <span class="attr">status</span>: <span class="string">&quot;error&quot;</span>, <span class="attr">message</span>: error.<span class="property">message</span> &#125;)).<span class="title function_">setMimeType</span>(<span class="title class_">ContentService</span>.<span class="property">MimeType</span>.<span class="property">JSON</span>);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">registerUser</span>(<span class="params">email, username, password</span>) &#123;</span><br><span class="line">  <span class="keyword">var</span> sheet = <span class="title class_">SpreadsheetApp</span>.<span class="title function_">getActiveSpreadsheet</span>().<span class="title function_">getSheetByName</span>(<span class="string">&#x27;Users&#x27;</span>);</span><br><span class="line">  <span class="keyword">var</span> data = sheet.<span class="title function_">getDataRange</span>().<span class="title function_">getValues</span>();</span><br><span class="line"></span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; data.<span class="property">length</span>; i++) &#123;</span><br><span class="line">    <span class="keyword">if</span> (data[i][<span class="number">0</span>] == email) &#123;</span><br><span class="line">      <span class="keyword">return</span> <span class="title class_">ContentService</span>.<span class="title function_">createTextOutput</span>(<span class="title class_">JSON</span>.<span class="title function_">stringify</span>(&#123; <span class="attr">status</span>: <span class="string">&quot;error&quot;</span>, <span class="attr">message</span>: <span class="string">&quot;Email already registered&quot;</span> &#125;)).<span class="title function_">setMimeType</span>(<span class="title class_">ContentService</span>.<span class="property">MimeType</span>.<span class="property">JSON</span>);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  sheet.<span class="title function_">appendRow</span>([email, username, password]);</span><br><span class="line">  <span class="keyword">return</span> <span class="title class_">ContentService</span>.<span class="title function_">createTextOutput</span>(<span class="title class_">JSON</span>.<span class="title function_">stringify</span>(&#123; <span class="attr">status</span>: <span class="string">&quot;success&quot;</span>, <span class="attr">message</span>: <span class="string">&quot;User registered successfully&quot;</span> &#125;)).<span class="title function_">setMimeType</span>(<span class="title class_">ContentService</span>.<span class="property">MimeType</span>.<span class="property">JSON</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">loginUser</span>(<span class="params">username, password</span>) &#123;</span><br><span class="line">  <span class="keyword">var</span> sheet = <span class="title class_">SpreadsheetApp</span>.<span class="title function_">getActiveSpreadsheet</span>().<span class="title function_">getSheetByName</span>(<span class="string">&#x27;Users&#x27;</span>);</span><br><span class="line">  <span class="keyword">var</span> data = sheet.<span class="title function_">getDataRange</span>().<span class="title function_">getValues</span>();</span><br><span class="line"></span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; data.<span class="property">length</span>; i++) &#123;</span><br><span class="line">    <span class="keyword">if</span> (data[i][<span class="number">1</span>] == username &amp;&amp; data[i][<span class="number">2</span>] == password) &#123;</span><br><span class="line">      <span class="keyword">return</span> <span class="title class_">ContentService</span>.<span class="title function_">createTextOutput</span>(<span class="title class_">JSON</span>.<span class="title function_">stringify</span>(&#123; <span class="attr">status</span>: <span class="string">&quot;success&quot;</span>, <span class="attr">message</span>: <span class="string">&quot;Login successful&quot;</span> &#125;)).<span class="title function_">setMimeType</span>(<span class="title class_">ContentService</span>.<span class="property">MimeType</span>.<span class="property">JSON</span>);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> <span class="title class_">ContentService</span>.<span class="title function_">createTextOutput</span>(<span class="title class_">JSON</span>.<span class="title function_">stringify</span>(&#123; <span class="attr">status</span>: <span class="string">&quot;error&quot;</span>, <span class="attr">message</span>: <span class="string">&quot;Invalid username or password&quot;</span> &#125;)).<span class="title function_">setMimeType</span>(<span class="title class_">ContentService</span>.<span class="property">MimeType</span>.<span class="property">JSON</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">updatePassword</span>(<span class="params">email, token, newPassword</span>) &#123;</span><br><span class="line">  <span class="keyword">var</span> sheet = <span class="title class_">SpreadsheetApp</span>.<span class="title function_">getActiveSpreadsheet</span>().<span class="title function_">getSheetByName</span>(<span class="string">&#x27;ResetTokens&#x27;</span>);</span><br><span class="line">  <span class="keyword">var</span> data = sheet.<span class="title function_">getDataRange</span>().<span class="title function_">getValues</span>();</span><br><span class="line">  <span class="keyword">var</span> now = <span class="keyword">new</span> <span class="title class_">Date</span>().<span class="title function_">getTime</span>();</span><br><span class="line">  <span class="keyword">var</span> tokenValid = <span class="literal">false</span>;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; data.<span class="property">length</span>; i++) &#123;</span><br><span class="line">    <span class="keyword">if</span> (data[i][<span class="number">0</span>] == email &amp;&amp; data[i][<span class="number">1</span>] == token) &#123;</span><br><span class="line">      <span class="keyword">var</span> timestamp = data[i][<span class="number">2</span>];</span><br><span class="line">      <span class="keyword">if</span> (now - timestamp &lt;= <span class="number">24</span> * <span class="number">60</span> * <span class="number">60</span> * <span class="number">1000</span>) &#123;  <span class="comment">// Token valid for 24 hours</span></span><br><span class="line">        tokenValid = <span class="literal">true</span>;</span><br><span class="line">        sheet.<span class="title function_">getRange</span>(i+<span class="number">1</span>, <span class="number">3</span>).<span class="title function_">setValue</span>(<span class="number">0</span>);</span><br><span class="line">        <span class="keyword">break</span>;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span> (tokenValid) &#123;</span><br><span class="line">    <span class="keyword">var</span> userSheet =<span class="title class_">SpreadsheetApp</span>.<span class="title function_">getActiveSpreadsheet</span>().<span class="title function_">getSheetByName</span>(<span class="string">&#x27;Users&#x27;</span>);</span><br><span class="line">    <span class="keyword">var</span> userData = userSheet.<span class="title function_">getDataRange</span>().<span class="title function_">getValues</span>();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">var</span> j = <span class="number">0</span>; j &lt; userData.<span class="property">length</span>; j++) &#123;</span><br><span class="line">      <span class="keyword">if</span> (userData[j][<span class="number">0</span>] == email) &#123;</span><br><span class="line">        userSheet.<span class="title function_">getRange</span>(j + <span class="number">1</span>, <span class="number">3</span>).<span class="title function_">setValue</span>(newPassword);</span><br><span class="line">        <span class="keyword">return</span> <span class="title class_">ContentService</span>.<span class="title function_">createTextOutput</span>(<span class="title class_">JSON</span>.<span class="title function_">stringify</span>(&#123; <span class="attr">status</span>: <span class="string">&quot;success&quot;</span>, <span class="attr">message</span>: <span class="string">&quot;Password updated successfully&quot;</span> &#125;)).<span class="title function_">setMimeType</span>(<span class="title class_">ContentService</span>.<span class="property">MimeType</span>.<span class="property">JSON</span>);</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> <span class="title class_">ContentService</span>.<span class="title function_">createTextOutput</span>(<span class="title class_">JSON</span>.<span class="title function_">stringify</span>(&#123; <span class="attr">status</span>: <span class="string">&quot;error&quot;</span>, <span class="attr">message</span>: <span class="string">&quot;Invalid token or email&quot;</span> &#125;)).<span class="title function_">setMimeType</span>(<span class="title class_">ContentService</span>.<span class="property">MimeType</span>.<span class="property">JSON</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">function</span> <span class="title function_">forgotPassword</span>(<span class="params">email</span>) &#123;</span><br><span class="line">  <span class="keyword">var</span> sheet =<span class="title class_">SpreadsheetApp</span>.<span class="title function_">getActiveSpreadsheet</span>().<span class="title function_">getSheetByName</span>(<span class="string">&#x27;Users&#x27;</span>);</span><br><span class="line">  <span class="keyword">var</span> data = sheet.<span class="title function_">getDataRange</span>().<span class="title function_">getValues</span>();</span><br><span class="line"></span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; data.<span class="property">length</span>; i++) &#123;</span><br><span class="line">    <span class="keyword">if</span> (data[i][<span class="number">0</span>] == email) &#123;</span><br><span class="line">      <span class="comment">// Generate a random token for password reset</span></span><br><span class="line">      <span class="keyword">var</span> token = <span class="title function_">generateToken</span>();</span><br><span class="line"></span><br><span class="line">      <span class="comment">// Store the token and timestamp in a separate sheet (or update the existing sheet structure)</span></span><br><span class="line">      <span class="title function_">storeResetToken</span>(email, token);</span><br><span class="line"></span><br><span class="line">      <span class="comment">// Send the reset email</span></span><br><span class="line">      <span class="title function_">sendResetEmail</span>(email, token);</span><br><span class="line"></span><br><span class="line">      <span class="keyword">return</span> <span class="title class_">ContentService</span>.<span class="title function_">createTextOutput</span>(<span class="title class_">JSON</span>.<span class="title function_">stringify</span>(&#123; <span class="attr">status</span>: <span class="string">&quot;success&quot;</span>, <span class="attr">message</span>: <span class="string">&quot;Password reset email sent&quot;</span> &#125;)).<span class="title function_">setMimeType</span>(<span class="title class_">ContentService</span>.<span class="property">MimeType</span>.<span class="property">JSON</span>);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> <span class="title class_">ContentService</span>.<span class="title function_">createTextOutput</span>(<span class="title class_">JSON</span>.<span class="title function_">stringify</span>(&#123; <span class="attr">status</span>: <span class="string">&quot;error&quot;</span>, <span class="attr">message</span>: <span class="string">&quot;Email not found&quot;</span> &#125;)).<span class="title function_">setMimeType</span>(<span class="title class_">ContentService</span>.<span class="property">MimeType</span>.<span class="property">JSON</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">generateToken</span>(<span class="params"></span>) &#123;</span><br><span class="line">  <span class="keyword">var</span> charset = <span class="string">&#x27;ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789&#x27;</span>;</span><br><span class="line">  <span class="keyword">var</span> token = <span class="string">&#x27;&#x27;</span>;</span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; <span class="number">20</span>; i++) &#123;</span><br><span class="line">    <span class="keyword">var</span> randomIndex = <span class="title class_">Math</span>.<span class="title function_">floor</span>(<span class="title class_">Math</span>.<span class="title function_">random</span>() * charset.<span class="property">length</span>);</span><br><span class="line">    token += charset[randomIndex];</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> token;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">storeResetToken</span>(<span class="params">email, token</span>) &#123;</span><br><span class="line">  <span class="keyword">var</span> sheet = <span class="title class_">SpreadsheetApp</span>.<span class="title function_">getActiveSpreadsheet</span>().<span class="title function_">getSheetByName</span>(<span class="string">&#x27;ResetTokens&#x27;</span>);</span><br><span class="line">  <span class="comment">// if (!sheet) &#123;</span></span><br><span class="line">    <span class="comment">// sheet = SpreadsheetApp.getActiveSpreadsheet().insertSheet(&#x27;ResetTokens&#x27;);</span></span><br><span class="line">    <span class="comment">// sheet.appendRow([&#x27;Email&#x27;, &#x27;Token&#x27;, &#x27;Timestamp&#x27;]);</span></span><br><span class="line">  <span class="comment">// &#125;</span></span><br><span class="line">  <span class="keyword">var</span> timestamp = <span class="keyword">new</span> <span class="title class_">Date</span>().<span class="title function_">getTime</span>();</span><br><span class="line">  sheet.<span class="title function_">appendRow</span>([email, token, timestamp]);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">sendResetEmail</span>(<span class="params">email, resetUrl</span>) &#123;</span><br><span class="line">  <span class="keyword">var</span> subject = <span class="string">&#x27;Password Reset Request&#x27;</span>;</span><br><span class="line">  <span class="keyword">var</span> body = <span class="string">&#x27;You requested a password reset. Click the link below to reset your password:\n\n&#x27;</span> + resetUrl + <span class="string">&#x27;\n\nIf you did not request a password reset, please ignore this email.&#x27;</span>;</span><br><span class="line">  <span class="title class_">GmailApp</span>.<span class="title function_">sendEmail</span>(email, subject, body);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>建立完成之後發布成為WebApp，會得到一串URL，此為Python中需要引入的<strong>BASE_URL</strong></p>
+<h2 id="python端">Python端</h2>
+<h3 id="app.py">app.py</h3>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> streamlit <span class="keyword">as</span> st</span><br><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"></span><br><span class="line">BASE_URL = <span class="string">&#x27;YOUR_GAS_WEB_APP_URL&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">register_user</span>(<span class="params">email, username, password</span>):</span><br><span class="line">    response = requests.post(BASE_URL, data=&#123;</span><br><span class="line">        <span class="string">&#x27;action&#x27;</span>: <span class="string">&#x27;register&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;email&#x27;</span>: email,</span><br><span class="line">        <span class="string">&#x27;username&#x27;</span>: username,</span><br><span class="line">        <span class="string">&#x27;password&#x27;</span>: password</span><br><span class="line">    &#125;)</span><br><span class="line">    <span class="keyword">return</span> response.json()</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">login_user</span>(<span class="params">username, password</span>):</span><br><span class="line">    response = requests.post(BASE_URL, data=&#123;</span><br><span class="line">        <span class="string">&#x27;action&#x27;</span>: <span class="string">&#x27;login&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;username&#x27;</span>: username,</span><br><span class="line">        <span class="string">&#x27;password&#x27;</span>: password</span><br><span class="line">    &#125;)</span><br><span class="line">    <span class="keyword">return</span> response.json()</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">forgot_password</span>(<span class="params">email</span>):</span><br><span class="line">    response = requests.post(BASE_URL, data=&#123;</span><br><span class="line">        <span class="string">&#x27;action&#x27;</span>: <span class="string">&#x27;forgotPassword&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;email&#x27;</span>: email</span><br><span class="line">    &#125;)</span><br><span class="line">    <span class="keyword">return</span> response.json()</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">update_password</span>(<span class="params">username,token, new_password</span>):</span><br><span class="line">    response = requests.post(BASE_URL, data=&#123;</span><br><span class="line">        <span class="string">&#x27;action&#x27;</span>: <span class="string">&#x27;updatePassword&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;username&#x27;</span>: username,</span><br><span class="line">        <span class="string">&#x27;token&#x27;</span>:token,</span><br><span class="line">        <span class="string">&#x27;newPassword&#x27;</span>: new_password</span><br><span class="line">    &#125;)</span><br><span class="line">    <span class="keyword">return</span> response.json()</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">main</span>():</span><br><span class="line">    st.title(<span class="string">&quot;User Management System&quot;</span>)</span><br><span class="line"></span><br><span class="line">    menu = [<span class="string">&quot;Home&quot;</span>, <span class="string">&quot;Login&quot;</span>, <span class="string">&quot;Register&quot;</span>, <span class="string">&quot;Forgot Password&quot;</span>, <span class="string">&quot;Update Password&quot;</span>]</span><br><span class="line">    choice = st.sidebar.selectbox(<span class="string">&quot;Menu&quot;</span>, menu)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> choice == <span class="string">&quot;Home&quot;</span>:</span><br><span class="line">        st.subheader(<span class="string">&quot;Home&quot;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">elif</span> choice == <span class="string">&quot;Login&quot;</span>:</span><br><span class="line">        st.subheader(<span class="string">&quot;Login&quot;</span>)</span><br><span class="line">        username = st.text_input(<span class="string">&quot;Username&quot;</span>)</span><br><span class="line">        password = st.text_input(<span class="string">&quot;Password&quot;</span>, <span class="built_in">type</span>=<span class="string">&#x27;password&#x27;</span>)</span><br><span class="line">        <span class="keyword">if</span> st.button(<span class="string">&quot;Login&quot;</span>):</span><br><span class="line">            result = login_user(username, password)</span><br><span class="line">            st.write(result)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">elif</span> choice == <span class="string">&quot;Register&quot;</span>:</span><br><span class="line">        st.subheader(<span class="string">&quot;Register&quot;</span>)</span><br><span class="line">        email = st.text_input(<span class="string">&quot;Email&quot;</span>)</span><br><span class="line">        username = st.text_input(<span class="string">&quot;Username&quot;</span>)</span><br><span class="line">        password = st.text_input(<span class="string">&quot;Password&quot;</span>, <span class="built_in">type</span>=<span class="string">&#x27;password&#x27;</span>)</span><br><span class="line">        <span class="keyword">if</span> st.button(<span class="string">&quot;Register&quot;</span>):</span><br><span class="line">            result = register_user(email, username, password)</span><br><span class="line">            st.write(result)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">elif</span> choice == <span class="string">&quot;Forgot Password&quot;</span>:</span><br><span class="line">        st.subheader(<span class="string">&quot;Forgot Password&quot;</span>)</span><br><span class="line">        email = st.text_input(<span class="string">&quot;Email&quot;</span>)</span><br><span class="line">        <span class="keyword">if</span> st.button(<span class="string">&quot;Submit&quot;</span>):</span><br><span class="line">            result = forgot_password(email)</span><br><span class="line">            st.write(result)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">elif</span> choice == <span class="string">&quot;Update Password&quot;</span>:</span><br><span class="line">        st.subheader(<span class="string">&quot;Update Password&quot;</span>)</span><br><span class="line">        username = st.text_input(<span class="string">&quot;Username&quot;</span>)</span><br><span class="line">        token=st.text_input(<span class="string">&quot;Token&quot;</span>)</span><br><span class="line">        new_password = st.text_input(<span class="string">&quot;New Password&quot;</span>, <span class="built_in">type</span>=<span class="string">&#x27;password&#x27;</span>)</span><br><span class="line">        <span class="keyword">if</span> st.button(<span class="string">&quot;Update&quot;</span>):</span><br><span class="line">            result = update_password(username, token,new_password)</span><br><span class="line">            st.write(result)</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">    main()</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>將這些內容用Streamlit run app.py 即可看到使用介面</p>
+<figure>
+<img src="https://hackmd.io/_uploads/SkGgaL_LR.png" alt="image" />
+<figcaption aria-hidden="true">image</figcaption>
+</figure>
+<p>後續要利用的時候就把登入成功的內容放置於session_state中先存起來，再顯示主要操作的介面就可以了!</p>
+<h2 id="哈希加密算法">哈希加密算法</h2>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">hashPassword</span>(<span class="params">password</span>) &#123;</span><br><span class="line">  <span class="keyword">var</span> rawHash = <span class="title class_">Utilities</span>.<span class="title function_">computeDigest</span>(<span class="title class_">Utilities</span>.<span class="property">DigestAlgorithm</span>.<span class="property">SHA_256</span>, password);</span><br><span class="line">  <span class="keyword">var</span> hash = rawHash.<span class="title function_">map</span>(<span class="keyword">function</span>(<span class="params">byte</span>) &#123;</span><br><span class="line">    <span class="keyword">var</span> v = (byte &lt; <span class="number">0</span> ? byte + <span class="number">256</span> : byte).<span class="title function_">toString</span>(<span class="number">16</span>);</span><br><span class="line">    <span class="keyword">return</span> v.<span class="property">length</span> == <span class="number">1</span> ? <span class="string">&#x27;0&#x27;</span> + v : v;</span><br><span class="line">  &#125;).<span class="title function_">join</span>(<span class="string">&#x27;&#x27;</span>);</span><br><span class="line">  <span class="keyword">return</span> hash;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">registerUser</span>(<span class="params">email, username, password</span>) &#123;</span><br><span class="line">  <span class="keyword">var</span> sheet = <span class="title class_">SpreadsheetApp</span>.<span class="title function_">getActiveSpreadsheet</span>().<span class="title function_">getSheetByName</span>(<span class="string">&#x27;Users&#x27;</span>);</span><br><span class="line">  <span class="keyword">var</span> data = sheet.<span class="title function_">getDataRange</span>().<span class="title function_">getValues</span>();</span><br><span class="line"></span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; data.<span class="property">length</span>; i++) &#123;</span><br><span class="line">    <span class="keyword">if</span> (data[i][<span class="number">0</span>] == email) &#123;</span><br><span class="line">      <span class="keyword">return</span> <span class="title class_">ContentService</span>.<span class="title function_">createTextOutput</span>(<span class="title class_">JSON</span>.<span class="title function_">stringify</span>(&#123; <span class="attr">status</span>: <span class="string">&quot;error&quot;</span>, <span class="attr">message</span>: <span class="string">&quot;Email already registered&quot;</span> &#125;)).<span class="title function_">setMimeType</span>(<span class="title class_">ContentService</span>.<span class="property">MimeType</span>.<span class="property">JSON</span>);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">var</span> hashedPassword = <span class="title function_">hashPassword</span>(password);</span><br><span class="line"></span><br><span class="line">  sheet.<span class="title function_">appendRow</span>([email, username, hashedPassword]);</span><br><span class="line">  <span class="keyword">return</span> <span class="title class_">ContentService</span>.<span class="title function_">createTextOutput</span>(<span class="title class_">JSON</span>.<span class="title function_">stringify</span>(&#123; <span class="attr">status</span>: <span class="string">&quot;success&quot;</span>, <span class="attr">message</span>: <span class="string">&quot;User registered successfully&quot;</span> &#125;)).<span class="title function_">setMimeType</span>(<span class="title class_">ContentService</span>.<span class="property">MimeType</span>.<span class="property">JSON</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">loginUser</span>(<span class="params">username, password</span>) &#123;</span><br><span class="line">  <span class="keyword">var</span> sheet = <span class="title class_">SpreadsheetApp</span>.<span class="title function_">getActiveSpreadsheet</span>().<span class="title function_">getSheetByName</span>(<span class="string">&#x27;Users&#x27;</span>);</span><br><span class="line">  <span class="keyword">var</span> data = sheet.<span class="title function_">getDataRange</span>().<span class="title function_">getValues</span>();</span><br><span class="line"></span><br><span class="line">  <span class="keyword">var</span> hashedPassword = <span class="title function_">hashPassword</span>(password);</span><br><span class="line"></span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; data.<span class="property">length</span>; i++) &#123;</span><br><span class="line">    <span class="keyword">if</span> (data[i][<span class="number">1</span>] == username &amp;&amp; data[i][<span class="number">2</span>] == hashedPassword) &#123;</span><br><span class="line">      <span class="keyword">return</span> <span class="title class_">ContentService</span>.<span class="title function_">createTextOutput</span>(<span class="title class_">JSON</span>.<span class="title function_">stringify</span>(&#123; <span class="attr">status</span>: <span class="string">&quot;success&quot;</span>, <span class="attr">message</span>: <span class="string">&quot;Login successful&quot;</span> &#125;)).<span class="title function_">setMimeType</span>(<span class="title class_">ContentService</span>.<span class="property">MimeType</span>.<span class="property">JSON</span>);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> <span class="title class_">ContentService</span>.<span class="title function_">createTextOutput</span>(<span class="title class_">JSON</span>.<span class="title function_">stringify</span>(&#123; <span class="attr">status</span>: <span class="string">&quot;error&quot;</span>, <span class="attr">message</span>: <span class="string">&quot;Invalid username or password&quot;</span> &#125;)).<span class="title function_">setMimeType</span>(<span class="title class_">ContentService</span>.<span class="property">MimeType</span>.<span class="property">JSON</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">updatePassword</span>(<span class="params">email, token, newPassword</span>) &#123;</span><br><span class="line">  <span class="keyword">var</span> sheet = <span class="title class_">SpreadsheetApp</span>.<span class="title function_">getActiveSpreadsheet</span>().<span class="title function_">getSheetByName</span>(<span class="string">&#x27;ResetTokens&#x27;</span>);</span><br><span class="line">  <span class="keyword">var</span> data = sheet.<span class="title function_">getDataRange</span>().<span class="title function_">getValues</span>();</span><br><span class="line">  <span class="keyword">var</span> now = <span class="keyword">new</span> <span class="title class_">Date</span>().<span class="title function_">getTime</span>();</span><br><span class="line">  <span class="keyword">var</span> tokenValid = <span class="literal">false</span>;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; data.<span class="property">length</span>; i++) &#123;</span><br><span class="line">    <span class="keyword">if</span> (data[i][<span class="number">0</span>] == email &amp;&amp; data[i][<span class="number">1</span>] == token) &#123;</span><br><span class="line">      <span class="keyword">var</span> timestamp = data[i][<span class="number">2</span>];</span><br><span class="line">      <span class="keyword">if</span> (now - timestamp &lt;= <span class="number">24</span> * <span class="number">60</span> * <span class="number">60</span> * <span class="number">1000</span>) &#123;  <span class="comment">// Token valid for 24 hours</span></span><br><span class="line">        tokenValid = <span class="literal">true</span>;</span><br><span class="line">        sheet.<span class="title function_">getRange</span>(i + <span class="number">1</span>, <span class="number">3</span>).<span class="title function_">setValue</span>(<span class="number">0</span>);</span><br><span class="line">        <span class="keyword">break</span>;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span> (tokenValid) &#123;</span><br><span class="line">    <span class="keyword">var</span> userSheet = <span class="title class_">SpreadsheetApp</span>.<span class="title function_">getActiveSpreadsheet</span>().<span class="title function_">getSheetByName</span>(<span class="string">&#x27;Users&#x27;</span>);</span><br><span class="line">    <span class="keyword">var</span> userData = userSheet.<span class="title function_">getDataRange</span>().<span class="title function_">getValues</span>();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">var</span> hashedPassword = <span class="title function_">hashPassword</span>(newPassword);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">var</span> j = <span class="number">0</span>; j &lt; userData.<span class="property">length</span>; j++) &#123;</span><br><span class="line">      <span class="keyword">if</span> (userData[j][<span class="number">0</span>] == email) &#123;</span><br><span class="line">        userSheet.<span class="title function_">getRange</span>(j + <span class="number">1</span>, <span class="number">3</span>).<span class="title function_">setValue</span>(hashedPassword);</span><br><span class="line">        <span class="keyword">return</span> <span class="title class_">ContentService</span>.<span class="title function_">createTextOutput</span>(<span class="title class_">JSON</span>.<span class="title function_">stringify</span>(&#123; <span class="attr">status</span>: <span class="string">&quot;success&quot;</span>, <span class="attr">message</span>: <span class="string">&quot;Password updated successfully&quot;</span> &#125;)).<span class="title function_">setMimeType</span>(<span class="title class_">ContentService</span>.<span class="property">MimeType</span>.<span class="property">JSON</span>);</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> <span class="title class_">ContentService</span>.<span class="title function_">createTextOutput</span>(<span class="title class_">JSON</span>.<span class="title function_">stringify</span>(&#123; <span class="attr">status</span>: <span class="string">&quot;error&quot;</span>, <span class="attr">message</span>: <span class="string">&quot;Invalid token or email&quot;</span> &#125;)).<span class="title function_">setMimeType</span>(<span class="title class_">ContentService</span>.<span class="property">MimeType</span>.<span class="property">JSON</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>作者： </strong>Hank Lin
+  </li>
+  <li class="post-copyright-link">
+      <strong>文章連結：</strong>
+      <a href="https://www.hanksvba.com/posts/777227760/" title="Streamlit建立權限控管機制">https://www.hanksvba.com/posts/777227760/</a>
+  </li>
+  <li class="post-copyright-license">
+      <strong>版權聲明： </strong>本網誌所有文章除特別聲明外，均採用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 許可協議。轉載請註明出處！
+  </li>
+</ul>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/Streamlit/" rel="tag"><i class="fa fa-tag"></i> Streamlit</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/posts/2910899188/" rel="prev" title="Streamlit打造工程估算系統">
+                  <i class="fa fa-angle-left"></i> Streamlit打造工程估算系統
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/posts/1384887565/" rel="next" title="openpyxl照片處理筆記">
+                  openpyxl照片處理筆記 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2024</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Hank Lin</span>
+  </div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="訪客總數">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="總瀏覽次數">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 強力驅動
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="back-to-top" role="button" aria-label="回到頂端">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/next-boot.js"></script>
+
+  
+  <script class="next-config" data-name="pdf" type="application/json">{"object_url":{"url":"https://cdnjs.cloudflare.com/ajax/libs/pdfobject/2.2.12/pdfobject.min.js","integrity":"sha256-g2xji1rlE3KsGVClvuxTbcR0Kn2+wtQADSff2Tbb4zA="},"url":"/lib/pdf/web/viewer"}</script>
+  <script src="/js/third-party/tags/pdf.js"></script>
+
+
+
+
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">false</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"ams","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+
+</body>
+</html>

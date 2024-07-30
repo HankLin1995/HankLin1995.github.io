@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.2.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha256-wiz7ZSCn/btzhjKDQBms9Hx4sSeUYsDrTLg7roPstac=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"www.hanksvba.com","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.19.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":"mac"},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":false,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜尋...","empty":"我們無法找到任何有關 ${query} 的搜索結果","hits_time":"${hits} 找到 ${time} 個結果","hits":"找到 ${hits} 個結果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="前言 工程執行過程免不了會有很多品管文件需要製作，紙本文件的加值應用相當困難，通常都會放置於一堆又一堆的資料夾中，有需要再去相互參照，大多流於形式，倘若工程文件能夠數位化，對於整個工程資料的保存、查詢會有很多好處，但經過幾次查核委員的建議，關於簽名這件事情他們有意見，既然是需要在現場進行檢查的文件，那當然會是手寫的才最香，殊不知很多委員還是認為電腦直接出的文件不能用，至少簽名的部分要手寫才是真的">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Streamlit做手繪簽名">
+<meta property="og:url" content="https://www.hanksvba.com/posts/213685522/">
+<meta property="og:site_name" content="Hank&#39;s Blog">
+<meta property="og:description" content="前言 工程執行過程免不了會有很多品管文件需要製作，紙本文件的加值應用相當困難，通常都會放置於一堆又一堆的資料夾中，有需要再去相互參照，大多流於形式，倘若工程文件能夠數位化，對於整個工程資料的保存、查詢會有很多好處，但經過幾次查核委員的建議，關於簽名這件事情他們有意見，既然是需要在現場進行檢查的文件，那當然會是手寫的才最香，殊不知很多委員還是認為電腦直接出的文件不能用，至少簽名的部分要手寫才是真的">
+<meta property="og:locale" content="zh_TW">
+<meta property="article:published_time" content="2024-07-05T15:31:02.000Z">
+<meta property="article:modified_time" content="2024-07-05T15:31:02.000Z">
+<meta property="article:author" content="Hank Lin">
+<meta property="article:tag" content="Streamlit">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://www.hanksvba.com/posts/213685522/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-TW","comments":true,"permalink":"https://www.hanksvba.com/posts/213685522/","path":"posts/213685522/","title":"Streamlit做手繪簽名"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Streamlit做手繪簽名 | Hank's Blog</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切換導航欄" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Hank's Blog</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">工程人的設計監造VBA工具交流區</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜尋" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-首頁"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首頁</a></li><li class="menu-item menu-item-關於"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>關於</a></li><li class="menu-item menu-item-標籤"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>標籤</a></li><li class="menu-item menu-item-分類"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分類</a></li><li class="menu-item menu-item-文章"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>文章</a></li>
+  </ul>
+</nav>
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目錄
+        </li>
+        <li class="sidebar-nav-overview">
+          本站概要
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%89%8D%E8%A8%80"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BD%B1%E7%89%87%E6%93%8D%E4%BD%9C"><span class="nav-number">2.</span> <span class="nav-text">🎬影片操作</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%89%E8%A3%9D%E5%8C%85"><span class="nav-number">3.</span> <span class="nav-text">安裝包</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9C%96%E7%89%87%E7%B0%BD%E5%90%8D%E9%A0%90%E8%A6%BD"><span class="nav-number">4.</span> <span class="nav-text">圖片簽名預覽</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%9B%B4%E6%8E%A5%E7%B0%BD%E5%9C%A8%E5%9C%96%E7%89%87%E4%B8%8A"><span class="nav-number">5.</span> <span class="nav-text">直接簽在圖片上</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%AF%94%E8%BC%83%E5%AE%8C%E6%95%B4%E5%81%9A%E6%B3%95"><span class="nav-number">6.</span> <span class="nav-text">比較完整做法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%A5%E5%89%8D%E5%81%9A%E7%9A%84%E5%B0%88%E6%A1%88"><span class="nav-number">7.</span> <span class="nav-text">以前做的專案</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Hank Lin"
+      src="/images/avatar_custom.png">
+  <p class="site-author-name" itemprop="name">Hank Lin</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">20</span>
+          <span class="site-state-item-name">文章</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">4</span>
+        <span class="site-state-item-name">分類</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">13</span>
+        <span class="site-state-item-name">標籤</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="mailto:apple84026113@gmail.com" title="E-Mail → mailto:apple84026113@gmail.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.youtube.com/channel/UCWmy5KaK7Leg6lLUlWBPaSw" title="YouTube → https:&#x2F;&#x2F;www.youtube.com&#x2F;channel&#x2F;UCWmy5KaK7Leg6lLUlWBPaSw" rel="noopener me" target="_blank"><i class="fab fa-youtube fa-fw"></i>YouTube</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/images/LINE_QRCODE.png" title="LINE → &#x2F;images&#x2F;LINE_QRCODE.png" rel="noopener me"><i class="fab fa-line fa-fw"></i>LINE</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://reurl.cc/RyvvaZ" title="LINE社群 → https:&#x2F;&#x2F;reurl.cc&#x2F;RyvvaZ" rel="noopener me" target="_blank"><i class="fas fa-comment fa-fw"></i>LINE社群</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://hankvba.blogspot.com/" title="舊網站 → https:&#x2F;&#x2F;hankvba.blogspot.com&#x2F;" rel="noopener me" target="_blank"><i class="fab fa-blogger fa-fw"></i>舊網站</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://portaly.cc/hanksvba/support/" title="小額贊助 → https:&#x2F;&#x2F;portaly.cc&#x2F;hanksvba&#x2F;support&#x2F;" rel="noopener me" target="_blank"><i class="fas fa-handshake fa-fw"></i>小額贊助</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-TW">
+    <link itemprop="mainEntityOfPage" href="https://www.hanksvba.com/posts/213685522/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar_custom.png">
+      <meta itemprop="name" content="Hank Lin">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hank's Blog">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="Streamlit做手繪簽名 | Hank's Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Streamlit做手繪簽名
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">發表於</span>
+
+      <time title="創建時間：2024-07-05 23:31:02" itemprop="dateCreated datePublished" datetime="2024-07-05T23:31:02+08:00">2024-07-05</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分類於</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E5%B0%88%E6%A1%88%E6%88%90%E6%9E%9C/" itemprop="url" rel="index"><span itemprop="name">專案成果</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="閱讀次數" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">閱讀次數：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h2 id="前言">前言</h2>
+<p>工程執行過程免不了會有很多品管文件需要製作，紙本文件的加值應用相當困難，通常都會放置於一堆又一堆的資料夾中，有需要再去相互參照，大多流於形式，倘若工程文件能夠數位化，對於整個工程資料的保存、查詢會有很多好處，但經過幾次查核委員的建議，關於簽名這件事情他們有意見，既然是需要在現場進行檢查的文件，那<strong>當然</strong>會是手寫的才最香，殊不知很多委員還是認為電腦直接出的文件不能用，至少簽名的部分要手寫才是真的。</p>
+<p>基於這些理由，我希望能夠做到用手寫的觸感去簽署文件，透過Streamlit的前端及streamlit-drawable-canvas作為繪圖器，opencv作為背景去背處理，及PyMuPDF作為轉檔工具，來達成委員的要求...</p>
+<p>其實我一直不能理解，中華電信都可以用手寫的觸控板來跟客戶簽約了，為什麼公共工程一定要用<strong>紙+筆</strong>，現在其實平板電腦都很方便，把要抽查的PDF都先放好在雲端，帶去工地現場選取要抽查的對應PDF後寫紀錄表，寫完後可以即時上傳到雲端，資訊流動才會迅速，也不用這樣浪費一堆紙來記錄這些內容，未來要翻閱從雲端去撈取出來即可。</p>
+<span id="more"></span>
+<h2 id="影片操作">🎬影片操作</h2>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/V0we1mNC_ys?si=AJFYWRig0FI9tv2T" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen>
+</iframe>
+<h2 id="安裝包">安裝包</h2>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip install streamlit streamlit-drawable-canvas numpy opencv-python-headless Pillow PyMuPDF</span><br></pre></td></tr></table></figure>
+<h2 id="圖片簽名預覽">圖片簽名預覽</h2>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> streamlit <span class="keyword">as</span> st</span><br><span class="line"><span class="keyword">from</span> streamlit_drawable_canvas <span class="keyword">import</span> st_canvas</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> cv2</span><br><span class="line"><span class="keyword">from</span> PIL <span class="keyword">import</span> Image</span><br><span class="line"></span><br><span class="line"><span class="comment"># 設置 Streamlit 界面</span></span><br><span class="line">st.title(<span class="string">&quot;圖片簽名工具&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 上傳圖片</span></span><br><span class="line">uploaded_file = st.file_uploader(<span class="string">&quot;上傳圖片&quot;</span>, <span class="built_in">type</span>=[<span class="string">&quot;jpg&quot;</span>, <span class="string">&quot;jpeg&quot;</span>, <span class="string">&quot;png&quot;</span>])</span><br><span class="line"></span><br><span class="line"><span class="comment"># 繪製簽名</span></span><br><span class="line">st.write(<span class="string">&quot;繪製簽名&quot;</span>)</span><br><span class="line">canvas_result = st_canvas(</span><br><span class="line">    fill_color=<span class="string">&quot;rgba(0, 0, 0, 0)&quot;</span>,  <span class="comment"># 背景填充色</span></span><br><span class="line">    stroke_width=<span class="number">3</span>,</span><br><span class="line">    stroke_color=<span class="string">&quot;black&quot;</span>,</span><br><span class="line">    background_color=<span class="string">&quot;rgba(255, 255, 255, 0)&quot;</span>,</span><br><span class="line">    height=<span class="number">150</span>,</span><br><span class="line">    width=<span class="number">400</span>,</span><br><span class="line">    drawing_mode=<span class="string">&quot;freedraw&quot;</span>,</span><br><span class="line">    key=<span class="string">&quot;canvas&quot;</span>,</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> uploaded_file <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">None</span> <span class="keyword">and</span> canvas_result.image_data <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">None</span>:</span><br><span class="line">    <span class="comment"># 讀取上傳的圖片</span></span><br><span class="line">    file_bytes = np.asarray(<span class="built_in">bytearray</span>(uploaded_file.read()), dtype=np.uint8)</span><br><span class="line">    uploaded_image = cv2.imdecode(file_bytes, cv2.IMREAD_UNCHANGED)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 獲取簽名並處理透明背景</span></span><br><span class="line">    signature_data = canvas_result.image_data</span><br><span class="line">    signature = cv2.cvtColor(signature_data, cv2.COLOR_RGBA2BGRA)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 將簽名大小調整為合適大小</span></span><br><span class="line">    sig_h, sig_w, _ = signature.shape</span><br><span class="line">    img_h, img_w, _ = uploaded_image.shape</span><br><span class="line">    x_offset = img_w - sig_w - <span class="number">10</span></span><br><span class="line">    y_offset = img_h - sig_h - <span class="number">10</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># 將簽名放置在圖片上</span></span><br><span class="line">    <span class="keyword">for</span> c <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">0</span>, <span class="number">3</span>):</span><br><span class="line">        uploaded_image[y_offset:y_offset+sig_h, x_offset:x_offset+sig_w, c] = \</span><br><span class="line">            signature[:, :, c] * (signature[:, :, <span class="number">3</span>] / <span class="number">255.0</span>) + \</span><br><span class="line">            uploaded_image[y_offset:y_offset+sig_h, x_offset:x_offset+sig_w, c] * (<span class="number">1.0</span> - signature[:, :, <span class="number">3</span>] / <span class="number">255.0</span>)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 顯示合併後的圖片</span></span><br><span class="line">    st.image(uploaded_image, caption=<span class="string">&#x27;簽名後的圖片&#x27;</span>, use_column_width=<span class="literal">True</span>)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h2 id="直接簽在圖片上">直接簽在圖片上</h2>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> streamlit <span class="keyword">as</span> st</span><br><span class="line"><span class="keyword">from</span> streamlit_drawable_canvas <span class="keyword">import</span> st_canvas</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> cv2</span><br><span class="line"><span class="keyword">from</span> PIL <span class="keyword">import</span> Image</span><br><span class="line"><span class="keyword">import</span> io</span><br><span class="line"><span class="keyword">import</span> fitz  <span class="comment"># PyMuPDF</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 設置 Streamlit 界面</span></span><br><span class="line">st.title(<span class="string">&quot;PDF 簽名工具&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 上傳 PDF</span></span><br><span class="line">uploaded_file = st.file_uploader(<span class="string">&quot;上傳 PDF&quot;</span>, <span class="built_in">type</span>=[<span class="string">&quot;pdf&quot;</span>])</span><br><span class="line"></span><br><span class="line"><span class="comment"># 如果上傳了文件</span></span><br><span class="line"><span class="keyword">if</span> uploaded_file <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">None</span>:</span><br><span class="line">    <span class="comment"># 讀取上傳的 PDF</span></span><br><span class="line">    pdf_bytes = uploaded_file.read()</span><br><span class="line">    document = fitz.<span class="built_in">open</span>(<span class="string">&quot;pdf&quot;</span>, pdf_bytes)</span><br><span class="line">    page = document.load_page(<span class="number">0</span>)</span><br><span class="line">    pix = page.get_pixmap()</span><br><span class="line">    background_image = Image.frombytes(<span class="string">&quot;RGB&quot;</span>, [pix.width, pix.height], pix.samples)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># st.write(&quot;簽名調整&quot;)</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 繪製簽名</span></span><br><span class="line">    <span class="comment"># st.write(&quot;繪製簽名&quot;)</span></span><br><span class="line">    canvas_result = st_canvas(</span><br><span class="line">        fill_color=<span class="string">&quot;rgba(0, 0, 0, 0)&quot;</span>,  <span class="comment"># 背景填充色</span></span><br><span class="line">        stroke_width=<span class="number">3</span>,</span><br><span class="line">        stroke_color=<span class="string">&quot;black&quot;</span>,</span><br><span class="line">        background_image=background_image,</span><br><span class="line">        height=pix.height,</span><br><span class="line">        width=pix.width,</span><br><span class="line">        drawing_mode=<span class="string">&quot;freedraw&quot;</span>,</span><br><span class="line">        key=<span class="string">&quot;canvas&quot;</span>,</span><br><span class="line">    )</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 滑桿調整簽名位置</span></span><br><span class="line">    <span class="comment"># st.write(&quot;調整簽名位置&quot;)</span></span><br><span class="line">    x_offset =<span class="number">0</span><span class="comment"># st.slider(&quot;水平位置&quot;, 0, pix.width, 0)</span></span><br><span class="line">    y_offset =<span class="number">0</span><span class="comment"># st.slider(&quot;垂直位置&quot;, 0, pix.height, 0)</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> canvas_result.image_data <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">None</span>:</span><br><span class="line">        <span class="comment"># 獲取簽名並處理透明背景</span></span><br><span class="line">        signature_data = canvas_result.image_data</span><br><span class="line">        signature = cv2.cvtColor(signature_data, cv2.COLOR_RGBA2BGRA)</span><br><span class="line"></span><br><span class="line">        signed_images = []</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> page_num <span class="keyword">in</span> <span class="built_in">range</span>(<span class="built_in">len</span>(document)):</span><br><span class="line">            page = document.load_page(page_num)</span><br><span class="line">            pix = page.get_pixmap()</span><br><span class="line">            image = Image.frombytes(<span class="string">&quot;RGB&quot;</span>, [pix.width, pix.height], pix.samples)</span><br><span class="line"></span><br><span class="line">            <span class="comment"># 將 PIL 圖像轉換為 OpenCV 圖像</span></span><br><span class="line">            open_cv_image = np.array(image)</span><br><span class="line">            open_cv_image = cv2.cvtColor(open_cv_image, cv2.COLOR_RGB2BGRA)</span><br><span class="line"></span><br><span class="line">            <span class="comment"># 簽名位置</span></span><br><span class="line">            sig_h, sig_w, _ = signature.shape</span><br><span class="line">            img_h, img_w, _ = open_cv_image.shape</span><br><span class="line"></span><br><span class="line">            <span class="comment"># 確保簽名不超出邊界</span></span><br><span class="line">            <span class="keyword">if</span> y_offset + sig_h &gt; img_h:</span><br><span class="line">                sig_h = img_h - y_offset</span><br><span class="line">            <span class="keyword">if</span> x_offset + sig_w &gt; img_w:</span><br><span class="line">                sig_w = img_w - x_offset</span><br><span class="line"></span><br><span class="line">            <span class="comment"># 簽名形狀匹配</span></span><br><span class="line">            resized_signature = cv2.resize(signature, (sig_w, sig_h))</span><br><span class="line"></span><br><span class="line">            <span class="comment"># 將簽名放置在圖片上</span></span><br><span class="line">            <span class="keyword">for</span> c <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">0</span>, <span class="number">3</span>):</span><br><span class="line">                open_cv_image[y_offset:y_offset+sig_h, x_offset:x_offset+sig_w, c] = \</span><br><span class="line">                    resized_signature[:, :, c] * (resized_signature[:, :, <span class="number">3</span>] / <span class="number">255.0</span>) + \</span><br><span class="line">                    open_cv_image[y_offset:y_offset+sig_h, x_offset:x_offset+sig_w, c] * (<span class="number">1.0</span> - resized_signature[:, :, <span class="number">3</span>] / <span class="number">255.0</span>)</span><br><span class="line"></span><br><span class="line">            <span class="comment"># 將 OpenCV 圖像轉換回 PIL 圖像</span></span><br><span class="line">            signed_image = Image.fromarray(cv2.cvtColor(open_cv_image, cv2.COLOR_BGRA2RGBA))</span><br><span class="line">            signed_images.append(signed_image)</span><br><span class="line"></span><br><span class="line">        <span class="comment"># 預覽簽名後的第一頁</span></span><br><span class="line">        <span class="comment"># st.image(signed_images[0], caption=&#x27;簽名後的 PDF 頁面預覽&#x27;, use_column_width=True)</span></span><br><span class="line"></span><br><span class="line">        <span class="comment"># 將簽名後的圖像保存回 PDF</span></span><br><span class="line">        pdf_output = io.BytesIO()</span><br><span class="line">        signed_images[<span class="number">0</span>].save(pdf_output, <span class="string">&quot;PDF&quot;</span>, resolution=<span class="number">100.0</span>, save_all=<span class="literal">True</span>, append_images=signed_images[<span class="number">1</span>:])</span><br><span class="line">        pdf_output.seek(<span class="number">0</span>)</span><br><span class="line"></span><br><span class="line">        <span class="comment"># 提供下載鏈接</span></span><br><span class="line">        st.download_button(</span><br><span class="line">            label=<span class="string">&quot;下載簽名後的 PDF&quot;</span>,</span><br><span class="line">            data=pdf_output,</span><br><span class="line">            file_name=<span class="string">&quot;signed_document.pdf&quot;</span>,</span><br><span class="line">            mime=<span class="string">&quot;application/pdf&quot;</span></span><br><span class="line">        )</span><br></pre></td></tr></table></figure>
+<h2 id="比較完整做法">比較完整做法</h2>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> streamlit <span class="keyword">as</span> st</span><br><span class="line"><span class="keyword">from</span> streamlit_drawable_canvas <span class="keyword">import</span> st_canvas</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> cv2</span><br><span class="line"><span class="keyword">from</span> PIL <span class="keyword">import</span> Image</span><br><span class="line"><span class="keyword">import</span> io</span><br><span class="line"><span class="keyword">import</span> fitz  <span class="comment"># PyMuPDF</span></span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd</span><br><span class="line"></span><br><span class="line">st.set_page_config(</span><br><span class="line">    layout=<span class="string">&quot;wide&quot;</span>,</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">dict_pdf = &#123;</span><br><span class="line">    <span class="string">&quot;測量工程抽查表&quot;</span>: <span class="string">&quot;6-27.pdf&quot;</span>,</span><br><span class="line">    <span class="string">&quot;土方工程抽查表&quot;</span>: <span class="string">&quot;6-29.pdf&quot;</span>,</span><br><span class="line">    <span class="string">&quot;模板工程抽查表&quot;</span>: <span class="string">&quot;6-30.pdf&quot;</span>,</span><br><span class="line">    <span class="string">&quot;鋼筋工程抽查表&quot;</span>: <span class="string">&quot;6-31.pdf&quot;</span>,</span><br><span class="line">    <span class="string">&quot;其他&quot;</span>: <span class="string">&quot;&quot;</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">st.sidebar.title(<span class="string">&quot;<span class="github-emoji" alias="writing_hand" style="" fallback-src="https://github.githubassets.com/images/icons/emoji/unicode/270d.png?v8">&#x270d;</span> PDF 簽名工具&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 頁面導航</span></span><br><span class="line">page = st.sidebar.selectbox(<span class="string">&quot;選擇頁面&quot;</span>, [<span class="string">&quot;手繪簽名&quot;</span>, <span class="string">&quot;查看表單&quot;</span>])</span><br><span class="line"></span><br><span class="line"><span class="comment"># 根據選擇的頁面顯示內容</span></span><br><span class="line"><span class="keyword">if</span> page == <span class="string">&quot;手繪簽名&quot;</span>:</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 設置 Streamlit 界面</span></span><br><span class="line">    <span class="comment"># st.title(&quot;PDF 簽名工具&quot;)</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># 指定保存的文件夾路徑</span></span><br><span class="line">    save_folder = <span class="string">&quot;saved_pdfs&quot;</span></span><br><span class="line">    os.makedirs(save_folder, exist_ok=<span class="literal">True</span>)</span><br><span class="line">    form_selection = st.sidebar.selectbox(<span class="string">&quot;選擇抽查表&quot;</span>, <span class="built_in">list</span>(dict_pdf.keys()))</span><br><span class="line"></span><br><span class="line">    file_name = <span class="string">&quot;./pdfs/&quot;</span>+dict_pdf[form_selection]</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 如果選擇了“其他”，讓用戶上傳 PDF 文件</span></span><br><span class="line">    <span class="keyword">if</span> form_selection == <span class="string">&quot;其他&quot;</span>:</span><br><span class="line">        uploaded_file = st.file_uploader(<span class="string">&quot;上傳 PDF&quot;</span>, <span class="built_in">type</span>=[<span class="string">&quot;pdf&quot;</span>])</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        <span class="comment"># 否則，讀取預定義的 PDF 文件</span></span><br><span class="line">        <span class="keyword">with</span> <span class="built_in">open</span>(file_name, <span class="string">&quot;rb&quot;</span>) <span class="keyword">as</span> f:</span><br><span class="line">            uploaded_file = f.read()</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> uploaded_file:</span><br><span class="line">        <span class="keyword">if</span> form_selection == <span class="string">&quot;其他&quot;</span>:</span><br><span class="line">            pdf_bytes = uploaded_file.read()</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            pdf_bytes = uploaded_file</span><br><span class="line"></span><br><span class="line">        <span class="comment"># 讀取 PDF</span></span><br><span class="line">        document = fitz.<span class="built_in">open</span>(<span class="string">&quot;pdf&quot;</span>, pdf_bytes)</span><br><span class="line">        page = document.load_page(<span class="number">0</span>)</span><br><span class="line">        pix = page.get_pixmap(matrix=fitz.Matrix(<span class="number">2.0</span>, <span class="number">2.0</span>))  <span class="comment"># 使用 matrix 調整分辨率</span></span><br><span class="line">        original_width, original_height = pix.width, pix.height</span><br><span class="line">        background_image = Image.frombytes(<span class="string">&quot;RGB&quot;</span>, [pix.width, pix.height], pix.samples)</span><br><span class="line"></span><br><span class="line">        <span class="comment"># 繪製簽名</span></span><br><span class="line">        canvas_result = st_canvas(</span><br><span class="line">            fill_color=<span class="string">&quot;rgba(0, 0, 0, 0)&quot;</span>,  <span class="comment"># 背景填充色</span></span><br><span class="line">            stroke_width=<span class="number">3</span>,</span><br><span class="line">            stroke_color=<span class="string">&quot;black&quot;</span>,</span><br><span class="line">            background_image=background_image,</span><br><span class="line">            height=pix.height,</span><br><span class="line">            width=pix.width,</span><br><span class="line">            drawing_mode=<span class="string">&quot;freedraw&quot;</span>,</span><br><span class="line">            key=<span class="string">&quot;canvas&quot;</span>,</span><br><span class="line">        )</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> canvas_result.image_data <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">None</span>:</span><br><span class="line">            <span class="comment"># 獲取簽名並處理透明背景</span></span><br><span class="line">            signature_data = canvas_result.image_data</span><br><span class="line">            signature = cv2.cvtColor(signature_data, cv2.COLOR_RGBA2BGRA)</span><br><span class="line"></span><br><span class="line">            signed_images = []</span><br><span class="line"></span><br><span class="line">            <span class="comment"># 設置簽名位置 (預設值，可以根據需要調整)</span></span><br><span class="line">            y_offset, x_offset = <span class="number">0</span>,<span class="number">0</span></span><br><span class="line"></span><br><span class="line">            <span class="keyword">for</span> page_num <span class="keyword">in</span> <span class="built_in">range</span>(<span class="built_in">len</span>(document)):</span><br><span class="line">                page = document.load_page(page_num)</span><br><span class="line">                pix = page.get_pixmap(matrix=fitz.Matrix(<span class="number">2.0</span>, <span class="number">2.0</span>))  <span class="comment"># 使用相同的 matrix 調整分辨率</span></span><br><span class="line">                image = Image.frombytes(<span class="string">&quot;RGB&quot;</span>, [pix.width, pix.height], pix.samples)</span><br><span class="line"></span><br><span class="line">                <span class="comment"># 將 PIL 圖像轉換為 OpenCV 圖像</span></span><br><span class="line">                open_cv_image = np.array(image)</span><br><span class="line">                open_cv_image = cv2.cvtColor(open_cv_image, cv2.COLOR_RGB2BGRA)</span><br><span class="line"></span><br><span class="line">                <span class="comment"># 簽名位置</span></span><br><span class="line">                sig_h, sig_w, _ = signature.shape</span><br><span class="line">                img_h, img_w, _ = open_cv_image.shape</span><br><span class="line"></span><br><span class="line">                <span class="comment"># 調整簽名位置以匹配新的解析度</span></span><br><span class="line">                adjusted_y_offset = <span class="built_in">int</span>((y_offset / original_height) * img_h)</span><br><span class="line">                adjusted_x_offset = <span class="built_in">int</span>((x_offset / original_width) * img_w)</span><br><span class="line"></span><br><span class="line">                <span class="comment"># 確保簽名不超出邊界</span></span><br><span class="line">                <span class="keyword">if</span> adjusted_y_offset + sig_h &gt; img_h:</span><br><span class="line">                    sig_h = img_h - adjusted_y_offset</span><br><span class="line">                <span class="keyword">if</span> adjusted_x_offset + sig_w &gt; img_w:</span><br><span class="line">                    sig_w = img_w - adjusted_x_offset</span><br><span class="line"></span><br><span class="line">                <span class="comment"># 簽名形狀匹配</span></span><br><span class="line">                resized_signature = cv2.resize(signature, (sig_w, sig_h))</span><br><span class="line"></span><br><span class="line">                <span class="comment"># 將簽名放置在圖片上</span></span><br><span class="line">                <span class="keyword">for</span> c <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">0</span>, <span class="number">3</span>):</span><br><span class="line">                    open_cv_image[adjusted_y_offset:adjusted_y_offset+sig_h, adjusted_x_offset:adjusted_x_offset+sig_w, c] = \</span><br><span class="line">                        resized_signature[:, :, c] * (resized_signature[:, :, <span class="number">3</span>] / <span class="number">255.0</span>) + \</span><br><span class="line">                        open_cv_image[adjusted_y_offset:adjusted_y_offset+sig_h, adjusted_x_offset:adjusted_x_offset+sig_w, c] * (<span class="number">1.0</span> - resized_signature[:, :, <span class="number">3</span>] / <span class="number">255.0</span>)</span><br><span class="line"></span><br><span class="line">                <span class="comment"># 將 OpenCV 圖像轉換回 PIL 圗像</span></span><br><span class="line">                signed_image = Image.fromarray(cv2.cvtColor(open_cv_image, cv2.COLOR_BGRA2RGBA))</span><br><span class="line">                signed_images.append(signed_image)</span><br><span class="line"></span><br><span class="line">            <span class="comment"># 將簽名後的圖像保存回 PDF</span></span><br><span class="line">            pdf_output = io.BytesIO()</span><br><span class="line">            signed_images[<span class="number">0</span>].save(pdf_output, <span class="string">&quot;PDF&quot;</span>, resolution=<span class="number">100.0</span>, save_all=<span class="literal">True</span>, append_images=signed_images[<span class="number">1</span>:])</span><br><span class="line">            pdf_output.seek(<span class="number">0</span>)</span><br><span class="line"></span><br><span class="line">            <span class="comment"># 增加“儲存”按鈕</span></span><br><span class="line">            <span class="keyword">if</span> st.button(<span class="string">&quot;儲存&quot;</span>, <span class="built_in">type</span>=<span class="string">&#x27;primary&#x27;</span>):</span><br><span class="line">                <span class="comment"># 生成保存路徑和文件名</span></span><br><span class="line">                base_file_name = form_selection <span class="keyword">if</span> form_selection != <span class="string">&quot;其他&quot;</span> <span class="keyword">else</span> <span class="string">&quot;custom&quot;</span></span><br><span class="line">                existing_files = [f <span class="keyword">for</span> f <span class="keyword">in</span> os.listdir(save_folder) <span class="keyword">if</span> f.startswith(base_file_name)]</span><br><span class="line">                file_count = <span class="built_in">len</span>(existing_files) + <span class="number">1</span></span><br><span class="line">                output_file_name = <span class="string">f&quot;<span class="subst">&#123;base_file_name&#125;</span>_<span class="subst">&#123;file_count&#125;</span>.pdf&quot;</span></span><br><span class="line">                save_path = os.path.join(save_folder, output_file_name)</span><br><span class="line"></span><br><span class="line">                <span class="comment"># 將簽名後的 PDF 文件保存到指定資料夾</span></span><br><span class="line">                <span class="keyword">with</span> <span class="built_in">open</span>(save_path, <span class="string">&quot;wb&quot;</span>) <span class="keyword">as</span> f:</span><br><span class="line">                    f.write(pdf_output.getbuffer())</span><br><span class="line">                st.success(<span class="string">f&quot;已將簽名後的 PDF 保存到: <span class="subst">&#123;save_path&#125;</span>&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">elif</span> page == <span class="string">&quot;查看表單&quot;</span>:</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 指定保存的文件夾路徑</span></span><br><span class="line">    save_folder = <span class="string">&quot;saved_pdfs&quot;</span></span><br><span class="line">    os.makedirs(save_folder, exist_ok=<span class="literal">True</span>)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 獲取所有已保存的表單</span></span><br><span class="line">    saved_forms = os.listdir(save_folder)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 根據文件名分類表單</span></span><br><span class="line">    classified_forms = &#123;&#125;</span><br><span class="line">    <span class="keyword">for</span> form <span class="keyword">in</span> saved_forms:</span><br><span class="line">        form_type = form.rsplit(<span class="string">&#x27;_&#x27;</span>, <span class="number">1</span>)[<span class="number">0</span>]</span><br><span class="line">        <span class="keyword">if</span> form_type <span class="keyword">not</span> <span class="keyword">in</span> classified_forms:</span><br><span class="line">            classified_forms[form_type] = []</span><br><span class="line">        classified_forms[form_type].append(form)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 將分類表單轉換為 DataFrame</span></span><br><span class="line">    df = pd.DataFrame(</span><br><span class="line">        [(key, form) <span class="keyword">for</span> key, forms <span class="keyword">in</span> classified_forms.items() <span class="keyword">for</span> form <span class="keyword">in</span> forms],</span><br><span class="line">        columns=[<span class="string">&quot;表單類型&quot;</span>, <span class="string">&quot;文件名&quot;</span>]</span><br><span class="line">    )</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 顯示 DataFrame 並允許用戶選擇要顯示的表單</span></span><br><span class="line">    selected_forms = st.multiselect(<span class="string">&quot;選擇要顯示的表單&quot;</span>, df[<span class="string">&quot;文件名&quot;</span>])</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 顯示選擇的表單</span></span><br><span class="line">    <span class="keyword">if</span> selected_forms:</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> form <span class="keyword">in</span> selected_forms:</span><br><span class="line">            form_path = os.path.join(save_folder, form)</span><br><span class="line">            </span><br><span class="line">            st.markdown(<span class="string">f&quot;####  <span class="subst">&#123;form&#125;</span>&quot;</span>)</span><br><span class="line">            </span><br><span class="line">            <span class="comment"># 使用 PyMuPDF 加載 PDF 文件</span></span><br><span class="line">            pdf_doc = fitz.<span class="built_in">open</span>(form_path)</span><br><span class="line">            </span><br><span class="line">            <span class="comment"># 顯示每一頁的圖像內容</span></span><br><span class="line">            <span class="keyword">for</span> page_num <span class="keyword">in</span> <span class="built_in">range</span>(<span class="built_in">len</span>(pdf_doc)):</span><br><span class="line">                page = pdf_doc.load_page(page_num)</span><br><span class="line">                </span><br><span class="line">                <span class="comment"># 將 PDF 頁面轉換為圖像</span></span><br><span class="line">                pix = page.get_pixmap(matrix=fitz.Matrix(<span class="number">2.0</span>, <span class="number">2.0</span>))  <span class="comment"># 使用相同的 matrix 調整分辨率</span></span><br><span class="line">                img = Image.frombytes(<span class="string">&quot;RGB&quot;</span>, [pix.width, pix.height], pix.samples)</span><br><span class="line">                </span><br><span class="line">                st.image(img, caption=<span class="string">f&quot;第 <span class="subst">&#123;page_num + <span class="number">1</span>&#125;</span> 頁&quot;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        st.write(<span class="string">&quot;目前沒有已保存的表單。&quot;</span>)</span><br></pre></td></tr></table></figure>
+<h2 id="以前做的專案">以前做的專案</h2>
+<p><a target="_blank" rel="noopener" href="https://hankvba.blogspot.com/2023/10/excel-vba.html">Excel
+VBA@簽名檔小工具</a></p>
+<p>去年曾經有把簽名檔做成很多不同照片來調整大小及位置進行貼上，不過經廣大網友的檢視後，發現這樣委員還是會不喜歡，還是先做個紀錄給大家參考參考...</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>作者： </strong>Hank Lin
+  </li>
+  <li class="post-copyright-link">
+      <strong>文章連結：</strong>
+      <a href="https://www.hanksvba.com/posts/213685522/" title="Streamlit做手繪簽名">https://www.hanksvba.com/posts/213685522/</a>
+  </li>
+  <li class="post-copyright-license">
+      <strong>版權聲明： </strong>本網誌所有文章除特別聲明外，均採用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 許可協議。轉載請註明出處！
+  </li>
+</ul>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/Streamlit/" rel="tag"><i class="fa fa-tag"></i> Streamlit</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/posts/2533511128/" rel="prev" title="VBA橫斷面法面積批次處理">
+                  <i class="fa fa-angle-left"></i> VBA橫斷面法面積批次處理
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/posts/43562660/" rel="next" title="Streamlit工程進度甘特圖">
+                  Streamlit工程進度甘特圖 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2024</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Hank Lin</span>
+  </div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="訪客總數">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="總瀏覽次數">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 強力驅動
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="back-to-top" role="button" aria-label="回到頂端">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/next-boot.js"></script>
+
+  
+  <script class="next-config" data-name="pdf" type="application/json">{"object_url":{"url":"https://cdnjs.cloudflare.com/ajax/libs/pdfobject/2.2.12/pdfobject.min.js","integrity":"sha256-g2xji1rlE3KsGVClvuxTbcR0Kn2+wtQADSff2Tbb4zA="},"url":"/lib/pdf/web/viewer"}</script>
+  <script src="/js/third-party/tags/pdf.js"></script>
+
+
+
+
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">false</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"ams","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+
+</body>
+</html>

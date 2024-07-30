@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.2.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha256-wiz7ZSCn/btzhjKDQBms9Hx4sSeUYsDrTLg7roPstac=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"www.hanksvba.com","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.19.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":"mac"},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":false,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜尋...","empty":"我們無法找到任何有關 ${query} 的搜索結果","hits_time":"${hits} 找到 ${time} 個結果","hits":"找到 ${hits} 個結果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="🙌前言 Streamlit是使用python語言的前端套件，他最大的好處是就能透過套件本身程式碼生成一篇篇還算能看的使用者介面，對於Html、CSS、Javascript等前端語言感到不舒服的開發者可以妥善利用，在部署上難度也不高，幾乎可以一鍵達成。 除了python本身內鍵已經有本地端sqlite可以進行資料存儲，如果資料需要上雲的話就會需要額外找尋雲端資料庫來進行資料存放，標準的關聯式有">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Streamlit建置GoogleSheet簡易資料庫">
+<meta property="og:url" content="https://www.hanksvba.com/posts/639809757/">
+<meta property="og:site_name" content="Hank&#39;s Blog">
+<meta property="og:description" content="🙌前言 Streamlit是使用python語言的前端套件，他最大的好處是就能透過套件本身程式碼生成一篇篇還算能看的使用者介面，對於Html、CSS、Javascript等前端語言感到不舒服的開發者可以妥善利用，在部署上難度也不高，幾乎可以一鍵達成。 除了python本身內鍵已經有本地端sqlite可以進行資料存儲，如果資料需要上雲的話就會需要額外找尋雲端資料庫來進行資料存放，標準的關聯式有">
+<meta property="og:locale" content="zh_TW">
+<meta property="article:published_time" content="2024-06-11T14:33:21.000Z">
+<meta property="article:modified_time" content="2024-06-11T14:33:21.000Z">
+<meta property="article:author" content="Hank Lin">
+<meta property="article:tag" content="Streamlit">
+<meta property="article:tag" content="GAS">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://www.hanksvba.com/posts/639809757/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-TW","comments":true,"permalink":"https://www.hanksvba.com/posts/639809757/","path":"posts/639809757/","title":"Streamlit建置GoogleSheet簡易資料庫"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Streamlit建置GoogleSheet簡易資料庫 | Hank's Blog</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切換導航欄" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Hank's Blog</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">工程人的設計監造VBA工具交流區</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜尋" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-首頁"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首頁</a></li><li class="menu-item menu-item-關於"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>關於</a></li><li class="menu-item menu-item-標籤"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>標籤</a></li><li class="menu-item menu-item-分類"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分類</a></li><li class="menu-item menu-item-文章"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>文章</a></li>
+  </ul>
+</nav>
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目錄
+        </li>
+        <li class="sidebar-nav-overview">
+          本站概要
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%89%8D%E8%A8%80"><span class="nav-number">1.</span> <span class="nav-text">🙌前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9F%BA%E6%9C%ACapi%E6%A6%82%E5%BF%B5"><span class="nav-number">2.</span> <span class="nav-text">基本API概念</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#json"><span class="nav-number">3.</span> <span class="nav-text">JSON</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9C%A8gas%E4%B8%AD%E9%97%9C%E6%96%BCjson%E6%A0%BC%E5%BC%8F%E7%9A%84%E8%BD%89%E6%8F%9B"><span class="nav-number">3.1.</span> <span class="nav-text">在GAS中關於JSON格式的轉換</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9C%A8python%E4%B8%AD%E9%97%9C%E6%96%BCjson%E6%A0%BC%E5%BC%8F%E7%9A%84%E8%BD%89%E6%8F%9B"><span class="nav-number">3.2.</span> <span class="nav-text">在Python中關於JSON格式的轉換</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#python%E5%B0%8D%E8%B1%A1%E6%93%8D%E4%BD%9C"><span class="nav-number">3.3.</span> <span class="nav-text">Python對象操作</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#gas%E5%B0%8D%E8%B1%A1%E6%93%8D%E4%BD%9C"><span class="nav-number">4.</span> <span class="nav-text">GAS對象操作</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%B6%9C%E5%90%88%E6%93%8D%E4%BD%9C"><span class="nav-number">5.</span> <span class="nav-text">綜合操作</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#streamlit"><span class="nav-number">5.1.</span> <span class="nav-text">streamlit</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#gas"><span class="nav-number">5.2.</span> <span class="nav-text">GAS</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#json%E7%89%A9%E4%BB%B6%E7%89%B9%E6%AE%8A%E8%99%95%E7%90%86"><span class="nav-number">6.</span> <span class="nav-text">JSON物件特殊處理</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%B3%87%E6%96%99%E6%89%81%E5%B9%B3%E5%8C%96"><span class="nav-number">6.1.</span> <span class="nav-text">資料扁平化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%B3%87%E6%96%99%E6%89%81%E5%B9%B3%E5%8C%96%E5%9B%9E%E5%BE%A9"><span class="nav-number">6.2.</span> <span class="nav-text">資料扁平化回復</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#vba%E9%83%A8%E5%88%86"><span class="nav-number">7.</span> <span class="nav-text">VBA部分</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%B8%BD%E7%B5%90"><span class="nav-number">8.</span> <span class="nav-text">總結</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Hank Lin"
+      src="/images/avatar_custom.png">
+  <p class="site-author-name" itemprop="name">Hank Lin</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">20</span>
+          <span class="site-state-item-name">文章</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">4</span>
+        <span class="site-state-item-name">分類</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">13</span>
+        <span class="site-state-item-name">標籤</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="mailto:apple84026113@gmail.com" title="E-Mail → mailto:apple84026113@gmail.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.youtube.com/channel/UCWmy5KaK7Leg6lLUlWBPaSw" title="YouTube → https:&#x2F;&#x2F;www.youtube.com&#x2F;channel&#x2F;UCWmy5KaK7Leg6lLUlWBPaSw" rel="noopener me" target="_blank"><i class="fab fa-youtube fa-fw"></i>YouTube</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/images/LINE_QRCODE.png" title="LINE → &#x2F;images&#x2F;LINE_QRCODE.png" rel="noopener me"><i class="fab fa-line fa-fw"></i>LINE</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://reurl.cc/RyvvaZ" title="LINE社群 → https:&#x2F;&#x2F;reurl.cc&#x2F;RyvvaZ" rel="noopener me" target="_blank"><i class="fas fa-comment fa-fw"></i>LINE社群</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://hankvba.blogspot.com/" title="舊網站 → https:&#x2F;&#x2F;hankvba.blogspot.com&#x2F;" rel="noopener me" target="_blank"><i class="fab fa-blogger fa-fw"></i>舊網站</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://portaly.cc/hanksvba/support/" title="小額贊助 → https:&#x2F;&#x2F;portaly.cc&#x2F;hanksvba&#x2F;support&#x2F;" rel="noopener me" target="_blank"><i class="fas fa-handshake fa-fw"></i>小額贊助</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-TW">
+    <link itemprop="mainEntityOfPage" href="https://www.hanksvba.com/posts/639809757/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar_custom.png">
+      <meta itemprop="name" content="Hank Lin">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hank's Blog">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="Streamlit建置GoogleSheet簡易資料庫 | Hank's Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Streamlit建置GoogleSheet簡易資料庫
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">發表於</span>
+
+      <time title="創建時間：2024-06-11 22:33:21" itemprop="dateCreated datePublished" datetime="2024-06-11T22:33:21+08:00">2024-06-11</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分類於</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5/" itemprop="url" rel="index"><span itemprop="name">基本概念</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="閱讀次數" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">閱讀次數：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h2 id="前言">🙌前言</h2>
+<p>Streamlit是使用python語言的前端套件，他最大的好處是就能透過套件本身程式碼生成一篇篇還算能看的使用者介面，對於Html、CSS、Javascript等前端語言感到不舒服的開發者可以妥善利用，在部署上難度也不高，幾乎可以一鍵達成。</p>
+<p>除了python本身內鍵已經有本地端sqlite可以進行資料存儲，如果資料需要上雲的話就會需要額外找尋雲端資料庫來進行資料存放，標準的關聯式有MySQL、postgreSQL、SQLserver等等比較常見的工具、非關聯式資料庫則可以透過mongoDB、firestore等等工具進行挑選。</p>
+<blockquote>
+<p>本篇要介紹的內容是針對比較簡易的前端介面，可以用Google提供的GoogleSheet來進行資料存放，並且透過GoogleAppScripts來做後端語言進行操作。</p>
+</blockquote>
+<span id="more"></span>
+<h2 id="基本api概念">基本API概念</h2>
+<p>所謂前端與後端分離開發，就是透過API的方式進行資料交換，API就是一串網址(URL)外加一些夾帶的參數，參數可以是純文字、也可以是物件，然而物件的部分又可分為XML或JSON，這兩項是最常被拿來使用於API的資料交換，包含輸入到後端存放資料或者是從資料庫取出資料到前端進行渲染。</p>
+<p>公共工程常用的估價系統(PCCES)便是以XML進行資料交換，詳情可見<a
+target="_blank" rel="noopener" href="https://hankvba.blogspot.com/2024/02/excel-vba-pcces.html">ExcelVBA@PCCES契約項目後處理</a>，在此不多做說明</p>
+<h2 id="json">JSON</h2>
+<p>大多數的第三方API都是採用JSON格式進行傳輸，這也是本篇主要資料格式，關於JSON的格式通常是以鍵-值對的方式儲存，也就是所謂的key-value，要進行資料取用或組裝時特別的方便，這也是為什麼會選用他來做為我在streamlit及GAS中的交換媒介。</p>
+<p>JSON資料可以分為GAS對象、JSON字串、python對象，每個資料都可以互相轉移，JSON字串主要是在API中所夾帶的字串，其餘python對象、GAS對象則是依照不同語言解析成相對應的物件。</p>
+<p>萬一遇見處理多巢階層的過程可以藉由扁平化(將巢狀鍵值對處理到頂層)的方法方便資料取用，也可以透過反扁平化的方法將原本的資料恢復原狀。</p>
+<h3 id="在gas中關於json格式的轉換">在GAS中關於JSON格式的轉換</h3>
+<h4 id="json.parse">JSON.parse()</h4>
+<p><code>JSON.parse()</code> 方法用於將 JSON 字串解析為 JavaScript
+物件。它接受一個合法的 JSON 字串並返回解析後的 JavaScript 值。</p>
+<h4 id="json.stringify">JSON.stringify()</h4>
+<p><code>JSON.stringify()</code> 方法用於將 JavaScript 物件轉換為 JSON
+字串。它接受一個 JavaScript 物件並返回相應的 JSON 格式字串。</p>
+<h3 id="在python中關於json格式的轉換">在Python中關於JSON格式的轉換</h3>
+<h4 id="json.dumps">json.dumps()</h4>
+<p><code>json.dumps()</code> 方法用於將 Python 物件轉換為 JSON
+字串。它接受一個 Python 物件並返回相應的 JSON 格式字串。</p>
+<h4 id="json.loads">json.loads()</h4>
+<p><code>json.loads()</code> 方法用於將 JSON 字串解析為 Python
+物件。它接受一個合法的 JSON 字串並返回解析後的 Python 值。</p>
+<h4 id="json.load目前沒用到">json.load()&gt;目前沒用到</h4>
+<p><code>json.load()</code> 方法用於從檔案中讀取 JSON 資料並將其解析為
+Python 物件。它接受一個可讀取的檔案物件，並返回解析後的 Python 值。</p>
+<h3 id="python對象操作">Python對象操作</h3>
+<h4 id="單層">單層</h4>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">data = json.loads(json_str)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 存取一層結構</span></span><br><span class="line">name = data[<span class="string">&#x27;person&#x27;</span>][<span class="string">&#x27;name&#x27;</span>]</span><br><span class="line">age = data[<span class="string">&#x27;person&#x27;</span>][<span class="string">&#x27;age&#x27;</span>]</span><br><span class="line"></span><br><span class="line"><span class="comment"># 存取多層結構</span></span><br><span class="line">city = data[<span class="string">&#x27;person&#x27;</span>][<span class="string">&#x27;address&#x27;</span>][<span class="string">&#x27;city&#x27;</span>]</span><br><span class="line">zipcode = data[<span class="string">&#x27;person&#x27;</span>][<span class="string">&#x27;address&#x27;</span>][<span class="string">&#x27;zipcode&#x27;</span>]</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(name)     <span class="comment"># Output: John</span></span><br><span class="line"><span class="built_in">print</span>(age)      <span class="comment"># Output: 30</span></span><br><span class="line"><span class="built_in">print</span>(city)     <span class="comment"># Output: New York</span></span><br><span class="line"><span class="built_in">print</span>(zipcode)  <span class="comment"># Output: 10001</span></span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h4 id="多層">多層</h4>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> json</span><br><span class="line"></span><br><span class="line">json_str = <span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">&#123;</span></span><br><span class="line"><span class="string">  &quot;person&quot;: &#123;</span></span><br><span class="line"><span class="string">    &quot;name&quot;: &quot;John&quot;,</span></span><br><span class="line"><span class="string">    &quot;age&quot;: 30,</span></span><br><span class="line"><span class="string">    &quot;address&quot;: &#123;</span></span><br><span class="line"><span class="string">      &quot;city&quot;: &quot;New York&quot;,</span></span><br><span class="line"><span class="string">      &quot;zipcode&quot;: &quot;10001&quot;</span></span><br><span class="line"><span class="string">    &#125;</span></span><br><span class="line"><span class="string">  &#125;</span></span><br><span class="line"><span class="string">&#125;</span></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">process_json</span>(<span class="params">data</span>):</span><br><span class="line">    <span class="keyword">if</span> <span class="built_in">isinstance</span>(data, <span class="built_in">dict</span>):</span><br><span class="line">        <span class="keyword">for</span> key, value <span class="keyword">in</span> data.items():</span><br><span class="line">            <span class="built_in">print</span>(<span class="string">f&#x27;Key: <span class="subst">&#123;key&#125;</span>, Value: <span class="subst">&#123;value&#125;</span>&#x27;</span>)</span><br><span class="line">            process_json(value)  <span class="comment"># 遞迴處理值</span></span><br><span class="line">    <span class="keyword">elif</span> <span class="built_in">isinstance</span>(data, <span class="built_in">list</span>):</span><br><span class="line">        <span class="keyword">for</span> item <span class="keyword">in</span> data:</span><br><span class="line">            process_json(item)  <span class="comment"># 遞迴處理列表中的元素</span></span><br><span class="line"></span><br><span class="line">data = json.loads(json_str)</span><br><span class="line">process_json(data)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h2 id="gas對象操作">GAS對象操作</h2>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">var</span> obj = &#123;<span class="attr">name</span>: <span class="string">&quot;John&quot;</span>, <span class="attr">age</span>: <span class="number">30</span>&#125;;</span><br><span class="line"><span class="keyword">var</span> jsonString = <span class="title class_">JSON</span>.<span class="title function_">stringify</span>(obj);</span><br><span class="line"></span><br><span class="line"><span class="comment">//取值</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> name = obj.<span class="property">name</span>;</span><br><span class="line"><span class="keyword">var</span> age = obj[<span class="string">&#x27;age&#x27;</span>];</span><br><span class="line"></span><br><span class="line"><span class="comment">//設置</span></span><br><span class="line"></span><br><span class="line">obj.<span class="property">name</span> = <span class="string">&#x27;Alice&#x27;</span>;</span><br><span class="line">obj[<span class="string">&#x27;age&#x27;</span>] = <span class="number">25</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">//循環</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">var</span> key <span class="keyword">in</span> obj) &#123;</span><br><span class="line">    <span class="keyword">if</span> (obj.<span class="title function_">hasOwnProperty</span>(key)) &#123;</span><br><span class="line">        <span class="title class_">Logger</span>.<span class="title function_">log</span>(key + <span class="string">&#x27;: &#x27;</span> + obj[key]);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="綜合操作">綜合操作</h2>
+<h3 id="streamlit">streamlit</h3>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> streamlit <span class="keyword">as</span> st</span><br><span class="line"><span class="keyword">import</span> json</span><br><span class="line"><span class="keyword">from</span> datetime <span class="keyword">import</span> date, datetime</span><br><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"></span><br><span class="line"><span class="comment"># 模拟一些 session state 数据</span></span><br><span class="line">st.session_state.current_page = <span class="string">&quot;render_page0&quot;</span></span><br><span class="line">st.session_state.submitted = <span class="literal">False</span></span><br><span class="line">st.session_state.costs = &#123;</span><br><span class="line">    <span class="string">&quot;open_channel&quot;</span>: &#123;<span class="string">&quot;name&quot;</span>: <span class="string">&quot;渠道工程&quot;</span>, <span class="string">&quot;unit_cost&quot;</span>: <span class="number">0</span>, <span class="string">&quot;length&quot;</span>: <span class="number">0</span>, <span class="string">&quot;total_cost&quot;</span>: <span class="number">0</span>&#125;,</span><br><span class="line">    <span class="string">&quot;bridge&quot;</span>: &#123;<span class="string">&quot;name&quot;</span>: <span class="string">&quot;版橋工程&quot;</span>, <span class="string">&quot;unit_cost&quot;</span>: <span class="number">0</span>, <span class="string">&quot;quantity&quot;</span>: <span class="number">0</span>, <span class="string">&quot;total_cost&quot;</span>: <span class="number">0</span>&#125;,</span><br><span class="line">    <span class="string">&quot;wall&quot;</span>: &#123;<span class="string">&quot;name&quot;</span>: <span class="string">&quot;擋土牆&quot;</span>, <span class="string">&quot;unit_cost&quot;</span>: <span class="number">0</span>, <span class="string">&quot;length&quot;</span>: <span class="number">0</span>, <span class="string">&quot;total_cost&quot;</span>: <span class="number">0</span>&#125;,</span><br><span class="line">    <span class="string">&quot;road&quot;</span>: &#123;<span class="string">&quot;name&quot;</span>: <span class="string">&quot;道路工程&quot;</span>, <span class="string">&quot;unit_cost&quot;</span>: <span class="number">0</span>, <span class="string">&quot;quantity&quot;</span>: <span class="number">0</span>, <span class="string">&quot;total_cost&quot;</span>: <span class="number">0</span>&#125;,</span><br><span class="line">    <span class="string">&quot;falsework&quot;</span>: &#123;<span class="string">&quot;name&quot;</span>: <span class="string">&quot;版樁工程&quot;</span>, <span class="string">&quot;unit_cost&quot;</span>: <span class="number">0</span>, <span class="string">&quot;quantity&quot;</span>: <span class="number">0</span>, <span class="string">&quot;total_cost&quot;</span>: <span class="number">0</span>&#125;,</span><br><span class="line">&#125;</span><br><span class="line">st.session_state.totalcost = <span class="number">0</span></span><br><span class="line">st.session_state.inf = &#123;</span><br><span class="line">    <span class="string">&quot;work_place&quot;</span>: <span class="string">&quot;&quot;</span>,</span><br><span class="line">    <span class="string">&quot;work_place2&quot;</span>: <span class="string">&quot;&quot;</span>,</span><br><span class="line">    <span class="string">&quot;work_station&quot;</span>: <span class="string">&quot;&quot;</span>,</span><br><span class="line">    <span class="string">&quot;work_name&quot;</span>: <span class="string">&quot;&quot;</span>,</span><br><span class="line">    <span class="string">&quot;work_benefit&quot;</span>: <span class="string">&quot;&quot;</span>,</span><br><span class="line">    <span class="string">&quot;work_place_detail&quot;</span>: <span class="string">&quot;&quot;</span>,</span><br><span class="line">    <span class="string">&quot;work_water_check&quot;</span>: <span class="literal">False</span>,</span><br><span class="line">    <span class="string">&quot;work_start_date&quot;</span>: date.today(),</span><br><span class="line">    <span class="string">&quot;work_end_date&quot;</span>: date.today(),</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment"># 自定义 JSON 序列化器，用于处理日期字段</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">DateTimeEncoder</span>(json.JSONEncoder):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">default</span>(<span class="params">self, obj</span>):</span><br><span class="line">        <span class="keyword">if</span> <span class="built_in">isinstance</span>(obj, (datetime, date)):</span><br><span class="line">            <span class="keyword">return</span> obj.isoformat()</span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">super</span>().default(obj)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 定义一个函数，将 st.session_state 转换为 JSON</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">session_state_to_json</span>():</span><br><span class="line">    selected_fields = [<span class="string">&quot;costs&quot;</span>, <span class="string">&quot;inf&quot;</span>] <span class="comment"># 指定需要转换的字段</span></span><br><span class="line">    session_state_dict = &#123;key: value <span class="keyword">for</span> key, value <span class="keyword">in</span> st.session_state.items()<span class="keyword">if</span> key <span class="keyword">in</span> selected_fields&#125;</span><br><span class="line">    json_data = json.dumps(session_state_dict, cls=DateTimeEncoder)</span><br><span class="line">    <span class="keyword">return</span> json_data</span><br><span class="line"></span><br><span class="line"><span class="comment"># 使用函数并展示结果</span></span><br><span class="line">json_result = session_state_to_json()</span><br><span class="line">st.write(st.session_state)</span><br><span class="line">st.write(json_result)</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> st.button(<span class="string">&quot;Submit&quot;</span>):</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 設置 Google Apps Script Web 應用程式的 URL</span></span><br><span class="line">    url = <span class="string">&quot;your_gas_url&quot;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># 發送 POST 請求並傳遞 JSON 資料</span></span><br><span class="line">    response = requests.post(url, data=json_result)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 檢查請求是否成功</span></span><br><span class="line">    <span class="keyword">if</span> response.status_code == <span class="number">200</span>:</span><br><span class="line">        st.write(<span class="string">&quot;Request successful!&quot;</span>)</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        st.write(<span class="string">&quot;Error:&quot;</span>, response.status_code)</span><br></pre></td></tr></table></figure>
+<h3 id="gas">GAS</h3>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 定义Google Sheets的ID</span></span><br><span class="line"><span class="keyword">const</span> <span class="variable constant_">SHEET_ID</span> = <span class="string">&#x27;your_sheet_id&#x27;</span>; <span class="comment">// 替换为您的Google Sheets ID</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">doPost</span>(<span class="params">e</span>) &#123;</span><br><span class="line">  <span class="comment">// 从 POST 请求中获取 JSON 字符串</span></span><br><span class="line">  <span class="keyword">var</span> jsonString = e.<span class="property">postData</span>.<span class="property">contents</span>;</span><br><span class="line">  </span><br><span class="line">  <span class="comment">// 解析 JSON 字符串为对象</span></span><br><span class="line">  <span class="keyword">var</span> dataOrigin = <span class="title class_">JSON</span>.<span class="title function_">parse</span>(jsonString);</span><br><span class="line">  </span><br><span class="line">  <span class="keyword">var</span> data = <span class="title function_">flattenObject</span>(dataOrigin);</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 获取活动工作表</span></span><br><span class="line">  <span class="keyword">var</span> ss = <span class="title class_">SpreadsheetApp</span>.<span class="title function_">openById</span>(<span class="variable constant_">SHEET_ID</span>);</span><br><span class="line">  <span class="keyword">var</span> sheet = ss.<span class="title function_">getActiveSheet</span>();</span><br><span class="line">  </span><br><span class="line">  <span class="comment">// 获取最后一行，以便在末尾添加新数据</span></span><br><span class="line">  <span class="keyword">var</span> lastRow = sheet.<span class="title function_">getLastRow</span>();</span><br><span class="line">  </span><br><span class="line">  <span class="comment">// 将数据写入工作表的下一行</span></span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">var</span> key <span class="keyword">in</span> data) &#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">var</span> columnIndex = <span class="title function_">getColumnIndex</span>(sheet, key);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (columnIndex === -<span class="number">1</span>) &#123; <span class="comment">// 如果列不存在，则创建新列</span></span><br><span class="line">      columnIndex = sheet.<span class="title function_">getLastColumn</span>() + <span class="number">1</span>;</span><br><span class="line">      sheet.<span class="title function_">getRange</span>(<span class="number">1</span>, columnIndex).<span class="title function_">setValue</span>(key);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (lastRow===<span class="number">0</span> )&#123;</span><br><span class="line">      sheet.<span class="title function_">getRange</span>(lastRow + <span class="number">2</span>, columnIndex).<span class="title function_">setValue</span>(data[key]);</span><br><span class="line">    &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">      sheet.<span class="title function_">getRange</span>(lastRow + <span class="number">1</span>, columnIndex).<span class="title function_">setValue</span>(data[key]);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  <span class="comment">// 返回回应给客户端，这是可选的</span></span><br><span class="line">  <span class="keyword">return</span> <span class="title class_">ContentService</span>.<span class="title function_">createTextOutput</span>(<span class="string">&#x27;Success&#x27;</span>).<span class="title function_">setMimeType</span>(<span class="title class_">ContentService</span>.<span class="property">MimeType</span>.<span class="property">TEXT</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 获取列的索引，如果不存在，则返回-1</span></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">getColumnIndex</span>(<span class="params">sheet, columnName</span>) &#123;</span><br><span class="line">  <span class="keyword">var</span> maxColumns = sheet.<span class="title function_">getMaxColumns</span>(); <span class="comment">// 获取工作表的最大列数</span></span><br><span class="line">  <span class="keyword">if</span> (maxColumns &lt; <span class="number">1</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> -<span class="number">1</span>; <span class="comment">// 如果没有列存在，则直接返回 -1</span></span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">var</span> headersRange = sheet.<span class="title function_">getRange</span>(<span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>, maxColumns);</span><br><span class="line">  <span class="keyword">var</span> headersValues = headersRange.<span class="title function_">getValues</span>()[<span class="number">0</span>]; <span class="comment">// 只获取第一行数据</span></span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; headersValues.<span class="property">length</span>; i++) &#123;</span><br><span class="line">    <span class="keyword">if</span> (headersValues[i] === columnName) &#123;</span><br><span class="line">      <span class="keyword">return</span> i + <span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> -<span class="number">1</span>; <span class="comment">// 如果找不到，则返回 -1</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 定义一个扁平化嵌套对象的函数</span></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">flattenObject</span>(<span class="params">obj, parentKey = <span class="string">&#x27;&#x27;</span></span>) &#123;</span><br><span class="line">  <span class="comment">// 检查 obj 是否存在且不为 undefined 或 null</span></span><br><span class="line">  <span class="keyword">if</span> (!obj || <span class="keyword">typeof</span> obj !== <span class="string">&#x27;object&#x27;</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> &#123;&#125;;</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  <span class="keyword">let</span> result = &#123;&#125;;</span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">const</span> [key, value] <span class="keyword">of</span> <span class="title class_">Object</span>.<span class="title function_">entries</span>(obj)) &#123;</span><br><span class="line">    <span class="keyword">const</span> newKey = parentKey ? <span class="string">`<span class="subst">$&#123;parentKey&#125;</span>.<span class="subst">$&#123;key&#125;</span>`</span> : key;</span><br><span class="line">    <span class="keyword">if</span> (<span class="keyword">typeof</span> value === <span class="string">&#x27;object&#x27;</span> &amp;&amp; value !== <span class="literal">null</span>) &#123;</span><br><span class="line">      <span class="keyword">const</span> flattened = <span class="title function_">flattenObject</span>(value, newKey);</span><br><span class="line">      result = &#123; ...result, ...flattened &#125;;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      result[newKey] = value;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> result;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h2 id="json物件特殊處理">JSON物件特殊處理</h2>
+<h3 id="資料扁平化">資料扁平化</h3>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">doPost</span>(<span class="params">e</span>) &#123;</span><br><span class="line">  <span class="keyword">const</span> jsonData = &#123;<span class="string">&quot;name&quot;</span>:<span class="string">&quot;John&quot;</span>,<span class="string">&quot;age&quot;</span>:<span class="number">30</span>,<span class="string">&quot;address&quot;</span>:&#123;<span class="string">&quot;city&quot;</span>:<span class="string">&quot;New York&quot;</span>,<span class="string">&quot;country&quot;</span>:<span class="string">&quot;USA&quot;</span>&#125;&#125;;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 扁平化对象</span></span><br><span class="line">  <span class="keyword">const</span> flattenedObject = <span class="title function_">flattenObject</span>(jsonData);</span><br><span class="line">  </span><br><span class="line">  <span class="comment">// 将扁平化后的对象转换为 JSON 字符串</span></span><br><span class="line">  <span class="keyword">const</span> jsonString = <span class="title class_">JSON</span>.<span class="title function_">stringify</span>(flattenedObject);</span><br><span class="line">  </span><br><span class="line">  <span class="comment">// 返回 JSON 格式的数据</span></span><br><span class="line">  <span class="keyword">return</span> <span class="title class_">ContentService</span>.<span class="title function_">createTextOutput</span>(jsonString).<span class="title function_">setMimeType</span>(<span class="title class_">ContentService</span>.<span class="property">MimeType</span>.<span class="property">JSON</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 定义一个扁平化嵌套对象的函数</span></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">flattenObject</span>(<span class="params">obj, parentKey = <span class="string">&#x27;&#x27;</span></span>) &#123;</span><br><span class="line">  <span class="comment">// 检查 obj 是否存在且不为 undefined 或 null</span></span><br><span class="line">  <span class="keyword">if</span> (!obj || <span class="keyword">typeof</span> obj !== <span class="string">&#x27;object&#x27;</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> &#123;&#125;;</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  <span class="keyword">let</span> result = &#123;&#125;;</span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">const</span> [key, value] <span class="keyword">of</span> <span class="title class_">Object</span>.<span class="title function_">entries</span>(obj)) &#123;</span><br><span class="line">    <span class="keyword">const</span> newKey = parentKey ? <span class="string">`<span class="subst">$&#123;parentKey&#125;</span>.<span class="subst">$&#123;key&#125;</span>`</span> : key;</span><br><span class="line">    <span class="keyword">if</span> (<span class="keyword">typeof</span> value === <span class="string">&#x27;object&#x27;</span> &amp;&amp; value !== <span class="literal">null</span>) &#123;</span><br><span class="line">      <span class="keyword">const</span> flattened = <span class="title function_">flattenObject</span>(value, newKey);</span><br><span class="line">      result = &#123; ...result, ...flattened &#125;;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      result[newKey] = value;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> result;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 使用示例</span></span><br><span class="line"><span class="keyword">const</span> nestedObject = &#123;</span><br><span class="line">  <span class="attr">name</span>: <span class="string">&quot;John&quot;</span>,</span><br><span class="line">  <span class="attr">age</span>: <span class="number">30</span>,</span><br><span class="line">  <span class="attr">address</span>: &#123;</span><br><span class="line">    <span class="attr">city</span>: <span class="string">&quot;New York&quot;</span>,</span><br><span class="line">    <span class="attr">country</span>: <span class="string">&quot;USA&quot;</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> flattenedObject = <span class="title function_">flattenObject</span>(nestedObject);</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(flattenedObject);</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="title class_">Object</span>.<span class="title function_">keys</span>(flattenedObject))</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="title class_">Object</span>.<span class="title function_">values</span>(flattenedObject))</span><br><span class="line"></span><br><span class="line"><span class="comment">//[name,age,address.city,address.country]</span></span><br><span class="line"><span class="comment">//[John,30,New York,USA]</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h3 id="資料扁平化回復">資料扁平化回復</h3>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">unflattenObject</span>(<span class="params">obj</span>) &#123;</span><br><span class="line">  <span class="comment">// 创建一个新的对象来存储恢复后的数据</span></span><br><span class="line">  <span class="keyword">let</span> result = &#123;&#125;;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 遍历扁平化后的对象</span></span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">const</span> key <span class="keyword">in</span> obj) &#123;</span><br><span class="line">    <span class="keyword">if</span> (<span class="title class_">Object</span>.<span class="property">hasOwnProperty</span>.<span class="title function_">call</span>(obj, key)) &#123;</span><br><span class="line">      <span class="comment">// 将键名拆分成各级别的嵌套键名</span></span><br><span class="line">      <span class="keyword">const</span> keys = key.<span class="title function_">split</span>(<span class="string">&#x27;.&#x27;</span>);</span><br><span class="line">      <span class="keyword">let</span> nestedObj = result;</span><br><span class="line"></span><br><span class="line">      <span class="comment">// 迭代嵌套键名，并在新对象中重新创建嵌套结构</span></span><br><span class="line">      <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>; i &lt; keys.<span class="property">length</span>; i++) &#123;</span><br><span class="line">        <span class="keyword">const</span> nestedKey = keys[i];</span><br><span class="line">        <span class="keyword">if</span> (i === keys.<span class="property">length</span> - <span class="number">1</span>) &#123;</span><br><span class="line">          <span class="comment">// 如果是最后一级键名，直接将值赋给最后一级键</span></span><br><span class="line">          nestedObj[nestedKey] = obj[key];</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">          <span class="comment">// 如果不是最后一级键名，检查是否需要创建嵌套对象</span></span><br><span class="line">          nestedObj[nestedKey] = nestedObj[nestedKey] || &#123;&#125;;</span><br><span class="line">          nestedObj = nestedObj[nestedKey];</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> result;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h2 id="vba部分">VBA部分</h2>
+<blockquote>
+<p>只是先做紀錄，之後再跟collection的資料格式一起介紹</p>
+</blockquote>
+<figure class="highlight vb"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">Sub</span> TestDictionary()</span><br><span class="line">    <span class="keyword">Dim</span> jsonData <span class="keyword">As</span> <span class="type">Object</span></span><br><span class="line">    <span class="keyword">Set</span> jsonData = CreateObject(<span class="string">&quot;Scripting.Dictionary&quot;</span>)</span><br><span class="line">    </span><br><span class="line">    <span class="comment">&#x27; 添加?值?</span></span><br><span class="line">    jsonData(<span class="string">&quot;name&quot;</span>) = <span class="string">&quot;John&quot;</span></span><br><span class="line">    jsonData(<span class="string">&quot;age&quot;</span>) = <span class="number">30</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment">&#x27; 添加嵌套的字典?象</span></span><br><span class="line">    <span class="keyword">Dim</span> address <span class="keyword">As</span> <span class="type">Object</span></span><br><span class="line">    <span class="keyword">Set</span> address = CreateObject(<span class="string">&quot;Scripting.Dictionary&quot;</span>)</span><br><span class="line">    address(<span class="string">&quot;city&quot;</span>) = <span class="string">&quot;New York&quot;</span></span><br><span class="line">    address(<span class="string">&quot;country&quot;</span>) = <span class="string">&quot;USA&quot;</span></span><br><span class="line">    <span class="keyword">Set</span> jsonData(<span class="string">&quot;address&quot;</span>) = address</span><br><span class="line">    </span><br><span class="line">    <span class="comment">&#x27; ???值?</span></span><br><span class="line">    Debug.Print <span class="string">&quot;Name: &quot;</span> &amp; jsonData(<span class="string">&quot;name&quot;</span>)</span><br><span class="line">    Debug.Print <span class="string">&quot;Age: &quot;</span> &amp; jsonData(<span class="string">&quot;age&quot;</span>)</span><br><span class="line">    Debug.Print <span class="string">&quot;City: &quot;</span> &amp; jsonData(<span class="string">&quot;address&quot;</span>)(<span class="string">&quot;city&quot;</span>)</span><br><span class="line">    Debug.Print <span class="string">&quot;Country: &quot;</span> &amp; jsonData(<span class="string">&quot;address&quot;</span>)(<span class="string">&quot;country&quot;</span>)</span><br><span class="line"><span class="keyword">End</span> <span class="keyword">Sub</span></span><br></pre></td></tr></table></figure>
+<p><a
+target="_blank" rel="noopener" href="https://github.com/VBA-tools/VBA-JSON/blob/master/JsonConverter.bas">VBA-JSON
+參考</a></p>
+<h2 id="總結">總結</h2>
+<ol type="1">
+<li><strong>使用Streamlit和Google Sheets</strong>：
+<ul>
+<li>Streamlit能快速生成前端介面，對不熟悉前端技術的開發者友好。</li>
+<li>Google Sheets作為雲端資料庫，結合Google Apps Script
+(GAS)實現資料操作。</li>
+</ul></li>
+<li><strong>JSON格式的優勢</strong>：
+<ul>
+<li>JSON是API資料交換中常用的格式，方便資料取用和組裝。</li>
+<li>文章介紹了在Python和GAS中如何進行JSON資料的解析和生成。</li>
+</ul></li>
+<li><strong>多層資料結構處理技術</strong>：
+<ul>
+<li>使用扁平化和反扁平化技術，方便處理和還原多層嵌套的資料結構。</li>
+<li>提供了Python和GAS中處理多層資料結構的範例。</li>
+</ul></li>
+<li><strong>實際應用範例</strong>：
+<ul>
+<li>展示了如何在Streamlit應用中將資料轉換為JSON格式，並通過HTTP
+POST請求發送到GAS後端。</li>
+<li>在GAS後端接收並解析JSON資料，將其寫入Google Sheets的具體步驟。</li>
+</ul></li>
+<li><strong>Python和GAS中的JSON操作方法</strong>：
+<ul>
+<li>詳述了在Python中使用<code>json.dumps()</code>和<code>json.loads()</code>進行JSON格式轉換。</li>
+<li>說明了在GAS中使用<code>JSON.stringify()</code>和<code>JSON.parse()</code>處理JSON資料。</li>
+</ul></li>
+</ol>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>作者： </strong>Hank Lin
+  </li>
+  <li class="post-copyright-link">
+      <strong>文章連結：</strong>
+      <a href="https://www.hanksvba.com/posts/639809757/" title="Streamlit建置GoogleSheet簡易資料庫">https://www.hanksvba.com/posts/639809757/</a>
+  </li>
+  <li class="post-copyright-license">
+      <strong>版權聲明： </strong>本網誌所有文章除特別聲明外，均採用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 許可協議。轉載請註明出處！
+  </li>
+</ul>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/Streamlit/" rel="tag"><i class="fa fa-tag"></i> Streamlit</a>
+              <a href="/tags/GAS/" rel="tag"><i class="fa fa-tag"></i> GAS</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/posts/4262718496/" rel="prev" title="土方計算-方格法(VBA)">
+                  <i class="fa fa-angle-left"></i> 土方計算-方格法(VBA)
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/posts/2910899188/" rel="next" title="Streamlit打造工程估算系統">
+                  Streamlit打造工程估算系統 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2024</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Hank Lin</span>
+  </div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="訪客總數">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="總瀏覽次數">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 強力驅動
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="back-to-top" role="button" aria-label="回到頂端">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/next-boot.js"></script>
+
+  
+  <script class="next-config" data-name="pdf" type="application/json">{"object_url":{"url":"https://cdnjs.cloudflare.com/ajax/libs/pdfobject/2.2.12/pdfobject.min.js","integrity":"sha256-g2xji1rlE3KsGVClvuxTbcR0Kn2+wtQADSff2Tbb4zA="},"url":"/lib/pdf/web/viewer"}</script>
+  <script src="/js/third-party/tags/pdf.js"></script>
+
+
+
+
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">false</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"ams","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+
+</body>
+</html>
