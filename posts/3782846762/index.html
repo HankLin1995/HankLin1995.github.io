@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.2.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha256-wiz7ZSCn/btzhjKDQBms9Hx4sSeUYsDrTLg7roPstac=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"www.hanksvba.com","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.19.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":"mac"},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":false,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜尋...","empty":"我們無法找到任何有關 ${query} 的搜索結果","hits_time":"${hits} 找到 ${time} 個結果","hits":"找到 ${hits} 個結果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="前言 在執行工程時，經常會為了聯絡相關事宜建立LINE群組來進行交談，通常施工照片也會在這個群裡面進行上傳讓大家可以確認內容，上傳照片到LINE群組的時候除了直接上傳外，也可以透過建立相簿將照片永久保存。 在LINE群組的檔案機制，照片或文件會有一定時間的存活期，當過了存活期之後照片就會呈現無法下載的情形，因此將照片做一個額外存放的動作算是滿重要的一個手段，而這件事除了繁瑣也很可能會因為再次請">
+<meta property="og:type" content="article">
+<meta property="og:title" content="LINE機器人自動備份群組照片">
+<meta property="og:url" content="https://www.hanksvba.com/posts/3782846762/">
+<meta property="og:site_name" content="Hank&#39;s Blog">
+<meta property="og:description" content="前言 在執行工程時，經常會為了聯絡相關事宜建立LINE群組來進行交談，通常施工照片也會在這個群裡面進行上傳讓大家可以確認內容，上傳照片到LINE群組的時候除了直接上傳外，也可以透過建立相簿將照片永久保存。 在LINE群組的檔案機制，照片或文件會有一定時間的存活期，當過了存活期之後照片就會呈現無法下載的情形，因此將照片做一個額外存放的動作算是滿重要的一個手段，而這件事除了繁瑣也很可能會因為再次請">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:image" content="https://www.hanksvba.com/posts/3782846762/upload_53cc488e0a27cf493cd07d4905969356.png">
+<meta property="og:image" content="https://www.hanksvba.com/posts/3782846762/upload_62b06ad5bf5b96e4922d9c01ab1de029.png">
+<meta property="article:published_time" content="2024-08-03T14:00:08.000Z">
+<meta property="article:modified_time" content="2024-08-03T14:00:08.000Z">
+<meta property="article:author" content="Hank Lin">
+<meta property="article:tag" content="flask">
+<meta property="article:tag" content="LINEBOT">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://www.hanksvba.com/posts/3782846762/upload_53cc488e0a27cf493cd07d4905969356.png">
+
+
+<link rel="canonical" href="https://www.hanksvba.com/posts/3782846762/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-TW","comments":true,"permalink":"https://www.hanksvba.com/posts/3782846762/","path":"posts/3782846762/","title":"LINE機器人自動備份群組照片"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>LINE機器人自動備份群組照片 | Hank's Blog</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切換導航欄" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Hank's Blog</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">工程人的設計監造VBA工具交流區</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜尋" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-首頁"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首頁</a></li><li class="menu-item menu-item-關於"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>關於</a></li><li class="menu-item menu-item-標籤"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>標籤</a></li><li class="menu-item menu-item-分類"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分類</a></li><li class="menu-item menu-item-文章"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>文章</a></li>
+  </ul>
+</nav>
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目錄
+        </li>
+        <li class="sidebar-nav-overview">
+          本站概要
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%89%8D%E8%A8%80"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%93%8D%E4%BD%9C%E7%95%AB%E9%9D%A2"><span class="nav-number">2.</span> <span class="nav-text">操作畫面</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9F%BA%E6%9C%AC%E5%B7%A5%E5%85%B7"><span class="nav-number">3.</span> <span class="nav-text">基本工具</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%9B%B8%E9%97%9C%E9%80%A3%E7%B5%90"><span class="nav-number">3.1.</span> <span class="nav-text">相關連結</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AF%A6%E4%BD%9C%E9%82%8F%E8%BC%AF"><span class="nav-number">4.</span> <span class="nav-text">實作邏輯</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%A0%90%E5%85%88%E6%BA%96%E5%82%99%E5%85%A7%E5%AE%B9"><span class="nav-number">4.1.</span> <span class="nav-text">預先準備內容</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%A8%8A%E6%81%AF%E6%8E%A5%E6%94%B6%E9%81%8E%E7%A8%8B"><span class="nav-number">4.2.</span> <span class="nav-text">訊息接收過程</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%A8%8B%E5%BC%8F%E7%A2%BC"><span class="nav-number">5.</span> <span class="nav-text">程式碼</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#webhook"><span class="nav-number">5.1.</span> <span class="nav-text">webhook</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%B5%90%E8%AA%9E"><span class="nav-number">6.</span> <span class="nav-text">結語</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Hank Lin"
+      src="/images/avatar_custom.png">
+  <p class="site-author-name" itemprop="name">Hank Lin</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">28</span>
+          <span class="site-state-item-name">文章</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">4</span>
+        <span class="site-state-item-name">分類</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">19</span>
+        <span class="site-state-item-name">標籤</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="mailto:apple84026113@gmail.com" title="E-Mail → mailto:apple84026113@gmail.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.youtube.com/channel/UCWmy5KaK7Leg6lLUlWBPaSw" title="YouTube → https:&#x2F;&#x2F;www.youtube.com&#x2F;channel&#x2F;UCWmy5KaK7Leg6lLUlWBPaSw" rel="noopener me" target="_blank"><i class="fab fa-youtube fa-fw"></i>YouTube</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/images/LINE_QRCODE.PNG" title="LINE → &#x2F;images&#x2F;LINE_QRCODE.PNG" rel="noopener me"><i class="fab fa-line fa-fw"></i>LINE</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://reurl.cc/RyvvaZ" title="LINE社群 → https:&#x2F;&#x2F;reurl.cc&#x2F;RyvvaZ" rel="noopener me" target="_blank"><i class="fas fa-comment fa-fw"></i>LINE社群</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://hankvba.blogspot.com/" title="舊網站 → https:&#x2F;&#x2F;hankvba.blogspot.com&#x2F;" rel="noopener me" target="_blank"><i class="fab fa-blogger fa-fw"></i>舊網站</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://portaly.cc/hanksvba/support/" title="小額贊助 → https:&#x2F;&#x2F;portaly.cc&#x2F;hanksvba&#x2F;support&#x2F;" rel="noopener me" target="_blank"><i class="fas fa-handshake fa-fw"></i>小額贊助</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-TW">
+    <link itemprop="mainEntityOfPage" href="https://www.hanksvba.com/posts/3782846762/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar_custom.png">
+      <meta itemprop="name" content="Hank Lin">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hank's Blog">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="LINE機器人自動備份群組照片 | Hank's Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          LINE機器人自動備份群組照片
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">發表於</span>
+
+      <time title="創建時間：2024-08-03 22:00:08" itemprop="dateCreated datePublished" datetime="2024-08-03T22:00:08+08:00">2024-08-03</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分類於</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E5%B0%88%E6%A1%88%E6%88%90%E6%9E%9C/" itemprop="url" rel="index"><span itemprop="name">專案成果</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="閱讀次數" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">閱讀次數：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h2 id="前言">前言</h2>
+<p>在執行工程時，經常會為了聯絡相關事宜建立LINE群組來進行交談，通常施工照片也會在這個群裡面進行上傳讓大家可以確認內容，上傳照片到LINE群組的時候除了直接上傳外，也可以透過建立相簿將照片永久保存。</p>
+<p>在LINE群組的檔案機制，照片或文件會有一定時間的存活期，當過了存活期之後照片就會呈現無法下載的情形，因此將照片做一個額外存放的動作算是滿重要的一個手段，而這件事除了繁瑣也很可能會因為再次請求上傳的過程多存了不少張<strong>重複的照片</strong>，而這個部分相信大多數人都是透過人眼來進行判別，火眼金睛用久也是會累的。</p>
+<blockquote>
+<p>希望能夠打造一個當群組內判定到照片資料時，能夠自動備份到指定硬碟並汰除重複照片的機器人，減少這些瑣事的發生。</p>
+</blockquote>
+<p>至於照片後續要進行處理就可以利用<a
+href="https://www.hanksvba.com/posts/144473154/">施工照片VBA</a>進行資料排序、批次改名、報表輸出。</p>
+<span id="more"></span>
+<h2 id="操作畫面">操作畫面</h2>
+<figure>
+<img src="upload_53cc488e0a27cf493cd07d4905969356.png"
+alt="Fig1.LINE群組畫面" />
+<figcaption aria-hidden="true">Fig1.LINE群組畫面</figcaption>
+</figure>
+<figure>
+<img src="upload_62b06ad5bf5b96e4922d9c01ab1de029.png"
+alt="Fig2.本地端儲存畫面" />
+<figcaption aria-hidden="true">Fig2.本地端儲存畫面</figcaption>
+</figure>
+<h2 id="基本工具">基本工具</h2>
+<ul>
+<li>LINEBOT
+<ul>
+<li>MessengerAPI</li>
+</ul></li>
+<li>ngrok
+<ul>
+<li>主要是用來建立https連線給LINEBOT的webhook使用</li>
+</ul></li>
+<li>python
+<ul>
+<li>flask</li>
+<li>linebotsdk</li>
+</ul></li>
+</ul>
+<h3 id="相關連結">相關連結</h3>
+<ul>
+<li><a
+target="_blank" rel="noopener" href="https://github.com/yaoandy107/line-bot-tutorial">LINEBOT基本建立</a></li>
+<li><a target="_blank" rel="noopener" href="https://ngrok.com/download">ngrok</a></li>
+<li><a
+target="_blank" rel="noopener" href="https://ithelp.ithome.com.tw/m/articles/10295654">本地端使用ngrok</a></li>
+</ul>
+<h2 id="實作邏輯">實作邏輯</h2>
+<h3 id="預先準備內容">預先準備內容</h3>
+<ol type="1">
+<li>建立flask並啟用app</li>
+<li>啟用ngrok</li>
+<li>複製將ngrok上面的對外連線IP</li>
+<li>貼到LINEBOT的webhook</li>
+</ol>
+<h3 id="訊息接收過程">訊息接收過程</h3>
+<ol type="1">
+<li>LINEBOT在接受到群組內的訊息時</li>
+<li>判定訊息屬性是否為Image</li>
+<li>圖片內容會先暫時放在LINE機房並且生成一組token</li>
+<li>收到訊息的同時會執行API(Webhook機制)</li>
+<li>API中會將訊息做過濾，藉由token取得照片到本地端</li>
+<li>本地端資料庫會記錄已經存放的照片跟Image_hash</li>
+<li>判定是否有重複的image_hash，如有則回傳"圖片已存在"</li>
+<li>通過重複汰除機制過濾完成後可將照片存放到指定位置</li>
+</ol>
+<h2 id="程式碼">程式碼</h2>
+<h3 id="webhook">webhook</h3>
+<blockquote>
+<p>app_local.py</p>
+</blockquote>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 存放在本地端sqlite+本地端硬碟</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> flask <span class="keyword">import</span> Flask, request, abort</span><br><span class="line"><span class="keyword">from</span> linebot <span class="keyword">import</span> LineBotApi, WebhookHandler</span><br><span class="line"><span class="keyword">from</span> linebot.exceptions <span class="keyword">import</span> InvalidSignatureError</span><br><span class="line"><span class="keyword">from</span> linebot.models <span class="keyword">import</span> MessageEvent, ImageMessage, TextSendMessage</span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">import</span> uuid</span><br><span class="line"><span class="keyword">import</span> hashlib</span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> sql_utils <span class="keyword">import</span> get_db, save_photo_to_db, is_image_hash_exist</span><br><span class="line"></span><br><span class="line">app = Flask(__name__)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 設定你的 Channel Access Token 和 Channel Secret</span></span><br><span class="line">CHANNEL_ACCESS_TOKEN = <span class="string">&#x27;YOUR_CHANNEL_ACCESS_TOKEN&#x27;</span></span><br><span class="line">CHANNEL_SECRET = <span class="string">&#x27;YOUR_CHANNEL_SECRET&#x27;</span></span><br><span class="line"></span><br><span class="line">line_bot_api = LineBotApi(CHANNEL_ACCESS_TOKEN)</span><br><span class="line">handler = WebhookHandler(CHANNEL_SECRET)</span><br><span class="line"></span><br><span class="line">PHOTOS_DIR = <span class="string">&#x27;photos&#x27;</span></span><br><span class="line"><span class="keyword">if</span> <span class="keyword">not</span> os.path.exists(PHOTOS_DIR):</span><br><span class="line">    os.makedirs(PHOTOS_DIR)</span><br><span class="line"></span><br><span class="line"><span class="meta">@app.route(<span class="params"><span class="string">&quot;/callback&quot;</span>, methods=[<span class="string">&#x27;POST&#x27;</span>]</span>)</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">callback</span>():</span><br><span class="line">    <span class="comment"># 獲取 X-Line-Signature header</span></span><br><span class="line">    signature = request.headers[<span class="string">&#x27;X-Line-Signature&#x27;</span>]</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 獲取請求體</span></span><br><span class="line">    body = request.get_data(as_text=<span class="literal">True</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        handler.handle(body, signature)</span><br><span class="line">    <span class="keyword">except</span> InvalidSignatureError:</span><br><span class="line">        abort(<span class="number">400</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="string">&#x27;OK&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="meta">@handler.add(<span class="params">MessageEvent, message=ImageMessage</span>)</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">handle_image_message</span>(<span class="params">event</span>):</span><br><span class="line">    <span class="comment"># 獲取圖像內容</span></span><br><span class="line">    message_content = line_bot_api.get_message_content(event.message.<span class="built_in">id</span>)</span><br><span class="line">    image_data = message_content.content</span><br><span class="line">    image_hash = calculate_image_hash(image_data)</span><br><span class="line">    user_id = event.source.user_id</span><br><span class="line">    group_id = event.source.group_id</span><br><span class="line">    photo_properties = &#123;<span class="string">&quot;edit&quot;</span>: <span class="string">&quot;false&quot;</span>&#125;</span><br><span class="line">    photo_url=<span class="literal">None</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">with</span> <span class="built_in">next</span>(get_db()) <span class="keyword">as</span> db:</span><br><span class="line"></span><br><span class="line">        <span class="comment"># 檢查圖片是否已存在</span></span><br><span class="line">        <span class="keyword">if</span> is_image_hash_exist(db, image_hash):</span><br><span class="line">            reply_text = <span class="string">&quot;圖片已存在，未保存。&quot;</span></span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            <span class="comment"># 保存圖片到本地資料夾</span></span><br><span class="line">            file_name = <span class="built_in">str</span>(uuid.uuid4()) + <span class="string">&#x27;.jpg&#x27;</span></span><br><span class="line">            file_path = os.path.join(PHOTOS_DIR, file_name)</span><br><span class="line">            <span class="keyword">with</span> <span class="built_in">open</span>(file_path, <span class="string">&#x27;wb&#x27;</span>) <span class="keyword">as</span> f:</span><br><span class="line">                <span class="keyword">for</span> chunk <span class="keyword">in</span> message_content.iter_content():</span><br><span class="line">                    f.write(chunk)</span><br><span class="line"></span><br><span class="line">            <span class="comment"># 保存圖片到資料庫</span></span><br><span class="line">            saved_photo = save_photo_to_db(db, user_id, group_id, file_name, photo_url, photo_properties, image_hash)</span><br><span class="line">            <span class="built_in">print</span>(<span class="string">&quot;Photo saved successfully:&quot;</span>, saved_photo)</span><br><span class="line"></span><br><span class="line">            reply_text = <span class="string">&quot;圖片已保存到本地端！&quot;</span></span><br><span class="line"></span><br><span class="line">    line_bot_api.reply_message(</span><br><span class="line">        event.reply_token,</span><br><span class="line">        TextSendMessage(text=reply_text)</span><br><span class="line">    )</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">calculate_image_hash</span>(<span class="params">image_data</span>):</span><br><span class="line">    hasher = hashlib.sha256()</span><br><span class="line">    hasher.update(image_data)</span><br><span class="line">    <span class="keyword">return</span> hasher.hexdigest()</span><br><span class="line"></span><br><span class="line"><span class="meta">@handler.add(<span class="params">MessageEvent</span>)</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">handle_message</span>(<span class="params">event</span>):</span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> <span class="built_in">isinstance</span>(event.message, ImageMessage):</span><br><span class="line">        reply_text = <span class="string">&quot;請傳送圖片訊息。&quot;</span></span><br><span class="line">        line_bot_api.reply_message(</span><br><span class="line">            event.reply_token,</span><br><span class="line">            TextSendMessage(text=reply_text)</span><br><span class="line">        )</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&quot;__main__&quot;</span>:</span><br><span class="line">    app.run(host=<span class="string">&quot;0.0.0.0&quot;</span>, port=<span class="number">8000</span>)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>sql_utils.py</p>
+</blockquote>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> sqlalchemy <span class="keyword">import</span> create_engine, Column, Integer, String, DateTime, JSON</span><br><span class="line"><span class="keyword">from</span> sqlalchemy.orm <span class="keyword">import</span> sessionmaker,declarative_base</span><br><span class="line"><span class="keyword">from</span> datetime <span class="keyword">import</span> datetime</span><br><span class="line"><span class="keyword">from</span> sqlalchemy.orm <span class="keyword">import</span> Session</span><br><span class="line"></span><br><span class="line">DATABASE_URL=<span class="string">&quot;sqlite:///photos.db&quot;</span></span><br><span class="line">engine = create_engine(DATABASE_URL)</span><br><span class="line">Base = declarative_base()</span><br><span class="line">SessionLocal = sessionmaker(autocommit=<span class="literal">False</span>, autoflush=<span class="literal">False</span>, bind=engine)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 定義數據庫模型</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Photo</span>(<span class="title class_ inherited__">Base</span>):</span><br><span class="line">    __tablename__ = <span class="string">&#x27;photos_backup&#x27;</span></span><br><span class="line">    <span class="built_in">id</span> = Column(Integer, primary_key=<span class="literal">True</span>, index=<span class="literal">True</span>)</span><br><span class="line">    user_id = Column(String)</span><br><span class="line">    group_id = Column(String)</span><br><span class="line">    photo_name = Column(String)</span><br><span class="line">    photo_url = Column(String)</span><br><span class="line">    photo_thumbnail_url = Column(String)</span><br><span class="line">    created_time = Column(DateTime, default=datetime.utcnow)</span><br><span class="line">    photo_properties = Column(JSON)</span><br><span class="line">    photo_image_hash = Column(String)<span class="comment">#, unique=True, nullable=False)</span></span><br><span class="line"></span><br><span class="line">Base.metadata.create_all(bind=engine)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 獲取數據庫會話</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">get_db</span>():</span><br><span class="line">    db = SessionLocal()</span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        <span class="keyword">yield</span> db</span><br><span class="line">    <span class="keyword">finally</span>:</span><br><span class="line">        db.close()</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">save_photo_to_db</span>(<span class="params">db, user_id,group_id, photo_name, photo_url, photo_properties,image_hash</span>):</span><br><span class="line">    new_photo = Photo(</span><br><span class="line">        user_id=user_id,</span><br><span class="line">        group_id=group_id,</span><br><span class="line">        photo_name=photo_name,</span><br><span class="line">        photo_url=photo_url,</span><br><span class="line">        photo_properties=photo_properties,</span><br><span class="line">        photo_image_hash=image_hash</span><br><span class="line">    )</span><br><span class="line">    db.add(new_photo)</span><br><span class="line">    db.commit()</span><br><span class="line">    db.refresh(new_photo)</span><br><span class="line">    <span class="keyword">return</span> new_photo</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">get_photo_by_id</span>(<span class="params">db: Session, photo_id: <span class="built_in">int</span></span>):</span><br><span class="line">    <span class="keyword">return</span> db.query(Photo).<span class="built_in">filter</span>(Photo.<span class="built_in">id</span> == photo_id).first()</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">fetch_all_photos</span>(<span class="params">db: Session</span>):</span><br><span class="line">    <span class="keyword">return</span> db.query(Photo).<span class="built_in">all</span>()</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">delete_photo_from_db</span>(<span class="params">db: Session, photo_id: <span class="built_in">int</span></span>):</span><br><span class="line">    photo = db.query(Photo).<span class="built_in">filter</span>(Photo.<span class="built_in">id</span> == photo_id).first()</span><br><span class="line">    <span class="keyword">if</span> photo:</span><br><span class="line">        db.delete(photo)</span><br><span class="line">        db.commit()</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">f&quot;Photo with ID <span class="subst">&#123;photo_id&#125;</span> deleted successfully from database.&quot;</span>)</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">f&quot;No photo found with ID <span class="subst">&#123;photo_id&#125;</span>.&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">is_image_hash_exist</span>(<span class="params">db, image_hash</span>):</span><br><span class="line">    <span class="keyword">return</span> db.query(Photo).<span class="built_in">filter</span>(Photo.photo_image_hash == image_hash).first() <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">None</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h2 id="結語">結語</h2>
+<p>如果您本身執行工程專案時有大量的照片需要進行自動備份，同時又有一台電腦可以不關機當作server用途，可以將他建立好python執行環境並參考上述的內容搭配使用，如有不懂的內容也歡迎聯繫作者來<strong>協助架設LINE群組機器人</strong>，自動備份工程群組內部照片省時又省力。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>作者： </strong>Hank Lin
+  </li>
+  <li class="post-copyright-link">
+      <strong>文章連結：</strong>
+      <a href="https://www.hanksvba.com/posts/3782846762/" title="LINE機器人自動備份群組照片">https://www.hanksvba.com/posts/3782846762/</a>
+  </li>
+  <li class="post-copyright-license">
+      <strong>版權聲明： </strong>本網誌所有文章除特別聲明外，均採用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 許可協議。轉載請註明出處！
+  </li>
+</ul>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/flask/" rel="tag"><i class="fa fa-tag"></i> flask</a>
+              <a href="/tags/LINEBOT/" rel="tag"><i class="fa fa-tag"></i> LINEBOT</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/posts/3601177192/" rel="prev" title="python製作工程設計簡圖">
+                  <i class="fa fa-angle-left"></i> python製作工程設計簡圖
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/posts/1512537146/" rel="next" title="施工日誌VBA-版本說明">
+                  施工日誌VBA-版本說明 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2024</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Hank Lin</span>
+  </div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="訪客總數">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="總瀏覽次數">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 強力驅動
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="back-to-top" role="button" aria-label="回到頂端">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/next-boot.js"></script>
+
+  
+  <script class="next-config" data-name="pdf" type="application/json">{"object_url":{"url":"https://cdnjs.cloudflare.com/ajax/libs/pdfobject/2.2.12/pdfobject.min.js","integrity":"sha256-g2xji1rlE3KsGVClvuxTbcR0Kn2+wtQADSff2Tbb4zA="},"url":"/lib/pdf/web/viewer"}</script>
+  <script src="/js/third-party/tags/pdf.js"></script>
+
+
+
+
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">false</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"ams","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+
+</body>
+</html>

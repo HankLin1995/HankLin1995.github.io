@@ -131,7 +131,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">20</span>
+          <span class="site-state-item-count">28</span>
           <span class="site-state-item-name">文章</span>
         </a>
       </div>
@@ -142,7 +142,7 @@
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">13</span>
+        <span class="site-state-item-count">19</span>
         <span class="site-state-item-name">標籤</span></a>
       </div>
   </nav>
@@ -155,7 +155,7 @@
         <a href="https://www.youtube.com/channel/UCWmy5KaK7Leg6lLUlWBPaSw" title="YouTube → https:&#x2F;&#x2F;www.youtube.com&#x2F;channel&#x2F;UCWmy5KaK7Leg6lLUlWBPaSw" rel="noopener me" target="_blank"><i class="fab fa-youtube fa-fw"></i>YouTube</a>
       </span>
       <span class="links-of-author-item">
-        <a href="/images/LINE_QRCODE.png" title="LINE → &#x2F;images&#x2F;LINE_QRCODE.png" rel="noopener me"><i class="fab fa-line fa-fw"></i>LINE</a>
+        <a href="/images/LINE_QRCODE.PNG" title="LINE → &#x2F;images&#x2F;LINE_QRCODE.PNG" rel="noopener me"><i class="fab fa-line fa-fw"></i>LINE</a>
       </span>
       <span class="links-of-author-item">
         <a href="https://reurl.cc/RyvvaZ" title="LINE社群 → https:&#x2F;&#x2F;reurl.cc&#x2F;RyvvaZ" rel="noopener me" target="_blank"><i class="fas fa-comment fa-fw"></i>LINE社群</a>
@@ -179,6 +179,779 @@
     </div>
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://www.hanksvba.com/posts/43562660/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar_custom.png">
+      <meta itemprop="name" content="Hank Lin">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hank's Blog">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | Hank's Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/posts/43562660/" class="post-title-link" itemprop="url">Streamlit工程進度甘特圖</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">發表於</span>
+
+      <time title="創建時間：2024-07-07 15:23:04" itemprop="dateCreated datePublished" datetime="2024-07-07T15:23:04+08:00">2024-07-07</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分類於</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E5%B0%88%E6%A1%88%E6%88%90%E6%9E%9C/" itemprop="url" rel="index"><span itemprop="name">專案成果</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h2 id="前言">前言</h2>
+<p>工程進行期間會有很多不同的任務，每個任務會有自己所需要花費的金額、起始日期、持續天數，藉由這些任務的組合可以統整出工程的預定進度情況，將不同任務繪製在同一個時間軸上可以清楚的了解到現階段有那些任務應該要被完成以及未來還有哪些任務需要完成，對於任務單純的工程很有大的助益。</p>
+<p>前陣子在開發施工日誌的時候，如果採用施工計畫書上的每15日累積進度做內差取值會比較容易失真，後來想想，其實這個累積進度的來源也是按照甘特圖的比例所得出的結果?但總歸如何，還是花了一些時間熟悉一下matplotlib的做圖套件，並且搭配streamlit前端介面做一個雲端服務，目標是希望能夠產出<strong>工程甘特圖</strong>及<strong>每日進度的CSV檔案</strong>，未來可以匯入其他的日報VBA工具。</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/posts/43562660/#more" rel="contents">
+                閱讀全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://www.hanksvba.com/posts/213685522/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar_custom.png">
+      <meta itemprop="name" content="Hank Lin">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hank's Blog">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | Hank's Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/posts/213685522/" class="post-title-link" itemprop="url">Streamlit做手繪簽名</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">發表於</span>
+
+      <time title="創建時間：2024-07-05 23:31:02" itemprop="dateCreated datePublished" datetime="2024-07-05T23:31:02+08:00">2024-07-05</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分類於</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E5%B0%88%E6%A1%88%E6%88%90%E6%9E%9C/" itemprop="url" rel="index"><span itemprop="name">專案成果</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h2 id="前言">前言</h2>
+<p>工程執行過程免不了會有很多品管文件需要製作，紙本文件的加值應用相當困難，通常都會放置於一堆又一堆的資料夾中，有需要再去相互參照，大多流於形式，倘若工程文件能夠數位化，對於整個工程資料的保存、查詢會有很多好處，但經過幾次查核委員的建議，關於簽名這件事情他們有意見，既然是需要在現場進行檢查的文件，那<strong>當然</strong>會是手寫的才最香，殊不知很多委員還是認為電腦直接出的文件不能用，至少簽名的部分要手寫才是真的。</p>
+<p>基於這些理由，我希望能夠做到用手寫的觸感去簽署文件，透過Streamlit的前端及streamlit-drawable-canvas作為繪圖器，opencv作為背景去背處理，及PyMuPDF作為轉檔工具，來達成委員的要求...</p>
+<p>其實我一直不能理解，中華電信都可以用手寫的觸控板來跟客戶簽約了，為什麼公共工程一定要用<strong>紙+筆</strong>，現在其實平板電腦都很方便，把要抽查的PDF都先放好在雲端，帶去工地現場選取要抽查的對應PDF後寫紀錄表，寫完後可以即時上傳到雲端，資訊流動才會迅速，也不用這樣浪費一堆紙來記錄這些內容，未來要翻閱從雲端去撈取出來即可。</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/posts/213685522/#more" rel="contents">
+                閱讀全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://www.hanksvba.com/posts/2533511128/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar_custom.png">
+      <meta itemprop="name" content="Hank Lin">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hank's Blog">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | Hank's Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/posts/2533511128/" class="post-title-link" itemprop="url">VBA橫斷面法面積批次處理</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">發表於</span>
+
+      <time title="創建時間：2024-07-04 22:01:48" itemprop="dateCreated datePublished" datetime="2024-07-04T22:01:48+08:00">2024-07-04</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分類於</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E5%B0%88%E6%A1%88%E9%96%8B%E7%99%BC/" itemprop="url" rel="index"><span itemprop="name">專案開發</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h2 id="前言">前言</h2>
+<p>工程特性如為帶狀工程，比如:水溝、道路等等，通常會以橫斷面法作為土方計算的數量依據，此指土方計算不外乎為:挖方、填方、回填方、CLSM之類。</p>
+<p>在繪製土方基本資料時，面積的框選便會是決定數量很重要的部分，實務上的土方計算流程為:</p>
+<p>圖層設定:</p>
+<ul>
+<li>原地面線</li>
+<li>結構線</li>
+<li>開挖線</li>
+<li>填方線</li>
+<li>開挖面積</li>
+<li>挖方面積</li>
+</ul>
+<ol type="1">
+<li>繪製挖方面積時，將原地面線與開挖線隔離顯示，透過BO或HATCH生成面積</li>
+<li>繪製填方面積時，將回填線、結構線、開挖線隔離顯示，透過BO或HATCH生成面積</li>
+</ol>
+<blockquote>
+<p>封閉聚合線</p>
+</blockquote>
+<p>CAD內建指令'BO'會出現一張介面，可以藉由點選內部點生成封閉聚合線，指令'-BO'則可以略過介面的程序直接點選，此時封閉聚合線會有'面積'屬性。</p>
+<blockquote>
+<p>填充線</p>
+</blockquote>
+<p>CAD內建指令'HATCH'可以點選內部點生成填充線，此時填充線會有'面積'屬性，須注意之前測試過<strong>HATCH可能會有些許的誤差</strong>，這個也不清楚原因為何...</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/posts/2533511128/#more" rel="contents">
+                閱讀全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://www.hanksvba.com/posts/1384887565/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar_custom.png">
+      <meta itemprop="name" content="Hank Lin">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hank's Blog">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | Hank's Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/posts/1384887565/" class="post-title-link" itemprop="url">openpyxl照片處理筆記</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">發表於</span>
+
+      <time title="創建時間：2024-06-26 21:59:55" itemprop="dateCreated datePublished" datetime="2024-06-26T21:59:55+08:00">2024-06-26</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分類於</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E5%9F%BA%E6%9C%AC%E5%8E%9F%E7%90%86/" itemprop="url" rel="index"><span itemprop="name">基本原理</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h2 id="前言">前言</h2>
+<p>目前在處理輸出報表的實務上會遇到要貼上照片的問題，有關python在處理Excel照片部分會需要透過openpyxl裡面相關的套件進行，希望能夠達成下列情況:</p>
+<p><strong>給定照片之後可以依照儲存格的範圍貼上照片，儲存格可能是單一儲存格或者是合併儲存格，找出儲存格範圍寬度、儲存格範圍高度</strong></p>
+<blockquote>
+<p>最適合的方式計算過程</p>
+</blockquote>
+<ul>
+<li>照片寬的，比例設定為儲存格範圍寬度/照片寬度，照片長寬同乘上這個比例放大縮小</li>
+<li>照片長的，比例設定為儲存格範圍高度/照片高度，照片長寬同乘上這個比例放大縮小</li>
+</ul>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/posts/1384887565/#more" rel="contents">
+                閱讀全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://www.hanksvba.com/posts/777227760/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar_custom.png">
+      <meta itemprop="name" content="Hank Lin">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hank's Blog">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | Hank's Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/posts/777227760/" class="post-title-link" itemprop="url">Streamlit建立權限控管機制</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">發表於</span>
+
+      <time title="創建時間：2024-06-26 21:53:55" itemprop="dateCreated datePublished" datetime="2024-06-26T21:53:55+08:00">2024-06-26</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分類於</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E5%B0%88%E6%A1%88%E9%96%8B%E7%99%BC/" itemprop="url" rel="index"><span itemprop="name">專案開發</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h2 id="前言">前言</h2>
+<blockquote>
+<p>權限控管顧名思義則是讓有登記的人可以進來雲端網頁中操作介面，這對於一些公司內部才能操作的內容有很大的幫助。</p>
+</blockquote>
+<p>權限控管基本功能:</p>
+<ul>
+<li>註冊</li>
+<li>登入</li>
+<li>忘記密碼</li>
+<li>重置密碼</li>
+</ul>
+<p>發送重置密碼時會隨意產生一組token，內容會包在電子郵件中寄送，這也算是一種多因素認證的機制。</p>
+<p>本篇文章前端介面採用Python的Streamlit套件實作，後端邏輯則採用GAS實作，資料庫則採用GoogleSpreadSheet儲存。</p>
+<div class="note info"><p>正常的帳號密碼實作流程不建議採用明碼儲存，這裡只是一個實作的經驗，看之後密碼的部分要加鹽還是做哈希加密都可以再追加進去。</p>
+</div>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/posts/777227760/#more" rel="contents">
+                閱讀全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://www.hanksvba.com/posts/2910899188/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar_custom.png">
+      <meta itemprop="name" content="Hank Lin">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hank's Blog">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | Hank's Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/posts/2910899188/" class="post-title-link" itemprop="url">Streamlit打造工程估算系統</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">發表於</span>
+
+      <time title="創建時間：2024-06-19 22:32:24" itemprop="dateCreated datePublished" datetime="2024-06-19T22:32:24+08:00">2024-06-19</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分類於</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E5%B0%88%E6%A1%88%E6%88%90%E6%9E%9C/" itemprop="url" rel="index"><span itemprop="name">專案成果</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h2 id="前言">前言</h2>
+<blockquote>
+<p>工程估算為提報計畫前的必要內容，所提報的概估經費關乎於計畫核定後是否會造成實際所需經費是否足夠、執行率會不會有問題。</p>
+</blockquote>
+<p>工程估算方法有兩種:材料及類別</p>
+<ul>
+<li>材料是將單元拆分為鋼筋、模板、混凝土...等等可以從標準斷面計算而得的內容。</li>
+<li>類別是將工程拆分為渠道工程、道路工程、橋梁工程...等可以明確分類的內容。</li>
+</ul>
+<p>本篇文章希望能夠藉由<strong>雲端介面</strong>的操作來達成以下幾點需求</p>
+<ol type="1">
+<li>工程估算方法將以往的<strong>材料</strong>導向為<strong>類別</strong>。</li>
+<li>各類別單元內容計算由程式接手，減少人力調配參數。</li>
+<li>輸出報表採用最新版本號，避免各地版本不一造成困擾。</li>
+<li>手機也能在工區現場獲得經費估算成果。</li>
+</ol>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/posts/2910899188/#more" rel="contents">
+                閱讀全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://www.hanksvba.com/posts/639809757/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar_custom.png">
+      <meta itemprop="name" content="Hank Lin">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hank's Blog">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | Hank's Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/posts/639809757/" class="post-title-link" itemprop="url">Streamlit建置GoogleSheet簡易資料庫</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">發表於</span>
+
+      <time title="創建時間：2024-06-11 22:33:21" itemprop="dateCreated datePublished" datetime="2024-06-11T22:33:21+08:00">2024-06-11</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分類於</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5/" itemprop="url" rel="index"><span itemprop="name">基本概念</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h2 id="前言">🙌前言</h2>
+<p>Streamlit是使用python語言的前端套件，他最大的好處是就能透過套件本身程式碼生成一篇篇還算能看的使用者介面，對於Html、CSS、Javascript等前端語言感到不舒服的開發者可以妥善利用，在部署上難度也不高，幾乎可以一鍵達成。</p>
+<p>除了python本身內鍵已經有本地端sqlite可以進行資料存儲，如果資料需要上雲的話就會需要額外找尋雲端資料庫來進行資料存放，標準的關聯式有MySQL、postgreSQL、SQLserver等等比較常見的工具、非關聯式資料庫則可以透過mongoDB、firestore等等工具進行挑選。</p>
+<blockquote>
+<p>本篇要介紹的內容是針對比較簡易的前端介面，可以用Google提供的GoogleSheet來進行資料存放，並且透過GoogleAppScripts來做後端語言進行操作。</p>
+</blockquote>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/posts/639809757/#more" rel="contents">
+                閱讀全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://www.hanksvba.com/posts/4262718496/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar_custom.png">
+      <meta itemprop="name" content="Hank Lin">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hank's Blog">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | Hank's Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/posts/4262718496/" class="post-title-link" itemprop="url">土方計算-方格法(VBA)</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">發表於</span>
+
+      <time title="創建時間：2024-06-10 12:09:45" itemprop="dateCreated datePublished" datetime="2024-06-10T12:09:45+08:00">2024-06-10</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分類於</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E5%B0%88%E6%A1%88%E6%88%90%E6%9E%9C/" itemprop="url" rel="index"><span itemprop="name">專案成果</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h2 id="前言">🙌前言</h2>
+<p>本篇主要介紹利用 <strong>AutoCAD VBA</strong> 的物件操作+
+<strong>Excel VBA</strong>
+的工作表函數來簡化<strong>平坦地貌</strong>收方作業的過程。</p>
+<blockquote>
+<p>土方計算是工程施作時有關於甲乙方針對土方數量時的重要依據，分為小型工程及大型工程來討論。</p>
+</blockquote>
+<h3 id="小型工程">小型工程</h3>
+<p>土方金額佔比不高的情況下，通常契約數量多少就多少，甲乙雙方不太會有意見。</p>
+<h3 id="大型工程">大型工程</h3>
+<p>土方金額佔比高的情況下，甲乙雙方會針對設計原始地貌進行收方作業並作成土方報告，並以此作為契約數量修正的依據，再根據結構體的設計高程及圖說指定的開挖方式重新計算挖填方數量。</p>
+<h2 id="計算方法選定">計算方法選定</h2>
+<p>地形模型的建立會根據地貌狀況而定</p>
+<ul>
+<li>具有複雜地形特徵的地區，使用TIN(不規則三角網)</li>
+<li>地形變化相對平緩的地區，使用DEM(數字高程模型)</li>
+</ul>
+<p>方格法便是使用DEM的概念，透過每個方格頂點計算方格平均高程後推算求得土方體積，高程頂點則利用IDW(反距離加權法)來進行高程賦值，插值過程會需要大量的基本運算。</p>
+<blockquote>
+<p>有關不規則三角網另請參考筆者前文 <a
+target="_blank" rel="noopener" href="https://hankvba.blogspot.com/2023/01/cad-vba.html">CAD
+VBA@收方作業(不規則三角網法)</a></p>
+</blockquote>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/posts/4262718496/#more" rel="contents">
+                閱讀全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -368,754 +1141,8 @@
 
 
 
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://www.hanksvba.com/posts/2144300187/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar_custom.png">
-      <meta itemprop="name" content="Hank Lin">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hank's Blog">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | Hank's Blog">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/posts/2144300187/" class="post-title-link" itemprop="url">不同版本間的CAD開發</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">發表於</span>
-
-      <time title="創建時間：2024-05-12 12:26:09" itemprop="dateCreated datePublished" datetime="2024-05-12T12:26:09+08:00">2024-05-12</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分類於</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5/" itemprop="url" rel="index"><span itemprop="name">基本概念</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h2 id="前言">🙌前言</h2>
-<p>CAD版本有非常多種，我目前有接觸過的就有AutoCAD、ZWCAD以及現在正在使用中的ProgeCAD。</p>
-<p>在使用VBA進行二次開發的過程，需要考量<strong>引用物件模型</strong>之間的差異，就目前開發經驗中，AutoCAD與ZWCAD可以透過修改引用名稱就可以有很好的轉換體驗，但是ProgeCAD的<strong>基底物件</strong>有比較不同的設計，故本篇要來解釋從AutoCAD的VBAcode如何透過我所撰寫的物件轉換函數進行相容，讓程式碼在ProgeCAD也可以順利動起來。</p>
-<p><a
-target="_blank" rel="noopener" href="https://hankvba.blogspot.com/2021/07/cadlibraryclsacad.html">🔗HanksVBA學習歷程-不同CAD版本間也可以引用的Library(clsACAD)</a></p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/posts/2144300187/#more" rel="contents">
-                閱讀全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://www.hanksvba.com/posts/2767553795/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar_custom.png">
-      <meta itemprop="name" content="Hank Lin">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hank's Blog">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | Hank's Blog">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/posts/2767553795/" class="post-title-link" itemprop="url">縱斷面插旗文字重疊問題</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">發表於</span>
-
-      <time title="創建時間：2024-05-06 10:12:23" itemprop="dateCreated datePublished" datetime="2024-05-06T10:12:23+08:00">2024-05-06</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分類於</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5/" itemprop="url" rel="index"><span itemprop="name">基本概念</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h2 id="前言">🙌前言</h2>
-<h3 id="縱斷面發展來源">👉縱斷面發展來源</h3>
-<p><a
-target="_blank" rel="noopener" href="https://hankvba.blogspot.com/2018/03/autocad-vba.html">AutoCAD VBA
-縱斷面繪製自動化</a></p>
-<h3 id="開發過程中的小問題">🐞開發過程中的小問題</h3>
-<p>縱斷面繪製時會針對需要文字說明的樁號進行插旗繪製，可能會造成插旗文字出現重疊的原因有兩個</p>
-<ol type="1">
-<li>插旗說明樁號距離太近(0+200、0+205)</li>
-<li>繪製X軸比例太小(1:1000 vs 1:5000)</li>
-</ol>
-<p>繪製過程會考量圖紙輸出的舒適度，最小字高通常會以<strong>3.4.5</strong>為原則，文字說明會固定以30度呈現</p>
-<blockquote>
-<p>當距離太近時可以透過調整X軸比例讓間距拉開，橫向會重疊的時候就進行上下位移，方便讀者觀看。</p>
-</blockquote>
-<p>因此本篇就是要透過VBA抓取說明文字的外框及下線，自動調整文字重疊內容，以下進行說明:</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/posts/2767553795/#more" rel="contents">
-                閱讀全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://www.hanksvba.com/posts/3619695554/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar_custom.png">
-      <meta itemprop="name" content="Hank Lin">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hank's Blog">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | Hank's Blog">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/posts/3619695554/" class="post-title-link" itemprop="url">VBA自學心得</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">發表於</span>
-
-      <time title="創建時間：2024-05-04 00:20:08" itemprop="dateCreated datePublished" datetime="2024-05-04T00:20:08+08:00">2024-05-04</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新於</span>
-      <time title="修改時間：2024-05-05 00:20:08" itemprop="dateModified" datetime="2024-05-05T00:20:08+08:00">2024-05-05</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分類於</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E5%B0%88%E6%A1%88%E9%96%8B%E7%99%BC/" itemprop="url" rel="index"><span itemprop="name">專案開發</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h2 id="前言">🙌前言</h2>
-<p>因為工作的緣故，日常會接觸大量的Excel操作，過程不外乎都是一些<strong>重複又無趣</strong>的動作，也讓我起心動念要透過程式碼的方法來解決這些問題，我操作的軟體是Excel，那直接採用ExcelVBA的語言會是最佳的一個路徑。</p>
-<p>程式語言終究還是一種與電腦溝通的工具，重點是你有什麼生活中的問題要進行實作，能夠解決問題的語言就是好語言。</p>
-<p>以下是我在自學路上的一些心得，與各位做個分享。</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/posts/3619695554/#more" rel="contents">
-                閱讀全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://www.hanksvba.com/posts/1066861632/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar_custom.png">
-      <meta itemprop="name" content="Hank Lin">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hank's Blog">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | Hank's Blog">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/posts/1066861632/" class="post-title-link" itemprop="url">批次轉換doc到pdf</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">發表於</span>
-
-      <time title="創建時間：2024-05-01 18:03:33" itemprop="dateCreated datePublished" datetime="2024-05-01T18:03:33+08:00">2024-05-01</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分類於</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E5%B0%88%E6%A1%88%E9%96%8B%E7%99%BC/" itemprop="url" rel="index"><span itemprop="name">專案開發</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h2 id="前言">🙌前言</h2>
-<ol type="1">
-<li><p>交通部的部頒規範下載下來之後會變成很多細碎的檔案，包含PDF跟DOC，在進行檔案內容搜尋的時候時常需要跨檔案比對，無法在<strong>同個檔案</strong>中一次到位。</p></li>
-<li><p>有些規範有進行修改的內容需要先修改doc後再輸出PDF，乾脆將所有PDF都先進行刪除，後續再針對資料夾批次轉檔成PDF後再做合併。</p></li>
-</ol>
-<div class="note info"><p>解決目標:將doc修改完畢後輸出為pdf，丟到pdf_merge中進行合併，這實在是很麻煩。</p>
-</div>
-<p>本篇介紹如何撰寫程式碼來簡化製作<strong>公路橋梁設計規範</strong>的流程，有興趣請繼續閱讀</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/posts/1066861632/#more" rel="contents">
-                閱讀全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://www.hanksvba.com/posts/1952534825/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar_custom.png">
-      <meta itemprop="name" content="Hank Lin">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hank's Blog">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | Hank's Blog">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/posts/1952534825/" class="post-title-link" itemprop="url">監造報表規劃-數量計算</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">發表於</span>
-
-      <time title="創建時間：2024-04-28 12:06:21" itemprop="dateCreated datePublished" datetime="2024-04-28T12:06:21+08:00">2024-04-28</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分類於</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E5%B0%88%E6%A1%88%E9%96%8B%E7%99%BC/" itemprop="url" rel="index"><span itemprop="name">專案開發</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h2 id="前言">🙌前言</h2>
-<p>契約項目、單價、數量、單位是整個工程進行中的<strong>數量計算</strong>核心。</p>
-<p>契約項目的起源於設計階段會成立預算書便開始，招標階段會以標單的形式讓廠商進行填列投標，決標時再以標比調整契約單價，爾後成立契約後便以此當計價依據。</p>
-<p>工程進行要做到完全不變更設計實在相當困難，因為現場條件改變、居民特殊需求、甚至編制預算書的錯誤未被發現都可能導致<strong>變更設計</strong>的發生，此時變更設計需求項目沒有列於契約項目，則會伴隨<strong>新增項目新增單價</strong>程序同步進行。</p>
-<p>工程執行一定比例後，廠商可提出估驗計價，此時也是以當期契約項目、單價、實際數量作為付款依據，配合累積進度相互勾稽，避免超估發生。</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/posts/1952534825/#more" rel="contents">
-                閱讀全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://www.hanksvba.com/posts/168906144/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar_custom.png">
-      <meta itemprop="name" content="Hank Lin">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hank's Blog">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | Hank's Blog">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/posts/168906144/" class="post-title-link" itemprop="url">監造日報表設計規劃</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">發表於</span>
-
-      <time title="創建時間：2024-04-23 22:02:36" itemprop="dateCreated datePublished" datetime="2024-04-23T22:02:36+08:00">2024-04-23</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分類於</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E5%B0%88%E6%A1%88%E9%96%8B%E7%99%BC/" itemprop="url" rel="index"><span itemprop="name">專案開發</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h2 id="前言">🙌前言</h2>
-<blockquote>
-<p>監造報表為公共工程三級品管制度下的必備表單</p>
-</blockquote>
-<p>依公共工程施工品質管理作業要點第十一、監造單位及其所派駐現場人員工作重點如下:(十五)依規定填報<strong>監造報表</strong></p>
-<ul>
-<li>格式來源請參考<a
-target="_blank" rel="noopener" href="https://www.pcc.gov.tw/cp.aspx?n=82B82C5E132EEB1F">監造報表(附表五)</a></li>
-</ul>
-<p>監造報表所需登載內容除基本資料外，其餘重點簡述如下:</p>
-<ol type="1">
-<li>工程進度</li>
-<li>數量計算</li>
-<li>施工抽查</li>
-<li>品質試驗</li>
-<li>文件管理</li>
-</ol>
-<p>本篇為我所開發的監造日報表VBA的一些專案設計架構簡述，
-有興趣請繼續觀看...</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/posts/168906144/#more" rel="contents">
-                閱讀全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://www.hanksvba.com/posts/3021870975/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar_custom.png">
-      <meta itemprop="name" content="Hank Lin">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hank's Blog">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | Hank's Blog">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/posts/3021870975/" class="post-title-link" itemprop="url">明渠水理計算</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">發表於</span>
-
-      <time title="創建時間：2024-04-21 12:24:33" itemprop="dateCreated datePublished" datetime="2024-04-21T12:24:33+08:00">2024-04-21</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分類於</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5/" itemprop="url" rel="index"><span itemprop="name">基本概念</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h2 id="前言">🙌前言</h2>
-<p>明渠輸水渠道的設計重點大概羅列如下幾點:</p>
-<ol type="1">
-<li>排水渠道要注意流量是否可以提供農田排水10年重現期距1日排出。</li>
-<li>灌溉渠道要確認灌溉計畫所需計畫流量。</li>
-<li>設計的最小容許流速不能低於水草生長速度或淤沙速度。</li>
-<li>設計的最大容許流速不能高於規範所限制的速度。</li>
-<li>設計時需注意不能太接近臨界流況，動水壓力對構造物較容易不穩定。</li>
-<li>挑選合宜的出水高度提高其他因素所致之額外流量。</li>
-<li>檢討各田區所需灌溉水頭是否足夠，盡量減少制水汴版的使用。</li>
-</ol>
-<p>有關農田排水的流量可以參考<strong>農田排水工程規劃設計原則參考手冊(108版)</strong>進行推算</p>
-<blockquote>
-<p>演算流程可以利用Python中的Streamlit套件進行，從<strong>參數設定&gt;檢核流程&gt;報表產製</strong>都交給電腦</p>
-</blockquote>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/posts/3021870975/#more" rel="contents">
-                閱讀全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://www.hanksvba.com/posts/2051013919/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar_custom.png">
-      <meta itemprop="name" content="Hank Lin">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hank's Blog">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | Hank's Blog">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/posts/2051013919/" class="post-title-link" itemprop="url">創站首篇文章</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">發表於</span>
-
-      <time title="創建時間：2024-04-18 22:27:57" itemprop="dateCreated datePublished" datetime="2024-04-18T22:27:57+08:00">2024-04-18</time>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h2 id="前言">🙌前言</h2>
-<p>自2018年開始撰寫Blogger紀錄工作上會遇到的內容，藉由紀錄的過程也有助於加深對於某項技術的印象。想當初我遇到問題的時候也是不斷Google，受惠於很多網路大神的文章才解決了問題，期許我也能夠成為網路世界中有用的人，撰寫出一些能夠對這個世界有所幫助的文章。</p>
-<p>礙於我對於Blogger的調整不是很熟悉，常常影片上傳失敗或分頁的過程會無法完整呈現，有一天當我遇到Hexo-nexT的主題時，驚為天人，這完全就是我理想中的部落格外觀，因此就決定藉由學習一項新的技術的同時也來重建一下以前醜醜的Google
-Blogger...</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/posts/2051013919/#more" rel="contents">
-                閱讀全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
   <nav class="pagination">
-    <a class="extend prev" rel="prev" title="上一頁" aria-label="上一頁" href="/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span>
+    <a class="extend prev" rel="prev" title="上一頁" aria-label="上一頁" href="/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><a class="extend next" rel="next" title="下一頁" aria-label="下一頁" href="/page/3/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 </div>
@@ -1189,7 +1216,7 @@ Blogger...</p>
 
   
 
-  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"ams","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
+  <script class="next-config" data-name="enableMath" type="application/json">false</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"ams","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
 <script src="/js/third-party/math/mathjax.js"></script>
 
 

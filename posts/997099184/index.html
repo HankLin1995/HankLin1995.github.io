@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.2.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha256-wiz7ZSCn/btzhjKDQBms9Hx4sSeUYsDrTLg7roPstac=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"www.hanksvba.com","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.19.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":"mac"},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":false,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜尋...","empty":"我們無法找到任何有關 ${query} 的搜索結果","hits_time":"${hits} 找到 ${time} 個結果","hits":"找到 ${hits} 個結果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="前言 本篇文章延伸於 施工日誌VBA-V3.5.0 版本操作教學 版面格式有可能因為業主的要求或委員的要求而有些許不同，難以千篇一律的內容應付所有的機關，當初在設計軟體時就有考量到這個部分，故讓報表生成的過程盡可能的彈性，能夠在這個說A改B的環境下好好適應各種狀況，本篇文章主要介紹施工日誌VBA可供輸出的報表格式及微調版型的方法，盡可能以公版作為預設，真的需要再來調整。 以下相關設定按鈕皆">
+<meta property="og:type" content="article">
+<meta property="og:title" content="施工日誌VBA-列印篇">
+<meta property="og:url" content="https://www.hanksvba.com/posts/997099184/">
+<meta property="og:site_name" content="Hank&#39;s Blog">
+<meta property="og:description" content="前言 本篇文章延伸於 施工日誌VBA-V3.5.0 版本操作教學 版面格式有可能因為業主的要求或委員的要求而有些許不同，難以千篇一律的內容應付所有的機關，當初在設計軟體時就有考量到這個部分，故讓報表生成的過程盡可能的彈性，能夠在這個說A改B的環境下好好適應各種狀況，本篇文章主要介紹施工日誌VBA可供輸出的報表格式及微調版型的方法，盡可能以公版作為預設，真的需要再來調整。 以下相關設定按鈕皆">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:image" content="https://www.hanksvba.com/posts/997099184/1.png">
+<meta property="og:image" content="https://www.hanksvba.com/posts/997099184/2.png">
+<meta property="og:image" content="https://www.hanksvba.com/posts/997099184/3.png">
+<meta property="og:image" content="https://www.hanksvba.com/posts/997099184/4.png">
+<meta property="og:image" content="https://www.hanksvba.com/posts/997099184/5.png">
+<meta property="article:published_time" content="2024-10-31T12:19:10.000Z">
+<meta property="article:modified_time" content="2024-10-31T12:19:10.000Z">
+<meta property="article:author" content="Hank Lin">
+<meta property="article:tag" content="Excel VBA">
+<meta property="article:tag" content="施工日誌">
+<meta property="article:tag" content="監造報表">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://www.hanksvba.com/posts/997099184/1.png">
+
+
+<link rel="canonical" href="https://www.hanksvba.com/posts/997099184/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-TW","comments":true,"permalink":"https://www.hanksvba.com/posts/997099184/","path":"posts/997099184/","title":"施工日誌VBA-列印篇"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>施工日誌VBA-列印篇 | Hank's Blog</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切換導航欄" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Hank's Blog</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">工程人的設計監造VBA工具交流區</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜尋" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-首頁"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首頁</a></li><li class="menu-item menu-item-關於"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>關於</a></li><li class="menu-item menu-item-標籤"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>標籤</a></li><li class="menu-item menu-item-分類"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分類</a></li><li class="menu-item menu-item-文章"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>文章</a></li>
+  </ul>
+</nav>
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目錄
+        </li>
+        <li class="sidebar-nav-overview">
+          本站概要
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%89%8D%E8%A8%80"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A0%B1%E8%A1%A8%E6%A0%BC%E5%BC%8F"><span class="nav-number">2.</span> <span class="nav-text">報表格式</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A5%91%E7%B4%84%E9%A0%85%E7%9B%AE%E5%88%86%E9%A1%9E"><span class="nav-number">2.1.</span> <span class="nav-text">契約項目分類</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%89%88%E5%9E%8B%E5%88%86%E9%A1%9E"><span class="nav-number">2.2.</span> <span class="nav-text">版型分類</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BE%AE%E8%AA%BF%E7%89%88%E5%9E%8B"><span class="nav-number">3.</span> <span class="nav-text">微調版型</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%BB%E8%A6%81%E9%97%9C%E9%8D%B5%E5%AD%97"><span class="nav-number">3.1.</span> <span class="nav-text">主要關鍵字</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%96%87%E5%AD%97%E5%A4%A7%E5%B0%8F%E5%BE%AE%E8%AA%BF"><span class="nav-number">3.2.</span> <span class="nav-text">文字大小微調</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%A1%8D%E5%A4%96%E5%8A%A0%E8%A8%BB%E6%96%87%E5%AD%97"><span class="nav-number">3.3.</span> <span class="nav-text">額外加註文字</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%88%97%E5%8D%B0%E6%88%90%E6%9E%9C"><span class="nav-number">4.</span> <span class="nav-text">列印成果</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%B8%AC%E8%A9%A6%E7%89%88"><span class="nav-number">4.1.</span> <span class="nav-text">測試版</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%AD%A3%E5%BC%8F%E7%89%88"><span class="nav-number">4.2.</span> <span class="nav-text">正式版</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%9B%B8%E9%97%9C%E9%80%A3%E7%B5%90"><span class="nav-number">5.</span> <span class="nav-text">相關連結</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Hank Lin"
+      src="/images/avatar_custom.png">
+  <p class="site-author-name" itemprop="name">Hank Lin</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">28</span>
+          <span class="site-state-item-name">文章</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">4</span>
+        <span class="site-state-item-name">分類</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">19</span>
+        <span class="site-state-item-name">標籤</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="mailto:apple84026113@gmail.com" title="E-Mail → mailto:apple84026113@gmail.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.youtube.com/channel/UCWmy5KaK7Leg6lLUlWBPaSw" title="YouTube → https:&#x2F;&#x2F;www.youtube.com&#x2F;channel&#x2F;UCWmy5KaK7Leg6lLUlWBPaSw" rel="noopener me" target="_blank"><i class="fab fa-youtube fa-fw"></i>YouTube</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/images/LINE_QRCODE.PNG" title="LINE → &#x2F;images&#x2F;LINE_QRCODE.PNG" rel="noopener me"><i class="fab fa-line fa-fw"></i>LINE</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://reurl.cc/RyvvaZ" title="LINE社群 → https:&#x2F;&#x2F;reurl.cc&#x2F;RyvvaZ" rel="noopener me" target="_blank"><i class="fas fa-comment fa-fw"></i>LINE社群</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://hankvba.blogspot.com/" title="舊網站 → https:&#x2F;&#x2F;hankvba.blogspot.com&#x2F;" rel="noopener me" target="_blank"><i class="fab fa-blogger fa-fw"></i>舊網站</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://portaly.cc/hanksvba/support/" title="小額贊助 → https:&#x2F;&#x2F;portaly.cc&#x2F;hanksvba&#x2F;support&#x2F;" rel="noopener me" target="_blank"><i class="fas fa-handshake fa-fw"></i>小額贊助</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-TW">
+    <link itemprop="mainEntityOfPage" href="https://www.hanksvba.com/posts/997099184/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar_custom.png">
+      <meta itemprop="name" content="Hank Lin">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hank's Blog">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="施工日誌VBA-列印篇 | Hank's Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          施工日誌VBA-列印篇
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">發表於</span>
+
+      <time title="創建時間：2024-10-31 20:19:10" itemprop="dateCreated datePublished" datetime="2024-10-31T20:19:10+08:00">2024-10-31</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分類於</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E5%B0%88%E6%A1%88%E9%96%8B%E7%99%BC/" itemprop="url" rel="index"><span itemprop="name">專案開發</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="閱讀次數" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">閱讀次數：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h2 id="前言">前言</h2>
+<p>本篇文章延伸於 <a
+href="https://www.hanksvba.com/posts/1000661249/#more">施工日誌VBA-V3.5.0</a>
+版本操作教學</p>
+<p>版面格式有可能因為業主的要求或委員的要求而有些許不同，難以千篇一律的內容應付所有的機關，當初在設計軟體時就有考量到這個部分，故讓報表生成的過程盡可能的彈性，能夠在這個說A改B的環境下好好適應各種狀況，本篇文章主要介紹施工日誌VBA可供輸出的報表格式及微調版型的方法，盡可能以公版作為預設，真的需要再來調整。</p>
+<p>以下相關設定按鈕皆需透過工作表"版本說明"點選按鈕【功能主要畫面】後進行。</p>
+<span id="more"></span>
+<h2 id="報表格式">報表格式</h2>
+<figure>
+<img src="1.png" alt="Fig1. 列印日報介面" />
+<figcaption aria-hidden="true">Fig1. 列印日報介面</figcaption>
+</figure>
+<h3 id="契約項目分類">契約項目分類</h3>
+<ul>
+<li>累積數量不為0(曾經施作的工項)</li>
+<li>本日數量不為0(今天施作的工項)</li>
+<li>全部契約項目</li>
+</ul>
+<h3 id="版型分類">版型分類</h3>
+<ul>
+<li>公共工程施工日誌(第一聯)</li>
+<li>公共工程施工日誌(第二聯)</li>
+<li>建築物施工日誌(第一聯)</li>
+<li>建築物施工日誌(第二聯)</li>
+<li>監造報表(第一聯)</li>
+</ul>
+<blockquote>
+<p>如果<strong>契約項目分類</strong>採用<strong>本日數量不為0</strong>除每日固定要輸出的第一聯外，會在每月或每周再另外製作第二聯，頻率視機關規定而定。</p>
+</blockquote>
+<h2 id="微調版型">微調版型</h2>
+<p>每個檔案都會有固定的版型，其範本位於工作表名稱:</p>
+<ul>
+<li>公共工程施工日誌</li>
+<li>建築物施工日誌</li>
+<li>公共工程施工日誌(第二聯)</li>
+<li>建築物施工日誌(第二聯)</li>
+<li>監造日報</li>
+</ul>
+<figure>
+<img src="2.png" alt="Fig2. 版型工作表" />
+<figcaption aria-hidden="true">Fig2. 版型工作表</figcaption>
+</figure>
+<h3 id="主要關鍵字">主要關鍵字</h3>
+<p>範本中由&lt;&lt;&gt;&gt;包住的儲存格文字<strong>不能改變</strong>，舉例:&lt;<工程名稱>&gt;</p>
+<h3 id="文字大小微調">文字大小微調</h3>
+<p>如果列印時發現<strong>文字太大或大小</strong>，都可以<strong>直接修改</strong>，不要影響到原本的文字內容即可。</p>
+<h3 id="額外加註文字">額外加註文字</h3>
+<p>可以在不影響原本的儲存格文字內容下，額外加入註記事項到版面中，惟須注意不能落在原本要生成清單的路線上。</p>
+<p>舉例:公共工程施工日誌的第二項、工地材料管理概況(列號108~128)雖然都是空白的，但它屬於材料的清單明細路線，不能再插入其他關鍵字使用。</p>
+<figure>
+<img src="3.png" alt="Fig3. 不能額外加註之清單明細" />
+<figcaption aria-hidden="true">Fig3. 不能額外加註之清單明細</figcaption>
+</figure>
+<h2 id="列印成果">列印成果</h2>
+<h3 id="測試版">測試版</h3>
+<ul>
+<li>預設列印成pdf(有加入浮水印，僅供<strong>測試功能使用</strong>)</li>
+</ul>
+<figure>
+<img src="4.png" alt="Fig4. 測試版成品" />
+<figcaption aria-hidden="true">Fig4. 測試版成品</figcaption>
+</figure>
+<hr />
+<h3 id="正式版">正式版</h3>
+<ul>
+<li>預設列印成xls(可以直接批次輸出，列印時可以選擇<strong>列印整本活頁簿</strong>)</li>
+</ul>
+<figure>
+<img src="5.png" alt="Fig5. 正式版成品" />
+<figcaption aria-hidden="true">Fig5. 正式版成品</figcaption>
+</figure>
+<h2 id="相關連結">相關連結</h2>
+<p><a href="https://www.hanksvba.com/posts/1990910755"><span
+class="github-emoji" data-alias="link" style=""
+data-fallback-src="https://github.githubassets.com/images/icons/emoji/unicode/1f517.png?v8">🔗</span>
+施工日誌VBA-設定篇</a></p>
+<p><a href="https://www.hanksvba.com/posts/426352985"><span
+class="github-emoji" data-alias="link" style=""
+data-fallback-src="https://github.githubassets.com/images/icons/emoji/unicode/1f517.png?v8">🔗</span>
+施工日誌VBA-記錄篇</a></p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>作者： </strong>Hank Lin
+  </li>
+  <li class="post-copyright-link">
+      <strong>文章連結：</strong>
+      <a href="https://www.hanksvba.com/posts/997099184/" title="施工日誌VBA-列印篇">https://www.hanksvba.com/posts/997099184/</a>
+  </li>
+  <li class="post-copyright-license">
+      <strong>版權聲明： </strong>本網誌所有文章除特別聲明外，均採用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 許可協議。轉載請註明出處！
+  </li>
+</ul>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/Excel-VBA/" rel="tag"><i class="fa fa-tag"></i> Excel VBA</a>
+              <a href="/tags/%E6%96%BD%E5%B7%A5%E6%97%A5%E8%AA%8C/" rel="tag"><i class="fa fa-tag"></i> 施工日誌</a>
+              <a href="/tags/%E7%9B%A3%E9%80%A0%E5%A0%B1%E8%A1%A8/" rel="tag"><i class="fa fa-tag"></i> 監造報表</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/posts/426352985/" rel="prev" title="施工日誌VBA-記錄篇">
+                  <i class="fa fa-angle-left"></i> 施工日誌VBA-記錄篇
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/posts/1168852487/" rel="next" title="雲端空間Synology-C2-Object">
+                  雲端空間Synology-C2-Object <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2024</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Hank Lin</span>
+  </div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="訪客總數">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="總瀏覽次數">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 強力驅動
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="back-to-top" role="button" aria-label="回到頂端">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/next-boot.js"></script>
+
+  
+  <script class="next-config" data-name="pdf" type="application/json">{"object_url":{"url":"https://cdnjs.cloudflare.com/ajax/libs/pdfobject/2.2.12/pdfobject.min.js","integrity":"sha256-g2xji1rlE3KsGVClvuxTbcR0Kn2+wtQADSff2Tbb4zA="},"url":"/lib/pdf/web/viewer"}</script>
+  <script src="/js/third-party/tags/pdf.js"></script>
+
+
+
+
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">false</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"ams","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+
+</body>
+</html>
