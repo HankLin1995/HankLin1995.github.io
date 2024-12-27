@@ -18,24 +18,18 @@
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"www.hanksvba.com","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.19.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":"mac"},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":false,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜尋...","empty":"我們無法找到任何有關 ${query} 的搜索結果","hits_time":"${hits} 找到 ${time} 個結果","hits":"找到 ${hits} 個結果"}}</script><script src="/js/config.js"></script>
 
-    <meta property="og:type" content="article">
+    <meta name="description" content="前言 在撰寫程式碼時，許多人習慣將程式與檔案綁定，並利用文件名稱來標記每次版本的修改。例如，將當天日期加在檔案名稱後來區隔版本，如 縱斷面繪圖20230622.xls。這是我過去對版本控制的理解，然而，這樣做的問題是檔案數量快速增長，且檔案名稱無法清楚標示每次修改的具體內容。 更糟的是，當這些檔案分散於不同的電腦和資料夾中，若同名的檔案有所不同，卻無法得知具體改動了哪些部分。這樣的管理方式會">
+<meta property="og:type" content="article">
 <meta property="og:title" content="VBA編輯器上的版本控制">
 <meta property="og:url" content="https://www.hanksvba.com/posts/3829840047/">
 <meta property="og:site_name" content="Hank&#39;s Blog">
+<meta property="og:description" content="前言 在撰寫程式碼時，許多人習慣將程式與檔案綁定，並利用文件名稱來標記每次版本的修改。例如，將當天日期加在檔案名稱後來區隔版本，如 縱斷面繪圖20230622.xls。這是我過去對版本控制的理解，然而，這樣做的問題是檔案數量快速增長，且檔案名稱無法清楚標示每次修改的具體內容。 更糟的是，當這些檔案分散於不同的電腦和資料夾中，若同名的檔案有所不同，卻無法得知具體改動了哪些部分。這樣的管理方式會">
 <meta property="og:locale" content="zh_TW">
 <meta property="article:published_time" content="2024-12-24T08:22:29.000Z">
 <meta property="article:modified_time" content="2024-12-24T08:22:29.000Z">
 <meta property="article:author" content="Hank Lin">
-<meta property="article:tag" content="Excel">
-<meta property="article:tag" content="ExcelVBA">
-<meta property="article:tag" content="AutoCAD">
-<meta property="article:tag" content="AutoCADVBA">
-<meta property="article:tag" content="GoogleAppScript">
-<meta property="article:tag" content="GAS">
-<meta property="article:tag" content="Python">
-<meta property="article:tag" content="監造日報表">
-<meta property="article:tag" content="施工日誌">
-<meta property="article:tag" content="施工照片">
+<meta property="article:tag" content="GIT">
+<meta property="article:tag" content="Github">
 <meta name="twitter:card" content="summary">
 
 
@@ -106,7 +100,7 @@
   
   <aside class="sidebar">
 
-    <div class="sidebar-inner sidebar-overview-active">
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
       <ul class="sidebar-nav">
         <li class="sidebar-nav-toc">
           文章目錄
@@ -119,6 +113,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%89%8D%E8%A8%80"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9B%B4%E6%96%B0%E8%A8%BB%E8%A8%98-20240519"><span class="nav-number">2.</span> <span class="nav-text">更新註記 (2024&#x2F;05&#x2F;19)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%B7%A8%E8%BC%AF%E5%99%A8%E9%96%8B%E7%99%BC%E7%92%B0%E5%A2%83"><span class="nav-number">3.</span> <span class="nav-text">編輯器開發環境</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#git-%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C"><span class="nav-number">4.</span> <span class="nav-text">GIT 基本操作</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%93%8D%E4%BD%9C%E6%AD%A5%E9%A9%9F"><span class="nav-number">5.</span> <span class="nav-text">操作步驟</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%99%95%E7%90%86%E7%A8%8B%E5%BC%8F%E7%A2%BC%E7%89%88%E6%9C%AC%E5%95%8F%E9%A1%8C"><span class="nav-number">6.</span> <span class="nav-text">處理程式碼版本問題</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#vba-%E7%A8%8B%E5%BC%8F%E7%A2%BC%E7%AF%84%E4%BE%8B"><span class="nav-number">7.</span> <span class="nav-text">VBA 程式碼範例</span></a></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -133,7 +128,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">28</span>
+          <span class="site-state-item-count">30</span>
           <span class="site-state-item-name">文章</span>
         </a>
       </div>
@@ -144,7 +139,7 @@
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">19</span>
+        <span class="site-state-item-count">23</span>
         <span class="site-state-item-name">標籤</span></a>
       </div>
   </nav>
@@ -222,6 +217,15 @@
 
       <time title="創建時間：2024-12-24 16:22:29" itemprop="dateCreated datePublished" datetime="2024-12-24T16:22:29+08:00">2024-12-24</time>
     </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分類於</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E5%9F%BA%E6%9C%AC%E5%8E%9F%E7%90%86/" itemprop="url" rel="index"><span itemprop="name">基本原理</span></a>
+        </span>
+    </span>
 
   
     <span class="post-meta-item" title="閱讀次數" id="busuanzi_container_page_pv">
@@ -239,7 +243,70 @@
     
     
     
-    <div class="post-body" itemprop="articleBody">
+    <div class="post-body" itemprop="articleBody"><h2 id="前言">前言</h2>
+<p>在撰寫程式碼時，許多人習慣將程式與檔案綁定，並利用文件名稱來標記每次版本的修改。例如，將當天日期加在檔案名稱後來區隔版本，如
+<code>縱斷面繪圖20230622.xls</code>。這是我過去對<strong>版本控制</strong>的理解，然而，這樣做的問題是檔案數量快速增長，且檔案名稱無法清楚標示每次修改的具體內容。</p>
+<p>更糟的是，當這些檔案分散於不同的電腦和資料夾中，若同名的檔案有所不同，卻<strong>無法得知具體改動了哪些部分</strong>。這樣的管理方式會造成很大的困擾，也促使我開始尋找更有效的版本控制方法。</p>
+<p>因此，我開始探索如何在 VBA 中實現「真」版本控制，並結合
+<strong>Git</strong> 來管理程式碼。</p>
+<h2 id="更新註記-20240519">更新註記 (2024/05/19)</h2>
+<p>當我將程式上傳至 GitHub 時，發現因為筆記本的預設編碼為
+"ANSI"，上傳的中文部分會顯示為亂碼。為了解決這個問題，我將編碼另存為
+"UTF-8"，這樣可以正常顯示。但是，若將 "UTF-8" 編碼匯入 Excel VBA IDE
+時，由於 Excel 預設支援 ANSI 編碼，中文會出現錯誤。</p>
+<span id="more"></span>
+<h2 id="編輯器開發環境">編輯器開發環境</h2>
+<p>在撰寫 VBA 程式碼時，主要會有以下幾個區域來放置程式碼：</p>
+<ul>
+<li>Excel 物件（如 ThisWorkbook, Worksheet）</li>
+<li>模組（Module）</li>
+<li>物件類別模組（Class）</li>
+<li>表單（Form）</li>
+</ul>
+<p>在這篇文章中，我假設程式碼並未直接寫在 Worksheet
+中，因為這樣的程式碼會帶來許多匯入上的麻煩。而 <code>ThisWorkbook</code>
+雖然屬於 <code>doccls</code>
+類型的一部分，但其中可能會有需要手動處理的特殊情況，開發者需根據需要自行處理這些內容。</p>
+<h2 id="git-基本操作">GIT 基本操作</h2>
+<p>對於 GIT
+的基本操作，網路上有許多資源可以參考。感謝<strong>六角學院的Youtube教學</strong>。</p>
+<p>常見的 GIT 操作如下：</p>
+<ul>
+<li><code>git init</code>：初始化資料夾</li>
+<li><code>git add</code>：將檔案加入索引</li>
+<li><code>git commit</code>：提交版本註記</li>
+<li><code>git push</code>：將程式碼上傳至 GitHub</li>
+<li><code>git clone</code>：從 GitHub 下載程式碼</li>
+<li><code>git fetch</code>：從 GitHub 下載並更新至本地資料夾</li>
+<li><code>git checkout</code>：切換分支或版本</li>
+</ul>
+<h2 id="操作步驟">操作步驟</h2>
+<ol type="1">
+<li><p><strong>啟用 VBA 設定</strong>：在 Excel
+中，打開「開發者」選單，並選擇「信任存取 VBA 專案物件模型」。</p></li>
+<li><p><strong>初始化 Git</strong>：打開 Git Bash，指定一個資料夾並執行
+<code>git init</code>。</p></li>
+<li><p><strong>匯入 Git 模組</strong>：在目前的 VBA IDE 中匯入
+<code>GIT.bas</code> 模組。</p></li>
+<li><p><strong>導出程式碼</strong>：執行巨集
+<code>ExportCodesToFolder</code>，並選擇第二步中指定的資料夾。</p></li>
+<li><p><strong>確認版本</strong>：若確定無誤，繼續使用 Git
+進行版本控制。若有任何問題，回到第 4 步重新檢查。</p></li>
+<li><p><strong>進行 Git 操作</strong>：使用 Git Bash 進行
+<code>git add</code>、<code>git commit</code>、<code>git push</code>
+等操作。</p></li>
+</ol>
+<h2 id="處理程式碼版本問題">處理程式碼版本問題</h2>
+<p>若發現開啟程式碼後發現有問題，可以執行以下步驟：</p>
+<ol type="1">
+<li>在 VBA IDE 中匯入 GIT 模組。</li>
+<li>執行 <code>DeleteCodes</code> 來刪除舊有的程式碼。</li>
+<li>執行
+<code>ImportCodes</code>，並選擇指定的資料夾來匯入最新版本的程式碼。</li>
+</ol>
+<h2 id="vba-程式碼範例">VBA 程式碼範例</h2>
+<p>以下是使用 Git 控制 VBA 程式碼版本的核心程式碼範例：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br><span class="line">201</span><br><span class="line">202</span><br><span class="line">203</span><br><span class="line">204</span><br><span class="line">205</span><br><span class="line">206</span><br><span class="line">207</span><br><span class="line">208</span><br><span class="line">209</span><br><span class="line">210</span><br><span class="line">211</span><br><span class="line">212</span><br><span class="line">213</span><br><span class="line">214</span><br><span class="line">215</span><br><span class="line">216</span><br><span class="line">217</span><br><span class="line">218</span><br><span class="line">219</span><br><span class="line">220</span><br><span class="line">221</span><br><span class="line">222</span><br><span class="line">223</span><br><span class="line">224</span><br><span class="line">225</span><br><span class="line">226</span><br><span class="line">227</span><br><span class="line">228</span><br><span class="line">229</span><br><span class="line">230</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">&#x27;TODO:Export folder need to be killed</span><br><span class="line"></span><br><span class="line">Sub ExportCodesToFolder()</span><br><span class="line"></span><br><span class="line">&#x27;Type: 1=bas,2=cls,3=frm</span><br><span class="line"></span><br><span class="line">myFolder = getSavedFolder</span><br><span class="line"></span><br><span class="line">Call killFilesInFolder(myFolder)</span><br><span class="line"></span><br><span class="line">Set VBProj = ThisWorkbook.VBProject</span><br><span class="line">For Each VBComp In VBProj.VBComponents</span><br><span class="line">    </span><br><span class="line">    Select Case VBComp.Type</span><br><span class="line">    </span><br><span class="line">        Case 1: myExtension = &quot;.bas&quot;</span><br><span class="line">        Case 2: myExtension = &quot;.cls&quot;</span><br><span class="line">        Case 3: myExtension = &quot;.frm&quot;</span><br><span class="line">        </span><br><span class="line">        Case 100: myExtension = &quot;.doccls&quot;</span><br><span class="line">    </span><br><span class="line">    End Select</span><br><span class="line">    </span><br><span class="line">    full_path = myFolder &amp; &quot;\&quot; &amp; VBComp.Name &amp; myExtension</span><br><span class="line">    </span><br><span class="line">    If myExtension &lt;&gt; &quot;&quot; Then</span><br><span class="line">    </span><br><span class="line">        VBComp.Export (full_path)</span><br><span class="line">    </span><br><span class="line">    End If</span><br><span class="line">    </span><br><span class="line">    If myExtension = &quot;.doccls&quot; And CountFileLines(full_path) = 9 Then Kill full_path</span><br><span class="line">    </span><br><span class="line">Next VBComp</span><br><span class="line">    </span><br><span class="line">End Sub</span><br><span class="line"></span><br><span class="line">Sub killFilesInFolder(folderPath)</span><br><span class="line"></span><br><span class="line">Set coll_path = GetFilePathsInFolder(folderPath)</span><br><span class="line"></span><br><span class="line">For Each filePath In coll_path</span><br><span class="line"></span><br><span class="line">    Filename = mid(filePath, InStrRev(filePath, &quot;\&quot;) + 1)</span><br><span class="line">    fileExtension = mid(Filename, InStrRev(Filename, &quot;.&quot;) + 1)</span><br><span class="line">    </span><br><span class="line">    If fileExtension = &quot;frm&quot; Or fileExtension = &quot;bas&quot; Or fileExtension = &quot;cls&quot; Or fileExtension = &quot;doccls&quot; Then</span><br><span class="line">        Kill filePath</span><br><span class="line">    End If</span><br><span class="line">Next</span><br><span class="line"></span><br><span class="line">End Sub</span><br><span class="line"></span><br><span class="line">Sub ImportCodes()</span><br><span class="line"></span><br><span class="line">myFolder = getSavedFolder</span><br><span class="line"></span><br><span class="line">Set coll_path = GetFilePathsInFolder(myFolder)</span><br><span class="line"></span><br><span class="line">Call DeleteCodes</span><br><span class="line"></span><br><span class="line">For Each filePath In coll_path</span><br><span class="line"></span><br><span class="line">    Filename = mid(filePath, InStrRev(filePath, &quot;\&quot;) + 1)</span><br><span class="line">    fileExtension = mid(Filename, InStrRev(Filename, &quot;.&quot;) + 1)</span><br><span class="line">    </span><br><span class="line">    If fileExtension = &quot;frm&quot; Or fileExtension = &quot;bas&quot; Or fileExtension = &quot;cls&quot; Then</span><br><span class="line">        Call ImportCode(filePath, Filename)</span><br><span class="line">    End If</span><br><span class="line"></span><br><span class="line">Next</span><br><span class="line"></span><br><span class="line">End Sub</span><br><span class="line"></span><br><span class="line">Sub ImportCode(ByVal filePath As String, ByVal Filename As String)</span><br><span class="line"></span><br><span class="line">extension = mid(Filename, InStrRev(Filename, &quot;.&quot;) + 1)</span><br><span class="line">CodeName = mid(Filename, 1, InStrRev(Filename, &quot;.&quot;) - 1)</span><br><span class="line"></span><br><span class="line">If CodeName = &quot;GIT&quot; Then Exit Sub</span><br><span class="line"></span><br><span class="line">Set VBProj = ThisWorkbook.VBProject</span><br><span class="line"></span><br><span class="line">&#x27;If checkIfCodeExist(CodeName) = True Then</span><br><span class="line">&#x27;</span><br><span class="line">&#x27;    Set vbcomp = VBProj.VBComponents(CodeName)</span><br><span class="line">&#x27;    VBProj.VBComponents.Remove (vbcomp)</span><br><span class="line">&#x27;</span><br><span class="line">&#x27;End If</span><br><span class="line"></span><br><span class="line">VBProj.VBComponents.Import (filePath)</span><br><span class="line"></span><br><span class="line">End Sub</span><br><span class="line"></span><br><span class="line">Sub DeleteCodes()</span><br><span class="line"></span><br><span class="line">&#x27;Type: 1=bas,2=cls,3=frm</span><br><span class="line"></span><br><span class="line">Set VBProj = ThisWorkbook.VBProject</span><br><span class="line">For Each VBComp In VBProj.VBComponents</span><br><span class="line">    </span><br><span class="line">    Select Case VBComp.Type</span><br><span class="line">    </span><br><span class="line">        Case 1: myExtension = &quot;.bas&quot;</span><br><span class="line">        Case 2: myExtension = &quot;.cls&quot;</span><br><span class="line">        Case 3: myExtension = &quot;.frm&quot;</span><br><span class="line">        </span><br><span class="line">        Case 100: myExtension = &quot;.doccls&quot;</span><br><span class="line">    </span><br><span class="line">    End Select</span><br><span class="line">    </span><br><span class="line">    If VBComp.Type &lt;&gt; 100 And VBComp.Name &lt;&gt; &quot;GIT&quot; Then</span><br><span class="line"></span><br><span class="line">        VBProj.VBComponents.Remove (VBComp)</span><br><span class="line">        </span><br><span class="line">    End If</span><br><span class="line">    </span><br><span class="line">Next VBComp</span><br><span class="line"></span><br><span class="line">End Sub</span><br><span class="line"></span><br><span class="line">&#x27;--------FUNCTION------------</span><br><span class="line"></span><br><span class="line">Function GetFilePathsInFolder(ByVal folderPath As String)</span><br><span class="line"></span><br><span class="line">    Dim coll As New Collection</span><br><span class="line"></span><br><span class="line">    Dim fso As Object</span><br><span class="line">    &#x27;Dim folderPath As String</span><br><span class="line">    Dim folder As Object</span><br><span class="line">    Dim file As Object</span><br><span class="line"></span><br><span class="line">    Set fso = CreateObject(&quot;Scripting.FileSystemObject&quot;)</span><br><span class="line"></span><br><span class="line">   &#x27; folderPath = getSavedFolder</span><br><span class="line">    Set folder = fso.GetFolder(folderPath)</span><br><span class="line">    </span><br><span class="line">    For Each file In folder.Files</span><br><span class="line"></span><br><span class="line">        coll.Add file.Path</span><br><span class="line">        </span><br><span class="line">    Next file</span><br><span class="line">    </span><br><span class="line">    Set file = Nothing</span><br><span class="line">    Set folder = Nothing</span><br><span class="line">    Set fso = Nothing</span><br><span class="line">    </span><br><span class="line">    Set GetFilePathsInFolder = coll</span><br><span class="line">    </span><br><span class="line">End Function</span><br><span class="line"></span><br><span class="line">Function getSavedFolder()</span><br><span class="line"></span><br><span class="line">    Set fldr = Application.FileDialog(4)</span><br><span class="line">    </span><br><span class="line">    With fldr</span><br><span class="line">        .Title = &quot;Select a Folder&quot;</span><br><span class="line">        .AllowMultiSelect = False</span><br><span class="line">        .InitialFileName = ThisWorkbook.Path</span><br><span class="line">        If .Show = -1 Then FolderName = .SelectedItems(1)</span><br><span class="line">    End With</span><br><span class="line">getSavedFolder = FolderName</span><br><span class="line"></span><br><span class="line">End Function</span><br><span class="line"></span><br><span class="line">Function checkIfCodeExist(ByVal checkName As String) &#x27;useless</span><br><span class="line"></span><br><span class="line">Set VBProj = ThisWorkbook.VBProject</span><br><span class="line">Set VBComps = VBProj.VBComponents</span><br><span class="line"></span><br><span class="line">checkIfCodeExist = False</span><br><span class="line"></span><br><span class="line">For Each it In VBComps</span><br><span class="line"></span><br><span class="line">    If it.Name = checkName Then</span><br><span class="line">        </span><br><span class="line">        checkIfCodeExist = True: Exit Function</span><br><span class="line">        </span><br><span class="line">    End If</span><br><span class="line">Next</span><br><span class="line"></span><br><span class="line">End Function</span><br><span class="line"></span><br><span class="line">Function CountFileLines(ByVal filePath)</span><br><span class="line"></span><br><span class="line">    Dim FileContent As String</span><br><span class="line">    Dim fileNumber As Integer</span><br><span class="line">    Dim lineCount As Long</span><br><span class="line">    </span><br><span class="line">    &#x27; Open the text file</span><br><span class="line">    fileNumber = FreeFile</span><br><span class="line">    Open filePath For Input As fileNumber</span><br><span class="line">    </span><br><span class="line">    &#x27; Read the file content line by line and count the lines</span><br><span class="line">    Do Until EOF(fileNumber)</span><br><span class="line">        Line Input #fileNumber, FileContent</span><br><span class="line">        lineCount = lineCount + 1</span><br><span class="line">    Loop</span><br><span class="line">    </span><br><span class="line">    &#x27; Close the file</span><br><span class="line">    Close fileNumber</span><br><span class="line">    </span><br><span class="line">    &#x27; Display the line count in cell A1</span><br><span class="line">    CountFileLines = lineCount</span><br><span class="line">    </span><br><span class="line">End Function</span><br><span class="line"></span><br><span class="line">&#x27;--------TMP_CODE-------------</span><br><span class="line"></span><br><span class="line">Function tmp_deleteCodes()</span><br><span class="line"></span><br><span class="line">Set VBProj = ThisWorkbook.VBProject</span><br><span class="line">Set VBComps = VBProj.VBComponents</span><br><span class="line"></span><br><span class="line">For Each it In VBComps</span><br><span class="line">    </span><br><span class="line">    If it.Name Like &quot;*2&quot; And it.Type &lt;&gt; 100 Then</span><br><span class="line"></span><br><span class="line">        CodeName = it.Name</span><br><span class="line">        </span><br><span class="line">        Set VBComp = VBProj.VBComponents(CodeName)</span><br><span class="line">        VBProj.VBComponents.Remove (VBComp)</span><br><span class="line">        </span><br><span class="line">    End If</span><br><span class="line">    </span><br><span class="line">Next</span><br><span class="line"></span><br><span class="line">End Function</span><br><span class="line"></span><br></pre></td></tr></table></figure>
 
     </div>
 
@@ -265,6 +332,10 @@
 </ul>
 </div>
 
+          <div class="post-tags">
+              <a href="/tags/GIT/" rel="tag"><i class="fa fa-tag"></i> GIT</a>
+              <a href="/tags/Github/" rel="tag"><i class="fa fa-tag"></i> Github</a>
+          </div>
 
         
 
@@ -275,6 +346,9 @@
                 </a>
             </div>
             <div class="post-nav-item">
+                <a href="/posts/706100979/" rel="next" title="跨系統網頁自動化填寫做法">
+                  跨系統網頁自動化填寫做法 <i class="fa fa-angle-right"></i>
+                </a>
             </div>
           </div>
     </footer>

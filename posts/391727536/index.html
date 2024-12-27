@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.2.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha256-wiz7ZSCn/btzhjKDQBms9Hx4sSeUYsDrTLg7roPstac=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"www.hanksvba.com","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.19.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":"mac"},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":false,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜尋...","empty":"我們無法找到任何有關 ${query} 的搜索結果","hits_time":"${hits} 找到 ${time} 個結果","hits":"找到 ${hits} 個結果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="前言 原本想像中的Selenium會需要從無到有開啟一個網站後開始進行資料填寫，大多數的網站都會有帳號密碼驗證機制，甚至祭出驗證碼、選擇汽車圖片、移動滑鼠到指定位置...等反爬蟲機制來確認是否為機器人，但若網頁可以被接管繞開這些機制的話，那整個資料填報作業就會很有機會讓電腦代勞，這就是寫程式的趣味來源，當然還是要小心不能點太快，否則網站可能會負荷不過來。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Selenium操作細節">
+<meta property="og:url" content="https://www.hanksvba.com/posts/391727536/">
+<meta property="og:site_name" content="Hank&#39;s Blog">
+<meta property="og:description" content="前言 原本想像中的Selenium會需要從無到有開啟一個網站後開始進行資料填寫，大多數的網站都會有帳號密碼驗證機制，甚至祭出驗證碼、選擇汽車圖片、移動滑鼠到指定位置...等反爬蟲機制來確認是否為機器人，但若網頁可以被接管繞開這些機制的話，那整個資料填報作業就會很有機會讓電腦代勞，這就是寫程式的趣味來源，當然還是要小心不能點太快，否則網站可能會負荷不過來。">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:image" content="https://www.hanksvba.com/posts/391727536/1.png">
+<meta property="og:image" content="https://www.hanksvba.com/posts/391727536/2.png">
+<meta property="og:image" content="https://www.hanksvba.com/posts/391727536/3.png">
+<meta property="article:published_time" content="2024-11-20T15:03:46.000Z">
+<meta property="article:modified_time" content="2024-11-20T15:03:46.000Z">
+<meta property="article:author" content="Hank Lin">
+<meta property="article:tag" content="Python">
+<meta property="article:tag" content="Selenium">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://www.hanksvba.com/posts/391727536/1.png">
+
+
+<link rel="canonical" href="https://www.hanksvba.com/posts/391727536/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-TW","comments":true,"permalink":"https://www.hanksvba.com/posts/391727536/","path":"posts/391727536/","title":"Selenium操作細節"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Selenium操作細節 | Hank's Blog</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切換導航欄" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Hank's Blog</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">工程人的設計監造VBA工具交流區</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜尋" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-首頁"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首頁</a></li><li class="menu-item menu-item-關於"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>關於</a></li><li class="menu-item menu-item-標籤"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>標籤</a></li><li class="menu-item menu-item-分類"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分類</a></li><li class="menu-item menu-item-文章"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>文章</a></li>
+  </ul>
+</nav>
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目錄
+        </li>
+        <li class="sidebar-nav-overview">
+          本站概要
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%89%8D%E8%A8%80"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8%E5%B7%A5%E5%85%B7"><span class="nav-number">2.</span> <span class="nav-text">使用工具</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#chrome"><span class="nav-number">2.1.</span> <span class="nav-text">Chrome</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#selenium"><span class="nav-number">2.2.</span> <span class="nav-text">Selenium</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%B6%B2%E7%AB%99%E6%8E%A5%E7%AE%A1%E6%AD%A5%E9%A9%9F"><span class="nav-number">3.</span> <span class="nav-text">網站接管步驟</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#python"><span class="nav-number">4.</span> <span class="nav-text">Python</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#requirements.txt"><span class="nav-number">4.1.</span> <span class="nav-text">requirements.txt</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#main.py"><span class="nav-number">4.2.</span> <span class="nav-text">main.py</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%8C%AF%E8%AA%A4%E7%B4%80%E9%8C%84"><span class="nav-number">5.</span> <span class="nav-text">錯誤紀錄</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Hank Lin"
+      src="/images/avatar_custom.png">
+  <p class="site-author-name" itemprop="name">Hank Lin</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">30</span>
+          <span class="site-state-item-name">文章</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">4</span>
+        <span class="site-state-item-name">分類</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">23</span>
+        <span class="site-state-item-name">標籤</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="mailto:apple84026113@gmail.com" title="E-Mail → mailto:apple84026113@gmail.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.youtube.com/channel/UCWmy5KaK7Leg6lLUlWBPaSw" title="YouTube → https:&#x2F;&#x2F;www.youtube.com&#x2F;channel&#x2F;UCWmy5KaK7Leg6lLUlWBPaSw" rel="noopener me" target="_blank"><i class="fab fa-youtube fa-fw"></i>YouTube</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/images/LINE_QRCODE.PNG" title="LINE → &#x2F;images&#x2F;LINE_QRCODE.PNG" rel="noopener me"><i class="fab fa-line fa-fw"></i>LINE</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://reurl.cc/RyvvaZ" title="LINE社群 → https:&#x2F;&#x2F;reurl.cc&#x2F;RyvvaZ" rel="noopener me" target="_blank"><i class="fas fa-comment fa-fw"></i>LINE社群</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://hankvba.blogspot.com/" title="舊網站 → https:&#x2F;&#x2F;hankvba.blogspot.com&#x2F;" rel="noopener me" target="_blank"><i class="fab fa-blogger fa-fw"></i>舊網站</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://portaly.cc/hanksvba/support/" title="小額贊助 → https:&#x2F;&#x2F;portaly.cc&#x2F;hanksvba&#x2F;support&#x2F;" rel="noopener me" target="_blank"><i class="fas fa-handshake fa-fw"></i>小額贊助</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-TW">
+    <link itemprop="mainEntityOfPage" href="https://www.hanksvba.com/posts/391727536/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar_custom.png">
+      <meta itemprop="name" content="Hank Lin">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hank's Blog">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="Selenium操作細節 | Hank's Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Selenium操作細節
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">發表於</span>
+
+      <time title="創建時間：2024-11-20 23:03:46" itemprop="dateCreated datePublished" datetime="2024-11-20T23:03:46+08:00">2024-11-20</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分類於</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E5%9F%BA%E6%9C%AC%E5%8E%9F%E7%90%86/" itemprop="url" rel="index"><span itemprop="name">基本原理</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="閱讀次數" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">閱讀次數：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h2 id="前言">前言</h2>
+<p>原本想像中的Selenium會需要<strong>從無到有</strong>開啟一個網站後開始進行資料填寫，大多數的網站都會有帳號密碼驗證機制，甚至祭出驗證碼、選擇汽車圖片、移動滑鼠到指定位置...等反爬蟲機制來確認是否為機器人，但若網頁可以被<strong>接管</strong>繞開這些機制的話，那整個資料填報作業就會很有機會讓電腦代勞，這就是寫程式的趣味來源，當然還是要小心不能點太快，否則網站可能會負荷不過來。</p>
+<span id="more"></span>
+<h2 id="使用工具">使用工具</h2>
+<h3 id="chrome">Chrome</h3>
+<p>網頁瀏覽器，透過以下指令即可進行網站操作接管，需要根據自身電腦的chrome安裝路徑執行，建議將原本所開啟中的chrome畫面通通關閉後再執行以下指令。</p>
+<h4 id="win10">WIN10</h4>
+<p><code>"C:\Program Files (x86)\Google\Chrome\Application\chrome.exe" –remote-debugging-port=9222</code></p>
+<h4 id="win11">WIN11</h4>
+<p><code>"C:\Program Files\Google\Chrome\Application\chrome.exe" –remote-debugging-port=9222</code></p>
+<p>NOTE:如果仍然找不到瀏覽器的執行路徑，可以在原本桌面瀏覽器捷徑找尋內容</p>
+<figure>
+<img src="1.png" alt="Fig1. 瀏覽器畫面" />
+<figcaption aria-hidden="true">Fig1. 瀏覽器畫面</figcaption>
+</figure>
+<h3 id="selenium">Selenium</h3>
+<p>目前使用為Selenium4的語法，透過分析網站的元素來進行文字輸入、文字萃取、點擊連結、循環表格取得目標欄位...等。</p>
+<h2 id="網站接管步驟">網站接管步驟</h2>
+<ol type="1">
+<li>打開終端機
+<ul>
+<li>搜尋&gt;輸入<strong>cmd</strong></li>
+</ul></li>
+<li>輸入指令
+<ul>
+<li><code>"C:\Program Files\Google\Chrome\Application\chrome.exe" –remote-debugging-port=9222</code></li>
+</ul></li>
+<li>開啟網站，<strong>輸入帳號密碼驗證碼</strong>後到可填寫畫面</li>
+<li>交給Selenium來進行網站自動填報作業。</li>
+</ol>
+<h2 id="python">Python</h2>
+<h3 id="requirements.txt">requirements.txt</h3>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">selenium</span><br><span class="line">pandas</span><br><span class="line">openpyxl</span><br></pre></td></tr></table></figure>
+<h3 id="main.py">main.py</h3>
+<h4 id="接管瀏覽器">接管瀏覽器</h4>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">from</span> selenium <span class="keyword">import</span> webdriver</span><br><span class="line"><span class="keyword">from</span> selenium.webdriver.chrome.options <span class="keyword">import</span> Options</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">init_driver</span>():</span><br><span class="line">    chrome_options = Options()</span><br><span class="line">    chrome_options.add_experimental_option(<span class="string">&quot;debuggerAddress&quot;</span>, <span class="string">&quot;127.0.0.1:9222&quot;</span>)</span><br><span class="line"></span><br><span class="line">    driver = webdriver.Chrome(options=chrome_options)</span><br><span class="line">    <span class="keyword">return</span> driver</span><br><span class="line">    </span><br><span class="line"><span class="comment">#======主要介面開始======</span></span><br><span class="line"></span><br><span class="line">driver=init_driver()</span><br><span class="line"></span><br><span class="line"><span class="comment"># 獲取當前網址</span></span><br><span class="line">current_url = driver.current_url</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;當前網址:&quot;</span>, current_url)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h4 id="取得網頁元素">取得網頁元素</h4>
+<table>
+<thead>
+<tr class="header">
+<th>方法</th>
+<th>適用情況</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>ID</strong></td>
+<td>用於定位具有唯一標識符的元素</td>
+</tr>
+<tr class="even">
+<td><strong>XPATH</strong></td>
+<td>當元素位置不確定或無法使用其他方式定位時使用</td>
+</tr>
+<tr class="odd">
+<td><strong>LINK_TEXT</strong></td>
+<td>用於定位頁面上可點擊的超連結文字</td>
+</tr>
+<tr class="even">
+<td><strong>CSS_SELECTOR</strong></td>
+<td>當元素的結構較為複雜或無法使用ID時使用</td>
+</tr>
+</tbody>
+</table>
+<h4 id="執行網頁動作">執行網頁動作</h4>
+<table>
+<colgroup>
+<col style="width: 20%" />
+<col style="width: 32%" />
+<col style="width: 46%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>操作類型</th>
+<th>方法</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>文字欄位操作</strong></td>
+<td><strong>clear</strong></td>
+<td>清空文字欄位的內容</td>
+</tr>
+<tr class="even">
+<td></td>
+<td><strong>sendkey</strong></td>
+<td>在文字欄位中輸入文字</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td><strong>click</strong></td>
+<td>點擊文字欄位（若為可點擊的元素）</td>
+</tr>
+<tr class="even">
+<td><strong>選擇欄位操作</strong></td>
+<td><strong>select_by_value</strong></td>
+<td>根據選項的值來選擇</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td><strong>select_by_visible_value</strong></td>
+<td>根據選項的可見文字來選擇</td>
+</tr>
+</tbody>
+</table>
+<h4 id="網頁表格操作">網頁表格操作</h4>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">edit_case</span>(<span class="params">driver,targetID</span>): </span><br><span class="line"></span><br><span class="line">    select_element  = driver.find_element(By.XPATH, <span class="string">&#x27;//*[@id=&quot;DataTables_Table_0_length&quot;]/label/select&#x27;</span>)</span><br><span class="line">    select = Select(select_element)</span><br><span class="line">    select.select_by_value(<span class="string">&quot;100&quot;</span>)</span><br><span class="line">    table = driver.find_element(By.ID, <span class="string">&quot;DataTables_Table_0&quot;</span>)</span><br><span class="line"></span><br><span class="line">    rows = table.find_elements(By.CSS_SELECTOR, <span class="string">&quot;tbody tr&quot;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> row <span class="keyword">in</span> rows:</span><br><span class="line"></span><br><span class="line">        cells = row.find_elements(By.CSS_SELECTOR, <span class="string">&quot;td&quot;</span>)</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># print(cells[0].text)</span></span><br><span class="line">        </span><br><span class="line">        <span class="keyword">if</span> cells[<span class="number">0</span>].text==targetID:</span><br><span class="line">            <span class="built_in">print</span>(cells[<span class="number">0</span>].text)</span><br><span class="line"></span><br><span class="line">            edit_button = cells[<span class="number">3</span>].find_element(By.CSS_SELECTOR, <span class="string">&quot;a&quot;</span>)</span><br><span class="line">            edit_button.click()</span><br><span class="line">            </span><br><span class="line">            <span class="keyword">break</span></span><br></pre></td></tr></table></figure>
+<h4 id="刪除時之警告視窗">刪除時之警告視窗</h4>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">check_item_by_chname</span>(<span class="params">driver,ch_name,is_rebuild</span>):</span><br><span class="line"></span><br><span class="line">    table = driver.find_element(By.ID, <span class="string">&quot;DataTables_Table_0&quot;</span>)</span><br><span class="line">    rows = table.find_elements(By.CSS_SELECTOR, <span class="string">&quot;tbody tr&quot;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> row <span class="keyword">in</span> rows:</span><br><span class="line"></span><br><span class="line">        cells = row.find_elements(By.CSS_SELECTOR, <span class="string">&quot;td&quot;</span>)</span><br><span class="line">        del_button=cells[<span class="number">3</span>].find_element(By.CSS_SELECTOR, <span class="string">&#x27;a[onclick^=&quot;delConfirm&quot;]&#x27;</span>)</span><br><span class="line">        del_button.click()</span><br><span class="line"></span><br><span class="line">        alert = Alert(driver)</span><br><span class="line">        alert.accept()  <span class="comment"># 點擊確認</span></span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;已經強制刪除&quot;</span>)</span><br><span class="line">        </span><br></pre></td></tr></table></figure>
+<h4 id="圖片置換處理">圖片置換處理</h4>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">get_photo_path</span>(<span class="params">ch_name</span>):</span><br><span class="line"></span><br><span class="line">    <span class="keyword">import</span> os</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> os.path.exists(<span class="string">&#x27;./data/&#x27;</span>+ch_name):</span><br><span class="line"></span><br><span class="line">        photo_list=[]</span><br><span class="line">        <span class="keyword">for</span> file <span class="keyword">in</span> os.listdir(<span class="string">&#x27;D:/Python/st_selenium/data/&#x27;</span>+ch_name):</span><br><span class="line">            <span class="built_in">print</span>(file)</span><br><span class="line">            photo_list.append(<span class="string">&#x27;D:/Python/st_selenium/data/&#x27;</span>+ch_name+<span class="string">&quot;/&quot;</span>+file)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> photo_list</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">paste_photo</span>(<span class="params">driver,photo_list</span>):</span><br><span class="line">    <span class="comment"># 定位文件上傳的 input 元素</span></span><br><span class="line">    file_input = driver.find_element(By.ID, <span class="string">&quot;userfile1&quot;</span>)</span><br><span class="line">    file_path =photo_list[<span class="number">0</span>] <span class="comment"># 請替換成你圖片的絕對路徑</span></span><br><span class="line">    file_input.send_keys(file_path)</span><br><span class="line"></span><br><span class="line">    file_input = driver.find_element(By.ID, <span class="string">&quot;userfile2&quot;</span>)</span><br><span class="line">    file_path =photo_list[<span class="number">1</span>] <span class="comment"># 請替換成你圖片的絕對路徑</span></span><br><span class="line">    file_input.send_keys(file_path)</span><br><span class="line"></span><br><span class="line">    file_input = driver.find_element(By.ID, <span class="string">&quot;userfile3&quot;</span>)</span><br><span class="line">    file_path =photo_list[<span class="number">2</span>] <span class="comment"># 請替換成你圖片的絕對路徑</span></span><br><span class="line">    file_input.send_keys(file_path)</span><br><span class="line"></span><br><span class="line"><span class="comment"># ===主要操作內容===</span></span><br><span class="line">    </span><br><span class="line">photo_list=get_photo_path(ch)</span><br><span class="line">paste_photo(driver,photo_list)</span><br><span class="line">    </span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>資料夾安排</p>
+</blockquote>
+<figure>
+<img src="2.png" alt="Fig2. 資料夾安排(以渠道名稱為分類)" />
+<figcaption aria-hidden="true">Fig2.
+資料夾安排(以渠道名稱為分類)</figcaption>
+</figure>
+<blockquote>
+<p>資料夾內容</p>
+</blockquote>
+<figure>
+<img src="3.png" alt="Fig1. 資料夾內容(檔案名稱取為數字方便排序進行)" />
+<figcaption aria-hidden="true">Fig1.
+資料夾內容(檔案名稱取為數字方便排序進行)</figcaption>
+</figure>
+<h2 id="錯誤紀錄">錯誤紀錄</h2>
+<ul>
+<li>如果取得表格之後就要直接進行各項功能操作，會出現中止狀況，需要先把每個列的資料先儲存成list，才能根據每個list中的內容進行後續填寫、修改、儲存等功能。</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">166</span>,<span class="number">167</span>):</span><br><span class="line"></span><br><span class="line">    <span class="comment"># print(&quot;OO113T&quot;+str(i))</span></span><br><span class="line"></span><br><span class="line">    edit_case(driver,<span class="string">&quot;OO113T&quot;</span>+<span class="built_in">str</span>(i))</span><br><span class="line"></span><br><span class="line">    table = driver.find_element(By.ID, <span class="string">&quot;DataTables_Table_0&quot;</span>)</span><br><span class="line">    rows = table.find_elements(By.CSS_SELECTOR, <span class="string">&quot;tbody tr&quot;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="comment">### 先把資料儲存起來</span></span><br><span class="line">    </span><br><span class="line">    ch_list=[]</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">for</span> row <span class="keyword">in</span> rows:</span><br><span class="line">        cells = row.find_elements(By.CSS_SELECTOR, <span class="string">&quot;td&quot;</span>)</span><br><span class="line">        ch=cells[<span class="number">1</span>].text</span><br><span class="line">        ch_list.append(ch)</span><br><span class="line"></span><br><span class="line">    <span class="comment">### 循環每個LIST中的內容進行後續處理</span></span><br><span class="line">        </span><br><span class="line">    <span class="keyword">for</span> ch <span class="keyword">in</span> ch_list:</span><br><span class="line"></span><br><span class="line">        <span class="comment">#do something~</span></span><br></pre></td></tr></table></figure>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>作者： </strong>Hank Lin
+  </li>
+  <li class="post-copyright-link">
+      <strong>文章連結：</strong>
+      <a href="https://www.hanksvba.com/posts/391727536/" title="Selenium操作細節">https://www.hanksvba.com/posts/391727536/</a>
+  </li>
+  <li class="post-copyright-license">
+      <strong>版權聲明： </strong>本網誌所有文章除特別聲明外，均採用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 許可協議。轉載請註明出處！
+  </li>
+</ul>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/Python/" rel="tag"><i class="fa fa-tag"></i> Python</a>
+              <a href="/tags/Selenium/" rel="tag"><i class="fa fa-tag"></i> Selenium</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/posts/997099184/" rel="prev" title="施工日誌VBA-列印篇">
+                  <i class="fa fa-angle-left"></i> 施工日誌VBA-列印篇
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/posts/1168852487/" rel="next" title="雲端空間Synology-C2-Object">
+                  雲端空間Synology-C2-Object <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2024</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Hank Lin</span>
+  </div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="訪客總數">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="總瀏覽次數">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 強力驅動
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="back-to-top" role="button" aria-label="回到頂端">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/next-boot.js"></script>
+
+  
+  <script class="next-config" data-name="pdf" type="application/json">{"object_url":{"url":"https://cdnjs.cloudflare.com/ajax/libs/pdfobject/2.2.12/pdfobject.min.js","integrity":"sha256-g2xji1rlE3KsGVClvuxTbcR0Kn2+wtQADSff2Tbb4zA="},"url":"/lib/pdf/web/viewer"}</script>
+  <script src="/js/third-party/tags/pdf.js"></script>
+
+
+
+
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">false</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"ams","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+
+</body>
+</html>
