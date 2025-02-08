@@ -353,6 +353,27 @@
 
   
   <url>
+    <loc>https://www.hanksvba.com/tags/Blog/</loc>
+    <lastmod>2025-02-08</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://www.hanksvba.com/tags/flask/</loc>
+    <lastmod>2025-02-08</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://www.hanksvba.com/tags/LINEBOT/</loc>
+    <lastmod>2025-02-08</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
     <loc>https://www.hanksvba.com/tags/AutoCAD-VBA/</loc>
     <lastmod>2025-02-08</lastmod>
     <changefreq>weekly</changefreq>
@@ -374,13 +395,6 @@
   </url>
   
   <url>
-    <loc>https://www.hanksvba.com/tags/Blog/</loc>
-    <lastmod>2025-02-08</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
     <loc>https://www.hanksvba.com/tags/Python/</loc>
     <lastmod>2025-02-08</lastmod>
     <changefreq>weekly</changefreq>
@@ -389,20 +403,6 @@
   
   <url>
     <loc>https://www.hanksvba.com/tags/PCCES/</loc>
-    <lastmod>2025-02-08</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://www.hanksvba.com/tags/flask/</loc>
-    <lastmod>2025-02-08</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://www.hanksvba.com/tags/LINEBOT/</loc>
     <lastmod>2025-02-08</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -444,14 +444,14 @@
   </url>
   
   <url>
-    <loc>https://www.hanksvba.com/tags/ProgeCAD-VBA/</loc>
+    <loc>https://www.hanksvba.com/tags/Python-docx/</loc>
     <lastmod>2025-02-08</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
-    <loc>https://www.hanksvba.com/tags/Python-docx/</loc>
+    <loc>https://www.hanksvba.com/tags/ProgeCAD-VBA/</loc>
     <lastmod>2025-02-08</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
