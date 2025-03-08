@@ -18,33 +18,35 @@
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"www.hanksvba.com","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.19.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":"mac"},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":false,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜尋...","empty":"我們無法找到任何有關 ${query} 的搜索結果","hits_time":"${hits} 找到 ${time} 個結果","hits":"找到 ${hits} 個結果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
 
-    <meta name="description" content="前言  工程估算為提報計畫前的必要內容，所提報的概估經費關乎於計畫核定後是否會造成實際所需經費是否足夠、執行率會不會有問題。  工程估算方法有兩種:材料及類別  材料是將單元拆分為鋼筋、模板、混凝土...等等可以從標準斷面計算而得的內容。 類別是將工程拆分為渠道工程、道路工程、橋梁工程...等可以明確分類的內容。  本篇文章希望能夠藉由雲端介面的操作來達成以下幾點需求  工程">
+    <meta name="description" content="🚩使用者情境  想請問有沒有可能用VBA 去做一般公司行號發函的系統，因為目前公司是土法煉鋼用WORD去打，但是每次都要做兩個檔案正本跟副本，因為有時候發文是需要發給業主跟PCM，甚至是發文編號也能系統根據日期自動整理產生  🛒需求分析 基本流程  graph TD;     A[接獲單位來文] --&gt; B{開始進行公文填寫};     B --&gt;|手動填寫| C[取得公文">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Streamlit打造工程估算系統">
-<meta property="og:url" content="https://www.hanksvba.com/posts/2910899188/">
+<meta property="og:title" content="公司行號發函VBA系統">
+<meta property="og:url" content="https://www.hanksvba.com/posts/675663677/">
 <meta property="og:site_name" content="Hank&#39;s Blog">
-<meta property="og:description" content="前言  工程估算為提報計畫前的必要內容，所提報的概估經費關乎於計畫核定後是否會造成實際所需經費是否足夠、執行率會不會有問題。  工程估算方法有兩種:材料及類別  材料是將單元拆分為鋼筋、模板、混凝土...等等可以從標準斷面計算而得的內容。 類別是將工程拆分為渠道工程、道路工程、橋梁工程...等可以明確分類的內容。  本篇文章希望能夠藉由雲端介面的操作來達成以下幾點需求  工程">
+<meta property="og:description" content="🚩使用者情境  想請問有沒有可能用VBA 去做一般公司行號發函的系統，因為目前公司是土法煉鋼用WORD去打，但是每次都要做兩個檔案正本跟副本，因為有時候發文是需要發給業主跟PCM，甚至是發文編號也能系統根據日期自動整理產生  🛒需求分析 基本流程  graph TD;     A[接獲單位來文] --&gt; B{開始進行公文填寫};     B --&gt;|手動填寫| C[取得公文">
 <meta property="og:locale" content="zh_TW">
-<meta property="og:image" content="https://www.hanksvba.com/posts/2910899188/1.JPG">
-<meta property="og:image" content="https://www.hanksvba.com/posts/2910899188/2.JPG">
-<meta property="og:image" content="https://www.hanksvba.com/posts/2910899188/3.JPG">
-<meta property="og:image" content="https://www.hanksvba.com/posts/2910899188/4.JPG">
-<meta property="article:published_time" content="2024-06-19T14:32:24.000Z">
-<meta property="article:modified_time" content="2024-06-19T14:32:24.000Z">
+<meta property="og:image" content="https://www.hanksvba.com/posts/675663677/1.png">
+<meta property="og:image" content="https://www.hanksvba.com/posts/675663677/2.png">
+<meta property="og:image" content="https://www.hanksvba.com/posts/675663677/3.png">
+<meta property="og:image" content="https://www.hanksvba.com/posts/675663677/4.png">
+<meta property="og:image" content="https://www.hanksvba.com/posts/675663677/5.png">
+<meta property="og:image" content="https://www.hanksvba.com/posts/675663677/6.png">
+<meta property="article:published_time" content="2025-03-08T14:14:40.000Z">
+<meta property="article:modified_time" content="2025-03-08T14:14:40.000Z">
 <meta property="article:author" content="Hank Lin">
-<meta property="article:tag" content="Streamlit">
+<meta property="article:tag" content="ExcelVBA">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://www.hanksvba.com/posts/2910899188/1.JPG">
+<meta name="twitter:image" content="https://www.hanksvba.com/posts/675663677/1.png">
 
 
-<link rel="canonical" href="https://www.hanksvba.com/posts/2910899188/">
+<link rel="canonical" href="https://www.hanksvba.com/posts/675663677/">
 
 
 
-<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-TW","comments":true,"permalink":"https://www.hanksvba.com/posts/2910899188/","path":"posts/2910899188/","title":"Streamlit打造工程估算系統"}</script>
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-TW","comments":true,"permalink":"https://www.hanksvba.com/posts/675663677/","path":"posts/675663677/","title":"公司行號發函VBA系統"}</script>
 
 <script class="next-config" data-name="calendar" type="application/json">""</script>
-<title>Streamlit打造工程估算系統 | Hank's Blog</title>
+<title>公司行號發函VBA系統 | Hank's Blog</title>
   
 
 
@@ -144,7 +146,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%89%8D%E8%A8%80"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B7%A5%E7%A8%8B%E4%BC%B0%E7%AE%97%E6%96%B9%E6%B3%95"><span class="nav-number">2.</span> <span class="nav-text">工程估算方法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BC%B0%E5%A4%AA%E5%B0%91"><span class="nav-number">2.1.</span> <span class="nav-text">估太少</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BC%B0%E5%A4%AA%E5%A4%9A"><span class="nav-number">2.2.</span> <span class="nav-text">估太多</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%A1%9E%E5%88%A5%E8%A8%88%E7%AE%97%E5%85%A7%E5%AE%B9"><span class="nav-number">3.</span> <span class="nav-text">類別計算內容</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%B8%A0%E9%81%93%E5%B7%A5%E7%A8%8B%E7%89%88%E6%A9%8B%E5%B7%A5%E7%A8%8B"><span class="nav-number">3.1.</span> <span class="nav-text">渠道工程、版橋工程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%93%8B%E5%9C%9F%E7%89%86"><span class="nav-number">3.2.</span> <span class="nav-text">擋土牆</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%81%93%E8%B7%AF%E5%B7%A5%E7%A8%8B%E7%89%88%E6%A8%81%E5%B7%A5%E7%A8%8B"><span class="nav-number">3.3.</span> <span class="nav-text">道路工程、版樁工程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%9B%9C%E9%A0%85%E5%8F%8A%E5%85%B6%E4%BB%96"><span class="nav-number">3.4.</span> <span class="nav-text">雜項及其他</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%96%93%E6%8E%A5%E8%B2%BB%E7%94%A8"><span class="nav-number">3.5.</span> <span class="nav-text">間接費用</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%BC%B8%E5%87%BA%E5%A0%B1%E8%A1%A8"><span class="nav-number">4.</span> <span class="nav-text">輸出報表</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AF%A6%E4%BD%9C%E6%88%90%E6%9E%9C"><span class="nav-number">5.</span> <span class="nav-text">實作成果</span></a></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8%E8%80%85%E6%83%85%E5%A2%83"><span class="nav-number">1.</span> <span class="nav-text">🚩使用者情境</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%9C%80%E6%B1%82%E5%88%86%E6%9E%90"><span class="nav-number">2.</span> <span class="nav-text">🛒需求分析</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9F%BA%E6%9C%AC%E6%B5%81%E7%A8%8B"><span class="nav-number">2.1.</span> <span class="nav-text">基本流程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8%E8%80%85%E7%95%AB%E9%9D%A2"><span class="nav-number">2.2.</span> <span class="nav-text">使用者畫面</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%B3%87%E6%96%99%E5%BA%AB"><span class="nav-number">2.3.</span> <span class="nav-text">資料庫</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A0%B1%E8%A1%A8"><span class="nav-number">2.4.</span> <span class="nav-text">報表</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%8C%AF%E8%AA%A4%E7%B4%80%E9%8C%84"><span class="nav-number">3.</span> <span class="nav-text">🐞錯誤紀錄</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AA%AA%E6%98%8E%E6%A0%BC%E5%BC%8F"><span class="nav-number">3.1.</span> <span class="nav-text">1. 說明格式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%A7%E5%AE%B9%E6%B6%88%E5%A4%B1"><span class="nav-number">3.2.</span> <span class="nav-text">2. 內容消失</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%97%E5%8D%B0%E6%88%90%E6%9E%9C"><span class="nav-number">3.3.</span> <span class="nav-text">3. 列印成果</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%99%84%E4%BB%B6%E9%81%B8%E5%8F%96"><span class="nav-number">3.4.</span> <span class="nav-text">4. 附件選取</span></a></li></ol></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -217,7 +219,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-TW">
-    <link itemprop="mainEntityOfPage" href="https://www.hanksvba.com/posts/2910899188/">
+    <link itemprop="mainEntityOfPage" href="https://www.hanksvba.com/posts/675663677/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar_custom.png">
@@ -230,12 +232,12 @@
     </span>
 
     <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="Streamlit打造工程估算系統 | Hank's Blog">
+      <meta itemprop="name" content="公司行號發函VBA系統 | Hank's Blog">
       <meta itemprop="description" content="">
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          Streamlit打造工程估算系統
+          公司行號發函VBA系統
         </h1>
 
         <div class="post-meta-container">
@@ -246,7 +248,7 @@
       </span>
       <span class="post-meta-item-text">發表於</span>
 
-      <time title="創建時間：2024-06-19 22:32:24" itemprop="dateCreated datePublished" datetime="2024-06-19T22:32:24+08:00">2024-06-19</time>
+      <time title="創建時間：2025-03-08 22:14:40" itemprop="dateCreated datePublished" datetime="2025-03-08T22:14:40+08:00">2025-03-08</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -254,7 +256,7 @@
       </span>
       <span class="post-meta-item-text">分類於</span>
         <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E5%B0%88%E6%A1%88%E6%88%90%E6%9E%9C/" itemprop="url" rel="index"><span itemprop="name">專案成果</span></a>
+          <a href="/categories/%E5%B0%88%E6%A1%88%E9%96%8B%E7%99%BC/" itemprop="url" rel="index"><span itemprop="name">專案開發</span></a>
         </span>
     </span>
 
@@ -274,69 +276,85 @@
     
     
     
-    <div class="post-body" itemprop="articleBody"><h2 id="前言">前言</h2>
+    <div class="post-body" itemprop="articleBody"><h2 id="使用者情境">🚩使用者情境</h2>
 <blockquote>
-<p>工程估算為提報計畫前的必要內容，所提報的概估經費關乎於計畫核定後是否會造成實際所需經費是否足夠、執行率會不會有問題。</p>
+<p>想請問有沒有可能用VBA
+去做一般公司行號發函的系統，因為目前公司是土法煉鋼用WORD去打，但是每次都要做兩個檔案正本跟副本，因為有時候發文是需要發給業主跟PCM，甚至是發文編號也能系統根據日期自動整理產生</p>
 </blockquote>
-<p>工程估算方法有兩種:材料及類別</p>
-<ul>
-<li>材料是將單元拆分為鋼筋、模板、混凝土...等等可以從標準斷面計算而得的內容。</li>
-<li>類別是將工程拆分為渠道工程、道路工程、橋梁工程...等可以明確分類的內容。</li>
-</ul>
-<p>本篇文章希望能夠藉由<strong>雲端介面</strong>的操作來達成以下幾點需求</p>
-<ol type="1">
-<li>工程估算方法將以往的<strong>材料</strong>導向為<strong>類別</strong>。</li>
-<li>各類別單元內容計算由程式接手，減少人力調配參數。</li>
-<li>輸出報表採用最新版本號，避免各地版本不一造成困擾。</li>
-<li>手機也能在工區現場獲得經費估算成果。</li>
-</ol>
+<h2 id="需求分析">🛒需求分析</h2>
+<h3 id="基本流程">基本流程</h3>
+<pre class="mermaid">
+graph TD;
+    A[接獲單位來文] --> B{開始進行公文填寫};
+    B -->|手動填寫| C[取得公文文號];
+    B -->|匯入範本| C;
+    C --> D[輸入主旨、說明];
+    D --> E[選取附件內容];
+    E --> F[選擇正副本收文對象];
+    F --> G[提送表單];
+    G --> H{是否為通用類型?};
+    H -->|是| I[建立為範本] --> J[列印公文];
+    H -->|否| J[列印公文];</pre>
 <span id="more"></span>
-<h2 id="工程估算方法">工程估算方法</h2>
-<p>工程估算方法不同是目前在處理計畫提報時常常造成提報經費與實際經費有落差的主因，經查發現原來是大多數人都用<strong>材料</strong>作為品項而非用<strong>工程類別</strong>作為品項，導致在估算過程容易忽略道路鋪面、擋土設施這類內容。</p>
-<h3 id="估太少">估太少</h3>
-<p>設計過程會需要東扣西扣，為了主體工程能夠收尾必須要捨棄掉某些也是很重要的項目。</p>
-<h3 id="估太多">估太多</h3>
-<p>會被檢討為什麼當初黑白估造成執行率不高，很多人都是因為被刁難過經費不能超過上限，所以就給他用力估下去，造成這樣的結果。</p>
-<h2 id="類別計算內容">類別計算內容</h2>
-<h3 id="渠道工程版橋工程">渠道工程、版橋工程</h3>
+<h3 id="使用者畫面">使用者畫面</h3>
+<p><img src="1.png" alt="Fig1. 發文基本畫面" /> <img src="2.png"
+alt="Fig2. 主要填報表單" /></p>
+<h3 id="資料庫">資料庫</h3>
+<figure>
+<img src="3.png" alt="Fig3. 工作表規劃" />
+<figcaption aria-hidden="true">Fig3. 工作表規劃</figcaption>
+</figure>
+<h3 id="報表">報表</h3>
+<h4 id="最終成品">最終成品</h4>
+<figure>
+<img src="4.png" alt="Fig4. 報表最終長相" />
+<figcaption aria-hidden="true">Fig4. 報表最終長相</figcaption>
+</figure>
+<h4 id="資料夾架構">資料夾架構</h4>
+<p>於Excel的同個目錄下會出現三個資料夾</p>
 <ul>
-<li>給定渠道長寬及長度，回推牆厚及所需鋼筋</li>
-<li>給定版橋長寬及座數，回推版厚及所需鋼筋</li>
+<li>發文PDF:存放公文PDF，根據不同的<strong>正本副本機關</strong>皆進行儲存!</li>
+<li>發文原始檔:存放印製成PDF的Excel檔</li>
+<li>附件資料夾:根據各個不同公文編號提送表單時的附件內容拉取至該資料夾存放</li>
 </ul>
-<h3 id="擋土牆">擋土牆</h3>
-<ul>
-<li>懸臂式擋土牆</li>
-<li>重力式擋土牆</li>
-</ul>
-<h3 id="道路工程版樁工程">道路工程、版樁工程</h3>
-<p>分為AC、再生AC、碎石級配、CLSM的各種排列組合，透過新增的方式來逐行增加，也可以進行刪除。</p>
-<h3 id="雜項及其他">雜項及其他</h3>
-<p>將前述內容加總後乘上<strong>雜項費用係數(預設為0.1)</strong></p>
-<h3 id="間接費用">間接費用</h3>
-<p>為前幾項的加總後乘上<strong>間接費用係數(預設為0.3)</strong>，這部分包含職安、環保、廠商利潤、工程管理費等</p>
-<h2 id="輸出報表">輸出報表</h2>
-<p>工作時如有需要輸出報表的時候，不外乎會採用word或者excel之類的工具，當版本有更新的時候會需要請同事重新下載使用，並在報表的某處壓一個<strong>版本號</strong>作為辨識，然而往往頒布適用的時候，還是會有不少同事以舊的版本提送報表。</p>
-<p>為解決上述版本差異問題，這次選擇利用雲端網頁作為可<strong>及時更新</strong>的報表輸出媒介，一旦計算規則改變或報表格式變化就能夠在同事輸入完基本資料之後，確保輸出的內容會是正確版的。</p>
-<h2 id="實作成果">實作成果</h2>
+<h2 id="錯誤紀錄">🐞錯誤紀錄</h2>
+<h3 id="說明格式">1. 說明格式</h3>
+<p>說明內容有很多點時，Excel產製的格式無法像Word有縮行段落。</p>
+<h4 id="發生原因">發生原因</h4>
+<p>原本的設計是將說明欄位的內容直接代入套版的<strong>某一儲存格</strong>。</p>
+<h4 id="解決方法">解決方法</h4>
+<p>在表單上要輸入資料時，如有分行需求，用<strong>shift+Enter</strong>讓內容跳至下個段落，程式在判斷時就能找到<strong>vbCrLf</strong>
+這個關鍵字進行拆分，拆分就能得知順序，再將順序編號代入到B欄位、順序內容代入到C欄位，就能製作出類似Word的縮行段落。</p>
 <figure>
-<img src="1.JPG" alt="系統操作流程" />
-<figcaption aria-hidden="true">系統操作流程</figcaption>
+<img src="5.png" alt="Fig5. 模擬Word縮行的套版位置" />
+<figcaption aria-hidden="true">Fig5. 模擬Word縮行的套版位置</figcaption>
 </figure>
-<hr />
+<h3 id="內容消失">2. 內容消失</h3>
+<p>儲存格欄位無法自動跟著內容的自動換行進行放大，導致部分內容會被儲存格的列高限制其顯示內容。</p>
+<h4 id="發生原因-1">發生原因</h4>
+<p>在程式碼中設定
+<strong>rows.autofit</strong>，但如果遇到<strong>合併儲存格</strong>時就會失效。</p>
+<h4 id="解決方法-1">解決方法</h4>
+<p>取得合併儲存格的各個欄位寬度，在不進行列印的單儲存格設定其寬度等同合併儲存格的各個欄位寬度總和，並且自動換行、字型大小都需要一致，未來在進行自動列高調整時就會去抓取該單儲存格的屬性自行調整。</p>
 <figure>
-<img src="2.JPG" alt="工程基本資料" />
-<figcaption aria-hidden="true">工程基本資料</figcaption>
+<img src="6.png" alt="Fig6. 列高自動調整標的位置(紅=主旨，藍=說明)" />
+<figcaption aria-hidden="true">Fig6.
+列高自動調整標的位置(紅=主旨，藍=說明)</figcaption>
 </figure>
-<hr />
-<figure>
-<img src="3.JPG" alt="工程施作位置" />
-<figcaption aria-hidden="true">工程施作位置</figcaption>
-</figure>
-<hr />
-<figure>
-<img src="4.JPG" alt="工程內容概要" />
-<figcaption aria-hidden="true">工程內容概要</figcaption>
-</figure>
+<h3 id="列印成果">3. 列印成果</h3>
+<p>Excel中的版型看起來的畫面與預覽畫面相符，但是輸出成PDF的時候就會有些許落差。</p>
+<h4 id="發生原因-2">發生原因</h4>
+<p>不明，猜測是檢視設定為<strong>分頁模式</strong>?</p>
+<h4 id="解決方法-2">解決方法</h4>
+<p>將檢視調整為<strong>整頁模式</strong>則可以正常列印，版型不會有變化，文字也會如預覽時的位置。</p>
+<h3 id="附件選取">4. 附件選取</h3>
+<p>附件夾帶時無法選擇不同目錄下的檔案內容。</p>
+<h4 id="發生原因-3">發生原因</h4>
+<p><strong>Application.FileDialog(msoFileDialogFilePicker)</strong>
+天生限制只能在同一個目錄下進行選擇多個檔案路徑。</p>
+<h4 id="解決方法-3">解決方法</h4>
+<p>讓使用者能有機會表達我還要選擇檔案，詳細程式碼如下:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line">Function SelectFiles() As String</span><br><span class="line">    Dim fd As FileDialog</span><br><span class="line">    Dim filePath As String</span><br><span class="line">    Dim selectedItem As Variant</span><br><span class="line">    Dim response As VbMsgBoxResult</span><br><span class="line">    </span><br><span class="line">    &#x27; 建立 FileDialog 物件 (選擇檔案模式)</span><br><span class="line">    Set fd = Application.FileDialog(msoFileDialogFilePicker)</span><br><span class="line">    </span><br><span class="line">    &#x27; 設定允許多選</span><br><span class="line">    fd.AllowMultiSelect = True</span><br><span class="line">    fd.Title = &quot;請選擇檔案&quot;</span><br><span class="line">    </span><br><span class="line">    &#x27; 初始化檔案路徑變數</span><br><span class="line">    filePath = &quot;&quot;</span><br><span class="line">    </span><br><span class="line">    &#x27; 進入循環，允許用戶多次選擇檔案</span><br><span class="line">    Do</span><br><span class="line">        &#x27; 顯示對話框</span><br><span class="line">        If fd.Show = -1 Then</span><br><span class="line">            &#x27; 遍歷所有選取的檔案</span><br><span class="line">            For Each selectedItem In fd.SelectedItems</span><br><span class="line">                filePath = filePath &amp; selectedItem &amp; &quot;;&quot;</span><br><span class="line">            Next selectedItem</span><br><span class="line">        End If</span><br><span class="line">        </span><br><span class="line">        &#x27; 問用戶是否還想選擇更多檔案</span><br><span class="line">        response = MsgBox(&quot;是否選擇更多檔案?&quot;, vbYesNo)</span><br><span class="line">        </span><br><span class="line">        &#x27; 如果選擇「否」，則退出循環</span><br><span class="line">        If response = vbNo Then Exit Do</span><br><span class="line">    Loop</span><br><span class="line">    </span><br><span class="line">    &#x27; 移除最後一個 &quot;;&quot;</span><br><span class="line">    If Len(filePath) &gt; 0 Then filePath = Left(filePath, Len(filePath) - 1)</span><br><span class="line">    </span><br><span class="line">    &#x27; 回傳選取的檔案路徑（如果未選取則回傳空字串）</span><br><span class="line">    SelectFiles = filePath</span><br><span class="line">    </span><br><span class="line">    &#x27; 清除物件</span><br><span class="line">    Set fd = Nothing</span><br><span class="line">End Function</span><br></pre></td></tr></table></figure>
 
     </div>
 
@@ -354,7 +372,7 @@
   </li>
   <li class="post-copyright-link">
       <strong>文章連結：</strong>
-      <a href="https://www.hanksvba.com/posts/2910899188/" title="Streamlit打造工程估算系統">https://www.hanksvba.com/posts/2910899188/</a>
+      <a href="https://www.hanksvba.com/posts/675663677/" title="公司行號發函VBA系統">https://www.hanksvba.com/posts/675663677/</a>
   </li>
   <li class="post-copyright-license">
       <strong>版權聲明： </strong>本網誌所有文章除特別聲明外，均採用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 許可協議。轉載請註明出處！
@@ -363,21 +381,18 @@
 </div>
 
           <div class="post-tags">
-              <a href="/tags/Streamlit/" rel="tag"><i class="fa fa-tag"></i> Streamlit</a>
+              <a href="/tags/ExcelVBA/" rel="tag"><i class="fa fa-tag"></i> ExcelVBA</a>
           </div>
 
         
 
           <div class="post-nav">
             <div class="post-nav-item">
-                <a href="/posts/639809757/" rel="prev" title="Streamlit建置GoogleSheet簡易資料庫">
-                  <i class="fa fa-angle-left"></i> Streamlit建置GoogleSheet簡易資料庫
+                <a href="/posts/375550287/" rel="prev" title="PCCES XML 後處理工具線上版">
+                  <i class="fa fa-angle-left"></i> PCCES XML 後處理工具線上版
                 </a>
             </div>
             <div class="post-nav-item">
-                <a href="/posts/777227760/" rel="next" title="Streamlit建立權限控管機制">
-                  Streamlit建立權限控管機制 <i class="fa fa-angle-right"></i>
-                </a>
             </div>
           </div>
     </footer>
