@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.2.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha256-wiz7ZSCn/btzhjKDQBms9Hx4sSeUYsDrTLg7roPstac=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"www.hanksvba.com","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.19.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":"mac"},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":false,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜尋...","empty":"我們無法找到任何有關 ${query} 的搜索結果","hits_time":"${hits} 找到 ${time} 個結果","hits":"找到 ${hits} 個結果"},"path":"/search.json","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="前言 資料庫介紹 資料庫(此為關聯式資料庫)的主要用途是為資料提供一個儲存空間，讓使用者可以進行讀取、寫入、修改、刪除等功能。 關聯式資料庫常見如下:  MySQL 和 PostgreSQL 是開源且廣泛使用的選擇，適合中小型應用程式 Microsoft SQL Server 通常用於大型企業解決方案 SQLite 則是一個輕量級的資料庫，適合用於嵌入式應用或單機應用。  申請雲">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Clever cloud postgreSQL申請流程">
+<meta property="og:url" content="https://www.hanksvba.com/posts/3965020317/">
+<meta property="og:site_name" content="Hank&#39;s Blog">
+<meta property="og:description" content="前言 資料庫介紹 資料庫(此為關聯式資料庫)的主要用途是為資料提供一個儲存空間，讓使用者可以進行讀取、寫入、修改、刪除等功能。 關聯式資料庫常見如下:  MySQL 和 PostgreSQL 是開源且廣泛使用的選擇，適合中小型應用程式 Microsoft SQL Server 通常用於大型企業解決方案 SQLite 則是一個輕量級的資料庫，適合用於嵌入式應用或單機應用。  申請雲">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:image" content="https://www.hanksvba.com/posts/3965020317/1.png">
+<meta property="og:image" content="https://www.hanksvba.com/posts/3965020317/2.png">
+<meta property="og:image" content="https://www.hanksvba.com/posts/3965020317/3.png">
+<meta property="og:image" content="https://www.hanksvba.com/posts/3965020317/4.png">
+<meta property="og:image" content="https://www.hanksvba.com/posts/3965020317/5.png">
+<meta property="og:image" content="https://www.hanksvba.com/posts/3965020317/6.png">
+<meta property="og:image" content="https://www.hanksvba.com/posts/3965020317/7.png">
+<meta property="og:image" content="https://www.hanksvba.com/posts/3965020317/8.png">
+<meta property="og:image" content="https://www.hanksvba.com/posts/3965020317/9.png">
+<meta property="article:published_time" content="2025-01-01T07:31:57.000Z">
+<meta property="article:modified_time" content="2025-01-01T07:31:57.000Z">
+<meta property="article:author" content="Hank Lin">
+<meta property="article:tag" content="SQL">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://www.hanksvba.com/posts/3965020317/1.png">
+
+
+<link rel="canonical" href="https://www.hanksvba.com/posts/3965020317/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-TW","comments":true,"permalink":"https://www.hanksvba.com/posts/3965020317/","path":"posts/3965020317/","title":"Clever cloud postgreSQL申請流程"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Clever cloud postgreSQL申請流程 | Hank's Blog</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切換導航欄" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Hank's Blog</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">工程人的設計監造VBA工具交流區</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜尋" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-首頁"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首頁</a></li><li class="menu-item menu-item-關於"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>關於</a></li><li class="menu-item menu-item-標籤"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>標籤</a></li><li class="menu-item menu-item-分類"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分類</a></li><li class="menu-item menu-item-文章"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>文章</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜尋
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜尋..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目錄
+        </li>
+        <li class="sidebar-nav-overview">
+          本站概要
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%89%8D%E8%A8%80"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%B3%87%E6%96%99%E5%BA%AB%E4%BB%8B%E7%B4%B9"><span class="nav-number">1.1.</span> <span class="nav-text">資料庫介紹</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%94%B3%E8%AB%8B%E9%9B%B2%E7%AB%AF%E6%9C%8D%E5%8B%99"><span class="nav-number">1.2.</span> <span class="nav-text">申請雲端服務</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%87%8D%E8%A6%81%E5%8F%83%E6%95%B8"><span class="nav-number">1.3.</span> <span class="nav-text">重要參數</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%80%B2%E5%85%A5%E7%B6%B2%E7%AB%99"><span class="nav-number">2.</span> <span class="nav-text">進入網站</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%A8%BB%E5%86%8A"><span class="nav-number">3.</span> <span class="nav-text">註冊</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%A5%E5%8F%A3%E7%95%AB%E9%9D%A2"><span class="nav-number">4.</span> <span class="nav-text">入口畫面</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%9C%80%E8%A6%81%E5%85%88%E5%8E%BB%E9%A9%97%E8%AD%89%E4%BD%A0%E7%9A%84email%E6%98%AF%E5%90%A6%E6%AD%A3%E7%A2%BA"><span class="nav-number">4.1.</span> <span class="nav-text">需要先去驗證你的email是否正確</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%96%B0%E5%A2%9E%E4%B8%80%E5%80%8Baddon"><span class="nav-number">5.</span> <span class="nav-text">新增一個addon</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%81%B8%E5%8F%96postgresql"><span class="nav-number">6.</span> <span class="nav-text">選取PostgreSQL</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8C%87%E5%AE%9A%E8%A8%88%E7%95%AB%E5%90%8D%E7%A8%B1%E7%82%BAdev%E6%9C%80%E5%8F%B3%E4%B8%8B%E8%A7%92%E6%9C%89%E4%B8%80%E5%80%8Bnext"><span class="nav-number">7.</span> <span class="nav-text">指定計畫名稱為DEV，最右下角有一個next</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A1%AB%E5%AF%AB%E5%90%8D%E7%A8%B1"><span class="nav-number">8.</span> <span class="nav-text">填寫名稱</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9C%8D%E5%8B%99%E6%88%90%E5%8A%9F%E5%BB%BA%E7%AB%8B"><span class="nav-number">9.</span> <span class="nav-text">服務成功建立</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%B5%90%E8%AB%96"><span class="nav-number">10.</span> <span class="nav-text">結論</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%B2%E6%8E%A5%E7%AF%84%E4%BE%8B"><span class="nav-number">11.</span> <span class="nav-text">串接範例</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%81%AD%E9%81%87%E5%95%8F%E9%A1%8C%E7%B4%80%E9%8C%84"><span class="nav-number">12.</span> <span class="nav-text">遭遇問題紀錄</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Hank Lin"
+      src="/images/avatar_custom.png">
+  <p class="site-author-name" itemprop="name">Hank Lin</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">36</span>
+          <span class="site-state-item-name">文章</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">分類</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">24</span>
+        <span class="site-state-item-name">標籤</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="mailto:apple84026113@gmail.com" title="E-Mail → mailto:apple84026113@gmail.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.youtube.com/channel/UCWmy5KaK7Leg6lLUlWBPaSw" title="YouTube → https:&#x2F;&#x2F;www.youtube.com&#x2F;channel&#x2F;UCWmy5KaK7Leg6lLUlWBPaSw" rel="noopener me" target="_blank"><i class="fab fa-youtube fa-fw"></i>YouTube</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/images/LINE_QRCODE.PNG" title="LINE → &#x2F;images&#x2F;LINE_QRCODE.PNG" rel="noopener me"><i class="fab fa-line fa-fw"></i>LINE</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://reurl.cc/RyvvaZ" title="LINE社群 → https:&#x2F;&#x2F;reurl.cc&#x2F;RyvvaZ" rel="noopener me" target="_blank"><i class="fas fa-comment fa-fw"></i>LINE社群</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://hankvba.blogspot.com/" title="舊網站 → https:&#x2F;&#x2F;hankvba.blogspot.com&#x2F;" rel="noopener me" target="_blank"><i class="fab fa-blogger fa-fw"></i>舊網站</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://portaly.cc/hanksvba/support/" title="小額贊助 → https:&#x2F;&#x2F;portaly.cc&#x2F;hanksvba&#x2F;support&#x2F;" rel="noopener me" target="_blank"><i class="fas fa-handshake fa-fw"></i>小額贊助</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-TW">
+    <link itemprop="mainEntityOfPage" href="https://www.hanksvba.com/posts/3965020317/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar_custom.png">
+      <meta itemprop="name" content="Hank Lin">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hank's Blog">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="Clever cloud postgreSQL申請流程 | Hank's Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Clever cloud postgreSQL申請流程
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">發表於</span>
+
+      <time title="創建時間：2025-01-01 15:31:57" itemprop="dateCreated datePublished" datetime="2025-01-01T15:31:57+08:00">2025-01-01</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分類於</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5/" itemprop="url" rel="index"><span itemprop="name">基本概念</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="閱讀次數" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">閱讀次數：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h2 id="前言">前言</h2>
+<h3 id="資料庫介紹">資料庫介紹</h3>
+<p>資料庫(此為關聯式資料庫)的主要用途是為資料提供一個儲存空間，讓使用者可以進行讀取、寫入、修改、刪除等功能。</p>
+<p>關聯式資料庫常見如下:</p>
+<ul>
+<li>MySQL 和 PostgreSQL 是開源且廣泛使用的選擇，適合中小型應用程式</li>
+<li>Microsoft SQL Server 通常用於大型企業解決方案</li>
+<li>SQLite 則是一個輕量級的資料庫，適合用於嵌入式應用或單機應用。</li>
+</ul>
+<h3 id="申請雲端服務">申請雲端服務</h3>
+<p>本篇文章介紹的部分為Clever Cloud 所提供無料的 256MB PostgreSQL
+服務，適合需要基本資料庫功能的小型應用程式。</p>
+<h3 id="重要參數">重要參數</h3>
+<p>當您成功註冊並啟用 PostgreSQL 服務後，只需要取得一項重要參數
+<code>CONNECTION_URI</code>即可開始使用雲端資料庫。</p>
+<span id="more"></span>
+<h2 id="進入網站">進入網站</h2>
+<p><a target="_blank" rel="noopener" href="https://www.clever-cloud.com/">Clever-Coud</a></p>
+<h2 id="註冊">註冊</h2>
+<figure>
+<img src="1.png" alt="Fig1. 登入頁面" />
+<figcaption aria-hidden="true">Fig1. 登入頁面</figcaption>
+</figure>
+<p>註冊方式:</p>
+<ol type="1">
+<li>email</li>
+<li>Github</li>
+</ol>
+<figure>
+<img src="2.png" alt="Fig2. 登入頁面2" />
+<figcaption aria-hidden="true">Fig2. 登入頁面2</figcaption>
+</figure>
+<h2 id="入口畫面">入口畫面</h2>
+<figure>
+<img src="3.png" alt="Fig3. 入口畫面" />
+<figcaption aria-hidden="true">Fig3. 入口畫面</figcaption>
+</figure>
+<h3
+id="需要先去驗證你的email是否正確">需要先去驗證你的email是否正確</h3>
+<figure>
+<img src="4.png" alt="Fig4. 驗證信內容" />
+<figcaption aria-hidden="true">Fig4. 驗證信內容</figcaption>
+</figure>
+<h2 id="新增一個addon">新增一個addon</h2>
+<figure>
+<img src="5.png" alt="Fig5. 新建按鈕" />
+<figcaption aria-hidden="true">Fig5. 新建按鈕</figcaption>
+</figure>
+<h2 id="選取postgresql">選取PostgreSQL</h2>
+<figure>
+<img src="6.png" alt="Fig6. 資料庫服務" />
+<figcaption aria-hidden="true">Fig6. 資料庫服務</figcaption>
+</figure>
+<h2
+id="指定計畫名稱為dev最右下角有一個next">指定計畫名稱為DEV，最右下角有一個next</h2>
+<figure>
+<img src="7.png" alt="Fig7. 選擇內容DEV" />
+<figcaption aria-hidden="true">Fig7. 選擇內容DEV</figcaption>
+</figure>
+<h2 id="填寫名稱">填寫名稱</h2>
+<figure>
+<img src="8.png" alt="Fig8. 服務名稱" />
+<figcaption aria-hidden="true">Fig8. 服務名稱</figcaption>
+</figure>
+<h2 id="服務成功建立">服務成功建立</h2>
+<figure>
+<img src="9.png" alt="Fig9. 資料庫管理介面" />
+<figcaption aria-hidden="true">Fig9. 資料庫管理介面</figcaption>
+</figure>
+<hr />
+<h2 id="結論">結論</h2>
+<p>上述結論就可以得到一組 <strong>Connection
+URI</strong>，這就可以拿來當作其他網站的<strong>資料庫</strong>使用了!!</p>
+<blockquote>
+<p>256MB雖然沒有很大，但是可以塞大概58萬條純文字紀錄，一般開發上來說滿夠的。</p>
+</blockquote>
+<h2 id="串接範例">串接範例</h2>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> sqlalchemy <span class="keyword">import</span> create_engine, Column, Integer, String, DateTime, JSON, UniqueConstraint, ForeignKey</span><br><span class="line"><span class="keyword">from</span> sqlalchemy.orm <span class="keyword">import</span> sessionmaker,declarative_base, relationship</span><br><span class="line"><span class="keyword">from</span> datetime <span class="keyword">import</span> datetime</span><br><span class="line"><span class="keyword">from</span> sqlalchemy.orm <span class="keyword">import</span> Session</span><br><span class="line"><span class="keyword">from</span> sqlalchemy <span class="keyword">import</span> select,text</span><br><span class="line"><span class="keyword">import</span> pytz</span><br><span class="line"></span><br><span class="line"><span class="comment"># PostgreSQL 配置(改成你的)</span></span><br><span class="line">DATABASE_URL=<span class="string">&quot;postgresql://uizbhnmkOOOOOO:K0r18XtU1Nb2yGwC1SfwoOOOOOOO@bngbuvea6wkwlOOOg-postgresql.services.clever-cloud.com:50OOO/bngbuvea6wOOOOOOhzig&quot;</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">engine = create_engine(DATABASE_URL)</span><br><span class="line">SessionLocal = sessionmaker(autocommit=<span class="literal">False</span>, autoflush=<span class="literal">False</span>, bind=engine)</span><br><span class="line"></span><br><span class="line"><span class="comment"># DATABASE_URL2=&quot;sqlite:///members.db&quot;</span></span><br><span class="line"><span class="comment"># engine2 = create_engine(DATABASE_URL2)</span></span><br><span class="line"><span class="comment"># SessionLocal2 = sessionmaker(autocommit=False, autoflush=False, bind=engine2)</span></span><br><span class="line">    </span><br><span class="line">Base = declarative_base()</span><br><span class="line"><span class="comment"># 定義數據庫模型</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Photo</span>(<span class="title class_ inherited__">Base</span>):</span><br><span class="line">    __tablename__ = <span class="string">&#x27;photos_backup&#x27;</span></span><br><span class="line">    <span class="built_in">id</span> = Column(Integer, primary_key=<span class="literal">True</span>, index=<span class="literal">True</span>)</span><br><span class="line">    user_id = Column(String(<span class="number">255</span>))</span><br><span class="line">    group_id = Column(String(<span class="number">255</span>))</span><br><span class="line">    photo_name = Column(String(<span class="number">255</span>))</span><br><span class="line">    photo_url = Column(String(<span class="number">255</span>))</span><br><span class="line">    photo_thumbnail_url = Column(String(<span class="number">255</span>))</span><br><span class="line">    place_tmp=  Column(String(<span class="number">50</span>))</span><br><span class="line">    created_time = Column(DateTime, default=<span class="keyword">lambda</span>: datetime.now(pytz.timezone(<span class="string">&#x27;Asia/Taipei&#x27;</span>)))</span><br><span class="line">    photo_properties = Column(JSON)</span><br><span class="line">    photo_image_hash = Column(String(<span class="number">255</span>))<span class="comment">#, unique=True, nullable=False)</span></span><br><span class="line"></span><br><span class="line">Base.metadata.create_all(bind=engine)</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">add_photo</span>(<span class="params">user_id, group_id, photo_name, photo_url, photo_thumbnail_url, place_tmp, photo_properties, photo_image_hash</span>):</span><br><span class="line">    <span class="comment"># 創建一個新的數據庫會話</span></span><br><span class="line">    db: Session = SessionLocal()</span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        <span class="comment"># 創建 Photo 實例</span></span><br><span class="line">        new_photo = Photo(</span><br><span class="line">            user_id=user_id,</span><br><span class="line">            group_id=group_id,</span><br><span class="line">            photo_name=photo_name,</span><br><span class="line">            photo_url=photo_url,</span><br><span class="line">            photo_thumbnail_url=photo_thumbnail_url,</span><br><span class="line">            place_tmp=place_tmp,</span><br><span class="line">            photo_properties=photo_properties,</span><br><span class="line">            photo_image_hash=photo_image_hash</span><br><span class="line">        )</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 將新實例添加到會話中</span></span><br><span class="line">        db.add(new_photo)</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 提交會話以保存更改</span></span><br><span class="line">        db.commit()</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 刷新會話以獲取新資料的 ID</span></span><br><span class="line">        db.refresh(new_photo)</span><br><span class="line">        </span><br><span class="line">        <span class="built_in">print</span>(<span class="string">f&quot;新增照片資料成功，ID: <span class="subst">&#123;new_photo.<span class="built_in">id</span>&#125;</span>&quot;</span>)</span><br><span class="line">    <span class="keyword">except</span> Exception <span class="keyword">as</span> e:</span><br><span class="line">        <span class="comment"># 如果發生錯誤，回滾事務</span></span><br><span class="line">        db.rollback()</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">f&quot;新增照片資料失敗: <span class="subst">&#123;e&#125;</span>&quot;</span>)</span><br><span class="line">    <span class="keyword">finally</span>:</span><br><span class="line">        <span class="comment"># 關閉會話</span></span><br><span class="line">        db.close()</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">get_all_photos</span>():</span><br><span class="line">    <span class="comment"># 創建一個新的數據庫會話</span></span><br><span class="line">    db: Session = SessionLocal()</span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        <span class="comment"># 獲取所有照片資料</span></span><br><span class="line">        photos = db.query(Photo).<span class="built_in">all</span>()</span><br><span class="line">        <span class="keyword">return</span> photos</span><br><span class="line">    <span class="keyword">except</span> Exception <span class="keyword">as</span> e:</span><br><span class="line">        <span class="comment"># 如果發生錯誤，回滾事務</span></span><br><span class="line">        db.rollback()</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">f&quot;獲取照片資料失敗: <span class="subst">&#123;e&#125;</span>&quot;</span>)</span><br><span class="line">    <span class="keyword">finally</span>:</span><br><span class="line">        <span class="comment"># 關閉會話</span></span><br><span class="line">        db.close()</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">delete_photo_by_id</span>(<span class="params">photo_id</span>):</span><br><span class="line">    <span class="comment"># 創建一個新的數據庫會話</span></span><br><span class="line">    db: Session = SessionLocal()</span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        <span class="comment"># 透過 ID 刪除照片資料</span></span><br><span class="line">        db.query(Photo).<span class="built_in">filter</span>(Photo.<span class="built_in">id</span> == photo_id).delete()</span><br><span class="line">        db.commit()</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">f&quot;刪除照片資料成功，ID: <span class="subst">&#123;photo_id&#125;</span>&quot;</span>)</span><br><span class="line">    <span class="keyword">except</span> Exception <span class="keyword">as</span> e:</span><br><span class="line">        <span class="comment"># 如果發生錯誤，回滾事務</span></span><br><span class="line">        db.rollback()</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">f&quot;刪除照片資料失敗: <span class="subst">&#123;e&#125;</span>&quot;</span>)</span><br><span class="line">    <span class="keyword">finally</span>:</span><br><span class="line">        <span class="comment"># 關閉會話</span></span><br><span class="line">        db.close()</span><br><span class="line"></span><br><span class="line"><span class="comment"># 使用範例</span></span><br><span class="line">add_photo(</span><br><span class="line">    user_id=<span class="string">&quot;user_123&quot;</span>,</span><br><span class="line">    group_id=<span class="string">&quot;group_456&quot;</span>,</span><br><span class="line">    photo_name=<span class="string">&quot;example_photo.jpg&quot;</span>,</span><br><span class="line">    photo_url=<span class="string">&quot;http://example.com/photo.jpg&quot;</span>,</span><br><span class="line">    photo_thumbnail_url=<span class="string">&quot;http://example.com/photo_thumb.jpg&quot;</span>,</span><br><span class="line">    place_tmp=<span class="string">&quot;Taipei&quot;</span>,</span><br><span class="line">    photo_properties=&#123;<span class="string">&quot;description&quot;</span>: <span class="string">&quot;A beautiful sunset.&quot;</span>&#125;,</span><br><span class="line">    photo_image_hash=<span class="string">&quot;hash_value_example&quot;</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">photos = get_all_photos()</span><br><span class="line"><span class="built_in">print</span>(photos)</span><br><span class="line"></span><br><span class="line">delete_photo_by_id(<span class="number">1</span>)</span><br><span class="line"></span><br><span class="line">session = SessionLocal()</span><br><span class="line"></span><br><span class="line"><span class="keyword">try</span>:</span><br><span class="line">    <span class="comment"># 使用原生 SQL 執行 ALTER TABLE，並使用 text() 包裝 SQL 語句</span></span><br><span class="line">    <span class="comment"># session.execute(text(&quot;ALTER TABLE photos_backup ADD COLUMN description TEXT&quot;))</span></span><br><span class="line">    session.execute(text(<span class="string">&quot;DROP TABLE IF EXISTS photos_backup&quot;</span>))</span><br><span class="line">    session.commit()</span><br><span class="line"><span class="keyword">except</span> Exception <span class="keyword">as</span> e:</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">f&quot;出錯了: <span class="subst">&#123;e&#125;</span>&quot;</span>)</span><br><span class="line">    session.rollback()</span><br><span class="line"><span class="keyword">finally</span>:</span><br><span class="line">    session.close()</span><br></pre></td></tr></table></figure>
+<h2 id="遭遇問題紀錄">遭遇問題紀錄</h2>
+<p>當介面的PG
+Studio無法登入時，會無法操作資料庫中的所有內容，儘管用pgadmin來進行也會出現'ServerManager'沒有存在user_info之類的錯誤訊息。</p>
+<p>我用streamlit建立一個介面去進行操作也無法成功(後來操作成功了!?)</p>
+<p>VScode進行連接時會出現pg_table無法顯示</p>
+<p>總言之就是一個很無解的過程，<del>看來雲端服務也不一定是好的方案</del>，能夠完整掌握會比較安全</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>作者： </strong>Hank Lin
+  </li>
+  <li class="post-copyright-link">
+      <strong>文章連結：</strong>
+      <a href="https://www.hanksvba.com/posts/3965020317/" title="Clever cloud postgreSQL申請流程">https://www.hanksvba.com/posts/3965020317/</a>
+  </li>
+  <li class="post-copyright-license">
+      <strong>版權聲明： </strong>本網誌所有文章除特別聲明外，均採用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 許可協議。轉載請註明出處！
+  </li>
+</ul>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/SQL/" rel="tag"><i class="fa fa-tag"></i> SQL</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/posts/706100979/" rel="prev" title="跨系統網頁自動化填寫做法">
+                  <i class="fa fa-angle-left"></i> 跨系統網頁自動化填寫做法
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/posts/3015163677/" rel="next" title="施工日誌VBA-V3.6.0系列更新說明">
+                  施工日誌VBA-V3.6.0系列更新說明 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2025</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Hank Lin</span>
+  </div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="訪客總數">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="總瀏覽次數">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 強力驅動
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="back-to-top" role="button" aria-label="回到頂端">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/next-boot.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.1/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+  <script class="next-config" data-name="pdf" type="application/json">{"object_url":{"url":"https://cdnjs.cloudflare.com/ajax/libs/pdfobject/2.2.12/pdfobject.min.js","integrity":"sha256-g2xji1rlE3KsGVClvuxTbcR0Kn2+wtQADSff2Tbb4zA="},"url":"/lib/pdf/web/viewer"}</script>
+  <script src="/js/third-party/tags/pdf.js"></script>
+
+  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":{"light":"default","dark":"dark"},"js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mermaid/10.7.0/mermaid.min.js","integrity":"sha256-TtLOdUA8mstPoO6sGvHIGx2ceXrrX4KgIItO06XOn8A="}}</script>
+  <script src="/js/third-party/tags/mermaid.js"></script>
+
+
+
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">false</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"ams","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+
+</body>
+</html>

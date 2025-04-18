@@ -1,0 +1,697 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.2.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha256-wiz7ZSCn/btzhjKDQBms9Hx4sSeUYsDrTLg7roPstac=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"www.hanksvba.com","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.19.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":"mac"},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":false,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜尋...","empty":"我們無法找到任何有關 ${query} 的搜索結果","hits_time":"${hits} 找到 ${time} 個結果","hits":"找到 ${hits} 個結果"},"path":"/search.json","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="前言 本篇文章延伸於 施工日誌VBA-V3.5.0 版本操作教學，非常感謝各路好友提供寶貴意見，本篇下方會詳列各版本修改進程供各位做參考。  新功能   後處理工具匯入 契約項目搜尋 不計工期 自動換行   錯誤修復   欄位寬度摺疊顯示 工料設定自動編號">
+<meta property="og:type" content="article">
+<meta property="og:title" content="施工日誌VBA-V3.6.0系列更新說明">
+<meta property="og:url" content="https://www.hanksvba.com/posts/3015163677/">
+<meta property="og:site_name" content="Hank&#39;s Blog">
+<meta property="og:description" content="前言 本篇文章延伸於 施工日誌VBA-V3.5.0 版本操作教學，非常感謝各路好友提供寶貴意見，本篇下方會詳列各版本修改進程供各位做參考。  新功能   後處理工具匯入 契約項目搜尋 不計工期 自動換行   錯誤修復   欄位寬度摺疊顯示 工料設定自動編號">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:image" content="https://www.hanksvba.com/posts/3015163677/1.png">
+<meta property="og:image" content="https://www.hanksvba.com/posts/3015163677/2.png">
+<meta property="og:image" content="https://www.hanksvba.com/posts/3015163677/3.png">
+<meta property="og:image" content="https://www.hanksvba.com/posts/3015163677/4.png">
+<meta property="og:image" content="https://www.hanksvba.com/posts/3015163677/5.png">
+<meta property="og:image" content="https://www.hanksvba.com/posts/3015163677/6.png">
+<meta property="article:published_time" content="2025-01-01T12:30:06.000Z">
+<meta property="article:modified_time" content="2025-01-01T12:30:06.000Z">
+<meta property="article:author" content="Hank Lin">
+<meta property="article:tag" content="ExcelVBA">
+<meta property="article:tag" content="施工日誌">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://www.hanksvba.com/posts/3015163677/1.png">
+
+
+<link rel="canonical" href="https://www.hanksvba.com/posts/3015163677/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-TW","comments":true,"permalink":"https://www.hanksvba.com/posts/3015163677/","path":"posts/3015163677/","title":"施工日誌VBA-V3.6.0系列更新說明"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>施工日誌VBA-V3.6.0系列更新說明 | Hank's Blog</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切換導航欄" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Hank's Blog</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">工程人的設計監造VBA工具交流區</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜尋" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-首頁"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首頁</a></li><li class="menu-item menu-item-關於"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>關於</a></li><li class="menu-item menu-item-標籤"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>標籤</a></li><li class="menu-item menu-item-分類"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分類</a></li><li class="menu-item menu-item-文章"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>文章</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜尋
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜尋..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目錄
+        </li>
+        <li class="sidebar-nav-overview">
+          本站概要
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%89%8D%E8%A8%80"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%BB%E8%A6%81%E5%8A%9F%E8%83%BD%E8%AA%AA%E6%98%8E"><span class="nav-number">2.</span> <span class="nav-text">主要功能說明</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A5%91%E7%B4%84%E8%A8%AD%E5%AE%9A%E5%BE%8C%E8%99%95%E7%90%86%E5%B7%A5%E5%85%B7%E5%8C%AF%E5%85%A5"><span class="nav-number">2.1.</span> <span class="nav-text">[契約設定]後處理工具匯入</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%97%A5%E5%A0%B1%E5%A1%AB%E5%AF%AB%E5%A5%91%E7%B4%84%E9%A0%85%E7%9B%AE%E6%90%9C%E5%B0%8B"><span class="nav-number">2.2.</span> <span class="nav-text">[日報填寫]契約項目搜尋</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%8D%E8%A8%88%E5%B7%A5%E6%9C%9F%E5%8A%9F%E8%83%BD"><span class="nav-number">2.3.</span> <span class="nav-text">不計工期功能</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%87%AA%E5%8B%95%E6%8F%9B%E8%A1%8C"><span class="nav-number">2.4.</span> <span class="nav-text">自動換行</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%BB%E8%A6%81%E9%8C%AF%E8%AA%A4%E8%AA%AA%E6%98%8E"><span class="nav-number">3.</span> <span class="nav-text">主要錯誤說明</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%AC%84%E4%BD%8D%E5%AF%AC%E5%BA%A6%E6%91%BA%E7%96%8A%E9%A1%AF%E7%A4%BA"><span class="nav-number">3.1.</span> <span class="nav-text">欄位寬度摺疊顯示</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B7%A5%E6%96%99%E8%A8%AD%E5%AE%9A%E8%87%AA%E5%8B%95%E7%B7%A8%E8%99%9F"><span class="nav-number">3.2.</span> <span class="nav-text">工料設定自動編號</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%89%88%E6%9C%AC%E7%B4%B0%E7%AF%80"><span class="nav-number">4.</span> <span class="nav-text">版本細節</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Hank Lin"
+      src="/images/avatar_custom.png">
+  <p class="site-author-name" itemprop="name">Hank Lin</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">36</span>
+          <span class="site-state-item-name">文章</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">分類</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">24</span>
+        <span class="site-state-item-name">標籤</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="mailto:apple84026113@gmail.com" title="E-Mail → mailto:apple84026113@gmail.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.youtube.com/channel/UCWmy5KaK7Leg6lLUlWBPaSw" title="YouTube → https:&#x2F;&#x2F;www.youtube.com&#x2F;channel&#x2F;UCWmy5KaK7Leg6lLUlWBPaSw" rel="noopener me" target="_blank"><i class="fab fa-youtube fa-fw"></i>YouTube</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/images/LINE_QRCODE.PNG" title="LINE → &#x2F;images&#x2F;LINE_QRCODE.PNG" rel="noopener me"><i class="fab fa-line fa-fw"></i>LINE</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://reurl.cc/RyvvaZ" title="LINE社群 → https:&#x2F;&#x2F;reurl.cc&#x2F;RyvvaZ" rel="noopener me" target="_blank"><i class="fas fa-comment fa-fw"></i>LINE社群</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://hankvba.blogspot.com/" title="舊網站 → https:&#x2F;&#x2F;hankvba.blogspot.com&#x2F;" rel="noopener me" target="_blank"><i class="fab fa-blogger fa-fw"></i>舊網站</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://portaly.cc/hanksvba/support/" title="小額贊助 → https:&#x2F;&#x2F;portaly.cc&#x2F;hanksvba&#x2F;support&#x2F;" rel="noopener me" target="_blank"><i class="fas fa-handshake fa-fw"></i>小額贊助</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-TW">
+    <link itemprop="mainEntityOfPage" href="https://www.hanksvba.com/posts/3015163677/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar_custom.png">
+      <meta itemprop="name" content="Hank Lin">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hank's Blog">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="施工日誌VBA-V3.6.0系列更新說明 | Hank's Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          施工日誌VBA-V3.6.0系列更新說明
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">發表於</span>
+
+      <time title="創建時間：2025-01-01 20:30:06" itemprop="dateCreated datePublished" datetime="2025-01-01T20:30:06+08:00">2025-01-01</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分類於</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E5%B0%88%E6%A1%88%E9%96%8B%E7%99%BC/" itemprop="url" rel="index"><span itemprop="name">專案開發</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="閱讀次數" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">閱讀次數：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h2 id="前言">前言</h2>
+<p>本篇文章延伸於 <a
+href="https://www.hanksvba.com/posts/1000661249/#more">施工日誌VBA-V3.5.0</a>
+版本操作教學，非常感謝各路好友提供寶貴意見，本篇下方會詳列各版本修改進程供各位做參考。</p>
+<blockquote>
+<p>新功能</p>
+</blockquote>
+<ul>
+<li>後處理工具匯入</li>
+<li>契約項目搜尋</li>
+<li>不計工期</li>
+<li>自動換行</li>
+</ul>
+<blockquote>
+<p>錯誤修復</p>
+</blockquote>
+<ul>
+<li>欄位寬度摺疊顯示</li>
+<li>工料設定自動編號</li>
+</ul>
+<span id="more"></span>
+<h2 id="主要功能說明">主要功能說明</h2>
+<h3 id="契約設定後處理工具匯入">[契約設定]後處理工具匯入</h3>
+<figure>
+<img src="1.png" alt="Fig1. 匯入畫面" />
+<figcaption aria-hidden="true">Fig1. 匯入畫面</figcaption>
+</figure>
+<p>考量有些專案不一定會用PCCES來處理預算書內容，可能只是一個<strong>很像</strong>的EXCEL檔，故提供"契約設定模板"範本供使用者手動填寫再進行匯入，需注意填寫過程<strong>項次不能重複</strong>。</p>
+<h3 id="日報填寫契約項目搜尋">[日報填寫]契約項目搜尋</h3>
+<figure>
+<img src="2.png" alt="Fig2. 填寫畫面" />
+<figcaption aria-hidden="true">Fig2. 填寫畫面</figcaption>
+</figure>
+<p>契約項目的下拉式選單組成為"契約項次&gt;&gt;契約項目"，故可以進行契約項目關鍵字的搜尋或者契約項次的關鍵字搜尋。</p>
+<blockquote>
+<p>舉例: <img src="3.png" alt="Fig3. 範例" /></p>
+</blockquote>
+<blockquote>
+<ul>
+<li>如要進行契約項次的搜尋，輸入關鍵字「<strong>甲.壹</strong>」，則會列出所有甲.壹開頭的契約項目</li>
+<li>如要進行契約項目的搜尋，輸入關鍵字「<strong>安全圍籬</strong>」，則會列出所有名稱具有<strong>安全圍籬</strong>的契約項目。</li>
+</ul>
+</blockquote>
+<h3 id="不計工期功能">不計工期功能</h3>
+<figure>
+<img src="4.png" alt="Fig4. 進度設定畫面" />
+<figcaption aria-hidden="true">Fig4. 進度設定畫面</figcaption>
+</figure>
+<p>建立不計工期工作表，如為不計工期的日期時，進度與前日有計工期時相同</p>
+<figure>
+<img src="5.png" alt="Fig5. 範例" />
+<figcaption aria-hidden="true">Fig5. 範例</figcaption>
+</figure>
+<h3 id="自動換行">自動換行</h3>
+<p>輸出施工日誌時，如有契約項目比較長的情況，以往採用欄位內文字大小自動縮放進行處理，然而如文字長度過長時，會讓契約項目變得無法肉眼識別，因此改用自動換行搭配列高自動調整處理。</p>
+<hr />
+<h2 id="主要錯誤說明">主要錯誤說明</h2>
+<h3 id="欄位寬度摺疊顯示">欄位寬度摺疊顯示</h3>
+<figure>
+<img src="6.png" alt="Fig6. 欄位摺疊範例" />
+<figcaption aria-hidden="true">Fig6. 欄位摺疊範例</figcaption>
+</figure>
+<p>欄位寬度不足以顯示日期時，EXCEL內建的搜尋功能會失效，故在進行搜尋前先針對預計要搜尋的工作表進行欄寬自動適應。</p>
+<h3 id="工料設定自動編號">工料設定自動編號</h3>
+<p>原工料設定過程在編號時會透過計算同性質的個數做加總後加一換算，如果有先進行刪除再自動編號的話會有編號重疊的問題，導致報表輸出時的搜尋功能異常，故改為自動編號之前先針對同性質的內容排序後取最大值加一換算。</p>
+<hr />
+<h2 id="版本細節">版本細節</h2>
+<table>
+<colgroup>
+<col style="width: 11%" />
+<col style="width: 8%" />
+<col style="width: 79%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>版本號</th>
+<th>型態</th>
+<th>內容</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>V3.6.6</td>
+<td>Feature</td>
+<td>數量計算表頁尾加入第O頁/共O頁</td>
+</tr>
+<tr class="even">
+<td></td>
+<td>Fix</td>
+<td>修正工料設定自動編號重複問題</td>
+</tr>
+<tr class="odd">
+<td>V3.6.5</td>
+<td>Fix</td>
+<td>調整各表欄位自動縮放，避免出現###影響搜尋</td>
+</tr>
+<tr class="even">
+<td>V3.6.4</td>
+<td>Fix</td>
+<td>列印報表時預設為第一個報表項目</td>
+</tr>
+<tr class="odd">
+<td>V3.6.3</td>
+<td>Fix</td>
+<td>第六項列高自動調整</td>
+</tr>
+<tr class="even">
+<td>V3.6.2</td>
+<td>Fix</td>
+<td>修復clsInfo查找欄位問題、列印日報前會先進行進度重整</td>
+</tr>
+<tr class="odd">
+<td>V3.6.1</td>
+<td>Fix</td>
+<td>修復呈現竣工日期欄位找尋問題(clsReport)</td>
+</tr>
+<tr class="even">
+<td>V3.6.0</td>
+<td>Feature</td>
+<td>第二大項跟第三大項數量沒有就增列一行空白列</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td>Feature</td>
+<td>施工日誌成果依照日期呈現(原本設計為按照編號)</td>
+</tr>
+<tr class="even">
+<td></td>
+<td>Feature</td>
+<td>機具、人力、材料按照類別排序</td>
+</tr>
+<tr class="odd">
+<td>V3.5.12</td>
+<td>Fix</td>
+<td>數量計算表原呈現0.00修正為-</td>
+</tr>
+<tr class="even">
+<td></td>
+<td>Fix</td>
+<td>前期完成數量公式修正</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td>Fix</td>
+<td>數量計算表表報編號欄位補上錯誤控制</td>
+</tr>
+<tr class="even">
+<td>V3.5.11</td>
+<td>Fix</td>
+<td>工料設定下拉式選單更新，修改生效日控制，可以進行刪除</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td>Feature</td>
+<td>frmData剩餘數量提醒紅字增加警告視窗!</td>
+</tr>
+<tr class="even">
+<td></td>
+<td>Feature</td>
+<td>表單顯示修改成"不"強制響應</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td>Fix</td>
+<td>P008 列高自動調整</td>
+</tr>
+<tr class="even">
+<td>V3.5.10</td>
+<td>Feature</td>
+<td>加入搜尋功能，可以搜尋項目或搜尋項次，空白則全顯</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td>Feature</td>
+<td>加入新報表，建築物施工日誌(不含項次)，修復本日不施工欄位</td>
+</tr>
+<tr class="even">
+<td></td>
+<td>Fix</td>
+<td>新增數量計算表，工作表名為建築物施工日誌(月底)</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td>Fix</td>
+<td>施工項目呈現的數量到小數點後第2位，Numberformatlocal</td>
+</tr>
+<tr class="even">
+<td></td>
+<td>Fix</td>
+<td>表報編號顯示修改為&lt;<契約編號>&gt;，使用字串格式</td>
+</tr>
+<tr class="odd">
+<td>V3.5.9</td>
+<td>Feature</td>
+<td>加入新報表，建築物施工日誌(月底)，為數量計算表</td>
+</tr>
+<tr class="even">
+<td></td>
+<td>Feature</td>
+<td>輸出報表時字體大小設置10pt為自動換行，做AutoFit顯示</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td>Fix</td>
+<td>調整契約項目主項大類判定欄位為"單位"=空白</td>
+</tr>
+<tr class="even">
+<td></td>
+<td>Feature</td>
+<td>加入契約項目標記"H"為折疊項目</td>
+</tr>
+<tr class="odd">
+<td>V3.5.8</td>
+<td>Fix</td>
+<td>修復eng_pgs&lt;&gt;1的錯誤，如果為double需要先做round(x,6)</td>
+</tr>
+<tr class="even">
+<td></td>
+<td>Feature</td>
+<td>加入不計工期功能，功能位於frmPgs的右下角</td>
+</tr>
+<tr class="odd">
+<td>V3.5.7</td>
+<td>Fix</td>
+<td>加入"本日無施工"項目，預設進度為前日累計進度</td>
+</tr>
+<tr class="even">
+<td>V3.5.6</td>
+<td>Fix</td>
+<td>列印報表時隱藏空白列位材料名稱偵測修復(hideEmptyRow)</td>
+</tr>
+<tr class="odd">
+<td>V3.5.5</td>
+<td>Feature</td>
+<td>基本操作權限控管加入clsFetchURL</td>
+</tr>
+<tr class="even">
+<td>V3.5.4</td>
+<td>Fix</td>
+<td>契約項目中主項目判定修復(IsMainItems(cont))</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td>Feature</td>
+<td>契約項目可以引入後處理工具產生之excel</td>
+</tr>
+<tr class="even">
+<td></td>
+<td>Fix</td>
+<td>不計入進度項目仍提供給使用者進行填寫</td>
+</tr>
+<tr class="odd">
+<td>V3.5.3</td>
+<td>TODO</td>
+<td>新增監造報表(管理處)版本-尚未完成</td>
+</tr>
+<tr class="even">
+<td></td>
+<td>Fix</td>
+<td>變更設計後其契約數量為0的監造日報顯示文字修正</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td>Feature</td>
+<td>新增getRangeByKey，優化adjustRow、hideEmptyRow</td>
+</tr>
+<tr class="even">
+<td>V3.5.2</td>
+<td>Fix</td>
+<td>資料要進入各表時，先做好欄位格式處理(日期)</td>
+</tr>
+<tr class="odd">
+<td>V3.5.1</td>
+<td>Fix</td>
+<td>當編輯日報引入資料至frmData時，再進行新增無法清空(clearFrmDataInfo)</td>
+</tr>
+<tr class="even">
+<td></td>
+<td>Fix</td>
+<td>日報表單原本預設非是即無，新增空白項目並設定為預設</td>
+</tr>
+</tbody>
+</table>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>作者： </strong>Hank Lin
+  </li>
+  <li class="post-copyright-link">
+      <strong>文章連結：</strong>
+      <a href="https://www.hanksvba.com/posts/3015163677/" title="施工日誌VBA-V3.6.0系列更新說明">https://www.hanksvba.com/posts/3015163677/</a>
+  </li>
+  <li class="post-copyright-license">
+      <strong>版權聲明： </strong>本網誌所有文章除特別聲明外，均採用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 許可協議。轉載請註明出處！
+  </li>
+</ul>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/ExcelVBA/" rel="tag"><i class="fa fa-tag"></i> ExcelVBA</a>
+              <a href="/tags/%E6%96%BD%E5%B7%A5%E6%97%A5%E8%AA%8C/" rel="tag"><i class="fa fa-tag"></i> 施工日誌</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/posts/3965020317/" rel="prev" title="Clever cloud postgreSQL申請流程">
+                  <i class="fa fa-angle-left"></i> Clever cloud postgreSQL申請流程
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/posts/169262062/" rel="next" title="工程招標文件線上套印作法">
+                  工程招標文件線上套印作法 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2025</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Hank Lin</span>
+  </div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="訪客總數">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="總瀏覽次數">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 強力驅動
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="back-to-top" role="button" aria-label="回到頂端">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/next-boot.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.1/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+  <script class="next-config" data-name="pdf" type="application/json">{"object_url":{"url":"https://cdnjs.cloudflare.com/ajax/libs/pdfobject/2.2.12/pdfobject.min.js","integrity":"sha256-g2xji1rlE3KsGVClvuxTbcR0Kn2+wtQADSff2Tbb4zA="},"url":"/lib/pdf/web/viewer"}</script>
+  <script src="/js/third-party/tags/pdf.js"></script>
+
+  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":{"light":"default","dark":"dark"},"js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mermaid/10.7.0/mermaid.min.js","integrity":"sha256-TtLOdUA8mstPoO6sGvHIGx2ceXrrX4KgIItO06XOn8A="}}</script>
+  <script src="/js/third-party/tags/mermaid.js"></script>
+
+
+
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">false</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"ams","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+
+</body>
+</html>

@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.2.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha256-wiz7ZSCn/btzhjKDQBms9Hx4sSeUYsDrTLg7roPstac=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"www.hanksvba.com","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.19.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":"mac"},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":false,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜尋...","empty":"我們無法找到任何有關 ${query} 的搜索結果","hits_time":"${hits} 找到 ${time} 個結果","hits":"找到 ${hits} 個結果"},"path":"/search.json","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="前言 當網站寫好後，依照公司內部組織分層負責，權限分為編輯、讀取、拒絕，每個分頁通常都會有指派的人員進行編輯，相關人員進行讀取，不相干人等禁止進入(同時也是為了避免資訊外流)，故在進入網站之前，會要求用戶提供帳號密碼，這時候公司內部如果有AD(Active Directory)管理帳號密碼會非常方便。  舉例:工程審查系統，可編輯者為設計股，可讀取者為工事股。  操作流程  網站入">
+<meta property="og:type" content="article">
+<meta property="og:title" content="內部網路帳號密碼權限控制實作">
+<meta property="og:url" content="https://www.hanksvba.com/posts/3389672383/">
+<meta property="og:site_name" content="Hank&#39;s Blog">
+<meta property="og:description" content="前言 當網站寫好後，依照公司內部組織分層負責，權限分為編輯、讀取、拒絕，每個分頁通常都會有指派的人員進行編輯，相關人員進行讀取，不相干人等禁止進入(同時也是為了避免資訊外流)，故在進入網站之前，會要求用戶提供帳號密碼，這時候公司內部如果有AD(Active Directory)管理帳號密碼會非常方便。  舉例:工程審查系統，可編輯者為設計股，可讀取者為工事股。  操作流程  網站入">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:image" content="https://www.hanksvba.com/posts/3389672383/1.png">
+<meta property="og:image" content="https://www.hanksvba.com/posts/3389672383/2.png">
+<meta property="article:published_time" content="2025-04-18T08:58:04.000Z">
+<meta property="article:modified_time" content="2025-04-18T08:58:04.000Z">
+<meta property="article:author" content="Hank Lin">
+<meta property="article:tag" content="基本原理">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://www.hanksvba.com/posts/3389672383/1.png">
+
+
+<link rel="canonical" href="https://www.hanksvba.com/posts/3389672383/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-TW","comments":true,"permalink":"https://www.hanksvba.com/posts/3389672383/","path":"posts/3389672383/","title":"內部網路帳號密碼權限控制實作"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>內部網路帳號密碼權限控制實作 | Hank's Blog</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切換導航欄" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Hank's Blog</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">工程人的設計監造VBA工具交流區</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜尋" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-首頁"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首頁</a></li><li class="menu-item menu-item-關於"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>關於</a></li><li class="menu-item menu-item-標籤"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>標籤</a></li><li class="menu-item menu-item-分類"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分類</a></li><li class="menu-item menu-item-文章"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>文章</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜尋
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜尋..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目錄
+        </li>
+        <li class="sidebar-nav-overview">
+          本站概要
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%89%8D%E8%A8%80"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%93%8D%E4%BD%9C%E6%B5%81%E7%A8%8B"><span class="nav-number">2.</span> <span class="nav-text">操作流程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%A8%8B%E5%BC%8F%E7%A2%BC%E8%A7%A3%E9%87%8B"><span class="nav-number">3.</span> <span class="nav-text">程式碼解釋</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%92%B0%E5%A2%83%E5%8F%83%E6%95%B8"><span class="nav-number">3.1.</span> <span class="nav-text">環境參數</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%99%BB%E5%85%A5%E9%A9%97%E8%AD%89"><span class="nav-number">3.2.</span> <span class="nav-text">登入驗證</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8F%96%E5%BE%97%E7%94%A8%E6%88%B6%E8%B3%87%E8%A8%8A"><span class="nav-number">3.3.</span> <span class="nav-text">取得用戶資訊</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8F%96%E5%BE%97%E5%90%84%E5%80%8B%E5%B1%A4%E6%AC%A1%E7%9A%84%E8%B3%87%E8%A8%8A"><span class="nav-number">3.4.</span> <span class="nav-text">取得各個層次的資訊</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%99%BD%E5%90%8D%E5%96%AE%E5%8F%8A%E6%AC%8A%E9%99%90%E7%B5%A6%E4%BA%88"><span class="nav-number">3.5.</span> <span class="nav-text">白名單及權限給予</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%A5%E5%8F%A3%E9%82%8F%E8%BC%AF"><span class="nav-number">3.6.</span> <span class="nav-text">入口邏輯</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AF%A6%E9%9A%9B%E7%95%AB%E9%9D%A2"><span class="nav-number">4.</span> <span class="nav-text">實際畫面</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%8C%AF%E8%AA%A4%E7%B4%80%E9%8C%84"><span class="nav-number">5.</span> <span class="nav-text">錯誤紀錄</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Hank Lin"
+      src="/images/avatar_custom.png">
+  <p class="site-author-name" itemprop="name">Hank Lin</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">36</span>
+          <span class="site-state-item-name">文章</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">分類</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">24</span>
+        <span class="site-state-item-name">標籤</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="mailto:apple84026113@gmail.com" title="E-Mail → mailto:apple84026113@gmail.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.youtube.com/channel/UCWmy5KaK7Leg6lLUlWBPaSw" title="YouTube → https:&#x2F;&#x2F;www.youtube.com&#x2F;channel&#x2F;UCWmy5KaK7Leg6lLUlWBPaSw" rel="noopener me" target="_blank"><i class="fab fa-youtube fa-fw"></i>YouTube</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/images/LINE_QRCODE.PNG" title="LINE → &#x2F;images&#x2F;LINE_QRCODE.PNG" rel="noopener me"><i class="fab fa-line fa-fw"></i>LINE</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://reurl.cc/RyvvaZ" title="LINE社群 → https:&#x2F;&#x2F;reurl.cc&#x2F;RyvvaZ" rel="noopener me" target="_blank"><i class="fas fa-comment fa-fw"></i>LINE社群</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://hankvba.blogspot.com/" title="舊網站 → https:&#x2F;&#x2F;hankvba.blogspot.com&#x2F;" rel="noopener me" target="_blank"><i class="fab fa-blogger fa-fw"></i>舊網站</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://portaly.cc/hanksvba/support/" title="小額贊助 → https:&#x2F;&#x2F;portaly.cc&#x2F;hanksvba&#x2F;support&#x2F;" rel="noopener me" target="_blank"><i class="fas fa-handshake fa-fw"></i>小額贊助</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-TW">
+    <link itemprop="mainEntityOfPage" href="https://www.hanksvba.com/posts/3389672383/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar_custom.png">
+      <meta itemprop="name" content="Hank Lin">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hank's Blog">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="內部網路帳號密碼權限控制實作 | Hank's Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          內部網路帳號密碼權限控制實作
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">發表於</span>
+
+      <time title="創建時間：2025-04-18 16:58:04" itemprop="dateCreated datePublished" datetime="2025-04-18T16:58:04+08:00">2025-04-18</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分類於</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Python/" itemprop="url" rel="index"><span itemprop="name">Python</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="閱讀次數" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">閱讀次數：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h2 id="前言">前言</h2>
+<p>當網站寫好後，依照公司內部組織分層負責，權限分為編輯、讀取、拒絕，每個分頁通常都會有指派的人員進行編輯，相關人員進行讀取，不相干人等禁止進入(同時也是為了避免資訊外流)，故在進入網站之前，會要求用戶提供帳號密碼，這時候公司內部如果有AD(Active
+Directory)管理帳號密碼會非常方便。</p>
+<blockquote>
+<p>舉例:工程審查系統，可編輯者為設計股，可讀取者為工事股。</p>
+</blockquote>
+<h2 id="操作流程">操作流程</h2>
+<ol type="1">
+<li>網站入口要求提供帳號密碼</li>
+<li>根據該帳號密碼到AD確認名稱、組織資訊</li>
+<li>根據組織資訊開啟相對應的頁面</li>
+</ol>
+<span id="more"></span>
+<h2 id="程式碼解釋">程式碼解釋</h2>
+<h3 id="環境參數">環境參數</h3>
+<table>
+<colgroup>
+<col style="width: 25%" />
+<col style="width: 34%" />
+<col style="width: 40%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>變數名稱</th>
+<th>說明</th>
+<th>中文解釋</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>AD_SERVER_NAME</td>
+<td>Active Directory server name</td>
+<td>AD 伺服器名稱</td>
+</tr>
+<tr class="even">
+<td>AD_DOMAIN</td>
+<td>Active Directory domain</td>
+<td>AD 網域名稱</td>
+</tr>
+<tr class="odd">
+<td>AD_ADMIN_USER</td>
+<td>AD administrator username</td>
+<td>AD 管理員帳號</td>
+</tr>
+<tr class="even">
+<td>AD_ADMIN_PASSWORD</td>
+<td>AD administrator password</td>
+<td>AD 管理員密碼</td>
+</tr>
+<tr class="odd">
+<td>BASE_DN</td>
+<td>Base Distinguished Name</td>
+<td>查詢的起點</td>
+</tr>
+</tbody>
+</table>
+<h3 id="登入驗證">登入驗證</h3>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">check_ad_credentials</span>(<span class="params">username, password</span>):</span><br><span class="line">    <span class="comment"># 設定值（從你的 C# 註解轉換過來）</span></span><br><span class="line">    user_upn = <span class="string">f&quot;<span class="subst">&#123;username&#125;</span>@<span class="subst">&#123;AD_DOMAIN&#125;</span>&quot;</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">f&quot;🔐 嘗試用 <span class="subst">&#123;user_upn&#125;</span> 登入 AD 伺服器 <span class="subst">&#123;AD_SERVER_NAME&#125;</span> ...&quot;</span>)</span><br><span class="line"></span><br><span class="line">        server = Server(AD_SERVER_NAME, get_info=ALL)</span><br><span class="line">        conn = Connection(server, user=user_upn, password=password, authentication=<span class="string">&#x27;SIMPLE&#x27;</span>, auto_bind=<span class="literal">True</span>)</span><br><span class="line"></span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;✅ 登入成功！&quot;</span>)</span><br><span class="line">        conn.unbind()</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">True</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">except</span> LDAPException <span class="keyword">as</span> e:</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">f&quot;❌ LDAP 驗證錯誤: <span class="subst">&#123;e&#125;</span>&quot;</span>)</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">False</span></span><br><span class="line">    <span class="keyword">except</span> Exception <span class="keyword">as</span> ex:</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">f&quot;❌ 其他錯誤: <span class="subst">&#123;ex&#125;</span>&quot;</span>)</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">False</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h3 id="取得用戶資訊">取得用戶資訊</h3>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">get_user_info_one</span>(<span class="params">s_type, s_data</span>):</span><br><span class="line"></span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">f&quot;🔍 查詢條件: (<span class="subst">&#123;s_type&#125;</span> = <span class="subst">&#123;s_data&#125;</span>)&quot;</span>)</span><br><span class="line"></span><br><span class="line">        <span class="comment"># 建立連線</span></span><br><span class="line">        server = Server(AD_SERVER_NAME, get_info=ALL)</span><br><span class="line">        conn = Connection(server, user=AD_ADMIN_USER, password=AD_ADMIN_PASSWORD,authentication=<span class="string">&#x27;SIMPLE&#x27;</span>, auto_bind=<span class="literal">True</span>)</span><br><span class="line"></span><br><span class="line">        <span class="comment"># 建立搜尋 Filter</span></span><br><span class="line">        search_filter = <span class="string">f&quot;(&amp;(objectCategory=user)(<span class="subst">&#123;s_type&#125;</span>=<span class="subst">&#123;s_data&#125;</span>))&quot;</span></span><br><span class="line"></span><br><span class="line">        <span class="comment"># 執行搜尋</span></span><br><span class="line">        conn.search(</span><br><span class="line">            search_base=BASE_DN,</span><br><span class="line">            search_filter=search_filter,</span><br><span class="line">            search_scope=SUBTREE,</span><br><span class="line">            attributes=[</span><br><span class="line">                <span class="string">&#x27;displayName&#x27;</span>,</span><br><span class="line">                <span class="string">&#x27;description&#x27;</span>,</span><br><span class="line">                <span class="string">&#x27;userPrincipalName&#x27;</span>,</span><br><span class="line">                <span class="string">&#x27;sAMAccountName&#x27;</span>,</span><br><span class="line">                <span class="string">&#x27;distinguishedName&#x27;</span></span><br><span class="line">            ]</span><br><span class="line">        )</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> conn.entries:</span><br><span class="line">            <span class="built_in">print</span>(<span class="string">&quot;❌ 查無此人&quot;</span>)</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">None</span></span><br><span class="line"></span><br><span class="line">        entry = conn.entries[<span class="number">0</span>]</span><br><span class="line"></span><br><span class="line">        <span class="comment"># 回傳模擬 C# DataTable 的字典</span></span><br><span class="line">        result = &#123;</span><br><span class="line">            <span class="string">&#x27;USR_NAME&#x27;</span>: entry.displayName.value <span class="keyword">or</span> <span class="string">&#x27;&#x27;</span>,</span><br><span class="line">            <span class="string">&#x27;TITLE&#x27;</span>: entry.description.value <span class="keyword">or</span> <span class="string">&#x27;&#x27;</span>,</span><br><span class="line">            <span class="string">&#x27;EMAIL&#x27;</span>: entry.userPrincipalName.value <span class="keyword">or</span> <span class="string">&#x27;&#x27;</span>,</span><br><span class="line">            <span class="string">&#x27;DP_STR&#x27;</span>: entry.distinguishedName.value <span class="keyword">or</span> <span class="string">&#x27;&#x27;</span></span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        conn.unbind()</span><br><span class="line">        <span class="keyword">return</span> result</span><br><span class="line"></span><br><span class="line">    <span class="keyword">except</span> LDAPException <span class="keyword">as</span> e:</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">f&quot;❌ LDAP 錯誤: <span class="subst">&#123;e&#125;</span>&quot;</span>)</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">None</span></span><br><span class="line">    <span class="keyword">except</span> Exception <span class="keyword">as</span> ex:</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">f&quot;❌ 其他錯誤: <span class="subst">&#123;ex&#125;</span>&quot;</span>)</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">None</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h3 id="取得各個層次的資訊">取得各個層次的資訊</h3>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">parse_dn</span>(<span class="params">dn</span>):</span><br><span class="line">    <span class="comment"># 分割 DN，取得各個層次的資訊</span></span><br><span class="line">    parts = dn.split(<span class="string">&#x27;,&#x27;</span>)</span><br><span class="line">    </span><br><span class="line">    user_name = <span class="literal">None</span></span><br><span class="line">    ou_list = []</span><br><span class="line">    dc_list = []</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">for</span> part <span class="keyword">in</span> parts:</span><br><span class="line">        <span class="keyword">if</span> part.startswith(<span class="string">&#x27;CN=&#x27;</span>):</span><br><span class="line">            user_name = part.replace(<span class="string">&#x27;CN=&#x27;</span>, <span class="string">&#x27;&#x27;</span>)</span><br><span class="line">        <span class="keyword">elif</span> part.startswith(<span class="string">&#x27;OU=&#x27;</span>):</span><br><span class="line">            ou_list.append(part.replace(<span class="string">&#x27;OU=&#x27;</span>, <span class="string">&#x27;&#x27;</span>))</span><br><span class="line">        <span class="keyword">elif</span> part.startswith(<span class="string">&#x27;DC=&#x27;</span>):</span><br><span class="line">            dc_list.append(part.replace(<span class="string">&#x27;DC=&#x27;</span>, <span class="string">&#x27;&#x27;</span>))</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 返回解析結果</span></span><br><span class="line">    <span class="keyword">return</span> &#123;</span><br><span class="line">        <span class="string">&#x27;user_name&#x27;</span>: user_name,</span><br><span class="line">        <span class="string">&#x27;organization_units&#x27;</span>: ou_list,</span><br><span class="line">        <span class="string">&#x27;domain_components&#x27;</span>: dc_list</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<h3 id="白名單及權限給予">白名單及權限給予</h3>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">white_list</span>(<span class="params">ou_list</span>):</span><br><span class="line">    accept_ou = [<span class="string">&quot;010&quot;</span>, <span class="string">&quot;020&quot;</span>, <span class="string">&quot;030&quot;</span>, <span class="string">&quot;051&quot;</span>, <span class="string">&quot;052&quot;</span>, <span class="string">&quot;053&quot;</span>, <span class="string">&quot;054&quot;</span>, <span class="string">&quot;1C0&quot;</span>, <span class="string">&quot;1CH&quot;</span>, <span class="string">&quot;2D0&quot;</span>, <span class="string">&quot;2DD&quot;</span>, <span class="string">&quot;3E0&quot;</span>, <span class="string">&quot;3EC&quot;</span>, <span class="string">&quot;4F0&quot;</span>, <span class="string">&quot;4FD&quot;</span>, <span class="string">&quot;5G0&quot;</span>, <span class="string">&quot;5G4&quot;</span>,<span class="string">&quot;081&quot;</span>]</span><br><span class="line">    edit_ou =[<span class="string">&quot;051&quot;</span>]</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 統一轉成 list 處理</span></span><br><span class="line">    <span class="keyword">if</span> <span class="built_in">isinstance</span>(ou_list, <span class="built_in">str</span>):</span><br><span class="line">        ou_list = [ou_list]</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 先檢查是否為編輯者</span></span><br><span class="line">    <span class="keyword">for</span> ou <span class="keyword">in</span> ou_list:</span><br><span class="line">        <span class="keyword">if</span> ou.strip() <span class="keyword">in</span> edit_ou:</span><br><span class="line">            <span class="keyword">return</span> <span class="string">&quot;EDITOR&quot;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># 再檢查是否為接受者</span></span><br><span class="line">    <span class="keyword">for</span> ou <span class="keyword">in</span> ou_list:</span><br><span class="line">        <span class="keyword">if</span> ou.strip() <span class="keyword">in</span> accept_ou:</span><br><span class="line">            <span class="keyword">return</span> <span class="string">&quot;VIEWER&quot;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># 其他都不是</span></span><br><span class="line">    <span class="keyword">return</span> <span class="string">&quot;NONE&quot;</span></span><br></pre></td></tr></table></figure>
+<h3 id="入口邏輯">入口邏輯</h3>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">st.subheader(<span class="string">&quot;請輸入EIP帳號密碼&quot;</span>)</span><br><span class="line"><span class="keyword">with</span> st.form(<span class="string">&quot;login_form&quot;</span>, clear_on_submit=<span class="literal">False</span>):</span><br><span class="line">    username = st.text_input(<span class="string">&quot;👤 帳號&quot;</span>)</span><br><span class="line">    password = st.text_input(<span class="string">&quot;🔑 密碼&quot;</span>, <span class="built_in">type</span>=<span class="string">&quot;password&quot;</span>)</span><br><span class="line">    login_btn = st.form_submit_button(<span class="string">&quot;登入&quot;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> login_btn:</span><br><span class="line">        <span class="keyword">if</span> check_ad_credentials(username, password):</span><br><span class="line">            <span class="comment"># 登入成功，取得使用者資訊</span></span><br><span class="line">            user_info = get_user_info_one(<span class="string">&quot;sAMAccountName&quot;</span>, username)</span><br><span class="line">            res=parse_dn(user_info[<span class="string">&#x27;DP_STR&#x27;</span>])</span><br><span class="line">            st.toast(<span class="string">f&quot;🎉 登入成功 <span class="subst">&#123;user_info[<span class="string">&#x27;USR_NAME&#x27;</span>]&#125;</span> ...&quot;</span>)</span><br><span class="line"></span><br><span class="line">            myrole=white_list(res[<span class="string">&#x27;organization_units&#x27;</span>][<span class="number">0</span>][<span class="number">0</span>:<span class="number">3</span>])</span><br><span class="line">            st.session_state.role = myrole</span><br><span class="line">            <span class="keyword">if</span> myrole == <span class="string">&quot;NONE&quot;</span>:</span><br><span class="line">                st.error(<span class="string">&quot;❌ 權限不足，請聯絡---設計股林宗漢。&quot;</span>)</span><br><span class="line">            time.sleep(<span class="number">3</span>)</span><br><span class="line">            st.rerun()</span><br><span class="line"></span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            st.error(<span class="string">&quot;❌ 帳號或密碼錯誤，請再試一次。&quot;</span>)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h2 id="實際畫面">實際畫面</h2>
+<figure>
+<img src="1.png" alt="Fig1. 帳號密碼入口" />
+<figcaption aria-hidden="true">Fig1. 帳號密碼入口</figcaption>
+</figure>
+<figure>
+<img src="2.png" alt="Fig2. 授權通過後畫面" />
+<figcaption aria-hidden="true">Fig2. 授權通過後畫面</figcaption>
+</figure>
+<h2 id="錯誤紀錄">錯誤紀錄</h2>
+<ul>
+<li>在<code>check_ad_credentials</code>中的<code>conn = Connection(server, user=user_upn, password=password, authentication='SIMPLE', auto_bind=True)</code>如果用<code>conn = Connection(server, user=user_upn, password=password, authentication='NTLM', auto_bind=True)</code>會報錯。
+<ul>
+<li>NTLM是比較加強的驗證格式，簡單的可以用<strong>SIMPLE</strong>就好。</li>
+</ul></li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>作者： </strong>Hank Lin
+  </li>
+  <li class="post-copyright-link">
+      <strong>文章連結：</strong>
+      <a href="https://www.hanksvba.com/posts/3389672383/" title="內部網路帳號密碼權限控制實作">https://www.hanksvba.com/posts/3389672383/</a>
+  </li>
+  <li class="post-copyright-license">
+      <strong>版權聲明： </strong>本網誌所有文章除特別聲明外，均採用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 許可協議。轉載請註明出處！
+  </li>
+</ul>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/%E5%9F%BA%E6%9C%AC%E5%8E%9F%E7%90%86/" rel="tag"><i class="fa fa-tag"></i> 基本原理</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/posts/675663677/" rel="prev" title="公司行號發函VBA系統">
+                  <i class="fa fa-angle-left"></i> 公司行號發函VBA系統
+                </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2025</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Hank Lin</span>
+  </div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="訪客總數">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="總瀏覽次數">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 強力驅動
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="back-to-top" role="button" aria-label="回到頂端">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/next-boot.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.1/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+  <script class="next-config" data-name="pdf" type="application/json">{"object_url":{"url":"https://cdnjs.cloudflare.com/ajax/libs/pdfobject/2.2.12/pdfobject.min.js","integrity":"sha256-g2xji1rlE3KsGVClvuxTbcR0Kn2+wtQADSff2Tbb4zA="},"url":"/lib/pdf/web/viewer"}</script>
+  <script src="/js/third-party/tags/pdf.js"></script>
+
+  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":{"light":"default","dark":"dark"},"js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mermaid/10.7.0/mermaid.min.js","integrity":"sha256-TtLOdUA8mstPoO6sGvHIGx2ceXrrX4KgIItO06XOn8A="}}</script>
+  <script src="/js/third-party/tags/mermaid.js"></script>
+
+
+
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">false</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"ams","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+
+</body>
+</html>
