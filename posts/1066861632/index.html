@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.2.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha256-wiz7ZSCn/btzhjKDQBms9Hx4sSeUYsDrTLg7roPstac=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"www.hanksvba.com","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.19.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":"mac"},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":false,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜尋...","empty":"我們無法找到任何有關 ${query} 的搜索結果","hits_time":"${hits} 找到 ${time} 個結果","hits":"找到 ${hits} 個結果"},"path":"/search.json","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="🙌前言  交通部的部頒規範下載下來之後會變成很多細碎的檔案，包含PDF跟DOC，在進行檔案內容搜尋的時候時常需要跨檔案比對，無法在同個檔案中一次到位。 有些規範有進行修改的內容需要先修改doc後再輸出PDF，乾脆將所有PDF都先進行刪除，後續再針對資料夾批次轉檔成PDF後再做合併。  解決目標:將doc修改完畢後輸出為pdf，丟到pdf_merge中進行合併，這實在是很麻煩。  本">
+<meta property="og:type" content="article">
+<meta property="og:title" content="批次轉換doc到pdf">
+<meta property="og:url" content="https://www.hanksvba.com/posts/1066861632/">
+<meta property="og:site_name" content="Hank&#39;s Blog">
+<meta property="og:description" content="🙌前言  交通部的部頒規範下載下來之後會變成很多細碎的檔案，包含PDF跟DOC，在進行檔案內容搜尋的時候時常需要跨檔案比對，無法在同個檔案中一次到位。 有些規範有進行修改的內容需要先修改doc後再輸出PDF，乾脆將所有PDF都先進行刪除，後續再針對資料夾批次轉檔成PDF後再做合併。  解決目標:將doc修改完畢後輸出為pdf，丟到pdf_merge中進行合併，這實在是很麻煩。  本">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:image" content="https://www.hanksvba.com/posts/1066861632/1.png">
+<meta property="og:image" content="https://www.hanksvba.com/posts/1066861632/2.png">
+<meta property="og:image" content="https://www.hanksvba.com/posts/1066861632/3.png">
+<meta property="og:image" content="https://www.hanksvba.com/posts/1066861632/4.png">
+<meta property="article:published_time" content="2024-05-01T10:03:33.000Z">
+<meta property="article:modified_time" content="2024-05-01T10:03:33.000Z">
+<meta property="article:author" content="Hank Lin">
+<meta property="article:tag" content="python">
+<meta property="article:tag" content="ExcelVBA">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://www.hanksvba.com/posts/1066861632/1.png">
+
+
+<link rel="canonical" href="https://www.hanksvba.com/posts/1066861632/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-TW","comments":true,"permalink":"https://www.hanksvba.com/posts/1066861632/","path":"posts/1066861632/","title":"批次轉換doc到pdf"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>批次轉換doc到pdf | Hank's Blog</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切換導航欄" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Hank's Blog</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">工程人的設計監造VBA工具交流區</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜尋" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-首頁"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首頁</a></li><li class="menu-item menu-item-關於"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>關於</a></li><li class="menu-item menu-item-標籤"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>標籤</a></li><li class="menu-item menu-item-分類"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分類</a></li><li class="menu-item menu-item-文章"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>文章</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜尋
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜尋..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目錄
+        </li>
+        <li class="sidebar-nav-overview">
+          本站概要
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%89%8D%E8%A8%80"><span class="nav-number">1.</span> <span class="nav-text">🙌前言</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%AA%94%E6%A1%88%E4%BE%86%E6%BA%90"><span class="nav-number">1.1.</span> <span class="nav-text">檔案來源</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#python%E7%9A%84%E8%A7%A3%E6%B1%BA%E6%96%B9%E6%A1%88"><span class="nav-number">2.</span> <span class="nav-text">👉Python的解決方案</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%A0%90%E8%A8%88%E4%BD%BF%E7%94%A8%E5%B7%A5%E5%85%B7%E7%82%BAdocx2pdf%E9%80%B2%E8%A1%8C%E8%BD%89%E6%AA%94"><span class="nav-number">2.1.</span> <span class="nav-text">預計使用工具為docx2pdf進行轉檔</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9C%80%E7%B5%82%E9%81%B8%E6%93%87"><span class="nav-number">3.</span> <span class="nav-text">👍最終選擇</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9A%AB%E6%99%82%E7%B5%90%E6%9E%9C"><span class="nav-number">3.1.</span> <span class="nav-text">暫時結果</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%97%E5%8D%B0%E9%A0%86%E5%BA%8F"><span class="nav-number">3.2.</span> <span class="nav-text">列印順序</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%96%8B%E7%99%BC%E9%81%8E%E7%A8%8B%E7%9A%84%E5%95%8F%E9%A1%8C"><span class="nav-number">4.</span> <span class="nav-text">👻開發過程的問題</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%AA%94%E6%A1%88%E5%90%8D%E7%A8%B1%E7%82%BA%E4%B8%AD%E6%96%87%E8%A6%81%E6%94%B6%E9%9B%86%E5%8C%AF%E5%85%A5csv%E6%AA%94%E6%A1%88%E7%9A%84%E6%99%82%E6%9C%83%E8%AE%8A%E6%88%90%E4%BA%82%E7%A2%BC"><span class="nav-number">4.1.</span> <span class="nav-text">檔案名稱為中文，要收集匯入csv檔案的時會變成亂碼</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%A6%81%E5%B0%87csv%E7%9A%84%E5%85%A7%E5%AE%B9%E5%8C%AF%E5%85%A5%E5%88%B0python%E9%80%B2%E8%A1%8C%E5%BE%8C%E7%BA%8C%E9%81%8B%E7%94%A8%E6%99%82%E6%9C%83%E5%87%BA%E7%8F%BEunicodedecodeerror"><span class="nav-number">4.2.</span> <span class="nav-text">要將CSV的內容匯入到python進行後續運用時會出現&#39;UnicodeDecodeError&#39;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%96%8B%E5%95%9F%E4%B8%80%E5%80%8B%E5%85%A8%E6%96%B0%E7%9A%84%E7%92%B0%E5%A2%83%E8%A6%81%E5%B0%87csv%E7%9A%84%E5%85%A7%E5%AE%B9%E5%8C%AF%E5%85%A5%E5%88%B0python%E9%80%B2%E8%A1%8C%E5%BE%8C%E7%BA%8C%E9%81%8B%E7%94%A8%E6%99%82%E6%9C%83%E5%87%BA%E7%8F%BE"><span class="nav-number">4.3.</span> <span class="nav-text">開啟一個全新的環境，要將CSV的內容匯入到python進行後續運用時會出現</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Hank Lin"
+      src="/images/avatar_custom.png">
+  <p class="site-author-name" itemprop="name">Hank Lin</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">38</span>
+          <span class="site-state-item-name">文章</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">分類</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">26</span>
+        <span class="site-state-item-name">標籤</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="mailto:apple84026113@gmail.com" title="E-Mail → mailto:apple84026113@gmail.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.youtube.com/channel/UCWmy5KaK7Leg6lLUlWBPaSw" title="YouTube → https:&#x2F;&#x2F;www.youtube.com&#x2F;channel&#x2F;UCWmy5KaK7Leg6lLUlWBPaSw" rel="noopener me" target="_blank"><i class="fab fa-youtube fa-fw"></i>YouTube</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/images/LINE_QRCODE.PNG" title="LINE → &#x2F;images&#x2F;LINE_QRCODE.PNG" rel="noopener me"><i class="fab fa-line fa-fw"></i>LINE</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://reurl.cc/RyvvaZ" title="LINE社群 → https:&#x2F;&#x2F;reurl.cc&#x2F;RyvvaZ" rel="noopener me" target="_blank"><i class="fas fa-comment fa-fw"></i>LINE社群</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://hankvba.blogspot.com/" title="舊網站 → https:&#x2F;&#x2F;hankvba.blogspot.com&#x2F;" rel="noopener me" target="_blank"><i class="fab fa-blogger fa-fw"></i>舊網站</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://portaly.cc/hanksvba/support/" title="小額贊助 → https:&#x2F;&#x2F;portaly.cc&#x2F;hanksvba&#x2F;support&#x2F;" rel="noopener me" target="_blank"><i class="fas fa-handshake fa-fw"></i>小額贊助</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-TW">
+    <link itemprop="mainEntityOfPage" href="https://www.hanksvba.com/posts/1066861632/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar_custom.png">
+      <meta itemprop="name" content="Hank Lin">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hank's Blog">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="批次轉換doc到pdf | Hank's Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          批次轉換doc到pdf
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">發表於</span>
+
+      <time title="創建時間：2024-05-01 18:03:33" itemprop="dateCreated datePublished" datetime="2024-05-01T18:03:33+08:00">2024-05-01</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分類於</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E5%B0%88%E6%A1%88%E9%96%8B%E7%99%BC/" itemprop="url" rel="index"><span itemprop="name">專案開發</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="閱讀次數" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">閱讀次數：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h2 id="前言">🙌前言</h2>
+<ol type="1">
+<li><p>交通部的部頒規範下載下來之後會變成很多細碎的檔案，包含PDF跟DOC，在進行檔案內容搜尋的時候時常需要跨檔案比對，無法在<strong>同個檔案</strong>中一次到位。</p></li>
+<li><p>有些規範有進行修改的內容需要先修改doc後再輸出PDF，乾脆將所有PDF都先進行刪除，後續再針對資料夾批次轉檔成PDF後再做合併。</p></li>
+</ol>
+<div class="note info"><p>解決目標:將doc修改完畢後輸出為pdf，丟到pdf_merge中進行合併，這實在是很麻煩。</p>
+</div>
+<p>本篇介紹如何撰寫程式碼來簡化製作<strong>公路橋梁設計規範</strong>的流程，有興趣請繼續閱讀</p>
+<span id="more"></span>
+<hr />
+<h3 id="檔案來源">檔案來源</h3>
+<ul>
+<li><p>原始檔案下載連結 <img src="1.png"
+alt="Fig1.規範下載處" /></p></li>
+<li><p>原始檔案下載內容 <img src="2.png"
+alt="Fig2.規範下載內容-PDF與DOC" /></p></li>
+<li><p>預先處理內容 <img src="3.png"
+alt="Fig3.預先刪除所有PDF" /></p></li>
+</ul>
+<hr />
+<h2 id="python的解決方案">👉Python的解決方案</h2>
+<h3
+id="預計使用工具為docx2pdf進行轉檔">預計使用工具為docx2pdf進行轉檔</h3>
+<p><a target="_blank" rel="noopener" href="https://pypi.org/project/docx2pdf/">docx2pdf</a></p>
+<p>使用時所輸出的內容一直出現空白頁，而且可以接受的內容也只有docx
+可能是我還沒研究透徹...?</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">from</span> docx2pdf <span class="keyword">import</span> convert</span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">convert_docx_to_pdf</span>(<span class="params">input_folder, output_folder</span>):</span><br><span class="line">    <span class="comment"># 確保輸入文件夾存在</span></span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> os.path.exists(input_folder):</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;輸入文件夾不存在！&quot;</span>)</span><br><span class="line">        <span class="keyword">return</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># 確保輸出文件夾存在</span></span><br><span class="line">    os.makedirs(output_folder, exist_ok=<span class="literal">True</span>)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 遍歷輸入文件夾中的所有文件</span></span><br><span class="line">    <span class="keyword">for</span> filename <span class="keyword">in</span> os.listdir(input_folder):</span><br><span class="line">        <span class="keyword">if</span> filename.endswith(<span class="string">&quot;.docx&quot;</span>) :<span class="comment">#or filename.endswith(&quot;.doc&quot;):</span></span><br><span class="line">            <span class="built_in">print</span>(<span class="string">f&quot;<span class="subst">&#123;filename&#125;</span> found&quot;</span>)</span><br><span class="line"></span><br><span class="line">            input_path = os.path.join(input_folder, filename)</span><br><span class="line">            output_filename = filename.replace(<span class="string">&quot;.docx&quot;</span>, <span class="string">&quot;.pdf&quot;</span>)</span><br><span class="line">            output_path = os.path.join(output_folder, output_filename)</span><br><span class="line">            <span class="comment"># 將 Word 文件轉換為 PDF</span></span><br><span class="line">            </span><br><span class="line">            convert(input_path, output_path)</span><br><span class="line">            <span class="built_in">print</span>(<span class="string">f&quot;<span class="subst">&#123;filename&#125;</span> 轉換完成&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&quot;__main__&quot;</span>:</span><br><span class="line">    input_folder = <span class="string">r&quot;D:\GoogleDrive-參考手冊\公路橋梁設計規範&quot;</span>  <span class="comment"># 輸入文件夾的路徑</span></span><br><span class="line">    output_folder = <span class="string">r&quot;D:\Python\pdf_output&quot;</span>  <span class="comment"># 輸出文件夾的路徑</span></span><br><span class="line">    convert_docx_to_pdf(input_folder, output_folder)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>後來還是想別的辦法去轉檔。</p>
+<hr />
+<h2 id="最終選擇">👍最終選擇</h2>
+<p>身為忠臣的VBA用戶，如果能夠用VBA處理會是比較得心應手的，突然想起
+Excel VBA 本身可以呼叫 Word VBA 執行PDF轉檔。</p>
+<figure class="highlight vb"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment">&#x27;以下內容來自與ChatGPT之間的對話+我自己稍微修改</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">Sub</span> ConvertDocToPDF()</span><br><span class="line">    <span class="keyword">Dim</span> WordApp <span class="keyword">As</span> <span class="type">Object</span></span><br><span class="line">    <span class="keyword">Dim</span> WordDoc <span class="keyword">As</span> <span class="type">Object</span></span><br><span class="line">    <span class="keyword">Dim</span> FolderPath <span class="keyword">As</span> <span class="type">String</span></span><br><span class="line">    <span class="keyword">Dim</span> FileName <span class="keyword">As</span> <span class="type">String</span></span><br><span class="line">    <span class="keyword">Dim</span> PDFFileName <span class="keyword">As</span> <span class="type">String</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment">&#x27; ?置 Word ?用?象</span></span><br><span class="line">    <span class="keyword">On</span> <span class="keyword">Error</span> <span class="keyword">Resume</span> <span class="keyword">Next</span></span><br><span class="line">    <span class="keyword">Set</span> WordApp = GetObject(, <span class="string">&quot;Word.Application&quot;</span>)</span><br><span class="line">    <span class="keyword">If</span> WordApp <span class="built_in">Is</span> <span class="literal">Nothing</span> <span class="keyword">Then</span></span><br><span class="line">        <span class="keyword">Set</span> WordApp = CreateObject(<span class="string">&quot;Word.Application&quot;</span>)</span><br><span class="line">    <span class="keyword">End</span> <span class="keyword">If</span></span><br><span class="line">    <span class="keyword">On</span> <span class="keyword">Error</span> <span class="keyword">GoTo</span> <span class="number">0</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment">&#x27; ?置 Word ?用?不可?</span></span><br><span class="line">    WordApp.Visible = <span class="literal">False</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment">&#x27; ?置文件?路?</span></span><br><span class="line">    FolderPath = <span class="string">&quot;D:\GoogleDrive-參考手冊\公路橋梁設計規範&quot;</span> <span class="comment">&#x27; 更改?你的文件?路?</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment">&#x27; 遍?文件?中的所有 Word 文件</span></span><br><span class="line">    FileName = Dir(FolderPath &amp; <span class="string">&quot;\*.doc*&quot;</span>)</span><br><span class="line">    <span class="keyword">Do</span> <span class="keyword">While</span> FileName &lt;&gt; <span class="string">&quot;&quot;</span></span><br><span class="line">        <span class="comment">&#x27; 打? Word 文?</span></span><br><span class="line">        <span class="keyword">Set</span> WordDoc = WordApp.Documents.Open(FolderPath &amp; <span class="string">&quot;\&quot;</span> &amp; FileName)</span><br><span class="line">        </span><br><span class="line">        <span class="comment">&#x27; 构建 PDF 文件名</span></span><br><span class="line">        PDFFileName = Replace(FolderPath &amp; <span class="string">&quot;\&quot;</span> &amp; FileName, <span class="string">&quot;.doc&quot;</span>, <span class="string">&quot;.pdf&quot;</span>)</span><br><span class="line">        </span><br><span class="line">        <span class="comment">&#x27; 保存? PDF</span></span><br><span class="line">        WordDoc.ExportAsFixedFormat OutputFileName:=PDFFileName, ExportFormat:=<span class="number">17</span> <span class="comment">&#x27; 17 表示 PDF 格式</span></span><br><span class="line">        </span><br><span class="line">        <span class="comment">&#x27; ?? Word 文?</span></span><br><span class="line">        WordDoc.Close <span class="literal">False</span></span><br><span class="line">        </span><br><span class="line">        <span class="comment">&#x27; ??下一?文件</span></span><br><span class="line">        FileName = Dir</span><br><span class="line">    <span class="keyword">Loop</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment">&#x27; ?? Word ?用</span></span><br><span class="line">    WordApp.Quit</span><br><span class="line">    </span><br><span class="line">    <span class="comment">&#x27; ?放?象</span></span><br><span class="line">    <span class="keyword">Set</span> WordDoc = <span class="literal">Nothing</span></span><br><span class="line">    <span class="keyword">Set</span> WordApp = <span class="literal">Nothing</span></span><br><span class="line">    </span><br><span class="line">    MsgBox <span class="string">&quot;列印完成！&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">End</span> <span class="keyword">Sub</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<hr />
+<h3 id="暫時結果">暫時結果</h3>
+<p>經過轉檔之後，原本是doc或docx的檔案都會依照原本名稱變成pdf的副檔名</p>
+<p>下一步就是要進行<strong>pdf合併了</strong>!!</p>
+<figure>
+<img src="4.png" alt="Fig4.暫時生成結果" />
+<figcaption aria-hidden="true">Fig4.暫時生成結果</figcaption>
+</figure>
+<hr />
+<h3 id="列印順序">列印順序</h3>
+<p>因為PDF文件的名稱不一定是我所需要的順序</p>
+<p>希望能夠依循下列步驟</p>
+<ol type="1">
+<li>列出該檔案夾中的檔案名稱順序成為CSV檔案</li>
+<li>根據我所指定的順序進行選取合併</li>
+</ol>
+<hr />
+<h4 id="生成csv順序">生成CSV順序</h4>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">import</span> csv</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">list_pdf_files_to_csv</span>(<span class="params">input_folder, output_csv</span>):</span><br><span class="line">    <span class="comment"># 打开 CSV 文件以写入模式</span></span><br><span class="line">    <span class="keyword">with</span> <span class="built_in">open</span>(output_csv, <span class="string">&quot;w&quot;</span>, newline=<span class="string">&#x27;&#x27;</span>, encoding=<span class="string">&#x27;utf-8-sig&#x27;</span>) <span class="keyword">as</span> csv_file:</span><br><span class="line">        <span class="comment"># 创建 CSV writer 对象</span></span><br><span class="line">        csv_writer = csv.writer(csv_file)</span><br><span class="line">        csv_writer.writerow([<span class="string">&#x27;順序&#x27;</span>,<span class="string">&#x27;檔案名稱&#x27;</span>,<span class="string">&#x27;檔案路徑&#x27;</span>])</span><br><span class="line">        order=<span class="number">1</span></span><br><span class="line">        <span class="comment"># 遍历输入文件夹中的所有文件</span></span><br><span class="line">        <span class="keyword">for</span> filename <span class="keyword">in</span> os.listdir(input_folder):</span><br><span class="line">            <span class="comment"># 检查文件名是否以 &quot;.pdf&quot; 结尾</span></span><br><span class="line">            <span class="keyword">if</span> filename.lower().endswith(<span class="string">&quot;.pdf&quot;</span>):</span><br><span class="line">                <span class="comment"># 将文件信息写入 CSV 文件</span></span><br><span class="line">                file_path = os.path.join(input_folder, filename)</span><br><span class="line">                csv_writer.writerow([order,filename, file_path])</span><br><span class="line">                <span class="comment"># 更新顺序号</span></span><br><span class="line">                order += <span class="number">1</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&quot;__main__&quot;</span>:</span><br><span class="line">    input_folder =<span class="string">r&quot;D:\GoogleDrive-參考手冊\公路橋梁設計規範&quot;</span>  <span class="comment"># 输入文件夹的路径</span></span><br><span class="line">    output_csv = <span class="string">r&quot;D:\Python\pdf_doc\pdf_files.csv&quot;</span>  <span class="comment"># 输出 CSV 文件的路径</span></span><br><span class="line">    list_pdf_files_to_csv(input_folder, output_csv)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>生成之後可以藉由Excel的幫助進行順序排序，再另存為csv檔案的格式就可以備用。</p>
+<h4 id="根據csv順序進行合併">根據CSV順序進行合併</h4>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">import</span> csv</span><br><span class="line"><span class="keyword">from</span> PyPDF2 <span class="keyword">import</span> PdfMerger</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">read_csv_to_pdf_files</span>(<span class="params">csv_file</span>):</span><br><span class="line">    pdf_files = []</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 打开 CSV 文件并读取内容</span></span><br><span class="line">    <span class="comment">#with open(csv_file, &quot;r&quot;, newline=&#x27;&#x27;,errors=&#x27;replace&#x27;) as file:#有出現問題的話用這行</span></span><br><span class="line">    <span class="keyword">with</span> <span class="built_in">open</span>(csv_file, <span class="string">&quot;r&quot;</span>, newline=<span class="string">&#x27;&#x27;</span>,encoding=<span class="string">&#x27;utf-8-sig&#x27;</span>) <span class="keyword">as</span> file:<span class="comment">#全新虛擬環境用這行</span></span><br><span class="line">        reader = csv.reader(file)</span><br><span class="line">        <span class="built_in">next</span>(reader)  <span class="comment"># 跳过标题行</span></span><br><span class="line">        <span class="keyword">for</span> row <span class="keyword">in</span> reader:</span><br><span class="line">            order = row[<span class="number">0</span>]<span class="comment">#第一列是顺序</span></span><br><span class="line">            filename = row[<span class="number">1</span>]  <span class="comment"># 第二列是文件名</span></span><br><span class="line">            pdf_path = row[<span class="number">2</span>]  <span class="comment"># 第三列是 PDF 文件的绝对路径</span></span><br><span class="line">            pdf_files.append((order, filename, pdf_path))</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> pdf_files</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">merge_pdfs_directly</span>(<span class="params">pdf_files,output_folder</span>):</span><br><span class="line">    <span class="comment"># 创建一个 PdfMerger 对象</span></span><br><span class="line">    merger = PdfMerger()</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 遍历列表中的每个元素 這個不能亂改會報錯</span></span><br><span class="line">    <span class="keyword">for</span> order, filename,pdf_path <span class="keyword">in</span> pdf_files:</span><br><span class="line">        <span class="comment"># 将 PDF 文件添加到合并器中</span></span><br><span class="line">        merger.append(pdf_path)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 确保输出文件夹存在</span></span><br><span class="line">    os.makedirs(output_folder, exist_ok=<span class="literal">True</span>)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 将合并后的 PDF 保存到文件</span></span><br><span class="line">    output_path = os.path.join(output_folder, <span class="string">&quot;merged_pdf.pdf&quot;</span>)</span><br><span class="line">    merger.write(output_path)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 关闭合并器</span></span><br><span class="line">    merger.close()</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&quot;__main__&quot;</span>:</span><br><span class="line"></span><br><span class="line">    csv_file = <span class="string">r&quot;D:\Python\pdf_doc\pdf_files.csv&quot;</span>  <span class="comment"># CSV 文件的路径</span></span><br><span class="line">    pdf_files = read_csv_to_pdf_files(csv_file)</span><br><span class="line">    output_folder = <span class="string">r&quot;D:\Python\pdf_doc&quot;</span>  <span class="comment"># 输出文件夹的路径</span></span><br><span class="line">    merge_pdfs_directly(pdf_files,output_folder)</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h4 id="最終成果">最終成果</h4>
+<div class="note success"><p>藉由vba的轉檔及python的合併處理成的檔案，總共有432頁的PDF <span
+class="github-emoji" data-alias="link" style=""
+data-fallback-src="https://github.githubassets.com/images/icons/emoji/unicode/1f517.png?v8">🔗</span>
+<a
+target="_blank" rel="noopener" href="https://1drv.ms/b/s!AvmbvZ-TA-bAgpsFgHAua545ujNtnw?e=57r41J">🔗完整版-公路橋梁設計規範成果下載</a></p>
+</div>
+<hr />
+<h2 id="開發過程的問題">👻開發過程的問題</h2>
+<p>操作CSV的過程曾經出現一些奇怪的問題，記錄一下比較不會忘記</p>
+<h3
+id="檔案名稱為中文要收集匯入csv檔案的時會變成亂碼">檔案名稱為中文，要收集匯入csv檔案的時會變成亂碼</h3>
+<p>需要將編碼由<strong>utf-8</strong>改為<strong>utf-8-sig</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">with</span> <span class="built_in">open</span>(output_csv, <span class="string">&quot;w&quot;</span>, newline=<span class="string">&#x27;&#x27;</span>, encoding=<span class="string">&#x27;utf-8-sig&#x27;</span>) <span class="keyword">as</span> csv_file: </span><br></pre></td></tr></table></figure>
+<p><a
+target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_46640900/article/details/110602702">CSDN參考</a></p>
+<h3
+id="要將csv的內容匯入到python進行後續運用時會出現unicodedecodeerror">要將CSV的內容匯入到python進行後續運用時會出現'UnicodeDecodeError'</h3>
+<p>將原本的讀取內容中的<strong>encoding</strong>換成
+<strong>errors='replace'</strong> 即可</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">with</span> <span class="built_in">open</span>(<span class="string">&#x27;some.csv&#x27;</span>, newline=<span class="string">&#x27;&#x27;</span>, encoding=<span class="string">&#x27;utf-8&#x27;</span>) <span class="keyword">as</span> f:</span><br><span class="line">  reader = csv.reader(f)</span><br><span class="line">  <span class="keyword">for</span> row <span class="keyword">in</span> reader:</span><br><span class="line">    <span class="built_in">print</span>(row)</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">with</span> <span class="built_in">open</span>(<span class="string">&#x27;some.csv&#x27;</span>, newline=<span class="string">&#x27;&#x27;</span>, errors=<span class="string">&#x27;replace&#x27;</span>) <span class="keyword">as</span> f:</span><br><span class="line">   reader = csv.reader(f)</span><br><span class="line">   <span class="keyword">for</span> row <span class="keyword">in</span> reader:</span><br><span class="line">    <span class="built_in">print</span>(row)</span><br></pre></td></tr></table></figure>
+<p><a
+target="_blank" rel="noopener" href="https://stackoverflow.com/questions/12752313/unicodedecodeerror-in-python-3-when-importing-a-csv-file">Stack
+overflow參考資料</a></p>
+<h3
+id="開啟一個全新的環境要將csv的內容匯入到python進行後續運用時會出現">開啟一個全新的環境，要將CSV的內容匯入到python進行後續運用時會出現</h3>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">FileNotFoundError: [Errno <span class="number">2</span>] No such file <span class="keyword">or</span> directory: <span class="string">&#x27;D:\\GoogleDrive-������������\\��祈楝璈�璇�閮剛��閬� 蝭�\\蝚砌��蝡� 蝮賢��1090103.pdf</span></span><br></pre></td></tr></table></figure>
+<p>原本第二點可以解決編譯問題的程式碼調整 errors='replace'
+已經無法作用，我把encoding='utf-8-sig'重新加上去，然後就好了(?)</p>
+<blockquote>
+<p>猜測是新的環境中還沒有預設的encoding，所以中文還沒有辦法被知道要怎麼編譯。</p>
+</blockquote>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">with</span> <span class="built_in">open</span>(<span class="string">&#x27;some.csv&#x27;</span>, newline=<span class="string">&#x27;&#x27;</span>, encoding=<span class="string">&#x27;utf-8-sig&#x27;</span>) <span class="keyword">as</span> f:</span><br><span class="line">  reader = csv.reader(f)</span><br><span class="line">  <span class="keyword">for</span> row <span class="keyword">in</span> reader:</span><br><span class="line">    <span class="built_in">print</span>(row)</span><br></pre></td></tr></table></figure>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>作者： </strong>Hank Lin
+  </li>
+  <li class="post-copyright-link">
+      <strong>文章連結：</strong>
+      <a href="https://www.hanksvba.com/posts/1066861632/" title="批次轉換doc到pdf">https://www.hanksvba.com/posts/1066861632/</a>
+  </li>
+  <li class="post-copyright-license">
+      <strong>版權聲明： </strong>本網誌所有文章除特別聲明外，均採用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 許可協議。轉載請註明出處！
+  </li>
+</ul>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/python/" rel="tag"><i class="fa fa-tag"></i> python</a>
+              <a href="/tags/ExcelVBA/" rel="tag"><i class="fa fa-tag"></i> ExcelVBA</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/posts/1952534825/" rel="prev" title="監造報表規劃-數量計算">
+                  <i class="fa fa-angle-left"></i> 監造報表規劃-數量計算
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/posts/3619695554/" rel="next" title="VBA自學心得">
+                  VBA自學心得 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2025</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Hank Lin</span>
+  </div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="訪客總數">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="總瀏覽次數">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 強力驅動
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="back-to-top" role="button" aria-label="回到頂端">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/next-boot.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.1/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+  <script class="next-config" data-name="pdf" type="application/json">{"object_url":{"url":"https://cdnjs.cloudflare.com/ajax/libs/pdfobject/2.2.12/pdfobject.min.js","integrity":"sha256-g2xji1rlE3KsGVClvuxTbcR0Kn2+wtQADSff2Tbb4zA="},"url":"/lib/pdf/web/viewer"}</script>
+  <script src="/js/third-party/tags/pdf.js"></script>
+
+  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":{"light":"default","dark":"dark"},"js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mermaid/10.7.0/mermaid.min.js","integrity":"sha256-TtLOdUA8mstPoO6sGvHIGx2ceXrrX4KgIItO06XOn8A="}}</script>
+  <script src="/js/third-party/tags/mermaid.js"></script>
+
+
+
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">false</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"ams","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+
+</body>
+</html>

@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.2.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha256-wiz7ZSCn/btzhjKDQBms9Hx4sSeUYsDrTLg7roPstac=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"www.hanksvba.com","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.19.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":"mac"},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":false,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜尋...","empty":"我們無法找到任何有關 ${query} 的搜索結果","hits_time":"${hits} 找到 ${time} 個結果","hits":"找到 ${hits} 個結果"},"path":"/search.json","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="🙌前言 本篇主要介紹利用 AutoCAD VBA 的物件操作+ Excel VBA 的工作表函數來簡化平坦地貌收方作業的過程。  土方計算是工程施作時有關於甲乙方針對土方數量時的重要依據，分為小型工程及大型工程來討論。  小型工程 土方金額佔比不高的情況下，通常契約數量多少就多少，甲乙雙方不太會有意見。 大型工程 土方金額佔比高的情況下，甲乙雙方會針對設計原始地貌進行收方作業">
+<meta property="og:type" content="article">
+<meta property="og:title" content="土方計算-方格法(VBA)">
+<meta property="og:url" content="https://www.hanksvba.com/posts/4262718496/">
+<meta property="og:site_name" content="Hank&#39;s Blog">
+<meta property="og:description" content="🙌前言 本篇主要介紹利用 AutoCAD VBA 的物件操作+ Excel VBA 的工作表函數來簡化平坦地貌收方作業的過程。  土方計算是工程施作時有關於甲乙方針對土方數量時的重要依據，分為小型工程及大型工程來討論。  小型工程 土方金額佔比不高的情況下，通常契約數量多少就多少，甲乙雙方不太會有意見。 大型工程 土方金額佔比高的情況下，甲乙雙方會針對設計原始地貌進行收方作業">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:image" content="https://www.hanksvba.com/posts/4262718496/H_List.JPG">
+<meta property="og:image" content="https://www.hanksvba.com/posts/4262718496/H2_List.JPG">
+<meta property="og:image" content="https://www.hanksvba.com/posts/4262718496/GRID_Num.JPG">
+<meta property="og:image" content="https://www.hanksvba.com/posts/4262718496/GRID_pts.JPG">
+<meta property="og:image" content="https://www.hanksvba.com/posts/4262718496/REPORT.JPG">
+<meta property="og:image" content="https://www.hanksvba.com/posts/4262718496/5x5-elevationdiff-sharp.JPG">
+<meta property="article:published_time" content="2024-06-10T04:09:45.000Z">
+<meta property="article:modified_time" content="2024-06-10T04:09:45.000Z">
+<meta property="article:author" content="Hank Lin">
+<meta property="article:tag" content="AutoCAD VBA">
+<meta property="article:tag" content="Excel VBA">
+<meta property="article:tag" content="土方計算">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://www.hanksvba.com/posts/4262718496/H_List.JPG">
+
+
+<link rel="canonical" href="https://www.hanksvba.com/posts/4262718496/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-TW","comments":true,"permalink":"https://www.hanksvba.com/posts/4262718496/","path":"posts/4262718496/","title":"土方計算-方格法(VBA)"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>土方計算-方格法(VBA) | Hank's Blog</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切換導航欄" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Hank's Blog</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">工程人的設計監造VBA工具交流區</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜尋" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-首頁"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首頁</a></li><li class="menu-item menu-item-關於"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>關於</a></li><li class="menu-item menu-item-標籤"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>標籤</a></li><li class="menu-item menu-item-分類"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分類</a></li><li class="menu-item menu-item-文章"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>文章</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜尋
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜尋..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目錄
+        </li>
+        <li class="sidebar-nav-overview">
+          本站概要
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%89%8D%E8%A8%80"><span class="nav-number">1.</span> <span class="nav-text">🙌前言</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B0%8F%E5%9E%8B%E5%B7%A5%E7%A8%8B"><span class="nav-number">1.1.</span> <span class="nav-text">小型工程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A4%A7%E5%9E%8B%E5%B7%A5%E7%A8%8B"><span class="nav-number">1.2.</span> <span class="nav-text">大型工程</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%A8%88%E7%AE%97%E6%96%B9%E6%B3%95%E9%81%B8%E5%AE%9A"><span class="nav-number">2.</span> <span class="nav-text">計算方法選定</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BD%B1%E7%89%87%E6%93%8D%E4%BD%9C"><span class="nav-number">3.</span> <span class="nav-text">🎬影片操作</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AF%A6%E7%8F%BE%E9%82%8F%E8%BC%AF"><span class="nav-number">4.</span> <span class="nav-text">👉實現邏輯</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BB%BA%E7%AB%8B%E6%B8%AC%E9%87%8F%E9%BB%9E%E5%BD%B1%E7%89%87%E6%9C%AA%E5%87%BA%E7%8F%BE"><span class="nav-number">4.1.</span> <span class="nav-text">建立測量點(影片未出現)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BB%BA%E7%AB%8B%E6%96%B9%E6%A0%BC"><span class="nav-number">4.2.</span> <span class="nav-text">建立方格</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%96%B9%E6%A0%BC%E7%B7%A8%E8%99%9F%E5%8F%8A%E9%9D%A2%E7%A9%8D"><span class="nav-number">4.3.</span> <span class="nav-text">方格編號及面積</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%96%B9%E6%A0%BC%E9%A0%82%E9%BB%9E%E8%A8%88%E7%AE%97%E6%8F%92%E5%80%BC"><span class="nav-number">4.4.</span> <span class="nav-text">方格頂點計算插值</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%96%B9%E6%A0%BC%E5%9C%9F%E6%96%B9%E9%AB%94%E7%A9%8D%E8%A8%88%E7%AE%97"><span class="nav-number">4.5.</span> <span class="nav-text">方格土方體積計算</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9C%9F%E6%96%B9%E5%A0%B1%E5%91%8A"><span class="nav-number">4.6.</span> <span class="nav-text">土方報告</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8F%AF%E8%A6%96%E5%8C%96%E5%91%88%E7%8F%BE"><span class="nav-number">4.7.</span> <span class="nav-text">可視化呈現</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B9%BE%E4%BD%95%E5%9C%96%E5%AD%B8%E5%88%A4%E9%87%8B"><span class="nav-number">5.</span> <span class="nav-text">👨‍🏫幾何圖學判釋</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%A4%E6%96%B7%E9%BB%9E%E8%B7%9F%E5%A4%9A%E9%82%8A%E5%BD%A2%E7%9A%84%E9%97%9C%E4%BF%82"><span class="nav-number">5.1.</span> <span class="nav-text">判斷點跟多邊形的關係</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%A4%E6%96%B7%E5%A4%9A%E9%82%8A%E5%BD%A2%E7%9A%84%E4%BD%8D%E7%BD%AE%E9%97%9C%E4%BF%82"><span class="nav-number">5.2.</span> <span class="nav-text">判斷多邊形的位置關係</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%96%8B%E7%99%BC%E5%B0%8F%E7%B5%90"><span class="nav-number">6.</span> <span class="nav-text">🎯開發小結</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Hank Lin"
+      src="/images/avatar_custom.png">
+  <p class="site-author-name" itemprop="name">Hank Lin</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">38</span>
+          <span class="site-state-item-name">文章</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">分類</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">26</span>
+        <span class="site-state-item-name">標籤</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="mailto:apple84026113@gmail.com" title="E-Mail → mailto:apple84026113@gmail.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.youtube.com/channel/UCWmy5KaK7Leg6lLUlWBPaSw" title="YouTube → https:&#x2F;&#x2F;www.youtube.com&#x2F;channel&#x2F;UCWmy5KaK7Leg6lLUlWBPaSw" rel="noopener me" target="_blank"><i class="fab fa-youtube fa-fw"></i>YouTube</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/images/LINE_QRCODE.PNG" title="LINE → &#x2F;images&#x2F;LINE_QRCODE.PNG" rel="noopener me"><i class="fab fa-line fa-fw"></i>LINE</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://reurl.cc/RyvvaZ" title="LINE社群 → https:&#x2F;&#x2F;reurl.cc&#x2F;RyvvaZ" rel="noopener me" target="_blank"><i class="fas fa-comment fa-fw"></i>LINE社群</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://hankvba.blogspot.com/" title="舊網站 → https:&#x2F;&#x2F;hankvba.blogspot.com&#x2F;" rel="noopener me" target="_blank"><i class="fab fa-blogger fa-fw"></i>舊網站</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://portaly.cc/hanksvba/support/" title="小額贊助 → https:&#x2F;&#x2F;portaly.cc&#x2F;hanksvba&#x2F;support&#x2F;" rel="noopener me" target="_blank"><i class="fas fa-handshake fa-fw"></i>小額贊助</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-TW">
+    <link itemprop="mainEntityOfPage" href="https://www.hanksvba.com/posts/4262718496/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar_custom.png">
+      <meta itemprop="name" content="Hank Lin">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hank's Blog">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="土方計算-方格法(VBA) | Hank's Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          土方計算-方格法(VBA)
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">發表於</span>
+
+      <time title="創建時間：2024-06-10 12:09:45" itemprop="dateCreated datePublished" datetime="2024-06-10T12:09:45+08:00">2024-06-10</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分類於</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E5%B0%88%E6%A1%88%E6%88%90%E6%9E%9C/" itemprop="url" rel="index"><span itemprop="name">專案成果</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="閱讀次數" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">閱讀次數：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h2 id="前言">🙌前言</h2>
+<p>本篇主要介紹利用 <strong>AutoCAD VBA</strong> 的物件操作+
+<strong>Excel VBA</strong>
+的工作表函數來簡化<strong>平坦地貌</strong>收方作業的過程。</p>
+<blockquote>
+<p>土方計算是工程施作時有關於甲乙方針對土方數量時的重要依據，分為小型工程及大型工程來討論。</p>
+</blockquote>
+<h3 id="小型工程">小型工程</h3>
+<p>土方金額佔比不高的情況下，通常契約數量多少就多少，甲乙雙方不太會有意見。</p>
+<h3 id="大型工程">大型工程</h3>
+<p>土方金額佔比高的情況下，甲乙雙方會針對設計原始地貌進行收方作業並作成土方報告，並以此作為契約數量修正的依據，再根據結構體的設計高程及圖說指定的開挖方式重新計算挖填方數量。</p>
+<h2 id="計算方法選定">計算方法選定</h2>
+<p>地形模型的建立會根據地貌狀況而定</p>
+<ul>
+<li>具有複雜地形特徵的地區，使用TIN(不規則三角網)</li>
+<li>地形變化相對平緩的地區，使用DEM(數字高程模型)</li>
+</ul>
+<p>方格法便是使用DEM的概念，透過每個方格頂點計算方格平均高程後推算求得土方體積，高程頂點則利用IDW(反距離加權法)來進行高程賦值，插值過程會需要大量的基本運算。</p>
+<blockquote>
+<p>有關不規則三角網另請參考筆者前文 <a
+target="_blank" rel="noopener" href="https://hankvba.blogspot.com/2023/01/cad-vba.html">CAD
+VBA@收方作業(不規則三角網法)</a></p>
+</blockquote>
+<span id="more"></span>
+<h2 id="影片操作">🎬影片操作</h2>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/OJ6uFdUgUi4" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen>
+</iframe>
+<blockquote>
+<p>有收方作業的需求歡迎透過左方側邊欄內容聯繫E-mail或LINE進行諮詢。</p>
+</blockquote>
+<h2 id="實現邏輯">👉實現邏輯</h2>
+<h3 id="建立測量點影片未出現">建立測量點(影片未出現)</h3>
+<ol type="1">
+<li>將設計圖面所記錄的高程點放入工作表("DESIGN")</li>
+</ol>
+<figure>
+<img src="H_List.JPG" alt="Fig1. 設計圖面高程" />
+<figcaption aria-hidden="true">Fig1. 設計圖面高程</figcaption>
+</figure>
+<ol start="2" type="1">
+<li>將收方作業所記錄的高程點放入工作表("CHECK")</li>
+</ol>
+<figure>
+<img src="H2_List.JPG" alt="Fig2.收方作業高程" />
+<figcaption aria-hidden="true">Fig2.收方作業高程</figcaption>
+</figure>
+<table>
+<thead>
+<tr>
+<th>欄位名稱</th>
+<th>用途說明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Num</td>
+<td>點名稱</td>
+</tr>
+<tr>
+<td>X</td>
+<td>TWD97-E座標</td>
+</tr>
+<tr>
+<td>Y</td>
+<td>TWD97-N座標</td>
+</tr>
+<tr>
+<td>Z</td>
+<td>高程</td>
+</tr>
+<tr>
+<td>Length</td>
+<td>與頂點的距離</td>
+</tr>
+</tbody>
+</table>
+<p>此處的Length會由每一點去與range("F1")、range("G1")進行距離換算(IDW使用)</p>
+<h3 id="建立方格">建立方格</h3>
+<ol type="1">
+<li>取得計畫範圍之後，找出其邊界位置</li>
+<li>方格會在邊界內依序繪製並與計畫範圍判釋兩多邊形位置關係</li>
+<li>位置關係可分為下列三種
+<ul>
+<li>計畫範圍外&gt;&gt;刪除</li>
+<li>計畫範圍內&gt;&gt;保留不動</li>
+<li>計畫範圍與之相交&gt;&gt;另外建立計畫範圍外部面積。(這裡會需要手動調整下)</li>
+</ul></li>
+</ol>
+<h3 id="方格編號及面積">方格編號及面積</h3>
+<ol type="1">
+<li>框選所有方格及外部面積</li>
+<li>方格由左上到右下依序編號</li>
+<li>計算外部面積形心到所有方格的位置並指定其歸屬哪個方格</li>
+<li>由指定內容進行面積扣除</li>
+</ol>
+<figure>
+<img src="GRID_Num.JPG" alt="Fig3.方格資料主要頁面" />
+<figcaption aria-hidden="true">Fig3.方格資料主要頁面</figcaption>
+</figure>
+<table>
+<thead>
+<tr>
+<th>欄位名稱</th>
+<th>用途說明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Num</td>
+<td>方格編號</td>
+</tr>
+<tr>
+<td>Grid_Handle</td>
+<td>方格在CAD中的連接碼</td>
+</tr>
+<tr>
+<td>Centroid_X</td>
+<td>方格形心X座標</td>
+</tr>
+<tr>
+<td>Centroid_Y</td>
+<td>方格形心Y座標</td>
+</tr>
+<tr>
+<td>DESIGN</td>
+<td>平均頂點設計高程</td>
+</tr>
+<tr>
+<td>CHECK</td>
+<td>平均頂點收方高程</td>
+</tr>
+<tr>
+<td>Volume</td>
+<td>土方體積</td>
+</tr>
+</tbody>
+</table>
+<h3 id="方格頂點計算插值">方格頂點計算插值</h3>
+<ol type="1">
+<li>匯出所有方格不重複頂點</li>
+<li>針對每個頂點進行IDW插值</li>
+<li>搜尋半徑預設為方格大小，計算點數預設為3點</li>
+<li>如頂點因為高程點的分布關係無法滿足上述條件則插值為0</li>
+</ol>
+<figure>
+<img src="GRID_pts.JPG" alt="Fig4.方格頂點資料" />
+<figcaption aria-hidden="true">Fig4.方格頂點資料</figcaption>
+</figure>
+<h3 id="方格土方體積計算">方格土方體積計算</h3>
+<ol type="1">
+<li>透過Grid_Handle連接該方格在CAD中的各頂點</li>
+<li>將各頂點與設計高程座標比對計算該方格平均頂點設計高程</li>
+<li>將各頂點與收方高程座標比對計算該方格平均頂點收方高程</li>
+<li>由平均收方高程扣除平均設計高程與方格面積進行相乘求得方格土方體積</li>
+</ol>
+<h3 id="土方報告">土方報告</h3>
+<p>將上述計算成果放入工作表("REPORT")</p>
+<figure>
+<img src="REPORT.JPG" alt="Fig5.土方計算書" />
+<figcaption aria-hidden="true">Fig5.土方計算書</figcaption>
+</figure>
+<h3 id="可視化呈現">可視化呈現</h3>
+<p>方格可以透過建立3D
+BOX的方式進行可視化呈現，因為高程的差異只有一點點，所以還是需要將高程倍數放大讓使用者可以更清楚掌握細節。</p>
+<figure>
+<img src="5x5-elevationdiff-sharp.JPG"
+alt="Fig6.土方高程差可視化呈現" />
+<figcaption aria-hidden="true">Fig6.土方高程差可視化呈現</figcaption>
+</figure>
+<p>除了以柱狀體方式呈現以外，也可以透過Hatch的顏色差異進行挖方填方的判釋，比如說挖方區域就給綠色，填方區域就給紅色。</p>
+<h2 id="幾何圖學判釋">👨‍🏫幾何圖學判釋</h2>
+<blockquote>
+<p>整體還有很多實現細節可以進去程式碼裡面看!完整的程式碼(包含操作軟體)取得請洽作者諮詢。</p>
+</blockquote>
+<h3 id="判斷點跟多邊形的關係">判斷點跟多邊形的關係</h3>
+<figure class="highlight vb"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">Function</span> IsPointInPolygon(X, Y, poly() <span class="keyword">As</span> <span class="type">Double</span>) <span class="keyword">As</span> <span class="type">Boolean</span></span><br><span class="line">    <span class="comment">&#x27; Check if a point is inside a polygon.</span></span><br><span class="line">    <span class="comment">&#x27; Args:</span></span><br><span class="line">    <span class="comment">&#x27;   x: X coordinate of the point.</span></span><br><span class="line">    <span class="comment">&#x27;   y: Y coordinate of the point.</span></span><br><span class="line">    <span class="comment">&#x27;   poly: An array representing the vertices of the polygon.</span></span><br><span class="line">    <span class="comment">&#x27; Returns:</span></span><br><span class="line">    <span class="comment">&#x27;   True if the point is inside the polygon, False otherwise.</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">Dim</span> i <span class="keyword">As</span> <span class="type">Integer</span>, j <span class="keyword">As</span> <span class="type">Integer</span></span><br><span class="line">    <span class="keyword">Dim</span> numVertices <span class="keyword">As</span> <span class="type">Integer</span></span><br><span class="line">    <span class="keyword">Dim</span> oddNodes <span class="keyword">As</span> <span class="type">Boolean</span></span><br><span class="line"></span><br><span class="line">    numVertices = UBound(poly) \ <span class="number">2</span> + <span class="number">1</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">&#x27; Check if the point is inside the polygon using the ray-casting algorithm</span></span><br><span class="line">    j = numVertices - <span class="number">1</span></span><br><span class="line">    oddNodes = <span class="literal">False</span></span><br><span class="line">    <span class="keyword">For</span> i = <span class="number">0</span> <span class="keyword">To</span> numVertices - <span class="number">1</span></span><br><span class="line">        <span class="keyword">If</span> (poly(<span class="number">2</span> * i + <span class="number">1</span>) &gt; Y) &lt;&gt; (poly(<span class="number">2</span> * j + <span class="number">1</span>) &gt; Y) <span class="keyword">Then</span></span><br><span class="line">            <span class="keyword">If</span> (poly(<span class="number">2</span> * j + <span class="number">1</span>) - poly(<span class="number">2</span> * i + <span class="number">1</span>)) &lt;&gt; <span class="number">0</span> <span class="keyword">Then</span></span><br><span class="line">                <span class="keyword">If</span> X &lt; (poly(<span class="number">2</span> * j) - poly(<span class="number">2</span> * i)) * (Y - poly(<span class="number">2</span> * i + <span class="number">1</span>)) / (poly(<span class="number">2</span> * j + <span class="number">1</span>) - poly(<span class="number">2</span> * i + <span class="number">1</span>)) + poly(<span class="number">2</span> * i) <span class="keyword">Then</span></span><br><span class="line">                    oddNodes = <span class="built_in">Not</span> oddNodes</span><br><span class="line">                <span class="keyword">End</span> <span class="keyword">If</span></span><br><span class="line">            <span class="keyword">End</span> <span class="keyword">If</span></span><br><span class="line">        <span class="keyword">End</span> <span class="keyword">If</span></span><br><span class="line">        j = i</span><br><span class="line">    <span class="keyword">Next</span> i</span><br><span class="line"></span><br><span class="line">    <span class="comment">&#x27; Check if the point is exactly on a vertex or an edge</span></span><br><span class="line">    <span class="keyword">For</span> i = <span class="number">0</span> <span class="keyword">To</span> numVertices - <span class="number">1</span></span><br><span class="line">        j = (i + <span class="number">1</span>) <span class="built_in">Mod</span> numVertices</span><br><span class="line">        <span class="comment">&#x27; Check if the point is on a vertex</span></span><br><span class="line">        <span class="keyword">If</span> X = poly(<span class="number">2</span> * i) <span class="built_in">And</span> Y = poly(<span class="number">2</span> * i + <span class="number">1</span>) <span class="keyword">Then</span></span><br><span class="line">            IsPointInPolygon = <span class="literal">True</span></span><br><span class="line">            <span class="keyword">Exit</span> <span class="keyword">Function</span></span><br><span class="line">        <span class="keyword">End</span> <span class="keyword">If</span></span><br><span class="line">        <span class="comment">&#x27; Check if the point is on an edge</span></span><br><span class="line">        <span class="keyword">If</span> ((poly(<span class="number">2</span> * i + <span class="number">1</span>) &lt;= Y <span class="built_in">And</span> Y &lt;= poly(<span class="number">2</span> * j + <span class="number">1</span>)) <span class="built_in">Or</span> (poly(<span class="number">2</span> * j + <span class="number">1</span>) &lt;= Y <span class="built_in">And</span> Y &lt;= poly(<span class="number">2</span> * i + <span class="number">1</span>))) <span class="built_in">And</span> _</span><br><span class="line">           (X &lt;= myMax(poly(<span class="number">2</span> * i), poly(<span class="number">2</span> * j))) <span class="built_in">And</span> (poly(<span class="number">2</span> * j + <span class="number">1</span>) - poly(<span class="number">2</span> * i + <span class="number">1</span>) &lt;&gt; <span class="number">0</span>) <span class="keyword">Then</span></span><br><span class="line">            <span class="keyword">If</span> X = (poly(<span class="number">2</span> * j) - poly(<span class="number">2</span> * i)) * (Y - poly(<span class="number">2</span> * i + <span class="number">1</span>)) / (poly(<span class="number">2</span> * j + <span class="number">1</span>) - poly(<span class="number">2</span> * i + <span class="number">1</span>)) + poly(<span class="number">2</span> * i) <span class="keyword">Then</span></span><br><span class="line">                IsPointInPolygon = <span class="literal">True</span></span><br><span class="line">                <span class="keyword">Exit</span> <span class="keyword">Function</span></span><br><span class="line">            <span class="keyword">End</span> <span class="keyword">If</span></span><br><span class="line">        <span class="keyword">End</span> <span class="keyword">If</span></span><br><span class="line">    <span class="keyword">Next</span> i</span><br><span class="line"></span><br><span class="line">    IsPointInPolygon = oddNodes</span><br><span class="line"><span class="keyword">End</span> <span class="keyword">Function</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h3 id="判斷多邊形的位置關係">判斷多邊形的位置關係</h3>
+<figure class="highlight vb"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">Function</span> PolygonsRelation(poly1() <span class="keyword">As</span> <span class="type">Double</span>, poly2() <span class="keyword">As</span> <span class="type">Double</span>) <span class="keyword">As</span> <span class="type">String</span></span><br><span class="line">    <span class="comment">&#x27; Check relation between two closed polygons.</span></span><br><span class="line">    <span class="comment">&#x27; Args:</span></span><br><span class="line">    <span class="comment">&#x27;   poly1: An array representing the vertices of the first closed polygon.</span></span><br><span class="line">    <span class="comment">&#x27;   poly2: An array representing the vertices of the second closed polygon.</span></span><br><span class="line">    <span class="comment">&#x27; Returns:</span></span><br><span class="line">    <span class="comment">&#x27;   String indicating the relation between two polygons:</span></span><br><span class="line">    <span class="comment">&#x27;     - &quot;Disjoint&quot;: If polygons are disjoint.</span></span><br><span class="line">    <span class="comment">&#x27;     - &quot;Contains&quot;: If poly1 contains poly2.</span></span><br><span class="line">    <span class="comment">&#x27;     - &quot;Contained By&quot;: If poly2 contains poly1.</span></span><br><span class="line">    <span class="comment">&#x27;     - &quot;Overlap&quot;: If polygons overlap.</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">Dim</span> i <span class="keyword">As</span> <span class="type">Integer</span>, j <span class="keyword">As</span> <span class="type">Integer</span></span><br><span class="line">    <span class="keyword">Dim</span> numVertices1 <span class="keyword">As</span> <span class="type">Integer</span>, numVertices2 <span class="keyword">As</span> <span class="type">Integer</span></span><br><span class="line">    <span class="keyword">Dim</span> containsPoly1 <span class="keyword">As</span> <span class="type">Boolean</span>, containsPoly2 <span class="keyword">As</span> <span class="type">Boolean</span></span><br><span class="line">    <span class="keyword">Dim</span> intersects <span class="keyword">As</span> <span class="type">Boolean</span></span><br><span class="line">    <span class="keyword">Dim</span> X <span class="keyword">As</span> <span class="type">Double</span></span><br><span class="line">    <span class="keyword">Dim</span> Y <span class="keyword">As</span> <span class="type">Double</span></span><br><span class="line">    numVertices1 = UBound(poly1) \ <span class="number">2</span> + <span class="number">1</span></span><br><span class="line">    numVertices2 = UBound(poly2) \ <span class="number">2</span> + <span class="number">1</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment">&#x27; Check if one polygon is completely contained in the other</span></span><br><span class="line">    containsPoly1 = <span class="literal">False</span></span><br><span class="line">    containsPoly2 = <span class="literal">False</span></span><br><span class="line">    <span class="keyword">For</span> i = <span class="number">0</span> <span class="keyword">To</span> numVertices1 - <span class="number">1</span> <span class="comment">&#x27;檢查點資料是否在poly2裡面</span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">If</span> IsPointInPolygon(poly1(<span class="number">2</span> * i), poly1(<span class="number">2</span> * i + <span class="number">1</span>), poly2) <span class="keyword">Then</span></span><br><span class="line">            containsPoly1 = <span class="literal">True</span></span><br><span class="line">            <span class="keyword">Exit</span> <span class="keyword">For</span></span><br><span class="line">        <span class="keyword">End</span> <span class="keyword">If</span></span><br><span class="line">        </span><br><span class="line">    <span class="keyword">Next</span> i</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">For</span> j = <span class="number">0</span> <span class="keyword">To</span> numVertices2 - <span class="number">1</span> <span class="comment">&#x27;檢查點資料是否在poly1裡面</span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">If</span> IsPointInPolygon(poly2(<span class="number">2</span> * j), poly2(<span class="number">2</span> * j + <span class="number">1</span>), poly1) <span class="keyword">Then</span></span><br><span class="line">            containsPoly2 = <span class="literal">True</span></span><br><span class="line">            <span class="keyword">Exit</span> <span class="keyword">For</span></span><br><span class="line">        <span class="keyword">End</span> <span class="keyword">If</span></span><br><span class="line">    <span class="keyword">Next</span> j</span><br><span class="line">    </span><br><span class="line">    <span class="comment">&#x27; Check if polygons are disjoint</span></span><br><span class="line">    <span class="keyword">If</span> <span class="built_in">Not</span> containsPoly1 <span class="built_in">And</span> <span class="built_in">Not</span> containsPoly2 <span class="keyword">Then</span></span><br><span class="line">        intersects = <span class="literal">False</span></span><br><span class="line">        <span class="keyword">For</span> i = <span class="number">0</span> <span class="keyword">To</span> numVertices1 - <span class="number">1</span></span><br><span class="line">            <span class="keyword">For</span> j = <span class="number">0</span> <span class="keyword">To</span> numVertices2 - <span class="number">1</span></span><br><span class="line">                <span class="keyword">If</span> DoIntersect(poly1(<span class="number">2</span> * i), poly1(<span class="number">2</span> * i + <span class="number">1</span>), poly1((<span class="number">2</span> * ((i + <span class="number">1</span>) <span class="built_in">Mod</span> numVertices1))), poly1((<span class="number">2</span> * ((i + <span class="number">1</span>) <span class="built_in">Mod</span> numVertices1)) + <span class="number">1</span>), _</span><br><span class="line">                               poly2(<span class="number">2</span> * j), poly2(<span class="number">2</span> * j + <span class="number">1</span>), poly2((<span class="number">2</span> * ((j + <span class="number">1</span>) <span class="built_in">Mod</span> numVertices2))), poly2((<span class="number">2</span> * ((j + <span class="number">1</span>) <span class="built_in">Mod</span> numVertices2)) + <span class="number">1</span>)) <span class="keyword">Then</span></span><br><span class="line">                    intersects = <span class="literal">True</span></span><br><span class="line">                    <span class="keyword">Exit</span> <span class="keyword">For</span></span><br><span class="line">                <span class="keyword">End</span> <span class="keyword">If</span></span><br><span class="line">            <span class="keyword">Next</span> j</span><br><span class="line">            <span class="keyword">If</span> intersects <span class="keyword">Then</span> <span class="keyword">Exit</span> <span class="keyword">For</span></span><br><span class="line">        <span class="keyword">Next</span> i</span><br><span class="line">        <span class="keyword">If</span> <span class="built_in">Not</span> intersects <span class="keyword">Then</span></span><br><span class="line">            PolygonsRelation = <span class="string">&quot;Disjoint&quot;</span></span><br><span class="line">            <span class="keyword">Exit</span> <span class="keyword">Function</span></span><br><span class="line">        <span class="keyword">End</span> <span class="keyword">If</span></span><br><span class="line">    <span class="keyword">End</span> <span class="keyword">If</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment">&#x27; Check for containment</span></span><br><span class="line">    <span class="keyword">If</span> containsPoly1 <span class="built_in">And</span> containsPoly2 <span class="keyword">Then</span></span><br><span class="line">        PolygonsRelation = <span class="string">&quot;Overlap&quot;</span></span><br><span class="line">    <span class="keyword">ElseIf</span> containsPoly1 <span class="keyword">Then</span></span><br><span class="line">        PolygonsRelation = <span class="string">&quot;Contains&quot;</span></span><br><span class="line">    <span class="keyword">ElseIf</span> containsPoly2 <span class="keyword">Then</span></span><br><span class="line">        PolygonsRelation = <span class="string">&quot;Contained By&quot;</span></span><br><span class="line">    <span class="keyword">Else</span></span><br><span class="line">        PolygonsRelation = <span class="string">&quot;Overlap&quot;</span></span><br><span class="line">    <span class="keyword">End</span> <span class="keyword">If</span></span><br><span class="line"><span class="keyword">End</span> <span class="keyword">Function</span></span><br></pre></td></tr></table></figure>
+<h2 id="開發小結">🎯開發小結</h2>
+<ul>
+<li><p>進行IDW會需要計算距離，建議透過內建函數去執行，不要從VBA算完Length之後再<strong>填儲存格</strong>，效能差很多。</p></li>
+<li><p>判定多邊形幾何關係時，需要額外考量四個頂點都在計畫範圍外但是計畫範圍有凸多邊形插在方格中的情形。</p></li>
+<li><p>電腦計算能力很強的可以將計畫範圍切成5*5的方格，但是還是要考量點資料的密度是否足夠，密度不足會導致很多頂點都是不合理的，程式會自動判釋為0</p></li>
+<li><p>IDW計算時可以透過Cross
+Validation的方式判斷目前模型的合理程度，影響IDW有搜尋半徑、計算最少點數、距離倒數的幕次。</p></li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>作者： </strong>Hank Lin
+  </li>
+  <li class="post-copyright-link">
+      <strong>文章連結：</strong>
+      <a href="https://www.hanksvba.com/posts/4262718496/" title="土方計算-方格法(VBA)">https://www.hanksvba.com/posts/4262718496/</a>
+  </li>
+  <li class="post-copyright-license">
+      <strong>版權聲明： </strong>本網誌所有文章除特別聲明外，均採用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 許可協議。轉載請註明出處！
+  </li>
+</ul>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/AutoCAD-VBA/" rel="tag"><i class="fa fa-tag"></i> AutoCAD VBA</a>
+              <a href="/tags/Excel-VBA/" rel="tag"><i class="fa fa-tag"></i> Excel VBA</a>
+              <a href="/tags/%E5%9C%9F%E6%96%B9%E8%A8%88%E7%AE%97/" rel="tag"><i class="fa fa-tag"></i> 土方計算</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/posts/2699779571/" rel="prev" title="監造報表-數量計算-數量填寫">
+                  <i class="fa fa-angle-left"></i> 監造報表-數量計算-數量填寫
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/posts/639809757/" rel="next" title="Streamlit建置GoogleSheet簡易資料庫">
+                  Streamlit建置GoogleSheet簡易資料庫 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2025</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Hank Lin</span>
+  </div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="訪客總數">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="總瀏覽次數">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 強力驅動
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="back-to-top" role="button" aria-label="回到頂端">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/next-boot.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.1/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+  <script class="next-config" data-name="pdf" type="application/json">{"object_url":{"url":"https://cdnjs.cloudflare.com/ajax/libs/pdfobject/2.2.12/pdfobject.min.js","integrity":"sha256-g2xji1rlE3KsGVClvuxTbcR0Kn2+wtQADSff2Tbb4zA="},"url":"/lib/pdf/web/viewer"}</script>
+  <script src="/js/third-party/tags/pdf.js"></script>
+
+  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":{"light":"default","dark":"dark"},"js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mermaid/10.7.0/mermaid.min.js","integrity":"sha256-TtLOdUA8mstPoO6sGvHIGx2ceXrrX4KgIItO06XOn8A="}}</script>
+  <script src="/js/third-party/tags/mermaid.js"></script>
+
+
+
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">false</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"ams","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+
+</body>
+</html>
