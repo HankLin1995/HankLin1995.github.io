@@ -4255,5 +4255,12 @@ href="https://hankvba.blogspot.com/2018/03/vba.html">VBA引用項目問題</a></
 <li>物件瀏覽是在查詢對象的屬性及方法必備工具，ProgeCAD引用之後，它的名稱叫做<code>IntelliCAD</code>而不是ProgeCAD，需要有引用才有辦法顯示，在後期引用的時候會有問題，如要明確採用後期引用時，傳送給其他人時要記得取消勾選。</li>
 </ul>
 ]]></content>
+      <categories>
+        <category>基本原理</category>
+      </categories>
+      <tags>
+        <tag>AutoCAD VBA</tag>
+        <tag>ProgeCAD VBA</tag>
+      </tags>
   </entry>
 </search>
