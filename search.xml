@@ -4235,12 +4235,12 @@ href="https://www.hanksvba.com/posts/2144300187/">不同版本間的CAD開發</a
 <img src="2.png" alt="Fig2. 引用項目勾選" />
 <figcaption aria-hidden="true">Fig2. 引用項目勾選</figcaption>
 </figure>
-<p>若以ProgeCAD2021版為例，會找到<code>ProgeCAD 2021 Object Library</code>，這個就是引用對象，不同年代版本對應到的名稱會不同，這是他比較麻煩的地方。</p>
+<p>若以ProgeCAD2021版為例，會找到<strong>ProgeCAD 2021 Object
+Library</strong>，這個就是引用對象，不同年代版本對應到的名稱會不同，這是他比較麻煩的地方。</p>
 <h3 id="後期引用">後期引用</h3>
-<p>如欲進行後期引用需要先執行下列<code>CADInit</code>後將CAD參數代入後生成<strong>全域對象</strong>，才能進行後續使用，好處是可以不用管CAD年代版本就能直接使用，對於不同環境的電腦只要確保VBA安裝成功基本上就能使用。</p>
+<p>如欲進行後期引用需要先執行下列<strong>CADInit</strong>後將CAD參數代入後生成<strong>全域對象</strong>，才能進行後續使用，好處是可以不用管CAD年代版本就能直接使用，對於不同環境的電腦只要確保VBA安裝成功基本上就能使用。</p>
 <blockquote>
-<p>全域對象是指在同一專案中即便不同模組也能使用的物件，任何與CAD繪製的方式大多都是透過mo進行，比如
-mo.AddPointEntity</p>
+<p>全域對象是指在同一專案中即便不同模組也能使用的物件</p>
 </blockquote>
 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">public mo &#x27;模型空間</span><br><span class="line">public pa &#x27;配置空間</span><br><span class="line">public acadDoc &#x27;現正作用中的可編輯dwg</span><br><span class="line"></span><br><span class="line">Sub CADInit()</span><br><span class="line"></span><br><span class="line">On Error Resume Next</span><br><span class="line"></span><br><span class="line">Set acadApp = GetObject(, &quot;AutoCAD&quot;) </span><br><span class="line">If Err &lt;&gt; 0 Then Set acadApp = CreateObject(&quot;AutoCAD&quot;)</span><br><span class="line">acadApp.Visible = True</span><br><span class="line"></span><br><span class="line">On Error GoTo 0</span><br><span class="line"></span><br><span class="line">Set mo = acadApp.ActiveDocument.ModelSpace</span><br><span class="line">Set pa = acadApp.ActiveDocument.PaperSpace</span><br><span class="line">Set acadDoc = acadApp.ActiveDocument</span><br><span class="line"></span><br><span class="line">End Sub</span><br></pre></td></tr></table></figure>
 <h3 id="舊文參考">舊文參考</h3>
@@ -4251,8 +4251,8 @@ href="https://hankvba.blogspot.com/2018/03/vba.html">VBA引用項目問題</a></
 <h3 id="踩雷過程">踩雷過程</h3>
 <ul>
 <li>AutoCAD用先期引用時，會因為各主機安裝版本不同導致出現錯誤，需要進入程式碼編輯器中勾選正確版本的引用項目，並<strong>取消遺漏的引用項目</strong>，不然會導致程式碼出現不可解釋的錯誤行為。</li>
-<li>ProgeCAD只能透過先期引用，後期引用會失效，操作部分物件內容時會失效，我遇到的是<code>Library物件的操作會出現問題</code>，Library物件的CreatePoint方法與點資料密切關連，不可避免，後來透過明確的先期引用引入就可以了。</li>
-<li>物件瀏覽是在查詢對象的屬性及方法必備工具，ProgeCAD引用之後，它的名稱叫做<code>IntelliCAD</code>而不是ProgeCAD，需要有引用才有辦法顯示，在後期引用的時候會有問題，如要明確採用後期引用時，傳送給其他人時要記得取消勾選。</li>
+<li>ProgeCAD只能透過先期引用，後期引用會失效，操作部分物件內容時會失效，我遇到的是<strong>Library物件的操作會出現問題</strong>，Library物件的CreatePoint方法與點資料密切關連，不可避免，後來透過明確的先期引用引入就可以了。</li>
+<li>物件瀏覽是在查詢對象的屬性及方法必備工具，ProgeCAD引用之後，它的名稱叫做<strong>IntelliCAD</strong>而不是ProgeCAD，需要有引用才有辦法顯示，在後期引用的時候會有問題，如要明確採用後期引用時，傳送給其他人時要記得取消勾選。</li>
 </ul>
 ]]></content>
       <categories>
