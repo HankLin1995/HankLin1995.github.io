@@ -18,32 +18,40 @@
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"www.hanksvba.com","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.19.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":"mac"},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":false,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜尋...","empty":"我們無法找到任何有關 ${query} 的搜索結果","hits_time":"${hits} 找到 ${time} 個結果","hits":"找到 ${hits} 個結果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
 
-    <meta name="description" content="🙌前言  監造報表為公共工程三級品管制度下的必備表單  依公共工程施工品質管理作業要點第十一、監造單位及其所派駐現場人員工作重點如下:(十五)依規定填報監造報表  格式來源請參考監造報表(附表五)  監造報表所需登載內容除基本資料外，其餘重點簡述如下:  工程進度 數量計算 施工抽查 品質試驗 文件管理  本篇為我所開發的監造日報表VBA的一些專案設計架構簡述，">
+    <meta name="description" content="前言 一般提到CAD大多數都以為是AutoCAD，但其實CAD版本有好多好多種，只是因為學校通常都先教AutoCAD進行使用，透過教育版的免費制度培養一票AutoCAD的粉絲，在習慣介面之後跳往其他版本的CAD會有點障礙，但因為AutoCAD在後期大多改成訂閱制，導致很多公司行號轉往其他管道使用，筆者所在的機關目前也是使用ProgeCAD作為主力使用。 關於CAD的版本:  AutoCAD">
 <meta property="og:type" content="article">
-<meta property="og:title" content="監造日報表設計規劃">
-<meta property="og:url" content="https://www.hanksvba.com/posts/168906144/">
+<meta property="og:title" content="CADVBA(一)、開啟連接的大門">
+<meta property="og:url" content="https://www.hanksvba.com/posts/280929469/">
 <meta property="og:site_name" content="Hank&#39;s Blog">
-<meta property="og:description" content="🙌前言  監造報表為公共工程三級品管制度下的必備表單  依公共工程施工品質管理作業要點第十一、監造單位及其所派駐現場人員工作重點如下:(十五)依規定填報監造報表  格式來源請參考監造報表(附表五)  監造報表所需登載內容除基本資料外，其餘重點簡述如下:  工程進度 數量計算 施工抽查 品質試驗 文件管理  本篇為我所開發的監造日報表VBA的一些專案設計架構簡述，">
+<meta property="og:description" content="前言 一般提到CAD大多數都以為是AutoCAD，但其實CAD版本有好多好多種，只是因為學校通常都先教AutoCAD進行使用，透過教育版的免費制度培養一票AutoCAD的粉絲，在習慣介面之後跳往其他版本的CAD會有點障礙，但因為AutoCAD在後期大多改成訂閱制，導致很多公司行號轉往其他管道使用，筆者所在的機關目前也是使用ProgeCAD作為主力使用。 關於CAD的版本:  AutoCAD">
 <meta property="og:locale" content="zh_TW">
-<meta property="og:image" content="https://www.hanksvba.com/posts/168906144/%E9%99%84%E8%A1%A8%E4%BA%94_%E5%85%AC%E5%85%B1%E5%B7%A5%E7%A8%8B%E7%9B%A3%E9%80%A0%E5%A0%B1%E8%A1%A8_page-0001.jpg">
-<meta property="og:image" content="https://www.hanksvba.com/posts/168906144/%E7%9B%A3%E9%80%A0%E5%A0%B1%E8%A1%A8VBA_page-0001.jpg">
-<meta property="article:published_time" content="2024-04-23T14:02:36.000Z">
-<meta property="article:modified_time" content="2024-04-23T14:02:36.000Z">
+<meta property="og:image" content="https://www.hanksvba.com/posts/280929469/1.png">
+<meta property="og:image" content="https://www.hanksvba.com/posts/280929469/2.png">
+<meta property="article:published_time" content="2025-06-16T10:51:18.000Z">
+<meta property="article:modified_time" content="2025-06-16T10:51:18.000Z">
 <meta property="article:author" content="Hank Lin">
-<meta property="article:tag" content="Excel VBA">
-<meta property="article:tag" content="監造報表">
+<meta property="article:tag" content="Excel">
+<meta property="article:tag" content="ExcelVBA">
+<meta property="article:tag" content="AutoCAD">
+<meta property="article:tag" content="AutoCADVBA">
+<meta property="article:tag" content="GoogleAppScript">
+<meta property="article:tag" content="GAS">
+<meta property="article:tag" content="Python">
+<meta property="article:tag" content="監造日報表">
+<meta property="article:tag" content="施工日誌">
+<meta property="article:tag" content="施工照片">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://www.hanksvba.com/posts/168906144/%E9%99%84%E8%A1%A8%E4%BA%94_%E5%85%AC%E5%85%B1%E5%B7%A5%E7%A8%8B%E7%9B%A3%E9%80%A0%E5%A0%B1%E8%A1%A8_page-0001.jpg">
+<meta name="twitter:image" content="https://www.hanksvba.com/posts/280929469/1.png">
 
 
-<link rel="canonical" href="https://www.hanksvba.com/posts/168906144/">
+<link rel="canonical" href="https://www.hanksvba.com/posts/280929469/">
 
 
 
-<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-TW","comments":true,"permalink":"https://www.hanksvba.com/posts/168906144/","path":"posts/168906144/","title":"監造日報表設計規劃"}</script>
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-TW","comments":true,"permalink":"https://www.hanksvba.com/posts/280929469/","path":"posts/280929469/","title":"CADVBA(一)、開啟連接的大門"}</script>
 
 <script class="next-config" data-name="calendar" type="application/json">""</script>
-<title>監造日報表設計規劃 | Hank's Blog</title>
+<title>CADVBA(一)、開啟連接的大門 | Hank's Blog</title>
   
 
 
@@ -143,7 +151,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%89%8D%E8%A8%80"><span class="nav-number">1.</span> <span class="nav-text">🙌前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B7%A5%E7%A8%8B%E9%80%B2%E5%BA%A6"><span class="nav-number">2.</span> <span class="nav-text">🚸工程進度</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%A0%90%E5%AE%9A%E9%80%B2%E5%BA%A6"><span class="nav-number">2.1.</span> <span class="nav-text">預定進度</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AF%A6%E9%9A%9B%E9%80%B2%E5%BA%A6"><span class="nav-number">2.2.</span> <span class="nav-text">實際進度</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AA%81%E7%99%BC%E6%83%85%E5%BD%A2"><span class="nav-number">2.3.</span> <span class="nav-text">突發情形</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%95%B8%E9%87%8F%E8%A8%88%E7%AE%97"><span class="nav-number">3.</span> <span class="nav-text">✏️數量計算</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%96%BD%E5%B7%A5%E6%8A%BD%E6%9F%A5"><span class="nav-number">4.</span> <span class="nav-text">⚒️施工抽查</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%93%81%E8%B3%AA%E8%A9%A6%E9%A9%97"><span class="nav-number">5.</span> <span class="nav-text">📋品質試驗</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%96%87%E4%BB%B6%E7%AE%A1%E7%90%86"><span class="nav-number">6.</span> <span class="nav-text">📚文件管理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%9B%A3%E9%80%A0%E5%A0%B1%E8%A1%A8vba%E7%B3%BB%E7%B5%B1%E6%9E%B6%E6%A7%8B%E5%9C%96"><span class="nav-number">7.</span> <span class="nav-text">💥監造報表VBA系統架構圖</span></a></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%89%8D%E8%A8%80"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#vba%E7%92%B0%E5%A2%83%E5%BB%BA%E7%AB%8B"><span class="nav-number">2.</span> <span class="nav-text">VBA環境建立</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#autocad"><span class="nav-number">2.1.</span> <span class="nav-text">AutoCAD</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#progecad"><span class="nav-number">2.2.</span> <span class="nav-text">ProgeCAD</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#excel%E8%88%87cad%E9%80%A3%E6%8E%A5%E6%96%B9%E6%B3%95"><span class="nav-number">3.</span> <span class="nav-text">Excel與CAD連接方法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%88%E6%9C%9F%E5%BC%95%E7%94%A8"><span class="nav-number">3.1.</span> <span class="nav-text">先期引用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BE%8C%E6%9C%9F%E5%BC%95%E7%94%A8"><span class="nav-number">3.2.</span> <span class="nav-text">後期引用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%88%8A%E6%96%87%E5%8F%83%E8%80%83"><span class="nav-number">3.3.</span> <span class="nav-text">舊文參考</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%B8%A9%E9%9B%B7%E9%81%8E%E7%A8%8B"><span class="nav-number">3.4.</span> <span class="nav-text">踩雷過程</span></a></li></ol></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -216,7 +224,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-TW">
-    <link itemprop="mainEntityOfPage" href="https://www.hanksvba.com/posts/168906144/">
+    <link itemprop="mainEntityOfPage" href="https://www.hanksvba.com/posts/280929469/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar_custom.png">
@@ -229,12 +237,12 @@
     </span>
 
     <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="監造日報表設計規劃 | Hank's Blog">
+      <meta itemprop="name" content="CADVBA(一)、開啟連接的大門 | Hank's Blog">
       <meta itemprop="description" content="">
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          監造日報表設計規劃
+          CADVBA(一)、開啟連接的大門
         </h1>
 
         <div class="post-meta-container">
@@ -245,16 +253,7 @@
       </span>
       <span class="post-meta-item-text">發表於</span>
 
-      <time title="創建時間：2024-04-23 22:02:36" itemprop="dateCreated datePublished" datetime="2024-04-23T22:02:36+08:00">2024-04-23</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分類於</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E5%B0%88%E6%A1%88%E9%96%8B%E7%99%BC/" itemprop="url" rel="index"><span itemprop="name">專案開發</span></a>
-        </span>
+      <time title="創建時間：2025-06-16 18:51:18" itemprop="dateCreated datePublished" datetime="2025-06-16T18:51:18+08:00">2025-06-16</time>
     </span>
 
   
@@ -273,97 +272,64 @@
     
     
     
-    <div class="post-body" itemprop="articleBody"><h2 id="前言">🙌前言</h2>
-<blockquote>
-<p>監造報表為公共工程三級品管制度下的必備表單</p>
-</blockquote>
-<p>依公共工程施工品質管理作業要點第十一、監造單位及其所派駐現場人員工作重點如下:(十五)依規定填報<strong>監造報表</strong></p>
-<ul>
-<li>格式來源請參考<a
-target="_blank" rel="noopener" href="https://www.pcc.gov.tw/cp.aspx?n=82B82C5E132EEB1F">監造報表(附表五)</a></li>
-</ul>
-<p>監造報表所需登載內容除基本資料外，其餘重點簡述如下:</p>
+    <div class="post-body" itemprop="articleBody"><h2 id="前言">前言</h2>
+<p>一般提到CAD大多數都以為是AutoCAD，但其實CAD版本有好多好多種，只是因為學校通常都先教AutoCAD進行使用，透過教育版的免費制度培養一票AutoCAD的粉絲，在習慣介面之後跳往其他版本的CAD會有點障礙，但因為AutoCAD在後期大多改成訂閱制，導致很多公司行號轉往其他管道使用，筆者所在的機關目前也是使用ProgeCAD作為主力使用。</p>
+<p>關於CAD的版本:</p>
 <ol type="1">
-<li>工程進度</li>
-<li>數量計算</li>
-<li>施工抽查</li>
-<li>品質試驗</li>
-<li>文件管理</li>
+<li>AutoCAD(訂閱制)</li>
+<li>ZWCAD(中資成分被禁用)</li>
+<li>ProgeCAD(買斷制)</li>
 </ol>
-<p>本篇為我所開發的監造日報表VBA的一些專案設計架構簡述，
-有興趣請繼續觀看...</p>
+<p>如果基本的操作功能不敷使用導致效率低落時，可以透過CAD本身提供的套件進行額外強化，而<strong>VBA</strong>則是提供套件之一，筆者自2018年起便開始進行AutoCADVBA相關開發，特別介紹啟蒙導師為<a
+target="_blank" rel="noopener" href="https://markc0826.blogspot.com/">馬克的營建與電腦</a>，當初就是被他的<a
+target="_blank" rel="noopener" href="https://markc0826.blogspot.com/2011/12/excel.html">Excel自動繪製縱坡圖表</a>吸引到，而開始一系列的研究之路。</p>
+<p>本系列文主要是介紹筆者在CADVBA上的心路歷程，希望能夠由淺入深，期待各位讀者吸收後也能具備修改VBA程式碼的能力，優化自身工作流程，藉由節省下來的時間來開發更多好用的工具，良性循環。</p>
 <span id="more"></span>
+<h2 id="vba環境建立">VBA環境建立</h2>
+<h3 id="autocad">AutoCAD</h3>
+<p>自2012年起，不再預設安裝於AutoCAD，如果需要使用時要到官網下載安裝。</p>
+<p><a
+target="_blank" rel="noopener" href="https://www.autodesk.com/support/technical/article/caas/tsarticles/ts/3kxk0RyvfWTfSfAIrcmsLQ.html">官方VBA下載點</a></p>
+<h3 id="progecad">ProgeCAD</h3>
+<p>內建於裡面，但屬性及方法仍不像AutoCAD那麼完整，有時候請原廠修復時也比較會拖，需要透過修改演算法進行問題排除。</p>
+<p><a
+href="https://www.hanksvba.com/posts/2144300187/">不同版本間的CAD開發</a></p>
+<h2 id="excel與cad連接方法">Excel與CAD連接方法</h2>
+<p><strong>Excel</strong>是大部分工程人員最常接觸的工具，Excel作為資料進出的主要操作媒介，同時也具備VBA的功能，能夠將CAD作為引用項目進行連動，資料就能透過Excel與CAD連接，驅動CAD進行圖說繪製。</p>
+<h3 id="先期引用">先期引用</h3>
+<blockquote>
+<p>Excel&gt;檔案&gt;選項&gt;自訂功能區&gt;開發人員勾選</p>
+</blockquote>
 <figure>
-<img src="附表五_公共工程監造報表_page-0001.jpg"
-alt="Fig1. 監造報表畫面" />
-<figcaption aria-hidden="true">Fig1. 監造報表畫面</figcaption>
+<img src="1.png" alt="Fig1. 開發人員選單" />
+<figcaption aria-hidden="true">Fig1. 開發人員選單</figcaption>
 </figure>
-<hr />
-<h2 id="工程進度">🚸工程進度</h2>
-<h3 id="預定進度">預定進度</h3>
 <blockquote>
-<p>此處的紀錄內容為提報施工計畫書時的施工進度網圖內容</p>
+<p>開發人員&gt;檢視程式碼&gt;工具&gt;設定引用項目&gt;找到相關的套件勾選</p>
 </blockquote>
-<p>複雜的案子可能會是箭線網圖畫、簡單的案子通常用甘特圖，不管如何，最底下的累積進度通常每半個月會有一個數值，這就是報表上所需的預定進度，如果比較簡單的案子可以用內插值的方式去補數值。</p>
-<div class="note info"><p>累積進度以內插方式進行時，在某些大案子中可能無法貼近預排進度，建議透過構造物的拆項預排，由構造物的單元分析去換算契約價金，再以該價金進行預定進度的換算會比較準確。</p>
-</div>
-<h3 id="實際進度">實際進度</h3>
+<figure>
+<img src="2.png" alt="Fig2. 引用項目勾選" />
+<figcaption aria-hidden="true">Fig2. 引用項目勾選</figcaption>
+</figure>
+<p>若以ProgeCAD2021版為例，會找到<code>ProgeCAD 2021 Object Library</code>，這個就是引用對象，不同年代版本對應到的名稱會不同，這是他比較麻煩的地方。</p>
+<h3 id="後期引用">後期引用</h3>
+<p>如欲進行後期引用需要先執行下列<code>CADInit</code>後將CAD參數代入後生成<strong>全域對象</strong>，才能進行後續使用，好處是可以不用管CAD年代版本就能直接使用，對於不同環境的電腦只要確保VBA安裝成功基本上就能使用。</p>
 <blockquote>
-<p>按契約詳細表項目已經抽查完成部分所換算之金額佔契約價金之金額百分比。</p>
+<p>全域對象是指在同一專案中即便不同模組也能使用的物件，任何與CAD繪製的方式大多都是透過mo進行，比如
+mo.AddPointEntity</p>
 </blockquote>
-<p>有些業主會要求計算工程進度分母時，<strong>不要計入</strong>廠商管理費及營業稅，但卻又要求要顯示於監造報表的詳細表上...</p>
-<h3 id="突發情形">突發情形</h3>
-<p>在工程執行期間，可能有諸多原因導致<strong>展延工期</strong>、<strong>停工</strong>等情況，此時也需要重新調整施工網圖並將正確之預定進度紀錄上去。</p>
-<hr />
-<h2 id="數量計算">✏️數量計算</h2>
-<blockquote>
-<p>對應於 一、工程進行情況(含約定之重要施工項目及數量)</p>
-</blockquote>
-<p>在監造計畫書中會提及重要施工項目及數量，可以用這部分的內容來進行紀錄</p>
-<p>紀錄內容可能會有以下情況</p>
-<ol type="1">
-<li>紀錄累積數量不為<strong>0</strong>的契約項目(即部分呈現)</li>
-<li>紀錄契約數量不為<strong>0</strong>的契約項目(即全部呈現)</li>
-<li>紀錄當日施作內容，再另檢附第二聯詳細表(即全部呈現在第二聯)</li>
-</ol>
-<p>這部分的差異變化比較大，我的專案都會把這些邏輯建立起來，到時再來選要哪一種即可</p>
-<hr />
-<h2 id="施工抽查">⚒️施工抽查</h2>
-<blockquote>
-<p>對應於
-二、監督依照設計圖說及核定施工圖說施工(含約定之檢驗停留點及施工抽查等情形)</p>
-</blockquote>
-<p>依照監造計畫書所提及的檢驗頻率進行檢驗停留點抽查或隨機抽查。</p>
-<p>紀錄內容為抽查紀錄表的編號、項目、合格與否。</p>
-<p>很多委員都會認為紀錄表就是要用<strong>手寫</strong>才有FU，因此在進行施工抽查的歸檔時，會需要再另外掃描。</p>
-<h2 id="品質試驗">📋品質試驗</h2>
-<blockquote>
-<p>對應於
-三、查核材料規格及品質(含約定之檢驗停留點、材料設備管制及檢(試)驗等抽驗情形)</p>
-</blockquote>
-<p>依照品質計畫書所提及的材料設備品管頻率進行廠驗或抽驗。</p>
-<p>紀錄內容為材料設備管制名稱、契約數量、已作數量。</p>
-<p>這部分跟施工抽查有點類似，試驗報告通常也會是紙本的內容，因此在品質試驗的歸檔，一樣也是要另外掃描起來。</p>
-<h2 id="文件管理">📚文件管理</h2>
-<blockquote>
-<p>對應於
-五、其他約定監造事項(含重要事項紀錄、主辦機關指示及通知廠商辦理事項)</p>
-</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">public mo &#x27;模型空間</span><br><span class="line">public pa &#x27;配置空間</span><br><span class="line">public acadDoc &#x27;現正作用中的可編輯dwg</span><br><span class="line"></span><br><span class="line">Sub CADInit()</span><br><span class="line"></span><br><span class="line">On Error Resume Next</span><br><span class="line"></span><br><span class="line">Set acadApp = GetObject(, &quot;AutoCAD&quot;) </span><br><span class="line">If Err &lt;&gt; 0 Then Set acadApp = CreateObject(&quot;AutoCAD&quot;)</span><br><span class="line">acadApp.Visible = True</span><br><span class="line"></span><br><span class="line">On Error GoTo 0</span><br><span class="line"></span><br><span class="line">Set mo = acadApp.ActiveDocument.ModelSpace</span><br><span class="line">Set pa = acadApp.ActiveDocument.PaperSpace</span><br><span class="line">Set acadDoc = acadApp.ActiveDocument</span><br><span class="line"></span><br><span class="line">End Sub</span><br></pre></td></tr></table></figure>
+<h3 id="舊文參考">舊文參考</h3>
+<p><a
+target="_blank" rel="noopener" href="https://hankvba.blogspot.com/2018/03/autocadvba_26.html">AutoCADVBA學習資源</a>
+<a
+target="_blank" rel="noopener" href="https://hankvba.blogspot.com/2018/03/vba.html">VBA引用項目問題</a></p>
+<h3 id="踩雷過程">踩雷過程</h3>
 <ul>
-<li>機關公文(變更、新增、展延、停工、材料、估驗、行政文件...等)</li>
-<li>督導查核</li>
-<li>會議記錄</li>
-<li>交辦事項</li>
-<li><strong>其他覺得應該要紀錄的內容</strong></li>
+<li>AutoCAD用先期引用時，會因為各主機安裝版本不同導致出現錯誤，需要進入程式碼編輯器中勾選正確版本的引用項目，並<strong>取消遺漏的引用項目</strong>，不然會導致程式碼出現不可解釋的錯誤行為。</li>
+<li>ProgeCAD只能透過先期引用，後期引用會失效，操作部分物件內容時會失效，我遇到的是<code>Library物件的操作會出現問題</code>，Library物件的CreatePoint方法與點資料密切關連，不可避免，後來透過明確的先期引用引入就可以了。</li>
+<li>物件瀏覽是在查詢對象的屬性及方法必備工具，ProgeCAD引用之後，它的名稱叫做<code>IntelliCAD</code>而不是ProgeCAD，需要有引用才有辦法顯示，在後期引用的時候會有問題，如要明確採用後期引用時，傳送給其他人時要記得取消勾選。</li>
 </ul>
-<p>每個工程案應該都會有無數個會議、無數個來往公文，無論是對業主還是對廠商都是，而這些都會需要紀錄在監造報表中</p>
-<p>預期每個對工程案不了解的人，透過翻找監造報表，就能夠了解整個工程的大致內容，這就是撰寫的主要目的。</p>
-<h2 id="監造報表vba系統架構圖">💥監造報表VBA系統架構圖</h2>
-<figure>
-<img src="監造報表VBA_page-0001.jpg"
-alt="Fig2. 監造報表VBA系統架構圖" />
-<figcaption aria-hidden="true">Fig2. 監造報表VBA系統架構圖</figcaption>
-</figure>
 
     </div>
 
@@ -381,7 +347,7 @@ alt="Fig2. 監造報表VBA系統架構圖" />
   </li>
   <li class="post-copyright-link">
       <strong>文章連結：</strong>
-      <a href="https://www.hanksvba.com/posts/168906144/" title="監造日報表設計規劃">https://www.hanksvba.com/posts/168906144/</a>
+      <a href="https://www.hanksvba.com/posts/280929469/" title="CADVBA(一)、開啟連接的大門">https://www.hanksvba.com/posts/280929469/</a>
   </li>
   <li class="post-copyright-license">
       <strong>版權聲明： </strong>本網誌所有文章除特別聲明外，均採用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 許可協議。轉載請註明出處！
@@ -389,23 +355,16 @@ alt="Fig2. 監造報表VBA系統架構圖" />
 </ul>
 </div>
 
-          <div class="post-tags">
-              <a href="/tags/Excel-VBA/" rel="tag"><i class="fa fa-tag"></i> Excel VBA</a>
-              <a href="/tags/%E7%9B%A3%E9%80%A0%E5%A0%B1%E8%A1%A8/" rel="tag"><i class="fa fa-tag"></i> 監造報表</a>
-          </div>
 
         
 
           <div class="post-nav">
             <div class="post-nav-item">
-                <a href="/posts/3021870975/" rel="prev" title="明渠水理計算">
-                  <i class="fa fa-angle-left"></i> 明渠水理計算
+                <a href="/posts/304659370/" rel="prev" title="施工抽查紀錄表管控系統">
+                  <i class="fa fa-angle-left"></i> 施工抽查紀錄表管控系統
                 </a>
             </div>
             <div class="post-nav-item">
-                <a href="/posts/1952534825/" rel="next" title="監造報表規劃-數量計算">
-                  監造報表規劃-數量計算 <i class="fa fa-angle-right"></i>
-                </a>
             </div>
           </div>
     </footer>

@@ -4193,4 +4193,67 @@ Studio無法登入時，會無法操作資料庫中的所有內容，儘管用pg
         <tag>SQL</tag>
       </tags>
   </entry>
+  <entry>
+    <title>CADVBA(一)、開啟連接的大門</title>
+    <url>/posts/280929469/</url>
+    <content><![CDATA[<h2 id="前言">前言</h2>
+<p>一般提到CAD大多數都以為是AutoCAD，但其實CAD版本有好多好多種，只是因為學校通常都先教AutoCAD進行使用，透過教育版的免費制度培養一票AutoCAD的粉絲，在習慣介面之後跳往其他版本的CAD會有點障礙，但因為AutoCAD在後期大多改成訂閱制，導致很多公司行號轉往其他管道使用，筆者所在的機關目前也是使用ProgeCAD作為主力使用。</p>
+<p>關於CAD的版本:</p>
+<ol type="1">
+<li>AutoCAD(訂閱制)</li>
+<li>ZWCAD(中資成分被禁用)</li>
+<li>ProgeCAD(買斷制)</li>
+</ol>
+<p>如果基本的操作功能不敷使用導致效率低落時，可以透過CAD本身提供的套件進行額外強化，而<strong>VBA</strong>則是提供套件之一，筆者自2018年起便開始進行AutoCADVBA相關開發，特別介紹啟蒙導師為<a
+href="https://markc0826.blogspot.com/">馬克的營建與電腦</a>，當初就是被他的<a
+href="https://markc0826.blogspot.com/2011/12/excel.html">Excel自動繪製縱坡圖表</a>吸引到，而開始一系列的研究之路。</p>
+<p>本系列文主要是介紹筆者在CADVBA上的心路歷程，希望能夠由淺入深，期待各位讀者吸收後也能具備修改VBA程式碼的能力，優化自身工作流程，藉由節省下來的時間來開發更多好用的工具，良性循環。</p>
+<span id="more"></span>
+<h2 id="vba環境建立">VBA環境建立</h2>
+<h3 id="autocad">AutoCAD</h3>
+<p>自2012年起，不再預設安裝於AutoCAD，如果需要使用時要到官網下載安裝。</p>
+<p><a
+href="https://www.autodesk.com/support/technical/article/caas/tsarticles/ts/3kxk0RyvfWTfSfAIrcmsLQ.html">官方VBA下載點</a></p>
+<h3 id="progecad">ProgeCAD</h3>
+<p>內建於裡面，但屬性及方法仍不像AutoCAD那麼完整，有時候請原廠修復時也比較會拖，需要透過修改演算法進行問題排除。</p>
+<p><a
+href="https://www.hanksvba.com/posts/2144300187/">不同版本間的CAD開發</a></p>
+<h2 id="excel與cad連接方法">Excel與CAD連接方法</h2>
+<p><strong>Excel</strong>是大部分工程人員最常接觸的工具，Excel作為資料進出的主要操作媒介，同時也具備VBA的功能，能夠將CAD作為引用項目進行連動，資料就能透過Excel與CAD連接，驅動CAD進行圖說繪製。</p>
+<h3 id="先期引用">先期引用</h3>
+<blockquote>
+<p>Excel&gt;檔案&gt;選項&gt;自訂功能區&gt;開發人員勾選</p>
+</blockquote>
+<figure>
+<img src="1.png" alt="Fig1. 開發人員選單" />
+<figcaption aria-hidden="true">Fig1. 開發人員選單</figcaption>
+</figure>
+<blockquote>
+<p>開發人員&gt;檢視程式碼&gt;工具&gt;設定引用項目&gt;找到相關的套件勾選</p>
+</blockquote>
+<figure>
+<img src="2.png" alt="Fig2. 引用項目勾選" />
+<figcaption aria-hidden="true">Fig2. 引用項目勾選</figcaption>
+</figure>
+<p>若以ProgeCAD2021版為例，會找到<code>ProgeCAD 2021 Object Library</code>，這個就是引用對象，不同年代版本對應到的名稱會不同，這是他比較麻煩的地方。</p>
+<h3 id="後期引用">後期引用</h3>
+<p>如欲進行後期引用需要先執行下列<code>CADInit</code>後將CAD參數代入後生成<strong>全域對象</strong>，才能進行後續使用，好處是可以不用管CAD年代版本就能直接使用，對於不同環境的電腦只要確保VBA安裝成功基本上就能使用。</p>
+<blockquote>
+<p>全域對象是指在同一專案中即便不同模組也能使用的物件，任何與CAD繪製的方式大多都是透過mo進行，比如
+mo.AddPointEntity</p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">public mo &#x27;模型空間</span><br><span class="line">public pa &#x27;配置空間</span><br><span class="line">public acadDoc &#x27;現正作用中的可編輯dwg</span><br><span class="line"></span><br><span class="line">Sub CADInit()</span><br><span class="line"></span><br><span class="line">On Error Resume Next</span><br><span class="line"></span><br><span class="line">Set acadApp = GetObject(, &quot;AutoCAD&quot;) </span><br><span class="line">If Err &lt;&gt; 0 Then Set acadApp = CreateObject(&quot;AutoCAD&quot;)</span><br><span class="line">acadApp.Visible = True</span><br><span class="line"></span><br><span class="line">On Error GoTo 0</span><br><span class="line"></span><br><span class="line">Set mo = acadApp.ActiveDocument.ModelSpace</span><br><span class="line">Set pa = acadApp.ActiveDocument.PaperSpace</span><br><span class="line">Set acadDoc = acadApp.ActiveDocument</span><br><span class="line"></span><br><span class="line">End Sub</span><br></pre></td></tr></table></figure>
+<h3 id="舊文參考">舊文參考</h3>
+<p><a
+href="https://hankvba.blogspot.com/2018/03/autocadvba_26.html">AutoCADVBA學習資源</a>
+<a
+href="https://hankvba.blogspot.com/2018/03/vba.html">VBA引用項目問題</a></p>
+<h3 id="踩雷過程">踩雷過程</h3>
+<ul>
+<li>AutoCAD用先期引用時，會因為各主機安裝版本不同導致出現錯誤，需要進入程式碼編輯器中勾選正確版本的引用項目，並<strong>取消遺漏的引用項目</strong>，不然會導致程式碼出現不可解釋的錯誤行為。</li>
+<li>ProgeCAD只能透過先期引用，後期引用會失效，操作部分物件內容時會失效，我遇到的是<code>Library物件的操作會出現問題</code>，Library物件的CreatePoint方法與點資料密切關連，不可避免，後來透過明確的先期引用引入就可以了。</li>
+<li>物件瀏覽是在查詢對象的屬性及方法必備工具，ProgeCAD引用之後，它的名稱叫做<code>IntelliCAD</code>而不是ProgeCAD，需要有引用才有辦法顯示，在後期引用的時候會有問題，如要明確採用後期引用時，傳送給其他人時要記得取消勾選。</li>
+</ul>
+]]></content>
+  </entry>
 </search>
