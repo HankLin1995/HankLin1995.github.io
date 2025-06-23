@@ -27,12 +27,13 @@
 <meta property="og:locale" content="zh_TW">
 <meta property="og:image" content="https://www.hanksvba.com/posts/4262718496/H_List.JPG">
 <meta property="og:image" content="https://www.hanksvba.com/posts/4262718496/H2_List.JPG">
+<meta property="og:image" content="https://www.hanksvba.com/posts/4262718496/0.png">
 <meta property="og:image" content="https://www.hanksvba.com/posts/4262718496/GRID_Num.JPG">
 <meta property="og:image" content="https://www.hanksvba.com/posts/4262718496/GRID_pts.JPG">
 <meta property="og:image" content="https://www.hanksvba.com/posts/4262718496/REPORT.JPG">
 <meta property="og:image" content="https://www.hanksvba.com/posts/4262718496/5x5-elevationdiff-sharp.JPG">
 <meta property="article:published_time" content="2024-06-10T04:09:45.000Z">
-<meta property="article:modified_time" content="2024-06-10T04:09:45.000Z">
+<meta property="article:modified_time" content="2025-06-08T04:09:45.000Z">
 <meta property="article:author" content="Hank Lin">
 <meta property="article:tag" content="AutoCAD VBA">
 <meta property="article:tag" content="Excel VBA">
@@ -148,7 +149,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%89%8D%E8%A8%80"><span class="nav-number">1.</span> <span class="nav-text">🙌前言</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B0%8F%E5%9E%8B%E5%B7%A5%E7%A8%8B"><span class="nav-number">1.1.</span> <span class="nav-text">小型工程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A4%A7%E5%9E%8B%E5%B7%A5%E7%A8%8B"><span class="nav-number">1.2.</span> <span class="nav-text">大型工程</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%A8%88%E7%AE%97%E6%96%B9%E6%B3%95%E9%81%B8%E5%AE%9A"><span class="nav-number">2.</span> <span class="nav-text">計算方法選定</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BD%B1%E7%89%87%E6%93%8D%E4%BD%9C"><span class="nav-number">3.</span> <span class="nav-text">🎬影片操作</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AF%A6%E7%8F%BE%E9%82%8F%E8%BC%AF"><span class="nav-number">4.</span> <span class="nav-text">👉實現邏輯</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BB%BA%E7%AB%8B%E6%B8%AC%E9%87%8F%E9%BB%9E%E5%BD%B1%E7%89%87%E6%9C%AA%E5%87%BA%E7%8F%BE"><span class="nav-number">4.1.</span> <span class="nav-text">建立測量點(影片未出現)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BB%BA%E7%AB%8B%E6%96%B9%E6%A0%BC"><span class="nav-number">4.2.</span> <span class="nav-text">建立方格</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%96%B9%E6%A0%BC%E7%B7%A8%E8%99%9F%E5%8F%8A%E9%9D%A2%E7%A9%8D"><span class="nav-number">4.3.</span> <span class="nav-text">方格編號及面積</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%96%B9%E6%A0%BC%E9%A0%82%E9%BB%9E%E8%A8%88%E7%AE%97%E6%8F%92%E5%80%BC"><span class="nav-number">4.4.</span> <span class="nav-text">方格頂點計算插值</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%96%B9%E6%A0%BC%E5%9C%9F%E6%96%B9%E9%AB%94%E7%A9%8D%E8%A8%88%E7%AE%97"><span class="nav-number">4.5.</span> <span class="nav-text">方格土方體積計算</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9C%9F%E6%96%B9%E5%A0%B1%E5%91%8A"><span class="nav-number">4.6.</span> <span class="nav-text">土方報告</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8F%AF%E8%A6%96%E5%8C%96%E5%91%88%E7%8F%BE"><span class="nav-number">4.7.</span> <span class="nav-text">可視化呈現</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B9%BE%E4%BD%95%E5%9C%96%E5%AD%B8%E5%88%A4%E9%87%8B"><span class="nav-number">5.</span> <span class="nav-text">👨‍🏫幾何圖學判釋</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%A4%E6%96%B7%E9%BB%9E%E8%B7%9F%E5%A4%9A%E9%82%8A%E5%BD%A2%E7%9A%84%E9%97%9C%E4%BF%82"><span class="nav-number">5.1.</span> <span class="nav-text">判斷點跟多邊形的關係</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%A4%E6%96%B7%E5%A4%9A%E9%82%8A%E5%BD%A2%E7%9A%84%E4%BD%8D%E7%BD%AE%E9%97%9C%E4%BF%82"><span class="nav-number">5.2.</span> <span class="nav-text">判斷多邊形的位置關係</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%96%8B%E7%99%BC%E5%B0%8F%E7%B5%90"><span class="nav-number">6.</span> <span class="nav-text">🎯開發小結</span></a></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%89%8D%E8%A8%80"><span class="nav-number">1.</span> <span class="nav-text">🙌前言</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B0%8F%E5%9E%8B%E5%B7%A5%E7%A8%8B"><span class="nav-number">1.1.</span> <span class="nav-text">小型工程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A4%A7%E5%9E%8B%E5%B7%A5%E7%A8%8B"><span class="nav-number">1.2.</span> <span class="nav-text">大型工程</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%A8%88%E7%AE%97%E6%96%B9%E6%B3%95%E9%81%B8%E5%AE%9A"><span class="nav-number">2.</span> <span class="nav-text">計算方法選定</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BD%B1%E7%89%87%E6%93%8D%E4%BD%9C"><span class="nav-number">3.</span> <span class="nav-text">🎬影片操作</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AF%A6%E7%8F%BE%E9%82%8F%E8%BC%AF"><span class="nav-number">4.</span> <span class="nav-text">👉實現邏輯</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BB%BA%E7%AB%8B%E6%B8%AC%E9%87%8F%E9%BB%9E%E5%BD%B1%E7%89%87%E6%9C%AA%E5%87%BA%E7%8F%BE"><span class="nav-number">4.1.</span> <span class="nav-text">建立測量點(影片未出現)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%B9%AA%E8%A3%BD%E9%BB%9E%E4%BD%8D0608%E6%9B%B4%E6%96%B0"><span class="nav-number">4.2.</span> <span class="nav-text">繪製點位(0608更新)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BB%BA%E7%AB%8B%E6%96%B9%E6%A0%BC"><span class="nav-number">4.3.</span> <span class="nav-text">建立方格</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%96%B9%E6%A0%BC%E7%B7%A8%E8%99%9F%E5%8F%8A%E9%9D%A2%E7%A9%8D"><span class="nav-number">4.4.</span> <span class="nav-text">方格編號及面積</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%96%B9%E6%A0%BC%E9%A0%82%E9%BB%9E%E8%A8%88%E7%AE%97%E6%8F%92%E5%80%BC"><span class="nav-number">4.5.</span> <span class="nav-text">方格頂點計算插值</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%96%B9%E6%A0%BC%E5%9C%9F%E6%96%B9%E9%AB%94%E7%A9%8D%E8%A8%88%E7%AE%97"><span class="nav-number">4.6.</span> <span class="nav-text">方格土方體積計算</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9C%9F%E6%96%B9%E5%A0%B1%E5%91%8A"><span class="nav-number">4.7.</span> <span class="nav-text">土方報告</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#vba%E5%B7%A5%E5%85%B7%E9%80%A3%E7%B5%90"><span class="nav-number">4.8.</span> <span class="nav-text">VBA工具連結</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8F%AF%E8%A6%96%E5%8C%96%E5%91%88%E7%8F%BE%E9%96%8B%E7%99%BC%E4%B8%AD"><span class="nav-number">4.9.</span> <span class="nav-text">可視化呈現(開發中)</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B9%BE%E4%BD%95%E5%9C%96%E5%AD%B8%E5%88%A4%E9%87%8B"><span class="nav-number">5.</span> <span class="nav-text">👨‍🏫幾何圖學判釋</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%A4%E6%96%B7%E9%BB%9E%E8%B7%9F%E5%A4%9A%E9%82%8A%E5%BD%A2%E7%9A%84%E9%97%9C%E4%BF%82"><span class="nav-number">5.1.</span> <span class="nav-text">判斷點跟多邊形的關係</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%A4%E6%96%B7%E5%A4%9A%E9%82%8A%E5%BD%A2%E7%9A%84%E4%BD%8D%E7%BD%AE%E9%97%9C%E4%BF%82"><span class="nav-number">5.2.</span> <span class="nav-text">判斷多邊形的位置關係</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%96%8B%E7%99%BC%E5%B0%8F%E7%B5%90"><span class="nav-number">6.</span> <span class="nav-text">🎯開發小結</span></a></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -163,7 +164,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">36</span>
+          <span class="site-state-item-count">39</span>
           <span class="site-state-item-name">文章</span>
         </a>
       </div>
@@ -174,7 +175,7 @@
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">24</span>
+        <span class="site-state-item-count">26</span>
         <span class="site-state-item-name">標籤</span></a>
       </div>
   </nav>
@@ -254,6 +255,13 @@
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新於</span>
+      <time title="修改時間：2025-06-08 12:09:45" itemprop="dateModified" datetime="2025-06-08T12:09:45+08:00">2025-06-08</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
         <i class="far fa-folder"></i>
       </span>
       <span class="post-meta-item-text">分類於</span>
@@ -310,6 +318,7 @@ VBA@收方作業(不規則三角網法)</a></p>
 </blockquote>
 <h2 id="實現邏輯">👉實現邏輯</h2>
 <h3 id="建立測量點影片未出現">建立測量點(影片未出現)</h3>
+<p>可以將GPS或全測站所拿到的高程點匯出成CSV檔案再放置於Excel會比較快，如果收到的檔案已經是CAD圖也可以，圖塊的點資料可以萃取出他的XY座標，Z座標則通常會放置於圖塊屬性中，這需要看個案圖塊內容解決。</p>
 <ol type="1">
 <li>將設計圖面所記錄的高程點放入工作表("DESIGN")</li>
 </ol>
@@ -355,6 +364,13 @@ VBA@收方作業(不規則三角網法)</a></p>
 </tbody>
 </table>
 <p>此處的Length會由每一點去與range("F1")、range("G1")進行距離換算(IDW使用)</p>
+<h3 id="繪製點位0608更新">繪製點位(0608更新)</h3>
+<p>填寫完
+DESIGN工作表及CHECK工作表時，可以確認一下邊界是否符合設定範圍，此時可以點選按鈕"繪製點位"來檢核實際點資料坐落於CAD中的何處。</p>
+<figure>
+<img src="0.png" alt="Fig2-1.繪製點位成果" />
+<figcaption aria-hidden="true">Fig2-1.繪製點位成果</figcaption>
+</figure>
 <h3 id="建立方格">建立方格</h3>
 <ol type="1">
 <li>取得計畫範圍之後，找出其邊界位置</li>
@@ -363,9 +379,12 @@ VBA@收方作業(不規則三角網法)</a></p>
 <ul>
 <li>計畫範圍外&gt;&gt;刪除</li>
 <li>計畫範圍內&gt;&gt;保留不動</li>
-<li>計畫範圍與之相交&gt;&gt;另外建立計畫範圍外部面積。(這裡會需要手動調整下)</li>
+<li>計畫範圍與之相交&gt;&gt;另外建立計畫範圍外部面積</li>
 </ul></li>
 </ol>
+<blockquote>
+<p>計畫範圍與之相交可能會有小問題，需要針對錯誤地方進行<strong>-BO</strong>增加方格邊界線或刪除錯誤方格</p>
+</blockquote>
 <h3 id="方格編號及面積">方格編號及面積</h3>
 <ol type="1">
 <li>框選所有方格及外部面積</li>
@@ -439,7 +458,12 @@ VBA@收方作業(不規則三角網法)</a></p>
 <img src="REPORT.JPG" alt="Fig5.土方計算書" />
 <figcaption aria-hidden="true">Fig5.土方計算書</figcaption>
 </figure>
-<h3 id="可視化呈現">可視化呈現</h3>
+<h3 id="vba工具連結">VBA工具連結</h3>
+<p>上述基本功能有需要可以參考下方連結，操作上有問題可至LINE官方帳號提問。</p>
+<p><a
+target="_blank" rel="noopener" href="https://portaly.cc/hanksvba/product/Dt3sTLPCvIfcGmjxgwYT">🔗土方計算(方格法)VBA操作檔案+完整原始碼</a></p>
+<hr />
+<h3 id="可視化呈現開發中">可視化呈現(開發中)</h3>
 <p>方格可以透過建立3D
 BOX的方式進行可視化呈現，因為高程的差異只有一點點，所以還是需要將高程倍數放大讓使用者可以更清楚掌握細節。</p>
 <figure>
@@ -450,7 +474,7 @@ alt="Fig6.土方高程差可視化呈現" />
 <p>除了以柱狀體方式呈現以外，也可以透過Hatch的顏色差異進行挖方填方的判釋，比如說挖方區域就給綠色，填方區域就給紅色。</p>
 <h2 id="幾何圖學判釋">👨‍🏫幾何圖學判釋</h2>
 <blockquote>
-<p>整體還有很多實現細節可以進去程式碼裡面看!完整的程式碼(包含操作軟體)取得請洽作者諮詢。</p>
+<p>整體還有很多實現細節可以進去程式碼裡面看!</p>
 </blockquote>
 <h3 id="判斷點跟多邊形的關係">判斷點跟多邊形的關係</h3>
 <figure class="highlight vb"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">Function</span> IsPointInPolygon(X, Y, poly() <span class="keyword">As</span> <span class="type">Double</span>) <span class="keyword">As</span> <span class="type">Boolean</span></span><br><span class="line">    <span class="comment">&#x27; Check if a point is inside a polygon.</span></span><br><span class="line">    <span class="comment">&#x27; Args:</span></span><br><span class="line">    <span class="comment">&#x27;   x: X coordinate of the point.</span></span><br><span class="line">    <span class="comment">&#x27;   y: Y coordinate of the point.</span></span><br><span class="line">    <span class="comment">&#x27;   poly: An array representing the vertices of the polygon.</span></span><br><span class="line">    <span class="comment">&#x27; Returns:</span></span><br><span class="line">    <span class="comment">&#x27;   True if the point is inside the polygon, False otherwise.</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">Dim</span> i <span class="keyword">As</span> <span class="type">Integer</span>, j <span class="keyword">As</span> <span class="type">Integer</span></span><br><span class="line">    <span class="keyword">Dim</span> numVertices <span class="keyword">As</span> <span class="type">Integer</span></span><br><span class="line">    <span class="keyword">Dim</span> oddNodes <span class="keyword">As</span> <span class="type">Boolean</span></span><br><span class="line"></span><br><span class="line">    numVertices = UBound(poly) \ <span class="number">2</span> + <span class="number">1</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">&#x27; Check if the point is inside the polygon using the ray-casting algorithm</span></span><br><span class="line">    j = numVertices - <span class="number">1</span></span><br><span class="line">    oddNodes = <span class="literal">False</span></span><br><span class="line">    <span class="keyword">For</span> i = <span class="number">0</span> <span class="keyword">To</span> numVertices - <span class="number">1</span></span><br><span class="line">        <span class="keyword">If</span> (poly(<span class="number">2</span> * i + <span class="number">1</span>) &gt; Y) &lt;&gt; (poly(<span class="number">2</span> * j + <span class="number">1</span>) &gt; Y) <span class="keyword">Then</span></span><br><span class="line">            <span class="keyword">If</span> (poly(<span class="number">2</span> * j + <span class="number">1</span>) - poly(<span class="number">2</span> * i + <span class="number">1</span>)) &lt;&gt; <span class="number">0</span> <span class="keyword">Then</span></span><br><span class="line">                <span class="keyword">If</span> X &lt; (poly(<span class="number">2</span> * j) - poly(<span class="number">2</span> * i)) * (Y - poly(<span class="number">2</span> * i + <span class="number">1</span>)) / (poly(<span class="number">2</span> * j + <span class="number">1</span>) - poly(<span class="number">2</span> * i + <span class="number">1</span>)) + poly(<span class="number">2</span> * i) <span class="keyword">Then</span></span><br><span class="line">                    oddNodes = <span class="built_in">Not</span> oddNodes</span><br><span class="line">                <span class="keyword">End</span> <span class="keyword">If</span></span><br><span class="line">            <span class="keyword">End</span> <span class="keyword">If</span></span><br><span class="line">        <span class="keyword">End</span> <span class="keyword">If</span></span><br><span class="line">        j = i</span><br><span class="line">    <span class="keyword">Next</span> i</span><br><span class="line"></span><br><span class="line">    <span class="comment">&#x27; Check if the point is exactly on a vertex or an edge</span></span><br><span class="line">    <span class="keyword">For</span> i = <span class="number">0</span> <span class="keyword">To</span> numVertices - <span class="number">1</span></span><br><span class="line">        j = (i + <span class="number">1</span>) <span class="built_in">Mod</span> numVertices</span><br><span class="line">        <span class="comment">&#x27; Check if the point is on a vertex</span></span><br><span class="line">        <span class="keyword">If</span> X = poly(<span class="number">2</span> * i) <span class="built_in">And</span> Y = poly(<span class="number">2</span> * i + <span class="number">1</span>) <span class="keyword">Then</span></span><br><span class="line">            IsPointInPolygon = <span class="literal">True</span></span><br><span class="line">            <span class="keyword">Exit</span> <span class="keyword">Function</span></span><br><span class="line">        <span class="keyword">End</span> <span class="keyword">If</span></span><br><span class="line">        <span class="comment">&#x27; Check if the point is on an edge</span></span><br><span class="line">        <span class="keyword">If</span> ((poly(<span class="number">2</span> * i + <span class="number">1</span>) &lt;= Y <span class="built_in">And</span> Y &lt;= poly(<span class="number">2</span> * j + <span class="number">1</span>)) <span class="built_in">Or</span> (poly(<span class="number">2</span> * j + <span class="number">1</span>) &lt;= Y <span class="built_in">And</span> Y &lt;= poly(<span class="number">2</span> * i + <span class="number">1</span>))) <span class="built_in">And</span> _</span><br><span class="line">           (X &lt;= myMax(poly(<span class="number">2</span> * i), poly(<span class="number">2</span> * j))) <span class="built_in">And</span> (poly(<span class="number">2</span> * j + <span class="number">1</span>) - poly(<span class="number">2</span> * i + <span class="number">1</span>) &lt;&gt; <span class="number">0</span>) <span class="keyword">Then</span></span><br><span class="line">            <span class="keyword">If</span> X = (poly(<span class="number">2</span> * j) - poly(<span class="number">2</span> * i)) * (Y - poly(<span class="number">2</span> * i + <span class="number">1</span>)) / (poly(<span class="number">2</span> * j + <span class="number">1</span>) - poly(<span class="number">2</span> * i + <span class="number">1</span>)) + poly(<span class="number">2</span> * i) <span class="keyword">Then</span></span><br><span class="line">                IsPointInPolygon = <span class="literal">True</span></span><br><span class="line">                <span class="keyword">Exit</span> <span class="keyword">Function</span></span><br><span class="line">            <span class="keyword">End</span> <span class="keyword">If</span></span><br><span class="line">        <span class="keyword">End</span> <span class="keyword">If</span></span><br><span class="line">    <span class="keyword">Next</span> i</span><br><span class="line"></span><br><span class="line">    IsPointInPolygon = oddNodes</span><br><span class="line"><span class="keyword">End</span> <span class="keyword">Function</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>

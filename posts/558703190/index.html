@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.2.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha256-wiz7ZSCn/btzhjKDQBms9Hx4sSeUYsDrTLg7roPstac=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"www.hanksvba.com","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.19.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":"mac"},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":false,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜尋...","empty":"我們無法找到任何有關 ${query} 的搜索結果","hits_time":"${hits} 找到 ${time} 個結果","hits":"找到 ${hits} 個結果"},"path":"/search.json","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="前言 一般提到CAD大多數都以為是AutoCAD，但其實CAD版本有好多好多種，只是因為學校通常都先教AutoCAD進行使用，透過教育版的免費制度培養一票AutoCAD的粉絲，在習慣介面之後跳往其他版本的CAD會有點障礙，但因為AutoCAD在後期大多改成訂閱制，導致很多公司行號轉往其他管道使用，筆者所在的機關目前也是使用ProgeCAD作為主力使用。 關於CAD的版本:  AutoCAD">
+<meta property="og:type" content="article">
+<meta property="og:title" content="CADVBA教學(一)">
+<meta property="og:url" content="https://www.hanksvba.com/posts/558703190/">
+<meta property="og:site_name" content="Hank&#39;s Blog">
+<meta property="og:description" content="前言 一般提到CAD大多數都以為是AutoCAD，但其實CAD版本有好多好多種，只是因為學校通常都先教AutoCAD進行使用，透過教育版的免費制度培養一票AutoCAD的粉絲，在習慣介面之後跳往其他版本的CAD會有點障礙，但因為AutoCAD在後期大多改成訂閱制，導致很多公司行號轉往其他管道使用，筆者所在的機關目前也是使用ProgeCAD作為主力使用。 關於CAD的版本:  AutoCAD">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:image" content="https://www.hanksvba.com/posts/558703190/1.png">
+<meta property="og:image" content="https://www.hanksvba.com/posts/558703190/2.png">
+<meta property="article:published_time" content="2025-06-16T10:51:18.000Z">
+<meta property="article:modified_time" content="2025-06-23T10:51:18.000Z">
+<meta property="article:author" content="Hank Lin">
+<meta property="article:tag" content="AutoCAD VBA">
+<meta property="article:tag" content="ProgeCAD VBA">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://www.hanksvba.com/posts/558703190/1.png">
+
+
+<link rel="canonical" href="https://www.hanksvba.com/posts/558703190/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-TW","comments":true,"permalink":"https://www.hanksvba.com/posts/558703190/","path":"posts/558703190/","title":"CADVBA教學(一)"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>CADVBA教學(一) | Hank's Blog</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切換導航欄" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Hank's Blog</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">工程人的設計監造VBA工具交流區</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜尋" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-首頁"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首頁</a></li><li class="menu-item menu-item-關於"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>關於</a></li><li class="menu-item menu-item-標籤"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>標籤</a></li><li class="menu-item menu-item-分類"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分類</a></li><li class="menu-item menu-item-文章"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>文章</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜尋
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜尋..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目錄
+        </li>
+        <li class="sidebar-nav-overview">
+          本站概要
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%89%8D%E8%A8%80"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#vba%E7%92%B0%E5%A2%83%E5%BB%BA%E7%AB%8B"><span class="nav-number">2.</span> <span class="nav-text">VBA環境建立</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#autocad"><span class="nav-number">2.1.</span> <span class="nav-text">AutoCAD</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#progecad"><span class="nav-number">2.2.</span> <span class="nav-text">ProgeCAD</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#excel%E8%88%87cad%E9%80%A3%E6%8E%A5%E6%96%B9%E6%B3%95"><span class="nav-number">3.</span> <span class="nav-text">Excel與CAD連接方法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%88%E6%9C%9F%E5%BC%95%E7%94%A8"><span class="nav-number">3.1.</span> <span class="nav-text">先期引用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BE%8C%E6%9C%9F%E5%BC%95%E7%94%A8"><span class="nav-number">3.2.</span> <span class="nav-text">後期引用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%B8%A9%E9%9B%B7%E9%81%8E%E7%A8%8B"><span class="nav-number">3.3.</span> <span class="nav-text">踩雷過程</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%9B%B8%E9%97%9C%E6%96%87%E7%AB%A0"><span class="nav-number">4.</span> <span class="nav-text">相關文章</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Hank Lin"
+      src="/images/avatar_custom.png">
+  <p class="site-author-name" itemprop="name">Hank Lin</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">39</span>
+          <span class="site-state-item-name">文章</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">分類</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">26</span>
+        <span class="site-state-item-name">標籤</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="mailto:apple84026113@gmail.com" title="E-Mail → mailto:apple84026113@gmail.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.youtube.com/channel/UCWmy5KaK7Leg6lLUlWBPaSw" title="YouTube → https:&#x2F;&#x2F;www.youtube.com&#x2F;channel&#x2F;UCWmy5KaK7Leg6lLUlWBPaSw" rel="noopener me" target="_blank"><i class="fab fa-youtube fa-fw"></i>YouTube</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/images/LINE_QRCODE.PNG" title="LINE → &#x2F;images&#x2F;LINE_QRCODE.PNG" rel="noopener me"><i class="fab fa-line fa-fw"></i>LINE</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://reurl.cc/RyvvaZ" title="LINE社群 → https:&#x2F;&#x2F;reurl.cc&#x2F;RyvvaZ" rel="noopener me" target="_blank"><i class="fas fa-comment fa-fw"></i>LINE社群</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://hankvba.blogspot.com/" title="舊網站 → https:&#x2F;&#x2F;hankvba.blogspot.com&#x2F;" rel="noopener me" target="_blank"><i class="fab fa-blogger fa-fw"></i>舊網站</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://portaly.cc/hanksvba/support/" title="小額贊助 → https:&#x2F;&#x2F;portaly.cc&#x2F;hanksvba&#x2F;support&#x2F;" rel="noopener me" target="_blank"><i class="fas fa-handshake fa-fw"></i>小額贊助</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-TW">
+    <link itemprop="mainEntityOfPage" href="https://www.hanksvba.com/posts/558703190/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar_custom.png">
+      <meta itemprop="name" content="Hank Lin">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hank's Blog">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="CADVBA教學(一) | Hank's Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          CADVBA教學(一)
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">發表於</span>
+
+      <time title="創建時間：2025-06-16 18:51:18" itemprop="dateCreated datePublished" datetime="2025-06-16T18:51:18+08:00">2025-06-16</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新於</span>
+      <time title="修改時間：2025-06-23 18:51:18" itemprop="dateModified" datetime="2025-06-23T18:51:18+08:00">2025-06-23</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分類於</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E5%9F%BA%E6%9C%AC%E5%8E%9F%E7%90%86/" itemprop="url" rel="index"><span itemprop="name">基本原理</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="閱讀次數" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">閱讀次數：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h2 id="前言">前言</h2>
+<p>一般提到CAD大多數都以為是AutoCAD，但其實CAD版本有好多好多種，只是因為學校通常都先教AutoCAD進行使用，透過教育版的免費制度培養一票AutoCAD的粉絲，在習慣介面之後跳往其他版本的CAD會有點障礙，但因為AutoCAD在後期大多改成訂閱制，導致很多公司行號轉往其他管道使用，筆者所在的機關目前也是使用ProgeCAD作為主力使用。</p>
+<p>關於CAD的版本:</p>
+<ol type="1">
+<li>AutoCAD(訂閱制)</li>
+<li>ZWCAD(中資成分被禁用)</li>
+<li>ProgeCAD(買斷制)</li>
+</ol>
+<p>如果基本的操作功能不敷使用導致效率低落時，可以透過CAD本身提供的套件進行額外強化，而<strong>VBA</strong>則是提供套件之一，筆者自2018年起便開始進行AutoCADVBA相關開發，特別介紹啟蒙導師為<a
+target="_blank" rel="noopener" href="https://markc0826.blogspot.com/">馬克的營建與電腦</a>，當初就是被他的<a
+target="_blank" rel="noopener" href="https://markc0826.blogspot.com/2011/12/excel.html">Excel自動繪製縱坡圖表</a>吸引到，而開始一系列的研究之路。</p>
+<p>本系列文主要是介紹筆者在CADVBA上的心路歷程，希望能夠由淺入深，期待各位讀者吸收後也能具備修改VBA程式碼的能力，優化自身工作流程，藉由節省下來的時間來開發更多好用的工具，良性循環。</p>
+<span id="more"></span>
+<h2 id="vba環境建立">VBA環境建立</h2>
+<h3 id="autocad">AutoCAD</h3>
+<p>自2012年起，不再預設安裝於AutoCAD，如果需要使用時要到官網下載安裝。</p>
+<p><a
+target="_blank" rel="noopener" href="https://www.autodesk.com/support/technical/article/caas/tsarticles/ts/3kxk0RyvfWTfSfAIrcmsLQ.html">官方VBA下載點</a></p>
+<h3 id="progecad">ProgeCAD</h3>
+<p>內建於裡面，但屬性及方法仍不像AutoCAD那麼完整，有時候請原廠修復時也比較會拖，需要透過修改演算法進行問題排除。</p>
+<p><a
+href="https://www.hanksvba.com/posts/2144300187/">不同版本間的CAD開發</a></p>
+<h2 id="excel與cad連接方法">Excel與CAD連接方法</h2>
+<p><strong>Excel</strong>是大部分工程人員最常接觸的工具，Excel作為資料進出的主要操作媒介，同時也具備VBA的功能，能夠將CAD作為引用項目進行連動，資料就能透過Excel與CAD連接，驅動CAD進行圖說繪製。</p>
+<h3 id="先期引用">先期引用</h3>
+<blockquote>
+<p>Excel&gt;檔案&gt;選項&gt;自訂功能區&gt;開發人員勾選</p>
+</blockquote>
+<figure>
+<img src="1.png" alt="Fig1. 開發人員選單" />
+<figcaption aria-hidden="true">Fig1. 開發人員選單</figcaption>
+</figure>
+<blockquote>
+<p>開發人員&gt;檢視程式碼&gt;工具&gt;設定引用項目&gt;找到相關的套件勾選</p>
+</blockquote>
+<figure>
+<img src="2.png" alt="Fig2. 引用項目勾選" />
+<figcaption aria-hidden="true">Fig2. 引用項目勾選</figcaption>
+</figure>
+<p>若以ProgeCAD2021版為例，會找到<strong>ProgeCAD 2021 Object
+Library</strong>，這個就是引用對象，不同年代版本對應到的名稱會不同，這是他比較麻煩的地方。</p>
+<h3 id="後期引用">後期引用</h3>
+<p>透過函數的引用可以直接操作CAD，達成在VBA中進行資料傳遞到CAD的作用，並驅動CAD提供的函數進行點、線、面、文字等等基本操作。</p>
+<figure class="highlight vb"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> mo <span class="comment">&#x27;模型空間</span></span><br><span class="line"><span class="keyword">public</span> pa <span class="comment">&#x27;配置空間</span></span><br><span class="line"><span class="keyword">public</span> acadDoc <span class="comment">&#x27;操作工具類函數</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">Sub</span> CADInit()</span><br><span class="line"></span><br><span class="line"><span class="keyword">On</span> <span class="keyword">Error</span> <span class="keyword">Resume</span> <span class="keyword">Next</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">Set</span> acadApp = GetObject(, <span class="string">&quot;AutoCAD&quot;</span>) </span><br><span class="line"><span class="keyword">If</span> Err &lt;&gt; <span class="number">0</span> <span class="keyword">Then</span> <span class="keyword">Set</span> acadApp = CreateObject(<span class="string">&quot;AutoCAD&quot;</span>)</span><br><span class="line">acadApp.Visible = <span class="literal">True</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">On</span> <span class="keyword">Error</span> <span class="keyword">GoTo</span> <span class="number">0</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">Set</span> mo = acadApp.ActiveDocument.ModelSpace</span><br><span class="line"><span class="keyword">Set</span> pa = acadApp.ActiveDocument.PaperSpace</span><br><span class="line"><span class="keyword">Set</span> acadDoc = acadApp.ActiveDocument</span><br><span class="line"></span><br><span class="line"><span class="keyword">End</span> <span class="keyword">Sub</span></span><br></pre></td></tr></table></figure>
+<h3 id="踩雷過程">踩雷過程</h3>
+<ul>
+<li>AutoCAD用先期引用時，會因為各主機安裝版本不同導致出現錯誤，需要進入程式碼編輯器中勾選正確版本的引用項目，並<strong>取消遺漏的引用項目</strong>，不然會導致程式碼出現不可解釋的錯誤行為。</li>
+<li>ProgeCAD只能透過先期引用，後期引用會失效，操作部分物件內容時會失效，我遇到的是<strong>Library物件的操作會出現問題</strong>，Library物件的CreatePoint方法與點資料密切關連，不可避免，後來透過明確的先期引用引入就可以了。</li>
+<li>物件瀏覽是在查詢對象的屬性及方法必備工具，需要有引用才有辦法顯示ProgeCAD相關物件，引用的名稱叫做<strong>IntelliCAD</strong>，如要採用後期引用時，傳送給其他人時要記得取消勾選。</li>
+</ul>
+<h2 id="相關文章">相關文章</h2>
+<ul>
+<li><a
+target="_blank" rel="noopener" href="https://hankvba.blogspot.com/2018/03/autocadvba_26.html">AutoCADVBA學習資源</a></li>
+<li><a
+target="_blank" rel="noopener" href="https://hankvba.blogspot.com/2018/03/vba.html">VBA引用項目問題</a></li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>作者： </strong>Hank Lin
+  </li>
+  <li class="post-copyright-link">
+      <strong>文章連結：</strong>
+      <a href="https://www.hanksvba.com/posts/558703190/" title="CADVBA教學(一)">https://www.hanksvba.com/posts/558703190/</a>
+  </li>
+  <li class="post-copyright-license">
+      <strong>版權聲明： </strong>本網誌所有文章除特別聲明外，均採用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 許可協議。轉載請註明出處！
+  </li>
+</ul>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/AutoCAD-VBA/" rel="tag"><i class="fa fa-tag"></i> AutoCAD VBA</a>
+              <a href="/tags/ProgeCAD-VBA/" rel="tag"><i class="fa fa-tag"></i> ProgeCAD VBA</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/posts/304659370/" rel="prev" title="施工抽查紀錄表管控系統">
+                  <i class="fa fa-angle-left"></i> 施工抽查紀錄表管控系統
+                </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2025</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Hank Lin</span>
+  </div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="訪客總數">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="總瀏覽次數">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 強力驅動
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="back-to-top" role="button" aria-label="回到頂端">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/next-boot.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.1/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+  <script class="next-config" data-name="pdf" type="application/json">{"object_url":{"url":"https://cdnjs.cloudflare.com/ajax/libs/pdfobject/2.2.12/pdfobject.min.js","integrity":"sha256-g2xji1rlE3KsGVClvuxTbcR0Kn2+wtQADSff2Tbb4zA="},"url":"/lib/pdf/web/viewer"}</script>
+  <script src="/js/third-party/tags/pdf.js"></script>
+
+  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":{"light":"default","dark":"dark"},"js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mermaid/10.7.0/mermaid.min.js","integrity":"sha256-TtLOdUA8mstPoO6sGvHIGx2ceXrrX4KgIItO06XOn8A="}}</script>
+  <script src="/js/third-party/tags/mermaid.js"></script>
+
+
+
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">false</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"ams","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+
+</body>
+</html>

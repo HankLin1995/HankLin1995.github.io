@@ -158,7 +158,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">36</span>
+          <span class="site-state-item-count">39</span>
           <span class="site-state-item-name">文章</span>
         </a>
       </div>
@@ -169,7 +169,7 @@
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">24</span>
+        <span class="site-state-item-count">26</span>
         <span class="site-state-item-name">標籤</span></a>
       </div>
   </nav>
@@ -206,6 +206,285 @@
     </div>
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://www.hanksvba.com/posts/3829840047/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar_custom.png">
+      <meta itemprop="name" content="Hank Lin">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hank's Blog">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | Hank's Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/posts/3829840047/" class="post-title-link" itemprop="url">VBA編輯器上的版本控制</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">發表於</span>
+
+      <time title="創建時間：2024-12-24 16:22:29" itemprop="dateCreated datePublished" datetime="2024-12-24T16:22:29+08:00">2024-12-24</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分類於</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E5%9F%BA%E6%9C%AC%E5%8E%9F%E7%90%86/" itemprop="url" rel="index"><span itemprop="name">基本原理</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h2 id="前言">前言</h2>
+<p>在撰寫程式碼時，許多人習慣將程式與檔案綁定，並利用文件名稱來標記每次版本的修改。例如，將當天日期加在檔案名稱後來區隔版本，如
+<code>縱斷面繪圖20230622.xls</code>。這是我過去對<strong>版本控制</strong>的理解，然而，這樣做的問題是檔案數量快速增長，且檔案名稱無法清楚標示每次修改的具體內容。</p>
+<p>更糟的是，當這些檔案分散於不同的電腦和資料夾中，若同名的檔案有所不同，卻<strong>無法得知具體改動了哪些部分</strong>。這樣的管理方式會造成很大的困擾，也促使我開始尋找更有效的版本控制方法。</p>
+<p>因此，我開始探索如何在 VBA 中實現「真」版本控制，並結合
+<strong>Git</strong> 來管理程式碼。</p>
+<h2 id="更新註記-20240519">更新註記 (2024/05/19)</h2>
+<p>當我將程式上傳至 GitHub 時，發現因為筆記本的預設編碼為
+"ANSI"，上傳的中文部分會顯示為亂碼。為了解決這個問題，我將編碼另存為
+"UTF-8"，這樣可以正常顯示。但是，若將 "UTF-8" 編碼匯入 Excel VBA IDE
+時，由於 Excel 預設支援 ANSI 編碼，中文會出現錯誤。</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/posts/3829840047/#more" rel="contents">
+                閱讀全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://www.hanksvba.com/posts/1168852487/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar_custom.png">
+      <meta itemprop="name" content="Hank Lin">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hank's Blog">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | Hank's Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/posts/1168852487/" class="post-title-link" itemprop="url">雲端空間Synology-C2-Object</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">發表於</span>
+
+      <time title="創建時間：2024-12-20 22:53:51" itemprop="dateCreated datePublished" datetime="2024-12-20T22:53:51+08:00">2024-12-20</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分類於</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5/" itemprop="url" rel="index"><span itemprop="name">基本概念</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h2 id="前言">前言</h2>
+<p>一提到雲端空間，廣為人知的不外乎是Google
+Drive、DropBox、OneDrive等等知名大廠的產品，NAS(地端儲存伺服器)則大多常見為Synology群暉所主導，而本篇要介紹的Synology
+C2 Object則是群暉所提供的服務之一。</p>
+<p>在網路上有許多服務經過使用者對<strong>網頁</strong>進行互動，伺服器背後通常都會有一個以上的資料庫及檔案空間進行儲存，而本篇
+Synology C2 Object
+就是指檔案存存放空間，只因為它屬於雲端所提供的服務，因此叫做雲端空間。</p>
+<p>未來只要有建立好連接的參數，就可以透過API進行呼叫存放、取用，有關檔案空間申請主要目的為取得下列重要參數，以備未來進行檔案空間串接。</p>
+<ul>
+<li>BUCKET_NAME</li>
+<li>endpoint_url</li>
+<li>aws_access_key_id</li>
+<li>aws_secret_access_key</li>
+</ul>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/posts/1168852487/#more" rel="contents">
+                閱讀全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://www.hanksvba.com/posts/391727536/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar_custom.png">
+      <meta itemprop="name" content="Hank Lin">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hank's Blog">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | Hank's Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/posts/391727536/" class="post-title-link" itemprop="url">Selenium操作細節</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">發表於</span>
+
+      <time title="創建時間：2024-11-20 23:03:46" itemprop="dateCreated datePublished" datetime="2024-11-20T23:03:46+08:00">2024-11-20</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分類於</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E5%9F%BA%E6%9C%AC%E5%8E%9F%E7%90%86/" itemprop="url" rel="index"><span itemprop="name">基本原理</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h2 id="前言">前言</h2>
+<p>原本想像中的Selenium會需要<strong>從無到有</strong>開啟一個網站後開始進行資料填寫，大多數的網站都會有帳號密碼驗證機制，甚至祭出驗證碼、選擇汽車圖片、移動滑鼠到指定位置...等反爬蟲機制來確認是否為機器人，但若網頁可以被<strong>接管</strong>繞開這些機制的話，那整個資料填報作業就會很有機會讓電腦代勞，這就是寫程式的趣味來源，當然還是要小心不能點太快，否則網站可能會負荷不過來。</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/posts/391727536/#more" rel="contents">
+                閱讀全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -891,270 +1170,6 @@ href="https://www.hanksvba.com/posts/144473154/">施工照片VBA</a>進行資料
           <!--noindex-->
             <div class="post-button">
               <a class="btn" href="/posts/3601177192/#more" rel="contents">
-                閱讀全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://www.hanksvba.com/posts/144473154/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar_custom.png">
-      <meta itemprop="name" content="Hank Lin">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hank's Blog">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | Hank's Blog">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/posts/144473154/" class="post-title-link" itemprop="url">施工照片VBA-實作流程</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">發表於</span>
-
-      <time title="創建時間：2024-07-11 23:00:36" itemprop="dateCreated datePublished" datetime="2024-07-11T23:00:36+08:00">2024-07-11</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分類於</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E5%B0%88%E6%A1%88%E9%96%8B%E7%99%BC/" itemprop="url" rel="index"><span itemprop="name">專案開發</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h2 id="前言">前言</h2>
-<p>工程進行階段因為業主、監造不一定都會在現場，無論施工抽查、品質管理、隱蔽部分尺寸紀錄、督導會勘...等等內容，大多數文件都會需要照片作為佐證資料，尤其是假設工程、隱蔽部分更是需要，因此整個工程案進行過程可能會累積大量的照片，後續的請款報表照片貼附、照片檔案查找，會是讓內業人員相當花費時間的一環。</p>
-<p>實務上大多會採用LINE群組進行照片上傳，照片說明會出現在畫面中的小白板，再由內業人員自行下載備存，放在本機硬碟中或者是放在公司的NAS裡面，未來需要利用時再去自己所分類的資料夾中比對、下載、貼附，因此對於處理照片的檔案管理、報表輸出我想需要有方法來完成大量、繁複、簡單的工作流程，節省時間來做其他業務內容。</p>
-<p>因此，施工照片VBA誕生了，於2023年1月發布給大眾使用運行至今，該修復的內容大概已經完成，以下為目前所釋出的施工照片VBA部分內容，完整內容請參考<a
-target="_blank" rel="noopener" href="https://portaly.cc/hanksvba/product/pkCLtQZcV6u4H7jGRH6e">施工照片VBA完整原始碼</a>。</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/posts/144473154/#more" rel="contents">
-                閱讀全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://www.hanksvba.com/posts/43562660/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar_custom.png">
-      <meta itemprop="name" content="Hank Lin">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hank's Blog">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | Hank's Blog">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/posts/43562660/" class="post-title-link" itemprop="url">Streamlit工程進度甘特圖</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">發表於</span>
-
-      <time title="創建時間：2024-07-07 15:23:04" itemprop="dateCreated datePublished" datetime="2024-07-07T15:23:04+08:00">2024-07-07</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分類於</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E5%B0%88%E6%A1%88%E6%88%90%E6%9E%9C/" itemprop="url" rel="index"><span itemprop="name">專案成果</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h2 id="前言">前言</h2>
-<p>工程進行期間會有很多不同的任務，每個任務會有自己所需要花費的金額、起始日期、持續天數，藉由這些任務的組合可以統整出工程的預定進度情況，將不同任務繪製在同一個時間軸上可以清楚的了解到現階段有那些任務應該要被完成以及未來還有哪些任務需要完成，對於任務單純的工程很有大的助益。</p>
-<p>前陣子在開發施工日誌的時候，如果採用施工計畫書上的每15日累積進度做內差取值會比較容易失真，後來想想，其實這個累積進度的來源也是按照甘特圖的比例所得出的結果?但總歸如何，還是花了一些時間熟悉一下matplotlib的做圖套件，並且搭配streamlit前端介面做一個雲端服務，目標是希望能夠產出<strong>工程甘特圖</strong>及<strong>每日進度的CSV檔案</strong>，未來可以匯入其他的日報VBA工具。</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/posts/43562660/#more" rel="contents">
-                閱讀全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://www.hanksvba.com/posts/213685522/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar_custom.png">
-      <meta itemprop="name" content="Hank Lin">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hank's Blog">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | Hank's Blog">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/posts/213685522/" class="post-title-link" itemprop="url">Streamlit做手繪簽名</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">發表於</span>
-
-      <time title="創建時間：2024-07-05 23:31:02" itemprop="dateCreated datePublished" datetime="2024-07-05T23:31:02+08:00">2024-07-05</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分類於</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E5%B0%88%E6%A1%88%E6%88%90%E6%9E%9C/" itemprop="url" rel="index"><span itemprop="name">專案成果</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h2 id="前言">前言</h2>
-<p>工程執行過程免不了會有很多品管文件需要製作，紙本文件的加值應用相當困難，通常都會放置於一堆又一堆的資料夾中，有需要再去相互參照，大多流於形式，倘若工程文件能夠數位化，對於整個工程資料的保存、查詢會有很多好處，但經過幾次查核委員的建議，關於簽名這件事情他們有意見，既然是需要在現場進行檢查的文件，那<strong>當然</strong>會是手寫的才最香，殊不知很多委員還是認為電腦直接出的文件不能用，至少簽名的部分要手寫才是真的。</p>
-<p>基於這些理由，我希望能夠做到用手寫的觸感去簽署文件，透過Streamlit的前端及streamlit-drawable-canvas作為繪圖器，opencv作為背景去背處理，及PyMuPDF作為轉檔工具，來達成委員的要求...</p>
-<p>其實我一直不能理解，中華電信都可以用手寫的觸控板來跟客戶簽約了，為什麼公共工程一定要用<strong>紙+筆</strong>，現在其實平板電腦都很方便，把要抽查的PDF都先放好在雲端，帶去工地現場選取要抽查的對應PDF後寫紀錄表，寫完後可以即時上傳到雲端，資訊流動才會迅速，也不用這樣浪費一堆紙來記錄這些內容，未來要翻閱從雲端去撈取出來即可。</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/posts/213685522/#more" rel="contents">
                 閱讀全文 &raquo;
               </a>
             </div>

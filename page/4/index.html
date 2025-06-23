@@ -158,7 +158,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">36</span>
+          <span class="site-state-item-count">39</span>
           <span class="site-state-item-name">文章</span>
         </a>
       </div>
@@ -169,7 +169,7 @@
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">24</span>
+        <span class="site-state-item-count">26</span>
         <span class="site-state-item-name">標籤</span></a>
       </div>
   </nav>
@@ -206,6 +206,195 @@
     </div>
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://www.hanksvba.com/posts/2144300187/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar_custom.png">
+      <meta itemprop="name" content="Hank Lin">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hank's Blog">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | Hank's Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/posts/2144300187/" class="post-title-link" itemprop="url">不同版本間的CAD開發</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">發表於</span>
+
+      <time title="創建時間：2024-05-12 12:26:09" itemprop="dateCreated datePublished" datetime="2024-05-12T12:26:09+08:00">2024-05-12</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分類於</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5/" itemprop="url" rel="index"><span itemprop="name">基本概念</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h2 id="前言">🙌前言</h2>
+<p>CAD版本有非常多種，我目前有接觸過的就有AutoCAD、ZWCAD以及現在正在使用中的ProgeCAD。</p>
+<p>在使用VBA進行二次開發的過程，需要考量<strong>引用物件模型</strong>之間的差異，就目前開發經驗中，AutoCAD與ZWCAD可以透過修改引用名稱就可以有很好的轉換體驗，但是ProgeCAD的<strong>基底物件</strong>有比較不同的設計，故本篇要來解釋從AutoCAD的VBAcode如何透過我所撰寫的物件轉換函數進行相容，讓程式碼在ProgeCAD也可以順利動起來。</p>
+<p><a
+target="_blank" rel="noopener" href="https://hankvba.blogspot.com/2021/07/cadlibraryclsacad.html">🔗HanksVBA學習歷程-不同CAD版本間也可以引用的Library(clsACAD)</a></p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/posts/2144300187/#more" rel="contents">
+                閱讀全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://www.hanksvba.com/posts/2767553795/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar_custom.png">
+      <meta itemprop="name" content="Hank Lin">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hank's Blog">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | Hank's Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/posts/2767553795/" class="post-title-link" itemprop="url">縱斷面插旗文字重疊問題</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">發表於</span>
+
+      <time title="創建時間：2024-05-06 10:12:23" itemprop="dateCreated datePublished" datetime="2024-05-06T10:12:23+08:00">2024-05-06</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分類於</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5/" itemprop="url" rel="index"><span itemprop="name">基本概念</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h2 id="前言">🙌前言</h2>
+<h3 id="縱斷面發展來源">👉縱斷面發展來源</h3>
+<p><a
+target="_blank" rel="noopener" href="https://hankvba.blogspot.com/2018/03/autocad-vba.html">AutoCAD VBA
+縱斷面繪製自動化</a></p>
+<h3 id="開發過程中的小問題">🐞開發過程中的小問題</h3>
+<p>縱斷面繪製時會針對需要文字說明的樁號進行插旗繪製，可能會造成插旗文字出現重疊的原因有兩個</p>
+<ol type="1">
+<li>插旗說明樁號距離太近(0+200、0+205)</li>
+<li>繪製X軸比例太小(1:1000 vs 1:5000)</li>
+</ol>
+<p>繪製過程會考量圖紙輸出的舒適度，最小字高通常會以<strong>3.4.5</strong>為原則，文字說明會固定以30度呈現</p>
+<blockquote>
+<p>當距離太近時可以透過調整X軸比例讓間距拉開，橫向會重疊的時候就進行上下位移，方便讀者觀看。</p>
+</blockquote>
+<p>因此本篇就是要透過VBA抓取說明文字的外框及下線，自動調整文字重疊內容，以下進行說明:</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/posts/2767553795/#more" rel="contents">
+                閱讀全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -742,6 +931,100 @@ Blogger...</p>
           <!--noindex-->
             <div class="post-button">
               <a class="btn" href="/posts/2051013919/#more" rel="contents">
+                閱讀全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://www.hanksvba.com/posts/3212778286/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar_custom.png">
+      <meta itemprop="name" content="Hank Lin">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hank's Blog">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | Hank's Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/posts/3212778286/" class="post-title-link" itemprop="url">監造報表-數量計算-引用來源</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">發表於</span>
+
+      <time title="創建時間：2024-04-18 10:45:59" itemprop="dateCreated datePublished" datetime="2024-04-18T10:45:59+08:00">2024-04-18</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分類於</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E5%B0%88%E6%A1%88%E9%96%8B%E7%99%BC/" itemprop="url" rel="index"><span itemprop="name">專案開發</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h2 id="前言">🙌前言</h2>
+<p>工程價格資料庫作業辦法有明定，新台幣1000萬元以上之<strong>公共工程</strong>於決標日起30日內必須將資料傳輸到主管機關，資料內容:</p>
+<ol type="1">
+<li>得標廠商之契約單價</li>
+<li>經機關核定之預算單價</li>
+<li>其他經主管機關指定者</li>
+</ol>
+<p>包含詳細價目表、單價分析表及資源統計表。</p>
+<p>最容易達成的方式便是透過公共工程經費電腦估價系統(PCCES)進行預算書與契約編制。</p>
+<p>因為大家都使用同一套系統，那麼輸出格式就能夠通用，後續要將契約內容彙整到公司內部所開發的報表系統只需要做一次工就可以了，然而非公共工程的內容會就因為個案不同而需要做細微調整。</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/posts/3212778286/#more" rel="contents">
                 閱讀全文 &raquo;
               </a>
             </div>
