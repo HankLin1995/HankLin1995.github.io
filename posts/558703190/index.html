@@ -20,30 +20,30 @@
 
     <meta name="description" content="前言 一般提到CAD大多數都以為是AutoCAD，但其實CAD版本有好多好多種，只是因為學校通常都先教AutoCAD進行使用，透過教育版的免費制度培養一票AutoCAD的粉絲，在習慣介面之後跳往其他版本的CAD會有點障礙，但因為AutoCAD在後期大多改成訂閱制，導致很多公司行號轉往其他管道使用，筆者所在的機關目前也是使用ProgeCAD作為主力使用。 關於CAD的版本:  AutoCAD">
 <meta property="og:type" content="article">
-<meta property="og:title" content="CADVBA(一)、開啟連接的大門">
-<meta property="og:url" content="https://www.hanksvba.com/posts/280929469/">
+<meta property="og:title" content="CADVBA教學(一)">
+<meta property="og:url" content="https://www.hanksvba.com/posts/558703190/">
 <meta property="og:site_name" content="Hank&#39;s Blog">
 <meta property="og:description" content="前言 一般提到CAD大多數都以為是AutoCAD，但其實CAD版本有好多好多種，只是因為學校通常都先教AutoCAD進行使用，透過教育版的免費制度培養一票AutoCAD的粉絲，在習慣介面之後跳往其他版本的CAD會有點障礙，但因為AutoCAD在後期大多改成訂閱制，導致很多公司行號轉往其他管道使用，筆者所在的機關目前也是使用ProgeCAD作為主力使用。 關於CAD的版本:  AutoCAD">
 <meta property="og:locale" content="zh_TW">
-<meta property="og:image" content="https://www.hanksvba.com/posts/280929469/1.png">
-<meta property="og:image" content="https://www.hanksvba.com/posts/280929469/2.png">
+<meta property="og:image" content="https://www.hanksvba.com/posts/558703190/1.png">
+<meta property="og:image" content="https://www.hanksvba.com/posts/558703190/2.png">
 <meta property="article:published_time" content="2025-06-16T10:51:18.000Z">
-<meta property="article:modified_time" content="2025-06-16T10:51:18.000Z">
+<meta property="article:modified_time" content="2025-06-23T10:51:18.000Z">
 <meta property="article:author" content="Hank Lin">
 <meta property="article:tag" content="AutoCAD VBA">
 <meta property="article:tag" content="ProgeCAD VBA">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://www.hanksvba.com/posts/280929469/1.png">
+<meta name="twitter:image" content="https://www.hanksvba.com/posts/558703190/1.png">
 
 
-<link rel="canonical" href="https://www.hanksvba.com/posts/280929469/">
+<link rel="canonical" href="https://www.hanksvba.com/posts/558703190/">
 
 
 
-<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-TW","comments":true,"permalink":"https://www.hanksvba.com/posts/280929469/","path":"posts/280929469/","title":"CADVBA(一)、開啟連接的大門"}</script>
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-TW","comments":true,"permalink":"https://www.hanksvba.com/posts/558703190/","path":"posts/558703190/","title":"CADVBA教學(一)"}</script>
 
 <script class="next-config" data-name="calendar" type="application/json">""</script>
-<title>CADVBA(一)、開啟連接的大門 | Hank's Blog</title>
+<title>CADVBA教學(一) | Hank's Blog</title>
   
 
 
@@ -143,7 +143,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%89%8D%E8%A8%80"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#vba%E7%92%B0%E5%A2%83%E5%BB%BA%E7%AB%8B"><span class="nav-number">2.</span> <span class="nav-text">VBA環境建立</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#autocad"><span class="nav-number">2.1.</span> <span class="nav-text">AutoCAD</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#progecad"><span class="nav-number">2.2.</span> <span class="nav-text">ProgeCAD</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#excel%E8%88%87cad%E9%80%A3%E6%8E%A5%E6%96%B9%E6%B3%95"><span class="nav-number">3.</span> <span class="nav-text">Excel與CAD連接方法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%88%E6%9C%9F%E5%BC%95%E7%94%A8"><span class="nav-number">3.1.</span> <span class="nav-text">先期引用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BE%8C%E6%9C%9F%E5%BC%95%E7%94%A8"><span class="nav-number">3.2.</span> <span class="nav-text">後期引用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%88%8A%E6%96%87%E5%8F%83%E8%80%83"><span class="nav-number">3.3.</span> <span class="nav-text">舊文參考</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%B8%A9%E9%9B%B7%E9%81%8E%E7%A8%8B"><span class="nav-number">3.4.</span> <span class="nav-text">踩雷過程</span></a></li></ol></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%89%8D%E8%A8%80"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#vba%E7%92%B0%E5%A2%83%E5%BB%BA%E7%AB%8B"><span class="nav-number">2.</span> <span class="nav-text">VBA環境建立</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#autocad"><span class="nav-number">2.1.</span> <span class="nav-text">AutoCAD</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#progecad"><span class="nav-number">2.2.</span> <span class="nav-text">ProgeCAD</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#excel%E8%88%87cad%E9%80%A3%E6%8E%A5%E6%96%B9%E6%B3%95"><span class="nav-number">3.</span> <span class="nav-text">Excel與CAD連接方法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%88%E6%9C%9F%E5%BC%95%E7%94%A8"><span class="nav-number">3.1.</span> <span class="nav-text">先期引用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BE%8C%E6%9C%9F%E5%BC%95%E7%94%A8"><span class="nav-number">3.2.</span> <span class="nav-text">後期引用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%B8%A9%E9%9B%B7%E9%81%8E%E7%A8%8B"><span class="nav-number">3.3.</span> <span class="nav-text">踩雷過程</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%9B%B8%E9%97%9C%E6%96%87%E7%AB%A0"><span class="nav-number">4.</span> <span class="nav-text">相關文章</span></a></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -158,7 +158,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">39</span>
+          <span class="site-state-item-count">40</span>
           <span class="site-state-item-name">文章</span>
         </a>
       </div>
@@ -169,7 +169,7 @@
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">26</span>
+        <span class="site-state-item-count">27</span>
         <span class="site-state-item-name">標籤</span></a>
       </div>
   </nav>
@@ -216,7 +216,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-TW">
-    <link itemprop="mainEntityOfPage" href="https://www.hanksvba.com/posts/280929469/">
+    <link itemprop="mainEntityOfPage" href="https://www.hanksvba.com/posts/558703190/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar_custom.png">
@@ -229,12 +229,12 @@
     </span>
 
     <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="CADVBA(一)、開啟連接的大門 | Hank's Blog">
+      <meta itemprop="name" content="CADVBA教學(一) | Hank's Blog">
       <meta itemprop="description" content="">
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          CADVBA(一)、開啟連接的大門
+          CADVBA教學(一)
         </h1>
 
         <div class="post-meta-container">
@@ -246,6 +246,13 @@
       <span class="post-meta-item-text">發表於</span>
 
       <time title="創建時間：2025-06-16 18:51:18" itemprop="dateCreated datePublished" datetime="2025-06-16T18:51:18+08:00">2025-06-16</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新於</span>
+      <time title="修改時間：2025-06-23 18:51:18" itemprop="dateModified" datetime="2025-06-23T18:51:18+08:00">2025-06-23</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -315,21 +322,20 @@ href="https://www.hanksvba.com/posts/2144300187/">不同版本間的CAD開發</a
 <p>若以ProgeCAD2021版為例，會找到<strong>ProgeCAD 2021 Object
 Library</strong>，這個就是引用對象，不同年代版本對應到的名稱會不同，這是他比較麻煩的地方。</p>
 <h3 id="後期引用">後期引用</h3>
-<p>如欲進行後期引用需要先執行下列<strong>CADInit</strong>後將CAD參數代入後生成<strong>全域對象</strong>，才能進行後續使用，好處是可以不用管CAD年代版本就能直接使用，對於不同環境的電腦只要確保VBA安裝成功基本上就能使用。</p>
-<blockquote>
-<p>全域對象是指在同一專案中即便不同模組也能使用的物件</p>
-</blockquote>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">public mo &#x27;模型空間</span><br><span class="line">public pa &#x27;配置空間</span><br><span class="line">public acadDoc &#x27;現正作用中的可編輯dwg</span><br><span class="line"></span><br><span class="line">Sub CADInit()</span><br><span class="line"></span><br><span class="line">On Error Resume Next</span><br><span class="line"></span><br><span class="line">Set acadApp = GetObject(, &quot;AutoCAD&quot;) </span><br><span class="line">If Err &lt;&gt; 0 Then Set acadApp = CreateObject(&quot;AutoCAD&quot;)</span><br><span class="line">acadApp.Visible = True</span><br><span class="line"></span><br><span class="line">On Error GoTo 0</span><br><span class="line"></span><br><span class="line">Set mo = acadApp.ActiveDocument.ModelSpace</span><br><span class="line">Set pa = acadApp.ActiveDocument.PaperSpace</span><br><span class="line">Set acadDoc = acadApp.ActiveDocument</span><br><span class="line"></span><br><span class="line">End Sub</span><br></pre></td></tr></table></figure>
-<h3 id="舊文參考">舊文參考</h3>
-<p><a
-target="_blank" rel="noopener" href="https://hankvba.blogspot.com/2018/03/autocadvba_26.html">AutoCADVBA學習資源</a>
-<a
-target="_blank" rel="noopener" href="https://hankvba.blogspot.com/2018/03/vba.html">VBA引用項目問題</a></p>
+<p>透過函數的引用可以直接操作CAD，達成在VBA中進行資料傳遞到CAD的作用，並驅動CAD提供的函數進行點、線、面、文字等等基本操作。</p>
+<figure class="highlight vb"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> mo <span class="comment">&#x27;模型空間</span></span><br><span class="line"><span class="keyword">public</span> pa <span class="comment">&#x27;配置空間</span></span><br><span class="line"><span class="keyword">public</span> acadDoc <span class="comment">&#x27;操作工具類函數</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">Sub</span> CADInit()</span><br><span class="line"></span><br><span class="line"><span class="keyword">On</span> <span class="keyword">Error</span> <span class="keyword">Resume</span> <span class="keyword">Next</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">Set</span> acadApp = GetObject(, <span class="string">&quot;AutoCAD&quot;</span>) </span><br><span class="line"><span class="keyword">If</span> Err &lt;&gt; <span class="number">0</span> <span class="keyword">Then</span> <span class="keyword">Set</span> acadApp = CreateObject(<span class="string">&quot;AutoCAD&quot;</span>)</span><br><span class="line">acadApp.Visible = <span class="literal">True</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">On</span> <span class="keyword">Error</span> <span class="keyword">GoTo</span> <span class="number">0</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">Set</span> mo = acadApp.ActiveDocument.ModelSpace</span><br><span class="line"><span class="keyword">Set</span> pa = acadApp.ActiveDocument.PaperSpace</span><br><span class="line"><span class="keyword">Set</span> acadDoc = acadApp.ActiveDocument</span><br><span class="line"></span><br><span class="line"><span class="keyword">End</span> <span class="keyword">Sub</span></span><br></pre></td></tr></table></figure>
 <h3 id="踩雷過程">踩雷過程</h3>
 <ul>
 <li>AutoCAD用先期引用時，會因為各主機安裝版本不同導致出現錯誤，需要進入程式碼編輯器中勾選正確版本的引用項目，並<strong>取消遺漏的引用項目</strong>，不然會導致程式碼出現不可解釋的錯誤行為。</li>
 <li>ProgeCAD只能透過先期引用，後期引用會失效，操作部分物件內容時會失效，我遇到的是<strong>Library物件的操作會出現問題</strong>，Library物件的CreatePoint方法與點資料密切關連，不可避免，後來透過明確的先期引用引入就可以了。</li>
 <li>物件瀏覽是在查詢對象的屬性及方法必備工具，需要有引用才有辦法顯示ProgeCAD相關物件，引用的名稱叫做<strong>IntelliCAD</strong>，如要採用後期引用時，傳送給其他人時要記得取消勾選。</li>
+</ul>
+<h2 id="相關文章">相關文章</h2>
+<ul>
+<li><a
+target="_blank" rel="noopener" href="https://hankvba.blogspot.com/2018/03/autocadvba_26.html">AutoCADVBA學習資源</a></li>
+<li><a
+target="_blank" rel="noopener" href="https://hankvba.blogspot.com/2018/03/vba.html">VBA引用項目問題</a></li>
 </ul>
 
     </div>
@@ -348,7 +354,7 @@ target="_blank" rel="noopener" href="https://hankvba.blogspot.com/2018/03/vba.ht
   </li>
   <li class="post-copyright-link">
       <strong>文章連結：</strong>
-      <a href="https://www.hanksvba.com/posts/280929469/" title="CADVBA(一)、開啟連接的大門">https://www.hanksvba.com/posts/280929469/</a>
+      <a href="https://www.hanksvba.com/posts/558703190/" title="CADVBA教學(一)">https://www.hanksvba.com/posts/558703190/</a>
   </li>
   <li class="post-copyright-license">
       <strong>版權聲明： </strong>本網誌所有文章除特別聲明外，均採用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 許可協議。轉載請註明出處！
@@ -370,6 +376,9 @@ target="_blank" rel="noopener" href="https://hankvba.blogspot.com/2018/03/vba.ht
                 </a>
             </div>
             <div class="post-nav-item">
+                <a href="/posts/3417119485/" rel="next" title="HanksVBA繪圖資料庫操作流程(一)">
+                  HanksVBA繪圖資料庫操作流程(一) <i class="fa fa-angle-right"></i>
+                </a>
             </div>
           </div>
     </footer>
