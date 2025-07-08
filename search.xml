@@ -4491,4 +4491,119 @@ Studio無法登入時，會無法操作資料庫中的所有內容，儘管用pg
         <tag>SQL</tag>
       </tags>
   </entry>
+  <entry>
+    <title>HanksVBA繪圖資料庫操作流程(二)</title>
+    <url>/posts/1687978399/</url>
+    <content><![CDATA[<h2 id="前言">前言</h2>
+<p>承前篇<a
+href="https://www.hanksvba.com/posts/3417119485/">HanksVBA繪圖資料庫操作流程(一)</a>，在點資料與線資料完成之後，已經初步可以看見平面地形圖長相。在帶狀結構的設計中，平面圖上所記載內容為特徵線，如要進行橫斷面的繪製，可以透過中心線的斷面樁來對特徵線做交會分析，透過交會點換算<strong>相對中心線的橫向距離</strong>，並藉由交會點與特徵線<strong>前後相鄰頂點進行高程內插</strong>，取得所需地形資訊。</p>
+<p>相關的基本流程將包含:</p>
+<ol start="5" type="1">
+<li>設定流心</li>
+<li>設定樁號</li>
+<li>補充樁號</li>
+<li>清除樁號</li>
+</ol>
+<h2 id="主畫面">主畫面</h2>
+<figure>
+<img src="/images/hanksvba_plot_2.png" alt="Fig1. 主畫面" />
+<figcaption aria-hidden="true">Fig1. 主畫面</figcaption>
+</figure>
+<span id="more"></span>
+<h2 id="步驟5.設定流心">步驟5.設定流心</h2>
+<p>流心即帶狀構造之中心線，可以依照該基地是否進行地籍套繪分成兩種處理方法</p>
+<h3 id="a.偏移中心線">A.偏移中心線</h3>
+<p>在地籍套匯之後，為避免臨田講話，原則將中心線偏移至兩側地籍線中間以求公平，此時就需要在平面地形圖開啟地籍圖層，透過指令<strong>PL</strong>沿中心點連線。</p>
+<h3 id="b.照舊使用">B.照舊使用</h3>
+<p>未經地籍套匯，經會議決議為照舊使用，則需將既有渠道之兩側渠底或兩側渠頂皆按實量回來，再透過以下流程進行流心繪製，繪製完畢後檢查起點及終點，做適當的延伸操作。</p>
+<h3 id="流程">流程</h3>
+<ol type="1">
+<li>點選按鈕<strong>設定流心</strong></li>
+</ol>
+<figure>
+<img src="2.png" alt="Fig2. 平面圖工具畫面" />
+<figcaption aria-hidden="true">Fig2. 平面圖工具畫面</figcaption>
+</figure>
+<ol start="2" type="1">
+<li>輸入流心連線距離</li>
+<li>點選按鈕<strong>生成流心</strong></li>
+<li>移動至CAD</li>
+<li>選擇第一條邊界，按下Enter</li>
+<li>選擇第二條邊界，按下Enter</li>
+<li>確認成果</li>
+</ol>
+<figure>
+<img src="3.png" alt="Fig3. 流心連線距離差異比較" />
+<figcaption aria-hidden="true">Fig3. 流心連線距離差異比較</figcaption>
+</figure>
+<blockquote>
+<p>PS:如果渠道較為蜿蜒，可以設定為5，渠道較為平直，可以設定為20</p>
+</blockquote>
+<blockquote>
+<p>PS.2:中心線生成之後可以作為參考點使用，如果認為點資料生成位置不合理(通常會在轉彎處、起點或終點)，可以刪除點資料進行調整或是手動用指令<strong>PL</strong>重新描繪也OK</p>
+</blockquote>
+<h2 id="步驟6.設定樁號">步驟6.設定樁號</h2>
+<p>繪製完中心線後，需要透過斷面樁來得到橫斷面的長相，各個樁號的間距50公尺進行。</p>
+<h3 id="流程-1">流程</h3>
+<figure>
+<img src="4.png" alt="Fig4. 平面圖工具畫面" />
+<figcaption aria-hidden="true">Fig4. 平面圖工具畫面</figcaption>
+</figure>
+<ol type="1">
+<li>輸入起始樁號</li>
+<li>輸入橫斷面單邊寬</li>
+<li>點選按鈕<strong>取得樁號</strong></li>
+<li>移動至CAD</li>
+<li>選擇中心線</li>
+<li>輸入下一個間距</li>
+<li>確認成果</li>
+</ol>
+<figure>
+<img src="5.png" alt="Fig5. 斷面樁生成結果" />
+<figcaption aria-hidden="true">Fig5. 斷面樁生成結果</figcaption>
+</figure>
+<blockquote>
+<p>PS:如果中心線的方向與想像中不同，可以勾選<strong>樁號反轉</strong>。</p>
+</blockquote>
+<blockquote>
+<p>PS2:下一個間距如果全部都是50公尺為整數樁進行取樣，則輸入50-，後續的樁號就會自動以50作為距離進行。
+<img src="6.png" alt="Fig6. 下一個間距使用秘訣" /></p>
+</blockquote>
+<h2 id="步驟7.補充樁號">步驟7.補充樁號</h2>
+<p>一般來說，中心線都會用整數樁的方式進行取樣樁號劃分(0+050.0+100.0+150...等)，但若遇到地形比較有變化的部分，可以再透過補充樁號的過程在該處補上斷面樁，未來無論在構造物設計或計算土方時也會比較精準。</p>
+<h3 id="流程-2">流程</h3>
+<ol type="1">
+<li>點選按鈕<strong>補充樁號</strong></li>
+<li>移動至CAD</li>
+<li>點選中心線</li>
+<li>輸入生成方式
+<ul>
+<li>點選位置</li>
+<li>輸入樁號</li>
+</ul></li>
+<li>是否要繼續?(Y/N)</li>
+<li>輸入N結束</li>
+</ol>
+<h2 id="步驟8.清除樁號">步驟8.清除樁號</h2>
+<p>當斷面樁位置異常時，可以透過此步驟進行同步清理圖說與中心線工作表，如果是progeCAD的朋友，建議先用<strong>圖層隔離</strong>的方式僅顯示斷面樁的圖層會比較好進行框選。</p>
+<h3 id="流程-3">流程</h3>
+<ol type="1">
+<li>點選按鈕<strong>清除樁號</strong></li>
+<li>移動至CAD</li>
+<li>框選斷面文字及斷面樁</li>
+<li>完成</li>
+</ol>
+<h2 id="結語">結語</h2>
+<p>經歷上述過程便能夠將中心線的位置、斷面樁的劃分作一個比較良好的規劃，在後續橫斷面、縱斷面的輸出過程時也能夠比較真實的還原地形現況。</p>
+<p>目前所遇到的中心線仍然還是用PL所進行繪製的折線，對於工程設計而言，除了折線外還可能會遇到曲線的部分，曲線是一個比較複雜的題目，筆者僅針對簡單的<strong>圓曲線</strong>有進行VBA程式設計，可以在<a
+href="https://hankvba.blogspot.com/2019/10/blog-post.html">單曲線定線工具</a>中找到相關的說明，原理也大抵是對圓曲線做折線的擬合。</p>
+]]></content>
+      <categories>
+        <category>專案成果</category>
+      </categories>
+      <tags>
+        <tag>Excel VBA</tag>
+        <tag>CAD VBA</tag>
+      </tags>
+  </entry>
 </search>
