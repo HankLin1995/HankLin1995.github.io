@@ -18,36 +18,36 @@
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"www.hanksvba.com","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.19.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":"mac"},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":false,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜尋...","empty":"我們無法找到任何有關 ${query} 的搜索結果","hits_time":"${hits} 找到 ${time} 個結果","hits":"找到 ${hits} 個結果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
 
-    <meta name="description" content="前言 承前篇HanksVBA繪圖資料庫操作流程(一)，在點資料與線資料完成之後，已經初步可以看見平面地形圖長相。在帶狀結構的設計中，平面圖上所記載內容為特徵線，如要進行橫斷面的繪製，可以透過中心線的斷面樁來對特徵線做交會分析，透過交會點換算相對中心線的橫向距離，並藉由交會點與特徵線前後相鄰頂點進行高程內插，取得所需地形資訊。 相關的基本流程將包含:  設定流心 設定樁號 補充樁號 清">
+    <meta name="description" content="前言 大語言模型(LLM)如果要用自己的電腦跑服務倒也不是不行，以現在大多數的地端模型來說要不就很慢，要不就很笨，所以如果要真正將專案導入AI進行使用的話，我的建議還是尋求比較聰明的模型進行API嫁接服務，當然OPENAI也有提供相關的API使用，但就是會需要一筆費用就是了，至於GROQ他就是可以提供比較聰明的開源大語言模型然後反應速度又很快的一家服務商，他所提供的GroqAPI服務有一些基本限">
 <meta property="og:type" content="article">
-<meta property="og:title" content="HanksVBA繪圖資料庫操作流程(二)">
-<meta property="og:url" content="https://www.hanksvba.com/posts/1687978399/">
+<meta property="og:title" content="GroqAPI金鑰取得教學">
+<meta property="og:url" content="https://www.hanksvba.com/posts/3510612144/">
 <meta property="og:site_name" content="Hank&#39;s Blog">
-<meta property="og:description" content="前言 承前篇HanksVBA繪圖資料庫操作流程(一)，在點資料與線資料完成之後，已經初步可以看見平面地形圖長相。在帶狀結構的設計中，平面圖上所記載內容為特徵線，如要進行橫斷面的繪製，可以透過中心線的斷面樁來對特徵線做交會分析，透過交會點換算相對中心線的橫向距離，並藉由交會點與特徵線前後相鄰頂點進行高程內插，取得所需地形資訊。 相關的基本流程將包含:  設定流心 設定樁號 補充樁號 清">
+<meta property="og:description" content="前言 大語言模型(LLM)如果要用自己的電腦跑服務倒也不是不行，以現在大多數的地端模型來說要不就很慢，要不就很笨，所以如果要真正將專案導入AI進行使用的話，我的建議還是尋求比較聰明的模型進行API嫁接服務，當然OPENAI也有提供相關的API使用，但就是會需要一筆費用就是了，至於GROQ他就是可以提供比較聰明的開源大語言模型然後反應速度又很快的一家服務商，他所提供的GroqAPI服務有一些基本限">
 <meta property="og:locale" content="zh_TW">
-<meta property="og:image" content="https://www.hanksvba.com/images/hanksvba_plot_2.png">
-<meta property="og:image" content="https://www.hanksvba.com/posts/1687978399/2.png">
-<meta property="og:image" content="https://www.hanksvba.com/posts/1687978399/3.png">
-<meta property="og:image" content="https://www.hanksvba.com/posts/1687978399/4.png">
-<meta property="og:image" content="https://www.hanksvba.com/posts/1687978399/5.png">
-<meta property="og:image" content="https://www.hanksvba.com/posts/1687978399/6.png">
-<meta property="article:published_time" content="2025-07-08T14:49:20.000Z">
-<meta property="article:modified_time" content="2025-07-08T14:49:20.000Z">
+<meta property="og:image" content="https://www.hanksvba.com/posts/3510612144/1.png">
+<meta property="og:image" content="https://www.hanksvba.com/posts/3510612144/2.png">
+<meta property="og:image" content="https://www.hanksvba.com/posts/3510612144/3.png">
+<meta property="og:image" content="https://www.hanksvba.com/posts/3510612144/4.png">
+<meta property="og:image" content="https://www.hanksvba.com/posts/3510612144/5.png">
+<meta property="og:image" content="https://www.hanksvba.com/posts/3510612144/6.png">
+<meta property="article:published_time" content="2025-07-12T08:52:29.000Z">
+<meta property="article:modified_time" content="2025-07-12T08:52:29.000Z">
 <meta property="article:author" content="Hank Lin">
-<meta property="article:tag" content="Excel VBA">
-<meta property="article:tag" content="CAD VBA">
+<meta property="article:tag" content="Python">
+<meta property="article:tag" content="API">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://www.hanksvba.com/images/hanksvba_plot_2.png">
+<meta name="twitter:image" content="https://www.hanksvba.com/posts/3510612144/1.png">
 
 
-<link rel="canonical" href="https://www.hanksvba.com/posts/1687978399/">
+<link rel="canonical" href="https://www.hanksvba.com/posts/3510612144/">
 
 
 
-<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-TW","comments":true,"permalink":"https://www.hanksvba.com/posts/1687978399/","path":"posts/1687978399/","title":"HanksVBA繪圖資料庫操作流程(二)"}</script>
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-TW","comments":true,"permalink":"https://www.hanksvba.com/posts/3510612144/","path":"posts/3510612144/","title":"GroqAPI金鑰取得教學"}</script>
 
 <script class="next-config" data-name="calendar" type="application/json">""</script>
-<title>HanksVBA繪圖資料庫操作流程(二) | Hank's Blog</title>
+<title>GroqAPI金鑰取得教學 | Hank's Blog</title>
   
 
 
@@ -147,7 +147,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%89%8D%E8%A8%80"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%BB%E7%95%AB%E9%9D%A2"><span class="nav-number">2.</span> <span class="nav-text">主畫面</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%AD%A5%E9%A9%9F5.%E8%A8%AD%E5%AE%9A%E6%B5%81%E5%BF%83"><span class="nav-number">3.</span> <span class="nav-text">步驟5.設定流心</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#a.%E5%81%8F%E7%A7%BB%E4%B8%AD%E5%BF%83%E7%B7%9A"><span class="nav-number">3.1.</span> <span class="nav-text">A.偏移中心線</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#b.%E7%85%A7%E8%88%8A%E4%BD%BF%E7%94%A8"><span class="nav-number">3.2.</span> <span class="nav-text">B.照舊使用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%B5%81%E7%A8%8B"><span class="nav-number">3.3.</span> <span class="nav-text">流程</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%AD%A5%E9%A9%9F6.%E8%A8%AD%E5%AE%9A%E6%A8%81%E8%99%9F"><span class="nav-number">4.</span> <span class="nav-text">步驟6.設定樁號</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%B5%81%E7%A8%8B-1"><span class="nav-number">4.1.</span> <span class="nav-text">流程</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%AD%A5%E9%A9%9F7.%E8%A3%9C%E5%85%85%E6%A8%81%E8%99%9F"><span class="nav-number">5.</span> <span class="nav-text">步驟7.補充樁號</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%B5%81%E7%A8%8B-2"><span class="nav-number">5.1.</span> <span class="nav-text">流程</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%AD%A5%E9%A9%9F8.%E6%B8%85%E9%99%A4%E6%A8%81%E8%99%9F"><span class="nav-number">6.</span> <span class="nav-text">步驟8.清除樁號</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%B5%81%E7%A8%8B-3"><span class="nav-number">6.1.</span> <span class="nav-text">流程</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%B5%90%E8%AA%9E"><span class="nav-number">7.</span> <span class="nav-text">結語</span></a></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%89%8D%E8%A8%80"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%AD%A5%E9%A9%9F"><span class="nav-number">2.</span> <span class="nav-text">步驟</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%80%B2%E5%85%A5%E7%B6%B2%E7%AB%99"><span class="nav-number">2.1.</span> <span class="nav-text">進入網站</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%BB%9E%E9%81%B8%E7%99%BB%E5%85%A5"><span class="nav-number">2.2.</span> <span class="nav-text">點選登入</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%94%AF%E6%8F%B4%E5%90%84%E7%A8%AE%E7%99%BB%E5%85%A5%E6%96%B9%E5%BC%8F"><span class="nav-number">2.3.</span> <span class="nav-text">支援各種登入方式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BB%BA%E7%AB%8B-api-key"><span class="nav-number">2.4.</span> <span class="nav-text">建立 API key</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8F%96%E5%BE%97api-token"><span class="nav-number">2.5.</span> <span class="nav-text">取得API Token</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%8C%E6%88%90%E9%A0%81%E9%9D%A2"><span class="nav-number">2.6.</span> <span class="nav-text">完成頁面</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AF%84%E4%BE%8B"><span class="nav-number">3.</span> <span class="nav-text">範例</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8F%AF%E7%94%A8%E6%A8%A1%E5%9E%8B"><span class="nav-number">3.1.</span> <span class="nav-text">可用模型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AA%9E%E9%9F%B3%E8%BD%89%E6%96%87%E5%AD%97%E7%AF%84%E4%BE%8B"><span class="nav-number">3.2.</span> <span class="nav-text">語音轉文字範例</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%96%87%E5%AD%97%E4%BB%BB%E5%8B%99%E7%AF%84%E4%BE%8B"><span class="nav-number">3.3.</span> <span class="nav-text">文字任務範例</span></a></li></ol></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -220,7 +220,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-TW">
-    <link itemprop="mainEntityOfPage" href="https://www.hanksvba.com/posts/1687978399/">
+    <link itemprop="mainEntityOfPage" href="https://www.hanksvba.com/posts/3510612144/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar_custom.png">
@@ -233,12 +233,12 @@
     </span>
 
     <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="HanksVBA繪圖資料庫操作流程(二) | Hank's Blog">
+      <meta itemprop="name" content="GroqAPI金鑰取得教學 | Hank's Blog">
       <meta itemprop="description" content="">
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          HanksVBA繪圖資料庫操作流程(二)
+          GroqAPI金鑰取得教學
         </h1>
 
         <div class="post-meta-container">
@@ -249,7 +249,7 @@
       </span>
       <span class="post-meta-item-text">發表於</span>
 
-      <time title="創建時間：2025-07-08 22:49:20" itemprop="dateCreated datePublished" datetime="2025-07-08T22:49:20+08:00">2025-07-08</time>
+      <time title="創建時間：2025-07-12 16:52:29" itemprop="dateCreated datePublished" datetime="2025-07-12T16:52:29+08:00">2025-07-12</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -257,7 +257,7 @@
       </span>
       <span class="post-meta-item-text">分類於</span>
         <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E5%B0%88%E6%A1%88%E6%88%90%E6%9E%9C/" itemprop="url" rel="index"><span itemprop="name">專案成果</span></a>
+          <a href="/categories/%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5/" itemprop="url" rel="index"><span itemprop="name">基本概念</span></a>
         </span>
     </span>
 
@@ -278,108 +278,80 @@
     
     
     <div class="post-body" itemprop="articleBody"><h2 id="前言">前言</h2>
-<p>承前篇<a
-href="https://www.hanksvba.com/posts/3417119485/">HanksVBA繪圖資料庫操作流程(一)</a>，在點資料與線資料完成之後，已經初步可以看見平面地形圖長相。在帶狀結構的設計中，平面圖上所記載內容為特徵線，如要進行橫斷面的繪製，可以透過中心線的斷面樁來對特徵線做交會分析，透過交會點換算<strong>相對中心線的橫向距離</strong>，並藉由交會點與特徵線<strong>前後相鄰頂點進行高程內插</strong>，取得所需地形資訊。</p>
-<p>相關的基本流程將包含:</p>
-<ol start="5" type="1">
-<li>設定流心</li>
-<li>設定樁號</li>
-<li>補充樁號</li>
-<li>清除樁號</li>
-</ol>
-<h2 id="主畫面">主畫面</h2>
-<figure>
-<img src="/images/hanksvba_plot_2.png" alt="Fig1. 主畫面" />
-<figcaption aria-hidden="true">Fig1. 主畫面</figcaption>
-</figure>
+<p>大語言模型(LLM)如果要用自己的電腦跑服務倒也不是不行，以現在大多數的地端模型來說要不就很慢，要不就很笨，所以如果要真正將專案導入AI進行使用的話，我的建議還是尋求比較聰明的模型進行API嫁接服務，當然OPENAI也有提供相關的API使用，但就是會需要一筆費用就是了，至於GROQ他就是可以提供比較聰明的開源大語言模型然後反應速度又很快的一家服務商，他所提供的GroqAPI服務有一些基本限制，但若要進行小專案的API串接已經很OK了!</p>
 <span id="more"></span>
-<h2 id="步驟5.設定流心">步驟5.設定流心</h2>
-<p>流心即帶狀構造之中心線，可以依照該基地是否進行地籍套繪分成兩種處理方法</p>
-<h3 id="a.偏移中心線">A.偏移中心線</h3>
-<p>在地籍套匯之後，為避免臨田講話，原則將中心線偏移至兩側地籍線中間以求公平，此時就需要在平面地形圖開啟地籍圖層，透過指令<strong>PL</strong>沿中心點連線。</p>
-<h3 id="b.照舊使用">B.照舊使用</h3>
-<p>未經地籍套匯，經會議決議為照舊使用，則需將既有渠道之兩側渠底或兩側渠頂皆按實量回來，再透過以下流程進行流心繪製，繪製完畢後檢查起點及終點，做適當的延伸操作。</p>
-<h3 id="流程">流程</h3>
-<ol type="1">
-<li>點選按鈕<strong>設定流心</strong></li>
-</ol>
+<h2 id="步驟">步驟</h2>
+<h3 id="進入網站">進入網站</h3>
+<blockquote>
+<p>https://console.groq.com/keys</p>
+</blockquote>
+<h3 id="點選登入">點選登入</h3>
 <figure>
-<img src="2.png" alt="Fig2. 平面圖工具畫面" />
-<figcaption aria-hidden="true">Fig2. 平面圖工具畫面</figcaption>
-</figure>
-<ol start="2" type="1">
-<li>輸入流心連線距離</li>
-<li>點選按鈕<strong>生成流心</strong></li>
-<li>移動至CAD</li>
-<li>選擇第一條邊界，按下Enter</li>
-<li>選擇第二條邊界，按下Enter</li>
-<li>確認成果</li>
-</ol>
-<figure>
-<img src="3.png" alt="Fig3. 流心連線距離差異比較" />
-<figcaption aria-hidden="true">Fig3. 流心連線距離差異比較</figcaption>
+<img src="1.png" alt="image" />
+<figcaption aria-hidden="true">image</figcaption>
 </figure>
 <blockquote>
-<p>PS:如果渠道較為蜿蜒，可以設定為5，渠道較為平直，可以設定為20</p>
+<p>小技巧:你也可以登入之後直接輸入上述網站就會到取得金鑰的地方</p>
 </blockquote>
-<blockquote>
-<p>PS.2:中心線生成之後可以作為參考點使用，如果認為點資料生成位置不合理(通常會在轉彎處、起點或終點)，可以刪除點資料進行調整或是手動用指令<strong>PL</strong>重新描繪也OK</p>
-</blockquote>
-<h2 id="步驟6.設定樁號">步驟6.設定樁號</h2>
-<p>繪製完中心線後，需要透過斷面樁來得到橫斷面的長相，各個樁號的間距50公尺進行。</p>
-<h3 id="流程-1">流程</h3>
+<h3 id="支援各種登入方式">支援各種登入方式</h3>
 <figure>
-<img src="4.png" alt="Fig4. 平面圖工具畫面" />
-<figcaption aria-hidden="true">Fig4. 平面圖工具畫面</figcaption>
+<img src="2.png" alt="image" />
+<figcaption aria-hidden="true">image</figcaption>
 </figure>
-<ol type="1">
-<li>輸入起始樁號</li>
-<li>輸入橫斷面單邊寬</li>
-<li>點選按鈕<strong>取得樁號</strong></li>
-<li>移動至CAD</li>
-<li>選擇中心線</li>
-<li>輸入下一個間距</li>
-<li>確認成果</li>
-</ol>
-<figure>
-<img src="5.png" alt="Fig5. 斷面樁生成結果" />
-<figcaption aria-hidden="true">Fig5. 斷面樁生成結果</figcaption>
-</figure>
-<blockquote>
-<p>PS:如果中心線的方向與想像中不同，可以勾選<strong>樁號反轉</strong>。</p>
-</blockquote>
-<blockquote>
-<p>PS2:下一個間距如果全部都是50公尺為整數樁進行取樣，則輸入50-，後續的樁號就會自動以50作為距離進行。
-<img src="6.png" alt="Fig6. 下一個間距使用秘訣" /></p>
-</blockquote>
-<h2 id="步驟7.補充樁號">步驟7.補充樁號</h2>
-<p>一般來說，中心線都會用整數樁的方式進行取樣樁號劃分(0+050.0+100.0+150...等)，但若遇到地形比較有變化的部分，可以再透過補充樁號的過程在該處補上斷面樁，未來無論在構造物設計或計算土方時也會比較精準。</p>
-<h3 id="流程-2">流程</h3>
-<ol type="1">
-<li>點選按鈕<strong>補充樁號</strong></li>
-<li>移動至CAD</li>
-<li>點選中心線</li>
-<li>輸入生成方式
 <ul>
-<li>點選位置</li>
-<li>輸入樁號</li>
-</ul></li>
-<li>是否要繼續?(Y/N)</li>
-<li>輸入N結束</li>
-</ol>
-<h2 id="步驟8.清除樁號">步驟8.清除樁號</h2>
-<p>當斷面樁位置異常時，可以透過此步驟進行同步清理圖說與中心線工作表，如果是progeCAD的朋友，建議先用<strong>圖層隔離</strong>的方式僅顯示斷面樁的圖層會比較好進行框選。</p>
-<h3 id="流程-3">流程</h3>
-<ol type="1">
-<li>點選按鈕<strong>清除樁號</strong></li>
-<li>移動至CAD</li>
-<li>框選斷面文字及斷面樁</li>
-<li>完成</li>
-</ol>
-<h2 id="結語">結語</h2>
-<p>經歷上述過程便能夠將中心線的位置、斷面樁的劃分作一個比較良好的規劃，在後續橫斷面、縱斷面的輸出過程時也能夠比較真實的還原地形現況。</p>
-<p>目前所遇到的中心線仍然還是用PL所進行繪製的折線，對於工程設計而言，除了折線外還可能會遇到曲線的部分，曲線是一個比較複雜的題目，筆者僅針對簡單的<strong>圓曲線</strong>有進行VBA程式設計，可以在<a
-target="_blank" rel="noopener" href="https://hankvba.blogspot.com/2019/10/blog-post.html">單曲線定線工具</a>中找到相關的說明，原理也大抵是對圓曲線做折線的擬合。</p>
+<li>Google</li>
+<li>Github</li>
+</ul>
+<h3 id="建立-api-key">建立 API key</h3>
+<p><img src="3.png" alt="image" /> <img src="4.png" alt="image" /></p>
+<h3 id="取得api-token">取得API Token</h3>
+<figure>
+<img src="5.png" alt="image" />
+<figcaption aria-hidden="true">image</figcaption>
+</figure>
+<h3 id="完成頁面">完成頁面</h3>
+<figure>
+<img src="6.png" alt="image" />
+<figcaption aria-hidden="true">image</figcaption>
+</figure>
+<ul>
+<li>這一串<strong>API_TOKEN</strong>就可以拿來給其他的程式做使用了!!</li>
+</ul>
+<h2 id="範例">範例</h2>
+<h3 id="可用模型">可用模型</h3>
+<blockquote>
+<p>語言模型：</p>
+</blockquote>
+<ul>
+<li>llama-3.1-405b-reasoning</li>
+<li>llama-3.1-70b-versatile</li>
+<li>llama-3.1-8b-instant</li>
+<li>llama3-groq-70b-8192-tool-use-preview</li>
+<li>llama3-groq-8b-8192-tool-use-preview</li>
+<li>llama3-70b-8192</li>
+<li>llama3-8b-8192</li>
+<li>mixtral-8x7b-32768</li>
+<li>gemma-7b-it</li>
+<li>gemma2-9b-it</li>
+</ul>
+<blockquote>
+<p>語音模型（Whisper）：</p>
+</blockquote>
+<ul>
+<li>whisper-large-v3</li>
+<li>whisper-large-v3-turbo</li>
+</ul>
+<blockquote>
+<p>多模態／影像模型：</p>
+</blockquote>
+<ul>
+<li>meta-llama/llama-4-scout-17b-16e-instruct</li>
+<li>meta-llama/llama-4-maverick-17b-128e-instruct</li>
+</ul>
+<h3 id="語音轉文字範例">語音轉文字範例</h3>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> groq <span class="keyword">import</span> Groq</span><br><span class="line"></span><br><span class="line">client = Groq(api_key=groq_api_key)</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">transcribe_audio</span>(<span class="params">audio_file</span>):</span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        <span class="keyword">with</span> <span class="built_in">open</span>(audio_file, <span class="string">&quot;rb&quot;</span>) <span class="keyword">as</span> file:</span><br><span class="line">            transcription = client.audio.transcriptions.create(</span><br><span class="line">                file=file,</span><br><span class="line">                model=<span class="string">&quot;whisper-large-v3&quot;</span>,</span><br><span class="line">                response_format=<span class="string">&quot;text&quot;</span>,</span><br><span class="line">                language=<span class="string">&quot;zh&quot;</span></span><br><span class="line">            )</span><br><span class="line">        <span class="keyword">return</span> transcription</span><br><span class="line">    <span class="keyword">except</span> Exception <span class="keyword">as</span> e:</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">f&quot;Transcription error: <span class="subst">&#123;<span class="built_in">str</span>(e)&#125;</span>&quot;</span>)</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">None</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h3 id="文字任務範例">文字任務範例</h3>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">chat_with_model</span>(<span class="params">user_input</span>):</span><br><span class="line">    response = client.chat.completions.create(</span><br><span class="line">        model=<span class="string">&quot;gemma2-9b-it&quot;</span>,</span><br><span class="line">        messages=[</span><br><span class="line">            &#123;<span class="string">&quot;role&quot;</span>: <span class="string">&quot;user&quot;</span>, <span class="string">&quot;content&quot;</span>: user_input&#125;</span><br><span class="line">        ]</span><br><span class="line">    )</span><br><span class="line">    <span class="keyword">return</span> response.choices[<span class="number">0</span>].message.content</span><br></pre></td></tr></table></figure>
 
     </div>
 
@@ -397,7 +369,7 @@ target="_blank" rel="noopener" href="https://hankvba.blogspot.com/2019/10/blog-p
   </li>
   <li class="post-copyright-link">
       <strong>文章連結：</strong>
-      <a href="https://www.hanksvba.com/posts/1687978399/" title="HanksVBA繪圖資料庫操作流程(二)">https://www.hanksvba.com/posts/1687978399/</a>
+      <a href="https://www.hanksvba.com/posts/3510612144/" title="GroqAPI金鑰取得教學">https://www.hanksvba.com/posts/3510612144/</a>
   </li>
   <li class="post-copyright-license">
       <strong>版權聲明： </strong>本網誌所有文章除特別聲明外，均採用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 許可協議。轉載請註明出處！
@@ -406,22 +378,19 @@ target="_blank" rel="noopener" href="https://hankvba.blogspot.com/2019/10/blog-p
 </div>
 
           <div class="post-tags">
-              <a href="/tags/Excel-VBA/" rel="tag"><i class="fa fa-tag"></i> Excel VBA</a>
-              <a href="/tags/CAD-VBA/" rel="tag"><i class="fa fa-tag"></i> CAD VBA</a>
+              <a href="/tags/Python/" rel="tag"><i class="fa fa-tag"></i> Python</a>
+              <a href="/tags/API/" rel="tag"><i class="fa fa-tag"></i> API</a>
           </div>
 
         
 
           <div class="post-nav">
             <div class="post-nav-item">
-                <a href="/posts/3417119485/" rel="prev" title="HanksVBA繪圖資料庫操作流程(一)">
-                  <i class="fa fa-angle-left"></i> HanksVBA繪圖資料庫操作流程(一)
+                <a href="/posts/1687978399/" rel="prev" title="HanksVBA繪圖資料庫操作流程(二)">
+                  <i class="fa fa-angle-left"></i> HanksVBA繪圖資料庫操作流程(二)
                 </a>
             </div>
             <div class="post-nav-item">
-                <a href="/posts/3510612144/" rel="next" title="GroqAPI金鑰取得教學">
-                  GroqAPI金鑰取得教學 <i class="fa fa-angle-right"></i>
-                </a>
             </div>
           </div>
     </footer>
