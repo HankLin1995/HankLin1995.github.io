@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.2.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha256-wiz7ZSCn/btzhjKDQBms9Hx4sSeUYsDrTLg7roPstac=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"www.hanksvba.com","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.19.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":"mac"},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":false,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜尋...","empty":"我們無法找到任何有關 ${query} 的搜索結果","hits_time":"${hits} 找到 ${time} 個結果","hits":"找到 ${hits} 個結果"},"path":"/search.json","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="前言 承前篇HanksVBA繪圖資料庫操作流程(二)，在中心線與斷面樁完成之後，此時就要透過斷面樁與特徵線之間的幾何關係換算其橫向相對座標及高程，計算成果除了可以繪製橫斷面外，同時也能透過萃取出各特徵線上的高程資訊作為縱斷面之資料來源。 相關的基本流程將包含:  樁號取樣 高程重整 橫斷面圖 擷取CD碼 快速縱斷面  主畫面   Fig1. 主要畫面">
+<meta property="og:type" content="article">
+<meta property="og:title" content="VBA繪圖資料庫操作流程(三)">
+<meta property="og:url" content="https://www.hanksvba.com/posts/2604629158/">
+<meta property="og:site_name" content="Hank&#39;s Blog">
+<meta property="og:description" content="前言 承前篇HanksVBA繪圖資料庫操作流程(二)，在中心線與斷面樁完成之後，此時就要透過斷面樁與特徵線之間的幾何關係換算其橫向相對座標及高程，計算成果除了可以繪製橫斷面外，同時也能透過萃取出各特徵線上的高程資訊作為縱斷面之資料來源。 相關的基本流程將包含:  樁號取樣 高程重整 橫斷面圖 擷取CD碼 快速縱斷面  主畫面   Fig1. 主要畫面">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:image" content="https://www.hanksvba.com/images/hanksvba_plot_3.png">
+<meta property="og:image" content="https://www.hanksvba.com/posts/2604629158/2.png">
+<meta property="og:image" content="https://www.hanksvba.com/posts/2604629158/3.png">
+<meta property="og:image" content="https://www.hanksvba.com/posts/2604629158/4.png">
+<meta property="og:image" content="https://www.hanksvba.com/posts/2604629158/5.png">
+<meta property="og:image" content="https://www.hanksvba.com/posts/2604629158/6.png">
+<meta property="article:published_time" content="2025-07-14T06:44:26.000Z">
+<meta property="article:modified_time" content="2025-07-14T06:44:26.000Z">
+<meta property="article:author" content="Hank Lin">
+<meta property="article:tag" content="Excel VBA">
+<meta property="article:tag" content="CAD VBA">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://www.hanksvba.com/images/hanksvba_plot_3.png">
+
+
+<link rel="canonical" href="https://www.hanksvba.com/posts/2604629158/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-TW","comments":true,"permalink":"https://www.hanksvba.com/posts/2604629158/","path":"posts/2604629158/","title":"VBA繪圖資料庫操作流程(三)"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>VBA繪圖資料庫操作流程(三) | Hank's Blog</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切換導航欄" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Hank's Blog</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">工程人的設計監造VBA工具交流區</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜尋" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-首頁"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首頁</a></li><li class="menu-item menu-item-關於"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>關於</a></li><li class="menu-item menu-item-標籤"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>標籤</a></li><li class="menu-item menu-item-分類"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分類</a></li><li class="menu-item menu-item-文章"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>文章</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜尋
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜尋..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目錄
+        </li>
+        <li class="sidebar-nav-overview">
+          本站概要
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%89%8D%E8%A8%80"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%BB%E7%95%AB%E9%9D%A2"><span class="nav-number">2.</span> <span class="nav-text">主畫面</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%AD%A5%E9%A9%9F9.%E6%A8%81%E8%99%9F%E5%8F%96%E6%A8%A3"><span class="nav-number">3.</span> <span class="nav-text">步驟9.樁號取樣</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%B5%81%E7%A8%8B"><span class="nav-number">3.1.</span> <span class="nav-text">流程</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%AD%A5%E9%A9%9F10.%E9%AB%98%E7%A8%8B%E9%87%8D%E6%95%B4"><span class="nav-number">4.</span> <span class="nav-text">步驟10.高程重整</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%B5%81%E7%A8%8B-1"><span class="nav-number">4.1.</span> <span class="nav-text">流程</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%AD%A5%E9%A9%9F11.%E6%A9%AB%E6%96%B7%E9%9D%A2%E5%9C%96"><span class="nav-number">5.</span> <span class="nav-text">步驟11.橫斷面圖</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%B5%81%E7%A8%8B-2"><span class="nav-number">5.1.</span> <span class="nav-text">流程</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%AD%A5%E9%A9%9F12.%E6%93%B7%E5%8F%96cd%E7%A2%BC"><span class="nav-number">6.</span> <span class="nav-text">步驟12.擷取CD碼</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%B5%81%E7%A8%8B-3"><span class="nav-number">6.1.</span> <span class="nav-text">流程</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%AD%A5%E9%A9%9F13.%E5%BF%AB%E9%80%9F%E7%B8%B1%E6%96%B7%E9%9D%A2optional"><span class="nav-number">7.</span> <span class="nav-text">步驟13.快速縱斷面(Optional)</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%B5%81%E7%A8%8B-4"><span class="nav-number">7.1.</span> <span class="nav-text">流程</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%B5%90%E8%AA%9E"><span class="nav-number">8.</span> <span class="nav-text">結語</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Hank Lin"
+      src="/images/avatar_custom.png">
+  <p class="site-author-name" itemprop="name">Hank Lin</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">43</span>
+          <span class="site-state-item-name">文章</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">分類</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">27</span>
+        <span class="site-state-item-name">標籤</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="mailto:apple84026113@gmail.com" title="E-Mail → mailto:apple84026113@gmail.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.youtube.com/channel/UCWmy5KaK7Leg6lLUlWBPaSw" title="YouTube → https:&#x2F;&#x2F;www.youtube.com&#x2F;channel&#x2F;UCWmy5KaK7Leg6lLUlWBPaSw" rel="noopener me" target="_blank"><i class="fab fa-youtube fa-fw"></i>YouTube</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/images/LINE_QRCODE.PNG" title="LINE → &#x2F;images&#x2F;LINE_QRCODE.PNG" rel="noopener me"><i class="fab fa-line fa-fw"></i>LINE</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://reurl.cc/RyvvaZ" title="LINE社群 → https:&#x2F;&#x2F;reurl.cc&#x2F;RyvvaZ" rel="noopener me" target="_blank"><i class="fas fa-comment fa-fw"></i>LINE社群</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://hankvba.blogspot.com/" title="舊網站 → https:&#x2F;&#x2F;hankvba.blogspot.com&#x2F;" rel="noopener me" target="_blank"><i class="fab fa-blogger fa-fw"></i>舊網站</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://portaly.cc/hanksvba/support/" title="小額贊助 → https:&#x2F;&#x2F;portaly.cc&#x2F;hanksvba&#x2F;support&#x2F;" rel="noopener me" target="_blank"><i class="fas fa-handshake fa-fw"></i>小額贊助</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-TW">
+    <link itemprop="mainEntityOfPage" href="https://www.hanksvba.com/posts/2604629158/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar_custom.png">
+      <meta itemprop="name" content="Hank Lin">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hank's Blog">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="VBA繪圖資料庫操作流程(三) | Hank's Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          VBA繪圖資料庫操作流程(三)
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">發表於</span>
+
+      <time title="創建時間：2025-07-14 14:44:26" itemprop="dateCreated datePublished" datetime="2025-07-14T14:44:26+08:00">2025-07-14</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分類於</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E5%B0%88%E6%A1%88%E6%88%90%E6%9E%9C/" itemprop="url" rel="index"><span itemprop="name">專案成果</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="閱讀次數" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">閱讀次數：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h2 id="前言">前言</h2>
+<p>承前篇<a
+href="https://www.hanksvba.com/posts/1687978399/#more">HanksVBA繪圖資料庫操作流程(二)</a>，在中心線與斷面樁完成之後，此時就要透過斷面樁與特徵線之間的幾何關係換算其橫向相對座標及高程，計算成果除了可以繪製橫斷面外，同時也能透過萃取出各特徵線上的高程資訊作為縱斷面之資料來源。</p>
+<p>相關的基本流程將包含:</p>
+<ol start="9" type="1">
+<li>樁號取樣</li>
+<li>高程重整</li>
+<li>橫斷面圖</li>
+<li>擷取CD碼</li>
+<li>快速縱斷面</li>
+</ol>
+<h2 id="主畫面">主畫面</h2>
+<figure>
+<img src="/images/hanksvba_plot_3.png" alt="Fig1. 主要畫面" />
+<figcaption aria-hidden="true">Fig1. 主要畫面</figcaption>
+</figure>
+<span id="more"></span>
+<h2 id="步驟9.樁號取樣">步驟9.樁號取樣</h2>
+<p>特徵線與斷面樁透過取得其位於斷面樁上各個交點來推算該點距離斷面樁的端點距離以及該點位於特徵線上之前後端點的高程進行內插值換算，進而取得一份具有X、Y、交點CD碼的表格。</p>
+<figure>
+<img src="2.png" alt="Fig2. 橫斷面基本資料表" />
+<figcaption aria-hidden="true">Fig2. 橫斷面基本資料表</figcaption>
+</figure>
+<h3 id="流程">流程</h3>
+<ol type="1">
+<li>移動至工作表"中心線"</li>
+<li>點選按鈕<strong>樁號取樣</strong></li>
+<li>移動至CAD</li>
+<li>框選斷面樁，按下Enter</li>
+<li>框選特徵線，按下Enter</li>
+<li>成果出現於工作表"橫斷面"</li>
+</ol>
+<blockquote>
+<p>PS:通常起點、終點比較容易出現有異常，通常是發生於特徵線與斷面樁無法交會的情況，此時可以先透過CAD指令<strong>EX</strong>將特徵線延長至該斷面樁，再透過按鈕<strong>檢查點高程</strong>進行線段高程檢查、取近似點處理。</p>
+</blockquote>
+<h2 id="步驟10.高程重整">步驟10.高程重整</h2>
+<p>除了透過取特徵線高程作為來源外，也能在CAD中透過指令<strong>OFFSET</strong>建立虛擬特徵線，並且將該虛擬特徵線賦予其要同步的高程來源，以矩形渠道為例，通常只會拿取渠底中心、兩側渠頂作為特徵線使用(目前在橫斷面圖上看起來就像是V字型)，若要正確描述橫斷面圖的長相(U字型)
+，還需要透過兩側渠頂的位置往渠底中心偏移複製0.1公分，再透過高程重整的方式將左渠底及右渠底的高程設定等同渠底中心，這樣便能看見一完整的渠道樣式。</p>
+<figure>
+<img src="3.png" alt="Fig3. 高程重整基本資料表" />
+<figcaption aria-hidden="true">Fig3. 高程重整基本資料表</figcaption>
+</figure>
+<h3 id="流程-1">流程</h3>
+<ol type="1">
+<li>確認橫斷面含有Y值為0的數值</li>
+<li>設定高程代碼、取代高程、運算值</li>
+<li>點選按鈕<strong>高程重整</strong></li>
+<li>完成</li>
+</ol>
+<h2 id="步驟11.橫斷面圖">步驟11.橫斷面圖</h2>
+<p>在目前的步驟所產製出來的內容為純地形的橫斷面圖，如果要放置渠道的話需要再透過後續步驟_的渠道型式表設定進行，到時候才有辦法進行挖方、填方的面積計算。</p>
+<h3 id="流程-2">流程</h3>
+<ol type="1">
+<li>點選按鈕<strong>橫斷面圖</strong></li>
+<li>輸入圖紙比例(預設100)</li>
+<li>輸入X軸偏移距離(預設10000)</li>
+<li>輸入Y軸偏移距離(預設2000)</li>
+<li>輸入切換個數(預設100)</li>
+<li>判定是否邊界CD碼未設定環境名稱，有的話再輸入該CD對應環境名</li>
+<li>移動至CAD</li>
+<li>點選繪製基準點</li>
+<li>完成</li>
+</ol>
+<figure>
+<img src="4.png" alt="Fig4. 橫斷面CAD圖說" />
+<figcaption aria-hidden="true">Fig4. 橫斷面CAD圖說</figcaption>
+</figure>
+<blockquote>
+<p>PS:繪製過程的選項可以都先採用預設，產生初次成果後再透過目前的狀況進行微調，如發現Y軸偏移距離不夠大，就再往上加，如果要放入圖框，則可以將切換個數改為3，他繪製指定數量後就會偏移X軸繪製。</p>
+</blockquote>
+<h2 id="步驟12.擷取cd碼">步驟12.擷取CD碼</h2>
+<p>每一個橫斷面都會記錄其CD碼，如果要進行坡度設計的時候會需要把每個樁號的重要CD碼繪製於縱斷面上呈現，比較好確認高程相對應關係，要取得其高程資料需要先設定其代碼對應到的高程名稱以及放置於第幾列。</p>
+<figure>
+<img src="5.png" alt="Fig5. 縱斷面擷取CD碼基本資料" />
+<figcaption aria-hidden="true">Fig5. 縱斷面擷取CD碼基本資料</figcaption>
+</figure>
+<h3 id="流程-3">流程</h3>
+<ol type="1">
+<li>設定高程代碼、高程列位、高程名稱</li>
+<li>點選按鈕<strong>擷取CD碼</strong></li>
+<li>資料擷取後送至工作表"縱斷面"(目前被隱藏起來)</li>
+<li>完成</li>
+</ol>
+<blockquote>
+<p>PS:高程名稱的結尾必須為**高，EX:地盤高、路面高，後續再去圖說裡面改</p>
+</blockquote>
+<h2 id="步驟13.快速縱斷面optional">步驟13.快速縱斷面(Optional)</h2>
+<p>快速就可以直接看見地盤高與其他相關高程的關係，每條線都是一個圖層。</p>
+<h3 id="流程-4">流程</h3>
+<ol type="1">
+<li>點選按鈕<strong>快速縱斷面</strong></li>
+<li>輸入X軸比例(預設2500)</li>
+<li>輸入Y軸比例(預設100)</li>
+<li>移動至CAD</li>
+<li>輸入取樣間距(預設為1)</li>
+<li>點選繪製基準點</li>
+<li>完成</li>
+</ol>
+<figure>
+<img src="6.png" alt="Fig6. 簡易縱斷面CAD圖" />
+<figcaption aria-hidden="true">Fig6. 簡易縱斷面CAD圖</figcaption>
+</figure>
+<blockquote>
+<p>PS:取樣間距如果為5.10.15.20.25，設定為1時會全部顯示，設定為2的時候則會依照5.15.25這樣顯示(每2個取一次)。</p>
+</blockquote>
+<h2 id="結語">結語</h2>
+<p>在橫斷面圖的繪製過程，除了可以看出目前的地形與周邊的環境資訊(田、路)，也能判定是否有歧異點的發生，來針對地形點錯誤排查，有些時候可能會因為抄錄錯誤或機器輸出的異常，導致橫斷面的長相不合常理，如果在Excel橫斷面表上就發現高程值為0，那麼就得要先確認特徵線是否有經過人為移動或延伸、剪斷等等，這時候透過按鈕<strong>檢查點高程</strong>通常能解決大多數問題。</p>
+<p>當操作完<strong>擷取CD碼</strong>之後才能進行快速縱斷面，這部分的功能只是讓用戶能夠早點知道縱斷面效果，減少在繪製詳細的縱斷面過程的勞累，在圖說上可以取得地盤高、路面高、田面高...等等關鍵的資訊，設計者可以先在該簡圖上大約繪製計畫高、渠頂高，於此可以先先確認是否會有路面無法排水、田面無法取水等問題，再者，當地形地貌比較複雜時，也能夠將取樣間距設定為10M或5M，當地形特徵點都有按實際取回時，快速縱斷面也能完整的復現實際的地形地貌。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>作者： </strong>Hank Lin
+  </li>
+  <li class="post-copyright-link">
+      <strong>文章連結：</strong>
+      <a href="https://www.hanksvba.com/posts/2604629158/" title="VBA繪圖資料庫操作流程(三)">https://www.hanksvba.com/posts/2604629158/</a>
+  </li>
+  <li class="post-copyright-license">
+      <strong>版權聲明： </strong>本網誌所有文章除特別聲明外，均採用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 許可協議。轉載請註明出處！
+  </li>
+</ul>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/Excel-VBA/" rel="tag"><i class="fa fa-tag"></i> Excel VBA</a>
+              <a href="/tags/CAD-VBA/" rel="tag"><i class="fa fa-tag"></i> CAD VBA</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/posts/3510612144/" rel="prev" title="GroqAPI金鑰取得教學">
+                  <i class="fa fa-angle-left"></i> GroqAPI金鑰取得教學
+                </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2025</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Hank Lin</span>
+  </div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="訪客總數">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="總瀏覽次數">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 強力驅動
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="back-to-top" role="button" aria-label="回到頂端">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/next-boot.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.1/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+  <script class="next-config" data-name="pdf" type="application/json">{"object_url":{"url":"https://cdnjs.cloudflare.com/ajax/libs/pdfobject/2.2.12/pdfobject.min.js","integrity":"sha256-g2xji1rlE3KsGVClvuxTbcR0Kn2+wtQADSff2Tbb4zA="},"url":"/lib/pdf/web/viewer"}</script>
+  <script src="/js/third-party/tags/pdf.js"></script>
+
+  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":{"light":"default","dark":"dark"},"js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mermaid/10.7.0/mermaid.min.js","integrity":"sha256-TtLOdUA8mstPoO6sGvHIGx2ceXrrX4KgIItO06XOn8A="}}</script>
+  <script src="/js/third-party/tags/mermaid.js"></script>
+
+
+
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">false</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"ams","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+
+</body>
+</html>
