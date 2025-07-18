@@ -18,35 +18,43 @@
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"www.hanksvba.com","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.19.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":"mac"},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":false,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜尋...","empty":"我們無法找到任何有關 ${query} 的搜索結果","hits_time":"${hits} 找到 ${time} 個結果","hits":"找到 ${hits} 個結果"},"path":"/search.json","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
 
-    <meta name="description" content="前言 本篇文章延伸於 施工日誌VBA-V3.5.0 版本操作教學 從前篇第1步驟開始進行的朋友，會發現有一個生效日是空白的，這就是讓使用者要開始填寫日報前的最後確認，確認無誤後便會將生效日加註(第一次加註會與開工日相同)，此時才能開始填寫日報，填寫日報後需要點選&quot;儲存日報&quot;資料才會生效，取消填寫時只能透過按鈕&quot;取消填寫&quot;，不能點選右上角的X。 填寫日報的過程，可以在版本說明中的&quot;功能主要畫">
+    <meta name="description" content="前言 承前篇HanksVBA繪圖資料庫操作流程(三)，我們已經可以得知橫斷面地形的樣貌以及初步的縱斷面圖高程相對關係，接著就是針對縱斷面圖的圖表區進行更詳細的坡度設計以及渠道樣式的幾何尺寸擇定，後續將設計成果放回到橫斷面圖上的絕對高程後就可以開始進行比較繁瑣的土方計算框選、計算。 相關的基本流程將包含:  取得資料 取得坡度 縱斷面圖  主畫面   Fig1. 主畫面">
 <meta property="og:type" content="article">
-<meta property="og:title" content="施工日誌VBA-記錄篇">
-<meta property="og:url" content="https://www.hanksvba.com/posts/426352985/">
+<meta property="og:title" content="HanksVBA繪圖資料庫操作流程(四)">
+<meta property="og:url" content="https://www.hanksvba.com/posts/3761000123/">
 <meta property="og:site_name" content="Hank&#39;s Blog">
-<meta property="og:description" content="前言 本篇文章延伸於 施工日誌VBA-V3.5.0 版本操作教學 從前篇第1步驟開始進行的朋友，會發現有一個生效日是空白的，這就是讓使用者要開始填寫日報前的最後確認，確認無誤後便會將生效日加註(第一次加註會與開工日相同)，此時才能開始填寫日報，填寫日報後需要點選&quot;儲存日報&quot;資料才會生效，取消填寫時只能透過按鈕&quot;取消填寫&quot;，不能點選右上角的X。 填寫日報的過程，可以在版本說明中的&quot;功能主要畫">
+<meta property="og:description" content="前言 承前篇HanksVBA繪圖資料庫操作流程(三)，我們已經可以得知橫斷面地形的樣貌以及初步的縱斷面圖高程相對關係，接著就是針對縱斷面圖的圖表區進行更詳細的坡度設計以及渠道樣式的幾何尺寸擇定，後續將設計成果放回到橫斷面圖上的絕對高程後就可以開始進行比較繁瑣的土方計算框選、計算。 相關的基本流程將包含:  取得資料 取得坡度 縱斷面圖  主畫面   Fig1. 主畫面">
 <meta property="og:locale" content="zh_TW">
-<meta property="og:image" content="https://www.hanksvba.com/posts/426352985/upload_002d5b23b669e4f8fc082cd7b630bd9a.png">
-<meta property="og:image" content="https://www.hanksvba.com/posts/426352985/upload_abe97fd1ed633682823960c24a3542af.png">
-<meta property="og:image" content="https://www.hanksvba.com/posts/426352985/upload_f1f414d001074694b0a6fd123c72f45f.png">
-<meta property="og:image" content="https://www.hanksvba.com/posts/426352985/4.png">
-<meta property="og:image" content="https://www.hanksvba.com/posts/426352985/5.png">
-<meta property="article:published_time" content="2024-10-02T14:11:46.000Z">
-<meta property="article:modified_time" content="2024-10-02T14:11:46.000Z">
+<meta property="og:image" content="https://www.hanksvba.com/images/hanksvba_plot_4.png">
+<meta property="og:image" content="https://www.hanksvba.com/posts/3761000123/2.png">
+<meta property="og:image" content="https://www.hanksvba.com/posts/3761000123/3.png">
+<meta property="og:image" content="https://www.hanksvba.com/posts/3761000123/4.png">
+<meta property="og:image" content="https://www.hanksvba.com/posts/3761000123/5.png">
+<meta property="article:published_time" content="2025-07-18T09:06:01.000Z">
+<meta property="article:modified_time" content="2025-07-18T09:06:01.000Z">
 <meta property="article:author" content="Hank Lin">
-<meta property="article:tag" content="Excel VBA">
+<meta property="article:tag" content="Excel">
+<meta property="article:tag" content="ExcelVBA">
+<meta property="article:tag" content="AutoCAD">
+<meta property="article:tag" content="AutoCADVBA">
+<meta property="article:tag" content="GoogleAppScript">
+<meta property="article:tag" content="GAS">
+<meta property="article:tag" content="Python">
+<meta property="article:tag" content="監造日報表">
 <meta property="article:tag" content="施工日誌">
+<meta property="article:tag" content="施工照片">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://www.hanksvba.com/posts/426352985/upload_002d5b23b669e4f8fc082cd7b630bd9a.png">
+<meta name="twitter:image" content="https://www.hanksvba.com/images/hanksvba_plot_4.png">
 
 
-<link rel="canonical" href="https://www.hanksvba.com/posts/426352985/">
+<link rel="canonical" href="https://www.hanksvba.com/posts/3761000123/">
 
 
 
-<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-TW","comments":true,"permalink":"https://www.hanksvba.com/posts/426352985/","path":"posts/426352985/","title":"施工日誌VBA-記錄篇"}</script>
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-TW","comments":true,"permalink":"https://www.hanksvba.com/posts/3761000123/","path":"posts/3761000123/","title":"HanksVBA繪圖資料庫操作流程(四)"}</script>
 
 <script class="next-config" data-name="calendar" type="application/json">""</script>
-<title>施工日誌VBA-記錄篇 | Hank's Blog</title>
+<title>HanksVBA繪圖資料庫操作流程(四) | Hank's Blog</title>
   
 
 
@@ -146,7 +154,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%89%8D%E8%A8%80"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9F%BA%E6%9C%AC%E8%B3%87%E8%A8%8A"><span class="nav-number">2.</span> <span class="nav-text">基本資訊</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%97%A5%E6%9C%9F"><span class="nav-number">2.1.</span> <span class="nav-text">日期</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A4%A9%E6%B0%A3"><span class="nav-number">2.2.</span> <span class="nav-text">天氣</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A5%91%E7%B4%84%E9%A0%85%E7%9B%AE"><span class="nav-number">3.</span> <span class="nav-text">契約項目</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%A0%85%E7%9B%AE"><span class="nav-number">3.1.</span> <span class="nav-text">項目</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%80%B2%E5%BA%A6"><span class="nav-number">3.2.</span> <span class="nav-text">進度</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9D%90%E6%96%99%E4%BA%BA%E5%8A%9B%E6%A9%9F%E5%85%B7"><span class="nav-number">4.</span> <span class="nav-text">材料、人力、機具</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%B6%E4%BB%96%E5%82%99%E8%A8%BB"><span class="nav-number">5.</span> <span class="nav-text">其他備註</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%9B%A3%E9%80%A0%E9%83%A8%E5%88%86"><span class="nav-number">6.</span> <span class="nav-text">監造部分</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%9B%B8%E9%97%9C%E9%80%A3%E7%B5%90"><span class="nav-number">7.</span> <span class="nav-text">相關連結</span></a></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%89%8D%E8%A8%80"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%BB%E7%95%AB%E9%9D%A2"><span class="nav-number">2.</span> <span class="nav-text">主畫面</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%AD%A5%E9%A9%9F14.%E5%8F%96%E5%BE%97%E8%B3%87%E6%96%99"><span class="nav-number">3.</span> <span class="nav-text">步驟14.取得資料</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%B5%81%E7%A8%8B"><span class="nav-number">3.1.</span> <span class="nav-text">流程</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%AD%A5%E9%A9%9F15.%E5%8F%96%E5%BE%97%E5%9D%A1%E5%BA%A6"><span class="nav-number">4.</span> <span class="nav-text">步驟15.取得坡度</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%B5%81%E7%A8%8B-1"><span class="nav-number">4.1.</span> <span class="nav-text">流程</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%AD%A5%E9%A9%9F16.%E7%B8%B1%E6%96%B7%E9%9D%A2%E5%9C%96"><span class="nav-number">5.</span> <span class="nav-text">步驟16.縱斷面圖</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%B5%81%E7%A8%8B-2"><span class="nav-number">5.1.</span> <span class="nav-text">流程</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%B5%90%E8%AA%9E"><span class="nav-number">6.</span> <span class="nav-text">結語</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%9B%B8%E9%97%9C%E8%88%8A%E6%96%87%E7%AB%A0"><span class="nav-number">7.</span> <span class="nav-text">相關舊文章</span></a></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -219,7 +227,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-TW">
-    <link itemprop="mainEntityOfPage" href="https://www.hanksvba.com/posts/426352985/">
+    <link itemprop="mainEntityOfPage" href="https://www.hanksvba.com/posts/3761000123/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar_custom.png">
@@ -232,12 +240,12 @@
     </span>
 
     <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="施工日誌VBA-記錄篇 | Hank's Blog">
+      <meta itemprop="name" content="HanksVBA繪圖資料庫操作流程(四) | Hank's Blog">
       <meta itemprop="description" content="">
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          施工日誌VBA-記錄篇
+          HanksVBA繪圖資料庫操作流程(四)
         </h1>
 
         <div class="post-meta-container">
@@ -248,16 +256,7 @@
       </span>
       <span class="post-meta-item-text">發表於</span>
 
-      <time title="創建時間：2024-10-02 22:11:46" itemprop="dateCreated datePublished" datetime="2024-10-02T22:11:46+08:00">2024-10-02</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分類於</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E5%B0%88%E6%A1%88%E9%96%8B%E7%99%BC/" itemprop="url" rel="index"><span itemprop="name">專案開發</span></a>
-        </span>
+      <time title="創建時間：2025-07-18 17:06:01" itemprop="dateCreated datePublished" datetime="2025-07-18T17:06:01+08:00">2025-07-18</time>
     </span>
 
   
@@ -277,80 +276,75 @@
     
     
     <div class="post-body" itemprop="articleBody"><h2 id="前言">前言</h2>
-<p>本篇文章延伸於 <a
-href="https://www.hanksvba.com/posts/1000661249/#more">施工日誌VBA-V3.5.0</a>
-版本操作教學</p>
-<p>從前篇第1步驟開始進行的朋友，會發現有一個生效日是空白的，這就是讓使用者要開始填寫日報前的最後確認，確認無誤後便會將生效日加註(第一次加註會與開工日相同)，此時<strong>才能開始填寫日報</strong>，填寫日報後需要點選"儲存日報"資料才會生效，取消填寫時只能透過按鈕"取消填寫"，不能點選右上角的X。</p>
-<p>填寫日報的過程，可以在版本說明中的"功能主要畫面"裡面對日報進行新增、編輯、刪除，有關日報填寫內容分為以下幾種內容:</p>
-<ol type="1">
-<li>基本資訊</li>
-<li>契約項目</li>
-<li>材料</li>
-<li>人力</li>
-<li>機具</li>
-<li>其他備註</li>
-<li>監造部分</li>
+<p>承前篇<a
+href="https://www.hanksvba.com/posts/2604629158/#more">HanksVBA繪圖資料庫操作流程(三)</a>，我們已經可以得知橫斷面地形的樣貌以及初步的縱斷面圖高程相對關係，接著就是針對縱斷面圖的圖表區進行更詳細的坡度設計以及渠道樣式的幾何尺寸擇定，後續將設計成果放回到橫斷面圖上的絕對高程後就可以開始進行比較繁瑣的土方計算框選、計算。</p>
+<p>相關的基本流程將包含:</p>
+<ol start="14" type="1">
+<li>取得資料</li>
+<li>取得坡度</li>
+<li>縱斷面圖</li>
 </ol>
+<h2 id="主畫面">主畫面</h2>
+<figure>
+<img src="/images/hanksvba_plot_4.png" alt="Fig1. 主畫面" />
+<figcaption aria-hidden="true">Fig1. 主畫面</figcaption>
+</figure>
 <span id="more"></span>
-<h2 id="基本資訊">基本資訊</h2>
-<h3 id="日期">日期</h3>
-<p>日期在進行新增日報的時候便會要求輸入，如果有重複則會警示已經有填寫過了，本篇旨在介紹工程專案類型，而非開口契約類型，原則每日會有一篇日報作為紀錄使用。</p>
-<p>我有預留一日多表的擴充程式碼，如果有需要請聯絡我進行修改。</p>
-<h3 id="天氣">天氣</h3>
-<p>天氣部分分為上午跟下午，內容有晴、陰、雨，未來預定會提供一個參考測站，透過中央氣象局API去取得相對時段的自動測報內容。</p>
-<h2 id="契約項目">契約項目</h2>
-<h3 id="項目">項目</h3>
-<figure>
-<img src="upload_002d5b23b669e4f8fc082cd7b630bd9a.png"
-alt="Fig1. 項目" />
-<figcaption aria-hidden="true">Fig1. 項目</figcaption>
-</figure>
-<p>契約項目填寫來源為契約設定的項目，有關契約項目有兩項特別要注意的事項:</p>
+<h2 id="步驟14.取得資料">步驟14.取得資料</h2>
+<p>透過之前的操作，目前會有一些基本資料存在隱藏的工作表"縱斷面"之中，此時透過取得資料的操作可以將標題為樁號、地盤高、各式高程的資料匯入"縱斷面繪圖"的工作表，減少之前人為複製貼上的繁瑣步驟。</p>
+<h3 id="流程">流程</h3>
 <ol type="1">
-<li>設定為不列入進度項目，則不會被計入進度換算時的分母。</li>
-<li>設定為發包工作費外的項目，則不會顯示於下拉式選單中。</li>
+<li>確認按鈕<strong>擷取CD碼</strong>已被操作</li>
+<li>點選按鈕<strong>取得資料</strong></li>
+<li>完成</li>
 </ol>
-<p>選取契約項目後，會同步呈現該項目之契約數量、累計數量，填寫施作數量時，會同時於右側顯示剩餘數量，如出現紅色表示剩餘數量為負值、綠色表示仍有剩餘數量可以使用。</p>
-<p>輸入完畢點選"新增"，項目將會列於下方暫存區域，可以等所有項目(包含後續內容皆完成後)在一併點選"儲存日報"，此時資料才會正式匯入日報中。</p>
-<h3 id="進度">進度</h3>
-<p>進入畫面時，會預先取得累積至前日之金額及進度，當填寫項目後，系統會自動換算本日金額與本日進度呈現於左下角，兩樣數值加總後取得本日累積實際進度，同時會根據實際進度與預定進度的差異呈現紅色或綠色。</p>
-<h2 id="材料人力機具">材料、人力、機具</h2>
-<p>項目來源為工料設定，這裡比較單純沒有其他內容，僅作為紀錄使用，於工料設定中如有填寫其相關單價，未來可以加入功能輸出統計長表，讓管理者清楚目前所支出的內容，包含人力費用、材料費用、機具費用，方便與估驗請款後的現金流做比對評估財務支出收入狀況。</p>
+<h2 id="步驟15.取得坡度">步驟15.取得坡度</h2>
+<p>縱斷面資料表會先引入基本的樁號、單距、高程，此時用戶只要決定設計起始點、說明而已，設計起始點會有三種型式(S:起點，向右半圓、C:轉折，整個圓、E:終點，向左半圓)，有出現S標示的時候就必須要出現E標示，每個樁號所對應到的標示都會特別做高程標記並呈現於坡度表上。</p>
+<h3 id="流程-1">流程</h3>
+<ol type="1">
+<li>確定有建立設計起始點標記</li>
+<li>點選按鈕<strong>取得坡度</strong></li>
+<li>輸入是否要刪除計畫高</li>
+<li>輸入起點高程</li>
+<li>自動換算起點高程至下一個標記的地盤高的適合坡度</li>
+<li>輸入使用坡度，完成</li>
+</ol>
 <figure>
-<img src="upload_abe97fd1ed633682823960c24a3542af.png"
-alt="Fig2. 工料設定畫面" />
-<figcaption aria-hidden="true">Fig2. 工料設定畫面</figcaption>
+<img src="2.png" alt="Fig2. 坡度對話窗" />
+<figcaption aria-hidden="true">Fig2. 坡度對話窗</figcaption>
 </figure>
-<h2 id="其他備註">其他備註</h2>
+<blockquote>
+<p>PS:一般來說，整數樁的部分不用特別再打說明，非整數樁部分會需要說明一下，比如可能是有水路流入或流出、構造物之類。</p>
+</blockquote>
+<h2 id="步驟16.縱斷面圖">步驟16.縱斷面圖</h2>
+<p>可以先用預設的參數內容繪製一次後，再根據你的需求進行參數微調，包含大小、間隔等等，主要需要注意的是樁號形式，如為公路工程大多會需要修改為0K+000。</p>
 <figure>
-<img src="upload_f1f414d001074694b0a6fd123c72f45f.png"
-alt="Fig3. 其他備註" />
-<figcaption aria-hidden="true">Fig3. 其他備註</figcaption>
+<img src="3.png" alt="Fig3. 縱斷面參數調整畫面" />
+<figcaption aria-hidden="true">Fig3. 縱斷面參數調整畫面</figcaption>
 </figure>
-<p>有關其他比較長的文字紀錄部分皆會在此進行，之前委員有說過格子不能塗黑，要打勾，這裡有提供選項給使用者選取，如果讓電腦打勾也不行，請選取兩邊都是空白框框。</p>
-<p>另關於施工取樣試驗紀錄與重要事項紀錄未來預計會與收發文系統、品管系統作為綁定使用，請再稍等下!</p>
-<h2 id="監造部分">監造部分</h2>
-<p>如果只有單純要做施工日誌的使用者，可以跳過這一個步驟。</p>
+<h3 id="流程-2">流程</h3>
+<ol type="1">
+<li>點選按鈕<strong>縱斷面圖</strong></li>
+<li>跳出縱斷面繪圖參數表單</li>
+<li>點選按鈕<strong>繪製縱斷面圖</strong></li>
+<li>移動至CAD</li>
+<li>點選繪圖基準點</li>
+<li>完成</li>
+</ol>
 <figure>
-<img src="4.png" alt="Fig4. 監造部分" />
-<figcaption aria-hidden="true">Fig4. 監造部分</figcaption>
+<img src="4.png" alt="Fig4. 縱斷面成果" />
+<figcaption aria-hidden="true">Fig4. 縱斷面成果</figcaption>
 </figure>
-<p>有關其他比較長的文字紀錄部分皆會在此進行，打勾情況一樣有做考量，同樣提供三種情況供使用者選取。</p>
-<p>目前工程進行情況，可以<strong>自行填寫</strong>或者是透過前面填寫之契約項目做<strong>百分比換算</strong>呈現(如下圖)。</p>
-<figure>
-<img src="5.png" alt="Fig5. 百分比範例" />
-<figcaption aria-hidden="true">Fig5. 百分比範例</figcaption>
-</figure>
-<p>另關於檢驗停留點及抽查系統作為綁定使用，查核材料規格及品質與品管系統作為綁定使用，請再稍等下!</p>
-<h2 id="相關連結">相關連結</h2>
-<p><a href="https://www.hanksvba.com/posts/1990910755"><span
-class="github-emoji" data-alias="link" style=""
-data-fallback-src="https://github.githubassets.com/images/icons/emoji/unicode/1f517.png?v8">🔗</span>
-施工日誌VBA-設定篇</a></p>
-<p><a href="https://www.hanksvba.com/posts/997099184"><span
-class="github-emoji" data-alias="link" style=""
-data-fallback-src="https://github.githubassets.com/images/icons/emoji/unicode/1f517.png?v8">🔗</span>
-施工日誌VBA-列印篇</a></p>
+<h2 id="結語">結語</h2>
+<p>縱斷面圖的繪製包含兩個區域，表格區與繪圖區，如果需要呈現於表格區的部分，需要將欄位新增到坡降列的上方，如果需要呈現於繪圖區的部分，需要將列名更改為<strong>OO高</strong>，此時就會繪製到繪圖區中。</p>
+<blockquote>
+<p>河川局的案例如下 <img src="5.png" alt="Fig5. 河川局欄位範例" /></p>
+</blockquote>
+<p>只要會打字，基本的列名稱(樁號、坡降、設計起始點、說明)都有進行輸入，列名稱有預計要繪圖的部分有設定為OO高，他就會正常繪製出縱斷面圖，不需要依賴按鈕進行也可以操作，算是相當開放的一套填寫介面，任何的公式都可以插入進去。</p>
+<h2 id="相關舊文章">相關舊文章</h2>
+<p><a
+target="_blank" rel="noopener" href="https://hankvba.blogspot.com/2018/03/autocad-vba.html">AutoCAD VBA
+縱斷面繪製自動化-1</a></p>
 
     </div>
 
@@ -368,7 +362,7 @@ data-fallback-src="https://github.githubassets.com/images/icons/emoji/unicode/1f
   </li>
   <li class="post-copyright-link">
       <strong>文章連結：</strong>
-      <a href="https://www.hanksvba.com/posts/426352985/" title="施工日誌VBA-記錄篇">https://www.hanksvba.com/posts/426352985/</a>
+      <a href="https://www.hanksvba.com/posts/3761000123/" title="HanksVBA繪圖資料庫操作流程(四)">https://www.hanksvba.com/posts/3761000123/</a>
   </li>
   <li class="post-copyright-license">
       <strong>版權聲明： </strong>本網誌所有文章除特別聲明外，均採用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 許可協議。轉載請註明出處！
@@ -376,23 +370,16 @@ data-fallback-src="https://github.githubassets.com/images/icons/emoji/unicode/1f
 </ul>
 </div>
 
-          <div class="post-tags">
-              <a href="/tags/Excel-VBA/" rel="tag"><i class="fa fa-tag"></i> Excel VBA</a>
-              <a href="/tags/%E6%96%BD%E5%B7%A5%E6%97%A5%E8%AA%8C/" rel="tag"><i class="fa fa-tag"></i> 施工日誌</a>
-          </div>
 
         
 
           <div class="post-nav">
             <div class="post-nav-item">
-                <a href="/posts/1990910755/" rel="prev" title="施工日誌VBA-設定篇">
-                  <i class="fa fa-angle-left"></i> 施工日誌VBA-設定篇
+                <a href="/posts/2604629158/" rel="prev" title="HanksVBA繪圖資料庫操作流程(三)">
+                  <i class="fa fa-angle-left"></i> HanksVBA繪圖資料庫操作流程(三)
                 </a>
             </div>
             <div class="post-nav-item">
-                <a href="/posts/997099184/" rel="next" title="施工日誌VBA-列印篇">
-                  施工日誌VBA-列印篇 <i class="fa fa-angle-right"></i>
-                </a>
             </div>
           </div>
     </footer>
