@@ -18,12 +18,12 @@
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"www.hanksvba.com","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.19.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":"mac"},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":false,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜尋...","empty":"我們無法找到任何有關 ${query} 的搜索結果","hits_time":"${hits} 找到 ${time} 個結果","hits":"找到 ${hits} 個結果"},"path":"/search.json","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
 
-    <meta name="description" content="資料夾照片順序與檔案順序不一致  從LINE相簿下載的照片名稱雖然上面有順序，但是匯入施工照片VBA之後卻不會按照原本的順序進行排列?    Fig1. 原本的順序是(1).(2).(3)...(10)...(100)...    Fig2. 當引入之後會變成(1).(10).(100)...  發生原因 對於數字而言，1.2.3...10.11...100.101.">
+    <meta name="description" content="前言 自從施工照片VBA開始實際投入報表製作過程後，陸陸續續有些使用回饋心得，其中有相當多的常見問題我想要撰寫於這篇文章中，讓各位能有個來源解除這些疑惑，畢竟工具很難完美，肯定是需要經過大量的操作，才會讓他變得更好! 如果使用上還有些什麼更好的建議，請透過左側聯繫我~">
 <meta property="og:type" content="article">
 <meta property="og:title" content="施工照片VBA-常見問題">
 <meta property="og:url" content="https://www.hanksvba.com/posts/823675137/">
 <meta property="og:site_name" content="Hank&#39;s Blog">
-<meta property="og:description" content="資料夾照片順序與檔案順序不一致  從LINE相簿下載的照片名稱雖然上面有順序，但是匯入施工照片VBA之後卻不會按照原本的順序進行排列?    Fig1. 原本的順序是(1).(2).(3)...(10)...(100)...    Fig2. 當引入之後會變成(1).(10).(100)...  發生原因 對於數字而言，1.2.3...10.11...100.101.">
+<meta property="og:description" content="前言 自從施工照片VBA開始實際投入報表製作過程後，陸陸續續有些使用回饋心得，其中有相當多的常見問題我想要撰寫於這篇文章中，讓各位能有個來源解除這些疑惑，畢竟工具很難完美，肯定是需要經過大量的操作，才會讓他變得更好! 如果使用上還有些什麼更好的建議，請透過左側聯繫我~">
 <meta property="og:locale" content="zh_TW">
 <meta property="og:image" content="https://www.hanksvba.com/posts/823675137/1.jpg">
 <meta property="og:image" content="https://www.hanksvba.com/posts/823675137/2.jpg">
@@ -143,7 +143,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%B3%87%E6%96%99%E5%A4%BE%E7%85%A7%E7%89%87%E9%A0%86%E5%BA%8F%E8%88%87%E6%AA%94%E6%A1%88%E9%A0%86%E5%BA%8F%E4%B8%8D%E4%B8%80%E8%87%B4"><span class="nav-number">1.</span> <span class="nav-text">資料夾照片順序與檔案順序不一致</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%99%BC%E7%94%9F%E5%8E%9F%E5%9B%A0"><span class="nav-number">1.1.</span> <span class="nav-text">發生原因</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%A7%A3%E6%B1%BA%E6%96%B9%E6%A1%88"><span class="nav-number">1.2.</span> <span class="nav-text">解決方案</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%9B%B8%E9%97%9C%E9%80%A3%E7%B5%90"><span class="nav-number">2.</span> <span class="nav-text">相關連結</span></a></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%89%8D%E8%A8%80"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%B3%87%E6%96%99%E5%A4%BE%E7%85%A7%E7%89%87%E9%A0%86%E5%BA%8F%E8%88%87%E6%AA%94%E6%A1%88%E9%A0%86%E5%BA%8F%E4%B8%8D%E4%B8%80%E8%87%B4"><span class="nav-number">2.</span> <span class="nav-text">資料夾照片順序與檔案順序不一致</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%99%BC%E7%94%9F%E5%8E%9F%E5%9B%A0"><span class="nav-number">2.1.</span> <span class="nav-text">發生原因</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%A7%A3%E6%B1%BA%E6%96%B9%E6%A1%88"><span class="nav-number">2.2.</span> <span class="nav-text">解決方案</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%9B%B8%E9%97%9C%E9%80%A3%E7%B5%90"><span class="nav-number">3.</span> <span class="nav-text">相關連結</span></a></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -273,7 +273,11 @@
     
     
     
-    <div class="post-body" itemprop="articleBody"><h2
+    <div class="post-body" itemprop="articleBody"><h2 id="前言">前言</h2>
+<p>自從施工照片VBA開始實際投入報表製作過程後，陸陸續續有些使用回饋心得，其中有相當多的常見問題我想要撰寫於這篇文章中，讓各位能有個來源解除這些疑惑，畢竟工具很難完美，肯定是需要經過大量的操作，才會讓他變得更好!</p>
+<p>如果使用上還有些什麼更好的建議，請透過左側聯繫我~</p>
+<span id="more"></span>
+<h2
 id="資料夾照片順序與檔案順序不一致">資料夾照片順序與檔案順序不一致</h2>
 <blockquote>
 <p>從LINE相簿下載的照片名稱雖然上面有順序，但是匯入施工照片VBA之後卻不會按照原本的順序進行排列?</p>

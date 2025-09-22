@@ -266,35 +266,17 @@
     
     
     <div class="post-body" itemprop="articleBody">
-          <h2
-id="資料夾照片順序與檔案順序不一致">資料夾照片順序與檔案順序不一致</h2>
-<blockquote>
-<p>從LINE相簿下載的照片名稱雖然上面有順序，但是匯入施工照片VBA之後卻不會按照原本的順序進行排列?</p>
-</blockquote>
-<figure>
-<img src="1.jpg"
-alt="Fig1. 原本的順序是(1).(2).(3)...(10)...(100)..." />
-<figcaption aria-hidden="true">Fig1.
-原本的順序是(1).(2).(3)...(10)...(100)...</figcaption>
-</figure>
-<figure>
-<img src="2.jpg" alt="Fig2. 當引入之後會變成(1).(10).(100)..." />
-<figcaption aria-hidden="true">Fig2.
-當引入之後會變成(1).(10).(100)...</figcaption>
-</figure>
-<h3 id="發生原因">發生原因</h3>
-<p>對於數字而言，1.2.3...10.11...100.101...這樣排序會正常運作，但是在excel中，名稱所有的數字都會變成<strong>文字</strong>來處理，所以1的後面是10，再來是100</p>
-<h3 id="解決方案">解決方案</h3>
-<p>把原本是數字的部分通通變成3碼，001.002.003.....010.011.....100，他就會照這樣排序上去了。</p>
-<p>可想而知，如果各位要這樣一筆一筆手動修改也是很累人的一件事，所以此時就可以寫個VBA工具將檔案名稱做關鍵字拆分，取出最後的編號部分，用格式化選項作成三碼的數字，重新併回去產製新的照片名稱。</p>
-<p>一般來說，LINE是存放檔案的最大宗，從相簿下載回電腦的名稱為<strong>LINE_ALBUN_相簿名稱_相簿日期_流水號.jpg</strong>，此時就能透過這個方式先將流水號拆出來，再將流水號修改為固定三位數的流水號。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line">Sub renameFiles()</span><br><span class="line">    Dim main_path As String</span><br><span class="line">    Dim fileName As String</span><br><span class="line">    Dim newFileName As String</span><br><span class="line">    Dim pos As Long</span><br><span class="line">    Dim posDot As Long</span><br><span class="line">    Dim numPart As String</span><br><span class="line">    Dim ext As String</span><br><span class="line">    </span><br><span class="line">    &#x27; 取得資料夾路徑</span><br><span class="line">    main_path = Sheets(&quot;Main&quot;).Range(&quot;B2&quot;).Value</span><br><span class="line">    </span><br><span class="line">    If Right(main_path, 1) &lt;&gt; &quot;\&quot; Then</span><br><span class="line">        main_path = main_path &amp; &quot;\&quot;</span><br><span class="line">    End If</span><br><span class="line">    </span><br><span class="line">    fileName = Dir(main_path &amp; &quot;*.*&quot;)</span><br><span class="line">    </span><br><span class="line">    Do While fileName &lt;&gt; &quot;&quot;</span><br><span class="line">        pos = InStrRev(fileName, &quot;_&quot;)      &#x27; 找到最後一個 &quot;_&quot;</span><br><span class="line">        posDot = InStrRev(fileName, &quot;.&quot;)   &#x27; 找到最後一個 &quot;.&quot;</span><br><span class="line">        </span><br><span class="line">        If pos &gt; 0 And posDot &gt; pos Then</span><br><span class="line"></span><br><span class="line">            numPart = mid(fileName, pos + 1, posDot - pos - 1)</span><br><span class="line">            </span><br><span class="line">            If IsNumeric(numPart) Then</span><br><span class="line"></span><br><span class="line">                numPart = Format(CLng(numPart), &quot;000&quot;)</span><br><span class="line">                </span><br><span class="line">                newFileName = Left(fileName, pos) &amp; numPart &amp; mid(fileName, posDot)</span><br><span class="line"></span><br><span class="line">                Name main_path &amp; fileName As main_path &amp; newFileName</span><br><span class="line">                </span><br><span class="line">                Debug.Print &quot;Rename: &quot; &amp; fileName &amp; &quot; -&gt; &quot; &amp; newFileName</span><br><span class="line">            End If</span><br><span class="line">        End If</span><br><span class="line">        </span><br><span class="line">        fileName = Dir</span><br><span class="line">    Loop</span><br><span class="line">    </span><br><span class="line">    MsgBox &quot;重新編號完成!&quot;, vbInformation</span><br><span class="line">End Sub</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<video src="SAMPLE.mp4" position="absolute" width="100%" height="100%" controls="controls">
-</video>
-<h2 id="相關連結">相關連結</h2>
-<p><a
-href="https://www.hanksvba.com/posts/144473154/">施工照片VBA-實作流程</a></p>
-
+          <h2 id="前言">前言</h2>
+<p>自從施工照片VBA開始實際投入報表製作過程後，陸陸續續有些使用回饋心得，其中有相當多的常見問題我想要撰寫於這篇文章中，讓各位能有個來源解除這些疑惑，畢竟工具很難完美，肯定是需要經過大量的操作，才會讓他變得更好!</p>
+<p>如果使用上還有些什麼更好的建議，請透過左側聯繫我~</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/posts/823675137/#more" rel="contents">
+                閱讀全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
