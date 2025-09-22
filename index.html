@@ -158,7 +158,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">45</span>
+          <span class="site-state-item-count">46</span>
           <span class="site-state-item-name">文章</span>
         </a>
       </div>
@@ -206,6 +206,111 @@
     </div>
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://www.hanksvba.com/posts/823675137/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar_custom.png">
+      <meta itemprop="name" content="Hank Lin">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hank's Blog">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | Hank's Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/posts/823675137/" class="post-title-link" itemprop="url">施工照片VBA-常見問題</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">發表於</span>
+
+      <time title="創建時間：2025-09-22 16:21:58" itemprop="dateCreated datePublished" datetime="2025-09-22T16:21:58+08:00">2025-09-22</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分類於</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E5%9F%BA%E6%9C%AC%E5%8E%9F%E7%90%86/" itemprop="url" rel="index"><span itemprop="name">基本原理</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h2
+id="資料夾照片順序與檔案順序不一致">資料夾照片順序與檔案順序不一致</h2>
+<blockquote>
+<p>從LINE相簿下載的照片名稱雖然上面有順序，但是匯入施工照片VBA之後卻不會按照原本的順序進行排列?</p>
+</blockquote>
+<figure>
+<img src="1.jpg"
+alt="Fig1. 原本的順序是(1).(2).(3)...(10)...(100)..." />
+<figcaption aria-hidden="true">Fig1.
+原本的順序是(1).(2).(3)...(10)...(100)...</figcaption>
+</figure>
+<figure>
+<img src="2.jpg" alt="Fig2. 當引入之後會變成(1).(10).(100)..." />
+<figcaption aria-hidden="true">Fig2.
+當引入之後會變成(1).(10).(100)...</figcaption>
+</figure>
+<h3 id="發生原因">發生原因</h3>
+<p>對於數字而言，1.2.3...10.11...100.101...這樣排序會正常運作，但是在excel中，名稱所有的數字都會變成<strong>文字</strong>來處理，所以1的後面是10，再來是100</p>
+<h3 id="解決方案">解決方案</h3>
+<p>把原本是數字的部分通通變成3碼，001.002.003.....010.011.....100，他就會照這樣排序上去了。</p>
+<p>可想而知，如果各位要這樣一筆一筆手動修改也是很累人的一件事，所以此時就可以寫個VBA工具將檔案名稱做關鍵字拆分，取出最後的編號部分，用格式化選項作成三碼的數字，重新併回去產製新的照片名稱。</p>
+<p>一般來說，LINE是存放檔案的最大宗，從相簿下載回電腦的名稱為<strong>LINE_ALBUN_相簿名稱_相簿日期_流水號.jpg</strong>，此時就能透過這個方式先將流水號拆出來，再將流水號修改為固定三位數的流水號。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line">Sub renameFiles()</span><br><span class="line">    Dim main_path As String</span><br><span class="line">    Dim fileName As String</span><br><span class="line">    Dim newFileName As String</span><br><span class="line">    Dim pos As Long</span><br><span class="line">    Dim posDot As Long</span><br><span class="line">    Dim numPart As String</span><br><span class="line">    Dim ext As String</span><br><span class="line">    </span><br><span class="line">    &#x27; 取得資料夾路徑</span><br><span class="line">    main_path = Sheets(&quot;Main&quot;).Range(&quot;B2&quot;).Value</span><br><span class="line">    </span><br><span class="line">    If Right(main_path, 1) &lt;&gt; &quot;\&quot; Then</span><br><span class="line">        main_path = main_path &amp; &quot;\&quot;</span><br><span class="line">    End If</span><br><span class="line">    </span><br><span class="line">    fileName = Dir(main_path &amp; &quot;*.*&quot;)</span><br><span class="line">    </span><br><span class="line">    Do While fileName &lt;&gt; &quot;&quot;</span><br><span class="line">        pos = InStrRev(fileName, &quot;_&quot;)      &#x27; 找到最後一個 &quot;_&quot;</span><br><span class="line">        posDot = InStrRev(fileName, &quot;.&quot;)   &#x27; 找到最後一個 &quot;.&quot;</span><br><span class="line">        </span><br><span class="line">        If pos &gt; 0 And posDot &gt; pos Then</span><br><span class="line"></span><br><span class="line">            numPart = mid(fileName, pos + 1, posDot - pos - 1)</span><br><span class="line">            </span><br><span class="line">            If IsNumeric(numPart) Then</span><br><span class="line"></span><br><span class="line">                numPart = Format(CLng(numPart), &quot;000&quot;)</span><br><span class="line">                </span><br><span class="line">                newFileName = Left(fileName, pos) &amp; numPart &amp; mid(fileName, posDot)</span><br><span class="line"></span><br><span class="line">                Name main_path &amp; fileName As main_path &amp; newFileName</span><br><span class="line">                </span><br><span class="line">                Debug.Print &quot;Rename: &quot; &amp; fileName &amp; &quot; -&gt; &quot; &amp; newFileName</span><br><span class="line">            End If</span><br><span class="line">        End If</span><br><span class="line">        </span><br><span class="line">        fileName = Dir</span><br><span class="line">    Loop</span><br><span class="line">    </span><br><span class="line">    MsgBox &quot;重新編號完成!&quot;, vbInformation</span><br><span class="line">End Sub</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<video src="SAMPLE.mp4" position="absolute" width="100%" height="100%" controls="controls">
+</video>
+<h2 id="相關連結">相關連結</h2>
+<p><a
+href="https://www.hanksvba.com/posts/144473154/">施工照片VBA-實作流程</a></p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -1104,102 +1209,6 @@ VBA的方式，將各個操作對象原先的工作流程進行簡化。</p>
           <!--noindex-->
             <div class="post-button">
               <a class="btn" href="/posts/2735421494/#more" rel="contents">
-                閱讀全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://www.hanksvba.com/posts/3389672383/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar_custom.png">
-      <meta itemprop="name" content="Hank Lin">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hank's Blog">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | Hank's Blog">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/posts/3389672383/" class="post-title-link" itemprop="url">內部網路帳號密碼權限控制實作</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">發表於</span>
-
-      <time title="創建時間：2025-04-18 16:58:04" itemprop="dateCreated datePublished" datetime="2025-04-18T16:58:04+08:00">2025-04-18</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分類於</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E5%9F%BA%E6%9C%AC%E5%8E%9F%E7%90%86/" itemprop="url" rel="index"><span itemprop="name">基本原理</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h2 id="前言">前言</h2>
-<p>當網站寫好後，依照公司內部組織分層負責，權限分為編輯、讀取、拒絕，每個分頁通常都會有指派的人員進行編輯，相關人員進行讀取，不相干人等禁止進入(同時也是為了避免資訊外流)，故在進入網站之前，會要求用戶提供帳號密碼，這時候公司內部如果有AD(Active
-Directory)管理帳號密碼會非常方便。</p>
-<blockquote>
-<p>舉例:工程審查系統，可編輯者為設計股，可讀取者為工事股。</p>
-</blockquote>
-<h2 id="操作流程">操作流程</h2>
-<ol type="1">
-<li>網站入口要求提供帳號密碼</li>
-<li>根據該帳號密碼到AD確認名稱、組織資訊</li>
-<li>根據組織資訊開啟相對應的頁面</li>
-</ol>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/posts/3389672383/#more" rel="contents">
                 閱讀全文 &raquo;
               </a>
             </div>
