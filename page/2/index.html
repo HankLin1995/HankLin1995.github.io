@@ -158,13 +158,13 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">42</span>
+          <span class="site-state-item-count">47</span>
           <span class="site-state-item-name">文章</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
           <a href="/categories/">
-        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-count">4</span>
         <span class="site-state-item-name">分類</span></a>
       </div>
       <div class="site-state-item site-state-tags">
@@ -206,6 +206,513 @@
     </div>
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://www.hanksvba.com/posts/2735421494/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar_custom.png">
+      <meta itemprop="name" content="Hank Lin">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hank's Blog">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | Hank's Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/posts/2735421494/" class="post-title-link" itemprop="url">道路標線標註彙總VBA</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">發表於</span>
+
+      <time title="創建時間：2025-04-28 21:24:30" itemprop="dateCreated datePublished" datetime="2025-04-28T21:24:30+08:00">2025-04-28</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分類於</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E5%B0%88%E6%A1%88%E9%96%8B%E7%99%BC/" itemprop="url" rel="index"><span itemprop="name">專案開發</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h2 id="前言">前言</h2>
+<p>道路標線，乃依據道路交通標誌標線號誌設置規則所繪製而成，於CAD上常用聚合線、陣列、圖塊來呈現，平面圖上繪製、標註、數量彙總，最後讓施工廠商據以施工，，無論是標線或圖塊皆需要換算其施作面積(m2)計價。</p>
+<blockquote>
+<p>操作對象</p>
+</blockquote>
+<ul>
+<li>聚合線
+<ul>
+<li>路面邊線、禁止臨時停車線、禁止停車線...等</li>
+</ul></li>
+<li>陣列
+<ul>
+<li>枕木紋行人穿越線、路口行車引導線...等</li>
+</ul></li>
+<li>圖塊
+<ul>
+<li>右轉箭頭、左轉箭頭、機車停等區...等</li>
+</ul></li>
+</ul>
+<p>工作流程中最繁瑣的步驟針對每個標線標示其線名及長度，再根據各個不同線名登打數量公式，本篇文章介紹如何透過AutoCAD
+VBA的方式，將各個操作對象原先的工作流程進行簡化。</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/posts/2735421494/#more" rel="contents">
+                閱讀全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://www.hanksvba.com/posts/3389672383/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar_custom.png">
+      <meta itemprop="name" content="Hank Lin">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hank's Blog">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | Hank's Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/posts/3389672383/" class="post-title-link" itemprop="url">內部網路帳號密碼權限控制實作</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">發表於</span>
+
+      <time title="創建時間：2025-04-18 16:58:04" itemprop="dateCreated datePublished" datetime="2025-04-18T16:58:04+08:00">2025-04-18</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分類於</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E5%9F%BA%E6%9C%AC%E5%8E%9F%E7%90%86/" itemprop="url" rel="index"><span itemprop="name">基本原理</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h2 id="前言">前言</h2>
+<p>當網站寫好後，依照公司內部組織分層負責，權限分為編輯、讀取、拒絕，每個分頁通常都會有指派的人員進行編輯，相關人員進行讀取，不相干人等禁止進入(同時也是為了避免資訊外流)，故在進入網站之前，會要求用戶提供帳號密碼，這時候公司內部如果有AD(Active
+Directory)管理帳號密碼會非常方便。</p>
+<blockquote>
+<p>舉例:工程審查系統，可編輯者為設計股，可讀取者為工事股。</p>
+</blockquote>
+<h2 id="操作流程">操作流程</h2>
+<ol type="1">
+<li>網站入口要求提供帳號密碼</li>
+<li>根據該帳號密碼到AD確認名稱、組織資訊</li>
+<li>根據組織資訊開啟相對應的頁面</li>
+</ol>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/posts/3389672383/#more" rel="contents">
+                閱讀全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://www.hanksvba.com/posts/675663677/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar_custom.png">
+      <meta itemprop="name" content="Hank Lin">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hank's Blog">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | Hank's Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/posts/675663677/" class="post-title-link" itemprop="url">公司行號發函VBA系統</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">發表於</span>
+
+      <time title="創建時間：2025-03-08 22:14:40" itemprop="dateCreated datePublished" datetime="2025-03-08T22:14:40+08:00">2025-03-08</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分類於</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E5%B0%88%E6%A1%88%E9%96%8B%E7%99%BC/" itemprop="url" rel="index"><span itemprop="name">專案開發</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h2 id="使用者情境">🚩使用者情境</h2>
+<blockquote>
+<p>想請問有沒有可能用VBA
+去做一般公司行號發函的系統，因為目前公司是土法煉鋼用WORD去打，但是每次都要做兩個檔案正本跟副本，因為有時候發文是需要發給業主跟PCM，甚至是發文編號也能系統根據日期自動整理產生</p>
+</blockquote>
+<h2 id="需求分析">🛒需求分析</h2>
+<h3 id="基本流程">基本流程</h3>
+<pre class="mermaid">
+graph TD;
+    A[接獲單位來文] --> B{開始進行公文填寫};
+    B -->|手動填寫| C[取得公文文號];
+    B -->|匯入範本| C;
+    C --> D[輸入主旨、說明];
+    D --> E[選取附件內容];
+    E --> F[選擇正副本收文對象];
+    F --> G[提送表單];
+    G --> H{是否為通用類型?};
+    H -->|是| I[建立為範本] --> J[列印公文];
+    H -->|否| J[列印公文];</pre>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/posts/675663677/#more" rel="contents">
+                閱讀全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://www.hanksvba.com/posts/375550287/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar_custom.png">
+      <meta itemprop="name" content="Hank Lin">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hank's Blog">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | Hank's Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/posts/375550287/" class="post-title-link" itemprop="url">PCCES XML 後處理工具線上版</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">發表於</span>
+
+      <time title="創建時間：2025-02-08 22:21:07" itemprop="dateCreated datePublished" datetime="2025-02-08T22:21:07+08:00">2025-02-08</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分類於</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E5%B0%88%E6%A1%88%E6%88%90%E6%9E%9C/" itemprop="url" rel="index"><span itemprop="name">專案成果</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h2 id="前言">前言</h2>
+<p>公共工程的預算書編制流程中，PCCES（公共工程預算編制系統）所產出的成果有Excel或XML，Excel檔案最常令人頭痛的問題就是項目名稱過長時容易有文字不連續的問題，要轉移至其他自己編寫的小工具進行利用時需要先將這個文字部分整理後才能進行。以前筆者曾經撰寫過
+<a
+target="_blank" rel="noopener" href="https://hankvba.blogspot.com/2024/02/excel-vba-pcces.html">Excel
+版本的 XML 後處理工具</a>，但考量到部分使用者可能沒有安裝
+Excel，或是公司資訊部門封鎖了 Excel VBA
+的相關功能，因此筆者決定開發一個線上版的工具供大家使用。</p>
+<p>此外，這次的開發過程，我也順道利用 <strong>ChatGPT</strong>
+來實作整個專案，並根據 AI 產出的架構逐步調整與優化，測試一下 AI
+在程式開發上的能力。</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/posts/375550287/#more" rel="contents">
+                閱讀全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://www.hanksvba.com/posts/169262062/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar_custom.png">
+      <meta itemprop="name" content="Hank Lin">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hank's Blog">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | Hank's Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/posts/169262062/" class="post-title-link" itemprop="url">工程招標文件線上套印作法</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">發表於</span>
+
+      <time title="創建時間：2025-01-16 22:24:16" itemprop="dateCreated datePublished" datetime="2025-01-16T22:24:16+08:00">2025-01-16</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分類於</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E5%B0%88%E6%A1%88%E6%88%90%E6%9E%9C/" itemprop="url" rel="index"><span itemprop="name">專案成果</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h2 id="前言">前言</h2>
+<p>公部門工程案要上網招標之前都會需要製作招標文件及投標表單，其內容包含:</p>
+<blockquote>
+<p>招標文件</p>
+</blockquote>
+<ul>
+<li>工程採購契約</li>
+<li>投標須知</li>
+</ul>
+<blockquote>
+<p>投標表單</p>
+</blockquote>
+<ul>
+<li>標單</li>
+<li>標封</li>
+<li>投標文件審查表</li>
+<li>退還押標金申請單</li>
+<li>押標金查詢同意書</li>
+<li>使用印章授權書</li>
+<li>投標廠商聲明書</li>
+<li>投標切結書</li>
+<li>身分揭露表</li>
+</ul>
+<p>既有作法是利用WordVBA搭配Excel內容套印，但若招標文件有版本更迭時，需要將每個同仁的檔案進行更換才能進行正確的內容輸出，這對於版本控管有相當大的難度。</p>
+<p>為了減少版本更迭的問題，目前設計直接將最新的內容推送到伺服器位置，前端則利用網頁進行資料填寫，自此就能夠及時輸出最正確的資料，希望透過這樣的設計能夠減少招標文件產製的版本疏漏。</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/posts/169262062/#more" rel="contents">
+                閱讀全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -676,469 +1183,6 @@ Synology C2 Object
           <!--noindex-->
             <div class="post-button">
               <a class="btn" href="/posts/1168852487/#more" rel="contents">
-                閱讀全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://www.hanksvba.com/posts/391727536/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar_custom.png">
-      <meta itemprop="name" content="Hank Lin">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hank's Blog">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | Hank's Blog">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/posts/391727536/" class="post-title-link" itemprop="url">Selenium操作細節</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">發表於</span>
-
-      <time title="創建時間：2024-11-20 23:03:46" itemprop="dateCreated datePublished" datetime="2024-11-20T23:03:46+08:00">2024-11-20</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分類於</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E5%9F%BA%E6%9C%AC%E5%8E%9F%E7%90%86/" itemprop="url" rel="index"><span itemprop="name">基本原理</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h2 id="前言">前言</h2>
-<p>原本想像中的Selenium會需要<strong>從無到有</strong>開啟一個網站後開始進行資料填寫，大多數的網站都會有帳號密碼驗證機制，甚至祭出驗證碼、選擇汽車圖片、移動滑鼠到指定位置...等反爬蟲機制來確認是否為機器人，但若網頁可以被<strong>接管</strong>繞開這些機制的話，那整個資料填報作業就會很有機會讓電腦代勞，這就是寫程式的趣味來源，當然還是要小心不能點太快，否則網站可能會負荷不過來。</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/posts/391727536/#more" rel="contents">
-                閱讀全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://www.hanksvba.com/posts/997099184/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar_custom.png">
-      <meta itemprop="name" content="Hank Lin">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hank's Blog">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | Hank's Blog">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/posts/997099184/" class="post-title-link" itemprop="url">施工日誌VBA-列印篇</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">發表於</span>
-
-      <time title="創建時間：2024-10-31 20:19:10" itemprop="dateCreated datePublished" datetime="2024-10-31T20:19:10+08:00">2024-10-31</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分類於</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E5%B0%88%E6%A1%88%E9%96%8B%E7%99%BC/" itemprop="url" rel="index"><span itemprop="name">專案開發</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h2 id="前言">前言</h2>
-<p>本篇文章延伸於 <a
-href="https://www.hanksvba.com/posts/1000661249/#more">施工日誌VBA-V3.5.0</a>
-版本操作教學</p>
-<p>版面格式有可能因為業主的要求或委員的要求而有些許不同，難以千篇一律的內容應付所有的機關，當初在設計軟體時就有考量到這個部分，故讓報表生成的過程盡可能的彈性，能夠在這個說A改B的環境下好好適應各種狀況，本篇文章主要介紹施工日誌VBA可供輸出的報表格式及微調版型的方法，盡可能以公版作為預設，真的需要再來調整。</p>
-<p>以下相關設定按鈕皆需透過工作表"版本說明"點選按鈕【功能主要畫面】後進行。</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/posts/997099184/#more" rel="contents">
-                閱讀全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://www.hanksvba.com/posts/426352985/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar_custom.png">
-      <meta itemprop="name" content="Hank Lin">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hank's Blog">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | Hank's Blog">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/posts/426352985/" class="post-title-link" itemprop="url">施工日誌VBA-記錄篇</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">發表於</span>
-
-      <time title="創建時間：2024-10-02 22:11:46" itemprop="dateCreated datePublished" datetime="2024-10-02T22:11:46+08:00">2024-10-02</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分類於</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E5%B0%88%E6%A1%88%E9%96%8B%E7%99%BC/" itemprop="url" rel="index"><span itemprop="name">專案開發</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h2 id="前言">前言</h2>
-<p>本篇文章延伸於 <a
-href="https://www.hanksvba.com/posts/1000661249/#more">施工日誌VBA-V3.5.0</a>
-版本操作教學</p>
-<p>從前篇第1步驟開始進行的朋友，會發現有一個生效日是空白的，這就是讓使用者要開始填寫日報前的最後確認，確認無誤後便會將生效日加註(第一次加註會與開工日相同)，此時<strong>才能開始填寫日報</strong>，填寫日報後需要點選"儲存日報"資料才會生效，取消填寫時只能透過按鈕"取消填寫"，不能點選右上角的X。</p>
-<p>填寫日報的過程，可以在版本說明中的"功能主要畫面"裡面對日報進行新增、編輯、刪除，有關日報填寫內容分為以下幾種內容:</p>
-<ol type="1">
-<li>基本資訊</li>
-<li>契約項目</li>
-<li>材料</li>
-<li>人力</li>
-<li>機具</li>
-<li>其他備註</li>
-<li>監造部分</li>
-</ol>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/posts/426352985/#more" rel="contents">
-                閱讀全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://www.hanksvba.com/posts/1990910755/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar_custom.png">
-      <meta itemprop="name" content="Hank Lin">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hank's Blog">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | Hank's Blog">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/posts/1990910755/" class="post-title-link" itemprop="url">施工日誌VBA-設定篇</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">發表於</span>
-
-      <time title="創建時間：2024-09-30 23:24:48" itemprop="dateCreated datePublished" datetime="2024-09-30T23:24:48+08:00">2024-09-30</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分類於</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E5%B0%88%E6%A1%88%E9%96%8B%E7%99%BC/" itemprop="url" rel="index"><span itemprop="name">專案開發</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h2 id="前言">前言</h2>
-<p>本篇文章延伸於 <a
-href="https://www.hanksvba.com/posts/1000661249/#more">施工日誌VBA-V3.5.0</a>
-版本操作教學</p>
-<p>取得主程式時，會預設存在範例資料，可先由範例資料大致了解未來使用過程中資料的模樣會如何，更重要的是可以先試行輸出報表，確認是否符合貴司需求。</p>
-<p>如欲開始進行使用，建議依照下列順序進行，除基本設定會另外做重置行為需優先設定外，其餘設定不一定要按照順序。</p>
-<p>以下相關設定按鈕皆需透過工作表"版本說明"點選按鈕【功能主要畫面】後進行。</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/posts/1990910755/#more" rel="contents">
-                閱讀全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://www.hanksvba.com/posts/1000661249/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar_custom.png">
-      <meta itemprop="name" content="Hank Lin">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hank's Blog">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | Hank's Blog">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/posts/1000661249/" class="post-title-link" itemprop="url">施工日誌VBA-V3.5.0正式發佈</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">發表於</span>
-
-      <time title="創建時間：2024-09-07 14:00:38" itemprop="dateCreated datePublished" datetime="2024-09-07T14:00:38+08:00">2024-09-07</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新於</span>
-      <time title="修改時間：2025-01-01 14:00:38" itemprop="dateModified" datetime="2025-01-01T14:00:38+08:00">2025-01-01</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分類於</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E5%B0%88%E6%A1%88%E6%88%90%E6%9E%9C/" itemprop="url" rel="index"><span itemprop="name">專案成果</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h2 id="前言">前言</h2>
-<p>自2018年發布監造日報表VBA及2022年發布公共工程施工日誌資料庫VBA後，陸續有收到很多朋友的回饋，經過一次又一次的迭代修改，該遇到的問題差不多也已經解決了，對於檔案中長期累積的程式碼或許因為在下的功力不夠深厚，遺留下大量的技術債，每次的程式碼編輯會耗費不少時間，而且也需要做大量的測試，為了不要債留子孫，特地花了一些時間通盤檢討進行一次完整的重構，也就是本篇文章的主角-<strong>施工日誌VBA-V3.5.0.</strong>。</p>
-<figure>
-<img src="/images/constructionLog.png" alt="Fig1.選單內容" />
-<figcaption aria-hidden="true">Fig1.選單內容</figcaption>
-</figure>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/posts/1000661249/#more" rel="contents">
                 閱讀全文 &raquo;
               </a>
             </div>

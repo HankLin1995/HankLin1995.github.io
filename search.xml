@@ -1795,10 +1795,10 @@ Directory)管理帳號密碼會非常方便。</p>
 </ul>
 ]]></content>
       <categories>
-        <category>Python</category>
+        <category>基本原理</category>
       </categories>
       <tags>
-        <tag>基本原理</tag>
+        <tag>Python</tag>
       </tags>
   </entry>
   <entry>
@@ -4691,6 +4691,655 @@ Studio無法登入時，會無法操作資料庫中的所有內容，儘管用pg
       </categories>
       <tags>
         <tag>SQL</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>HanksVBA繪圖資料庫操作流程(五)</title>
+    <url>/posts/3706799986/</url>
+    <content><![CDATA[<h2 id="前言">前言</h2>
+<p>承前篇<a
+href="https://www.hanksvba.com/posts/3761000123/">HanksVBA繪圖資料庫操作流程(四)</a>，我們已經可以繪製比較詳盡的縱斷面圖，接下來要進行的就是配合周邊高程進行計畫高的設計、渠道的斷面尺寸決定，過程需要考量幾個重點:</p>
+<ol type="1">
+<li>渠頂凸出路面造成路面積水。</li>
+<li>渠頂不足以支撐路面高，土方崩落問題。</li>
+<li>渠道深度過高並且可能有跌落風險時，需額外考量安全措施。</li>
+<li>田坵引水灌溉時水頭不足，引水灌溉有困難。</li>
+<li>基礎裸露於田面之上，可能會導致基礎淘空。</li>
+</ol>
+<p>假設上述內容皆以考量周全，此時就會有一個適合的渠道尺寸，就能將渠道圖擺設於橫斷面上，進行土方工程的挖填方量計算。</p>
+<p>其相關的基本流程為:</p>
+<ol start="17" type="1">
+<li>渠道型式表</li>
+<li>匯入渠道</li>
+<li>橫斷面圖</li>
+<li>土方面積</li>
+<li>顯示挖填</li>
+<li>土石方報表</li>
+</ol>
+<h2 id="主畫面">主畫面</h2>
+<figure>
+<img src="/images/hanksvba_plot_5.png" alt="Fig1. 渠道型式表主畫面" />
+<figcaption aria-hidden="true">Fig1. 渠道型式表主畫面</figcaption>
+</figure>
+<span id="more"></span>
+<h2 id="步驟17.-渠道型式表">步驟17. 渠道型式表</h2>
+<p>單位為公尺，輸入尺寸時須確保有涵蓋到縱斷面圖的起點跟終點，尺寸部分有時候會有漸變的型式，此時就要輸入漸變的前後尺寸並且用
+~ 進行串聯，左牆如由0.8公尺漸變到1.2公尺可輸入0.8 ~ 1.2。</p>
+<h3 id="流程">流程</h3>
+<ol type="1">
+<li>輸入渠道名稱</li>
+<li>輸入起迄點</li>
+<li>輸入渠道型式(A、B、C...等)</li>
+<li>設定型式尺寸</li>
+</ol>
+<h2 id="步驟18.-匯入渠道">步驟18. 匯入渠道</h2>
+<p>設定完渠道型式後，需要將渠道放置於橫斷面的某個位置進行佈設，此時會需要指定橫斷面表上所記錄的CD碼作為基準後，將渠道依照中心線及縱斷面上記錄的高程放置。</p>
+<h3 id="流程-1">流程</h3>
+<ol type="1">
+<li>移動至工作表"橫斷面"</li>
+<li>點選按鈕<strong>匯入渠道</strong></li>
+<li>輸入渠道中心點CD碼名稱</li>
+</ol>
+<figure>
+<img src="2.png" alt="Fig2. 渠道中心點CD碼" />
+<figcaption aria-hidden="true">Fig2. 渠道中心點CD碼</figcaption>
+</figure>
+<p>4.完成</p>
+<figure>
+<img src="3.png" alt="Fig3. 橫斷面表(含渠道參數)" />
+<figcaption aria-hidden="true">Fig3. 橫斷面表(含渠道參數)</figcaption>
+</figure>
+<h2 id="步驟19.-橫斷面圖">步驟19. 橫斷面圖</h2>
+<p>匯入渠道完成後，重新產製橫斷面圖的過程會判定橫斷面表上是否具備渠道參數(比如25.458,A)這類的內容後詢問用戶是否要產生挖方、填方內容，橫斷面圖繪製完成後就會將挖方、填方的數字填列到中心線的對應內容，填寫完畢後就能直接產生土方計算書。</p>
+<h3 id="流程-2">流程</h3>
+<ol type="1">
+<li>點選按鈕<strong>橫斷面圖</strong></li>
+<li>輸入圖紙比例(預設100)</li>
+<li>輸入X軸偏移距離(預設10000)</li>
+<li>輸入Y軸偏移距離(預設2000)</li>
+<li>輸入切換個數(預設100)</li>
+<li>判定是否邊界CD碼未設定環境名稱，有的話再輸入該CD對應環境名</li>
+<li><strong>詢問是否要建立填方線?</strong></li>
+</ol>
+<figure>
+<img src="4.png" alt="Fig4. 是否要建立填方線" />
+<figcaption aria-hidden="true">Fig4. 是否要建立填方線</figcaption>
+</figure>
+<ol start="8" type="1">
+<li>移動至CAD</li>
+<li>點選繪製基準點</li>
+<li>完成</li>
+</ol>
+<figure>
+<img src="5.png" alt="Fig5. 橫斷面圖對照圖" />
+<figcaption aria-hidden="true">Fig5. 橫斷面圖對照圖</figcaption>
+</figure>
+<blockquote>
+<p>PS:左方為不預先建立填方線，右方為預先建立填方線，正常的填方線需要考慮從挖方線與地形線的交會點取水平延伸到渠牆，但若只是概估值，可以先預先建立填方線減少額外框選的工作。</p>
+</blockquote>
+<h2 id="步驟20.-土方面積">步驟20. 土方面積</h2>
+<p>在不預先建立回填線的前提下，需要使用者針對橫斷面圖進行填方線、填方面積邊界線的繪製，如果挖方線繪製不合理時，也會需要使用者進行挖方線、挖方面積邊界線的修正，繪製線段跟邊界線的過程需要遵循指定的圖層名稱，如下表所述:</p>
+<table>
+<thead>
+<tr class="header">
+<th>用途</th>
+<th>圖層名稱</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>挖方線</td>
+<td>CAL</td>
+</tr>
+<tr class="even">
+<td>填方線</td>
+<td>FAL</td>
+</tr>
+<tr class="odd">
+<td>挖方面積</td>
+<td>橫斷面-挖方</td>
+</tr>
+<tr class="even">
+<td>填方面積</td>
+<td>橫斷面-填方</td>
+</tr>
+</tbody>
+</table>
+<h3 id="流程-3">流程</h3>
+<ol type="1">
+<li>移動至CAD</li>
+<li>圖層變更為<strong>FAL</strong>，繪製填方線</li>
+<li>圖層變更為<strong>橫斷面-填方</strong>，透過指令"-BO"點選面積內部點</li>
+<li>移動至工作表"中心線"</li>
+<li>如工作表上的挖填方數據要重算，請先進行刪除!!!</li>
+<li>點選按鈕<strong>土方面積</strong></li>
+<li>移動至CAD，框選剛剛繪製的內容</li>
+<li>完成</li>
+</ol>
+<figure>
+<img src="6.png" alt="Fig6. 中心線主畫面" />
+<figcaption aria-hidden="true">Fig6. 中心線主畫面</figcaption>
+</figure>
+<blockquote>
+<p>PS:將具有渠道參數的橫斷面表繪製的過程，至少會在中心線上出現挖方的數據，如果數據都要透過框選來產生時，需要先將工作表上的數據進行刪除，否則系統會在框選完面積之後<strong>再加上原本已經有存在的資料</strong>，導致面積出現異常。</p>
+</blockquote>
+<blockquote>
+<p>PS.2:框選面積的過程，可以適度的調整圖層的顯示，如要進行挖方面積點選時可以將渠道圖層、中心線圖層先關閉，如要進行填方面積點選時可以將地形線圖層先關閉，會比較好點。</p>
+</blockquote>
+<h2 id="步驟21.-顯示挖填">步驟21. 顯示挖填</h2>
+<p>橫斷面圖的標題需要出現挖方面積、填方面積以及中心線距離地形線的落差，系統將透過工作表"中心線"上所記錄資料填寫至CAD圖上對應到的樁號位置。</p>
+<h3 id="流程-4">流程</h3>
+<ol type="1">
+<li>點選按鈕<strong>顯示挖填</strong></li>
+<li>移動至CAD</li>
+<li>框選橫斷面圖的標題(圖層名稱為TITLE)</li>
+<li>完成</li>
+</ol>
+<figure>
+<img src="7.png" alt="Fig1. 顯示挖填對照圖" />
+<figcaption aria-hidden="true">Fig1. 顯示挖填對照圖</figcaption>
+</figure>
+<h2 id="步驟22.-土石方報表">步驟22. 土石方報表</h2>
+<p>報表範本位於某張隱藏資料表-土石方報表，如要修改內容可以先進行取消隱藏後修正再回復隱</p>
+<h3 id="流程-5">流程</h3>
+<ol type="1">
+<li>點選按鈕<strong>報表</strong></li>
+<li>完成</li>
+</ol>
+<figure>
+<img src="8.png" alt="Fig1. 土石方報表" />
+<figcaption aria-hidden="true">Fig1. 土石方報表</figcaption>
+</figure>
+<h2 id="結語">結語</h2>
+<p>本篇主要在介紹關於渠道擺設於橫斷面圖上的過程，雖然流程不是很複雜，但數量多的時候會造成繪製人員出現職業倦怠，尤其是將資料從工作表謄寫到CAD圖上的過程，相當容易出現錯誤，即便對於工程人員而言，這一點點土方工作根本不是什麼大錢，但錯誤總是會被某些人找出來然後叫你改，為了減少這類情況發生，善用工具將謄寫資料的過程簡單化是很有幫助的。</p>
+<p>截至目前一系列的操作已經可以完整的產生平面圖、橫斷面圖、縱斷面圖，再來就是要開始進行標準斷面的設計以及最重要的擺設圖框、批次出圖，這部分留待後續說明，關於繪圖資料庫已經可以先告一段落，後續談到圖框時才會繼續使用。</p>
+]]></content>
+      <categories>
+        <category>專案成果</category>
+      </categories>
+      <tags>
+        <tag>Excel VBA</tag>
+        <tag>CAD VBA</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>HanksVBA繪圖資料庫操作流程(三)</title>
+    <url>/posts/2604629158/</url>
+    <content><![CDATA[<h2 id="前言">前言</h2>
+<p>承前篇<a
+href="https://www.hanksvba.com/posts/1687978399/#more">HanksVBA繪圖資料庫操作流程(二)</a>，在中心線與斷面樁完成之後，此時就要透過斷面樁與特徵線之間的幾何關係換算其橫向相對座標及高程，計算成果除了可以繪製橫斷面外，同時也能透過萃取出各特徵線上的高程資訊作為縱斷面之資料來源。</p>
+<p>相關的基本流程將包含:</p>
+<ol start="9" type="1">
+<li>樁號取樣</li>
+<li>高程重整</li>
+<li>橫斷面圖</li>
+<li>擷取CD碼</li>
+<li>快速縱斷面</li>
+</ol>
+<h2 id="主畫面">主畫面</h2>
+<figure>
+<img src="/images/hanksvba_plot_3.png" alt="Fig1. 主要畫面" />
+<figcaption aria-hidden="true">Fig1. 主要畫面</figcaption>
+</figure>
+<span id="more"></span>
+<h2 id="步驟9.樁號取樣">步驟9.樁號取樣</h2>
+<p>特徵線與斷面樁透過取得其位於斷面樁上各個交點來推算該點距離斷面樁的端點距離以及該點位於特徵線上之前後端點的高程進行內插值換算，進而取得一份具有X、Y、交點CD碼的表格。</p>
+<figure>
+<img src="2.png" alt="Fig2. 橫斷面基本資料表" />
+<figcaption aria-hidden="true">Fig2. 橫斷面基本資料表</figcaption>
+</figure>
+<h3 id="流程">流程</h3>
+<ol type="1">
+<li>移動至工作表"中心線"</li>
+<li>點選按鈕<strong>樁號取樣</strong></li>
+<li>移動至CAD</li>
+<li>框選斷面樁，按下Enter</li>
+<li>框選特徵線，按下Enter</li>
+<li>成果出現於工作表"橫斷面"</li>
+</ol>
+<blockquote>
+<p>PS:通常起點、終點比較容易出現有異常，通常是發生於特徵線與斷面樁無法交會的情況，此時可以先透過CAD指令<strong>EX</strong>將特徵線延長至該斷面樁，再透過按鈕<strong>檢查點高程</strong>進行線段高程檢查、取近似點處理。</p>
+</blockquote>
+<h2 id="步驟10.高程重整">步驟10.高程重整</h2>
+<p>除了透過取特徵線高程作為來源外，也能在CAD中透過指令<strong>OFFSET</strong>建立虛擬特徵線，並且將該虛擬特徵線賦予其要同步的高程來源，以矩形渠道為例，通常只會拿取渠底中心、兩側渠頂作為特徵線使用(目前在橫斷面圖上看起來就像是V字型)，若要正確描述橫斷面圖的長相(U字型)
+，還需要透過兩側渠頂的位置往渠底中心偏移複製0.1公分，再透過高程重整的方式將左渠底及右渠底的高程設定等同渠底中心，這樣便能看見一完整的渠道樣式。</p>
+<figure>
+<img src="3.png" alt="Fig3. 高程重整基本資料表" />
+<figcaption aria-hidden="true">Fig3. 高程重整基本資料表</figcaption>
+</figure>
+<h3 id="流程-1">流程</h3>
+<ol type="1">
+<li>確認橫斷面含有Y值為0的數值</li>
+<li>設定高程代碼、取代高程、運算值</li>
+<li>點選按鈕<strong>高程重整</strong></li>
+<li>完成</li>
+</ol>
+<h2 id="步驟11.橫斷面圖">步驟11.橫斷面圖</h2>
+<p>在目前的步驟所產製出來的內容為純地形的橫斷面圖，如果要放置渠道的話需要再透過後續步驟_的渠道型式表設定進行，到時候才有辦法進行挖方、填方的面積計算。</p>
+<h3 id="流程-2">流程</h3>
+<ol type="1">
+<li>點選按鈕<strong>橫斷面圖</strong></li>
+<li>輸入圖紙比例(預設100)</li>
+<li>輸入X軸偏移距離(預設10000)</li>
+<li>輸入Y軸偏移距離(預設2000)</li>
+<li>輸入切換個數(預設100)</li>
+<li>判定是否邊界CD碼未設定環境名稱，有的話再輸入該CD對應環境名</li>
+<li>移動至CAD</li>
+<li>點選繪製基準點</li>
+<li>完成</li>
+</ol>
+<figure>
+<img src="4.png" alt="Fig4. 橫斷面CAD圖說" />
+<figcaption aria-hidden="true">Fig4. 橫斷面CAD圖說</figcaption>
+</figure>
+<blockquote>
+<p>PS:繪製過程的選項可以都先採用預設，產生初次成果後再透過目前的狀況進行微調，如發現Y軸偏移距離不夠大，就再往上加，如果要放入圖框，則可以將切換個數改為3，他繪製指定數量後就會偏移X軸繪製。</p>
+</blockquote>
+<h2 id="步驟12.擷取cd碼">步驟12.擷取CD碼</h2>
+<p>每一個橫斷面都會記錄其CD碼，如果要進行坡度設計的時候會需要把每個樁號的重要CD碼繪製於縱斷面上呈現，比較好確認高程相對應關係，要取得其高程資料需要先設定其代碼對應到的高程名稱以及放置於第幾列。</p>
+<figure>
+<img src="5.png" alt="Fig5. 縱斷面擷取CD碼基本資料" />
+<figcaption aria-hidden="true">Fig5. 縱斷面擷取CD碼基本資料</figcaption>
+</figure>
+<h3 id="流程-3">流程</h3>
+<ol type="1">
+<li>設定高程代碼、高程列位、高程名稱</li>
+<li>點選按鈕<strong>擷取CD碼</strong></li>
+<li>資料擷取後送至工作表"縱斷面"(目前被隱藏起來)</li>
+<li>完成</li>
+</ol>
+<blockquote>
+<p>PS:高程名稱的結尾必須為**高，EX:地盤高、路面高，後續再去圖說裡面改</p>
+</blockquote>
+<h2 id="步驟13.快速縱斷面optional">步驟13.快速縱斷面(Optional)</h2>
+<p>快速就可以直接看見地盤高與其他相關高程的關係，每條線都是一個圖層。</p>
+<h3 id="流程-4">流程</h3>
+<ol type="1">
+<li>點選按鈕<strong>快速縱斷面</strong></li>
+<li>輸入X軸比例(預設2500)</li>
+<li>輸入Y軸比例(預設100)</li>
+<li>移動至CAD</li>
+<li>輸入取樣間距(預設為1)</li>
+<li>點選繪製基準點</li>
+<li>完成</li>
+</ol>
+<figure>
+<img src="6.png" alt="Fig6. 簡易縱斷面CAD圖" />
+<figcaption aria-hidden="true">Fig6. 簡易縱斷面CAD圖</figcaption>
+</figure>
+<blockquote>
+<p>PS:取樣間距如果為5.10.15.20.25，設定為1時會全部顯示，設定為2的時候則會依照5.15.25這樣顯示(每2個取一次)。</p>
+</blockquote>
+<h2 id="結語">結語</h2>
+<p>在橫斷面圖的繪製過程，除了可以看出目前的地形與周邊的環境資訊(田、路)，也能判定是否有歧異點的發生，來針對地形點錯誤排查，有些時候可能會因為抄錄錯誤或機器輸出的異常，導致橫斷面的長相不合常理，如果在Excel橫斷面表上就發現高程值為0，那麼就得要先確認特徵線是否有經過人為移動或延伸、剪斷等等，這時候透過按鈕<strong>檢查點高程</strong>通常能解決大多數問題。</p>
+<p>當操作完<strong>擷取CD碼</strong>之後才能進行快速縱斷面，這部分的功能只是讓用戶能夠早點知道縱斷面效果，減少在繪製詳細的縱斷面過程的勞累，在圖說上可以取得地盤高、路面高、田面高...等等關鍵的資訊，設計者可以先在該簡圖上大約繪製計畫高、渠頂高，於此可以先先確認是否會有路面無法排水、田面無法取水等問題，再者，當地形地貌比較複雜時，也能夠將取樣間距設定為10M或5M，當地形特徵點都有按實際取回時，快速縱斷面也能完整的復現實際的地形地貌。</p>
+]]></content>
+      <categories>
+        <category>專案成果</category>
+      </categories>
+      <tags>
+        <tag>Excel VBA</tag>
+        <tag>CAD VBA</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>HanksVBA繪圖資料庫操作流程(四)</title>
+    <url>/posts/3761000123/</url>
+    <content><![CDATA[<h2 id="前言">前言</h2>
+<p>承前篇<a
+href="https://www.hanksvba.com/posts/2604629158/#more">HanksVBA繪圖資料庫操作流程(三)</a>，我們已經可以得知橫斷面地形的樣貌以及初步的縱斷面圖高程相對關係，接著就是針對縱斷面圖的圖表區進行更詳細的坡度設計以及渠道樣式的幾何尺寸擇定，後續將設計成果放回到橫斷面圖上的絕對高程後就可以開始進行比較繁瑣的土方計算框選、計算。</p>
+<p>相關的基本流程將包含:</p>
+<ol start="14" type="1">
+<li>取得資料</li>
+<li>取得坡度</li>
+<li>縱斷面圖</li>
+</ol>
+<h2 id="主畫面">主畫面</h2>
+<figure>
+<img src="/images/hanksvba_plot_4.png" alt="Fig1. 主畫面" />
+<figcaption aria-hidden="true">Fig1. 主畫面</figcaption>
+</figure>
+<span id="more"></span>
+<h2 id="步驟14.取得資料">步驟14.取得資料</h2>
+<p>透過之前的操作，目前會有一些基本資料存在隱藏的工作表"縱斷面"之中，此時透過取得資料的操作可以將標題為樁號、地盤高、各式高程的資料匯入"縱斷面繪圖"的工作表，減少之前人為複製貼上的繁瑣步驟。</p>
+<h3 id="流程">流程</h3>
+<ol type="1">
+<li>確認按鈕<strong>擷取CD碼</strong>已被操作</li>
+<li>點選按鈕<strong>取得資料</strong></li>
+<li>完成</li>
+</ol>
+<h2 id="步驟15.取得坡度">步驟15.取得坡度</h2>
+<p>縱斷面資料表會先引入基本的樁號、單距、高程，此時用戶只要決定設計起始點、說明而已，設計起始點會有三種型式(S:起點，向右半圓、C:轉折，整個圓、E:終點，向左半圓)，有出現S標示的時候就必須要出現E標示，每個樁號所對應到的標示都會特別做高程標記並呈現於坡度表上。</p>
+<h3 id="流程-1">流程</h3>
+<ol type="1">
+<li>確定有建立設計起始點標記</li>
+<li>點選按鈕<strong>取得坡度</strong></li>
+<li>輸入是否要刪除計畫高</li>
+<li>輸入起點高程</li>
+<li>自動換算起點高程至下一個標記的地盤高的適合坡度</li>
+<li>輸入使用坡度，完成</li>
+</ol>
+<figure>
+<img src="2.png" alt="Fig2. 坡度對話窗" />
+<figcaption aria-hidden="true">Fig2. 坡度對話窗</figcaption>
+</figure>
+<blockquote>
+<p>PS:一般來說，整數樁的部分不用特別再打說明，非整數樁部分會需要說明一下，比如可能是有水路流入或流出、構造物之類。</p>
+</blockquote>
+<h2 id="步驟16.縱斷面圖">步驟16.縱斷面圖</h2>
+<p>可以先用預設的參數內容繪製一次後，再根據你的需求進行參數微調，包含大小、間隔等等，主要需要注意的是樁號形式，如為公路工程大多會需要修改為0K+000。</p>
+<figure>
+<img src="3.png" alt="Fig3. 縱斷面參數調整畫面" />
+<figcaption aria-hidden="true">Fig3. 縱斷面參數調整畫面</figcaption>
+</figure>
+<h3 id="流程-2">流程</h3>
+<ol type="1">
+<li>點選按鈕<strong>縱斷面圖</strong></li>
+<li>跳出縱斷面繪圖參數表單</li>
+<li>點選按鈕<strong>繪製縱斷面圖</strong></li>
+<li>移動至CAD</li>
+<li>點選繪圖基準點</li>
+<li>完成</li>
+</ol>
+<figure>
+<img src="4.png" alt="Fig4. 縱斷面成果" />
+<figcaption aria-hidden="true">Fig4. 縱斷面成果</figcaption>
+</figure>
+<h2 id="結語">結語</h2>
+<p>縱斷面圖的繪製包含兩個區域，表格區與繪圖區，如果需要呈現於表格區的部分，需要將欄位新增到坡降列的上方，如果需要呈現於繪圖區的部分，需要將列名更改為<strong>OO高</strong>，此時就會繪製到繪圖區中。</p>
+<blockquote>
+<p>河川局的案例如下 <img src="5.png" alt="Fig5. 河川局欄位範例" /></p>
+</blockquote>
+<p>只要會打字，基本的列名稱(樁號、坡降、設計起始點、說明)都有進行輸入，列名稱有預計要繪圖的部分有設定為OO高，他就會正常繪製出縱斷面圖，不需要依賴按鈕進行也可以操作，算是相當開放的一套填寫介面，任何的公式都可以插入進去。</p>
+<h2 id="相關舊文章">相關舊文章</h2>
+<p><a
+href="https://hankvba.blogspot.com/2018/03/autocad-vba.html">AutoCAD VBA
+縱斷面繪製自動化-1</a></p>
+]]></content>
+      <categories>
+        <category>專案成果</category>
+      </categories>
+      <tags>
+        <tag>Excel VBA</tag>
+        <tag>CAD VBA</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>工程缺失追蹤系統</title>
+    <url>/posts/547252112/</url>
+    <content><![CDATA[<h2 id="前言">前言</h2>
+<p>最近完成了一套缺失追蹤管理系統，主要是為了解決工程驗收階段的缺失管理問題，想跟大家分享一下開發過程和使用心得。</p>
+<h3 id="痛點">痛點</h3>
+<p>做工程的朋友應該都遇過這些問題：</p>
+<ol type="1">
+<li><strong>Excel
+表格管理缺失</strong>，多人編輯版本會亂掉，不知道哪個是最新的</li>
+<li><strong>LINE 群組溝通位置</strong>，「3F
+走廊靠近電梯」講半天廠商還是找不到</li>
+<li><strong>照片散落各處</strong>，手機相簿、LINE
+訊息、電腦資料夾，要找對比照片很麻煩</li>
+<li><strong>進度追蹤困難</strong>，每天要打一堆電話問廠商處理到哪裡</li>
+<li><strong>驗收沒有依據</strong>，修繕前後照片對不起來，驗收時容易有爭議</li>
+</ol>
+<p>如果沒有好好管理這些缺失，到了業主驗收或督導檢查的時候會很可怕的...</p>
+<span id="more"></span>
+<h2 id="解決方案">解決方案</h2>
+<p>開發一套專門針對工程缺失管理的系統，主要解決幾個核心問題：</p>
+<ul>
+<li><strong>廠商協作要簡單</strong> - 不用註冊帳號，傳連結就能用</li>
+<li><strong>位置標示要清楚</strong> - 直接在平面圖上點選標記</li>
+<li><strong>流程追蹤要完整</strong> - 從建立到驗收每個步驟都有記錄</li>
+<li><strong>數據分析要實用</strong> -
+廠商績效、缺失類型統計一目了然</li>
+</ul>
+<h2 id="系統核心功能">系統核心功能</h2>
+<h3 id="唯一碼機制">1. 唯一碼機制</h3>
+<p>每個缺失建立後系統會自動產生一組唯一識別碼，廠商不用註冊帳號，直接點連結就能看到缺失詳情和回報修繕狀況。</p>
+<p><strong>操作流程：</strong></p>
+<ol type="1">
+<li>在系統建立缺失</li>
+<li>複製系統產生的連結</li>
+<li>傳給廠商（LINE、Email 都可以）</li>
+<li>廠商點開連結就能看到缺失詳情並回報</li>
+</ol>
+<p>這樣廠商不用記一堆帳號密碼，我們也不用花時間教他們怎麼操作系統。</p>
+<h3 id="圖面標記功能">2. 圖面標記功能</h3>
+<p>上傳平面圖後可以直接在圖面上點選標記缺失位置，廠商打開連結就能看到精確的位置標示。</p>
+<p><strong>好處：</strong></p>
+<ul>
+<li>不用再口頭描述位置</li>
+<li>廠商不會找錯地方</li>
+<li>一張圖面可以看到所有缺失分布</li>
+</ul>
+<p>以前要跟廠商解釋「3F
+走廊靠近電梯」在哪裡，現在直接看圖面標記就知道了。</p>
+<h3 id="狀態追蹤機制">3. 狀態追蹤機制</h3>
+<p>系統會自動追蹤每個缺失的處理狀態：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">建立缺失 → 改善中 → 待確認 → 已完成</span><br></pre></td></tr></table></figure>
+<p>廠商提交修繕報告後，系統會自動通知管理者進行驗收，不用再逐一打電話詢問進度。</p>
+<h2 id="操作流程">操作流程</h2>
+<p>實際使用起來很簡單：</p>
+<h3 id="基本資料建立">基本資料建立</h3>
+<ol type="1">
+<li>建立工程名稱</li>
+<li>建立平面圖</li>
+<li>建立夥伴</li>
+<li>建立廠商名稱</li>
+<li>建立缺失分類</li>
+</ol>
+<figure>
+<img src="1.png" alt="Fig1. 工程名稱建立" />
+<figcaption aria-hidden="true">Fig1. 工程名稱建立</figcaption>
+</figure>
+<figure>
+<img src="2.png" alt="Fig2. 平面圖建立" />
+<figcaption aria-hidden="true">Fig2. 平面圖建立</figcaption>
+</figure>
+<figure>
+<img src="3.png" alt="Fig3. 夥伴建立(授權開立缺失單)" />
+<figcaption aria-hidden="true">Fig3.
+夥伴建立(授權開立缺失單)</figcaption>
+</figure>
+<figure>
+<img src="4.png" alt="Fig4. 廠商建立" />
+<figcaption aria-hidden="true">Fig4. 廠商建立</figcaption>
+</figure>
+<h3 id="管理者建立缺失">管理者建立缺失</h3>
+<ol type="1">
+<li>填寫缺失資訊（描述、分類、指派廠商）</li>
+<li>在平面圖上點擊標記位置</li>
+<li>上傳現場照片</li>
+<li>複製連結傳給廠商</li>
+</ol>
+<figure>
+<img src="5.png" alt="Fig5. 缺失內容建立" />
+<figcaption aria-hidden="true">Fig5. 缺失內容建立</figcaption>
+</figure>
+<h3 id="廠商回報修繕">廠商回報修繕</h3>
+<ol type="1">
+<li>點擊連結查看缺失詳情</li>
+<li>前往現場處理</li>
+<li>完成後填寫修繕說明、上傳照片</li>
+<li>點擊「確認修繕」</li>
+</ol>
+<figure>
+<img src="6.png" alt="Fig6. 廠商回報內容" />
+<figcaption aria-hidden="true">Fig6. 廠商回報內容</figcaption>
+</figure>
+<h3 id="管理者驗收">管理者驗收</h3>
+<ol type="1">
+<li>收到「待確認」通知</li>
+<li>查看修繕前後照片對比</li>
+<li>決定「確認結果」或「退回重辦」</li>
+</ol>
+<p>整個流程下來，系統操作時間大概 6 分鐘就搞定了。</p>
+<h2 id="其他功能">其他功能</h2>
+<h3 id="篩選搜尋">篩選搜尋</h3>
+<ul>
+<li>可以依狀態、分類、廠商篩選缺失</li>
+<li>關鍵字搜尋功能</li>
+<li>緊急程度自動標示（逾期會變紅色）</li>
+</ul>
+<figure>
+<img src="7.png" alt="Fig7. 缺失列表，一覽無遺" />
+<figcaption aria-hidden="true">Fig7. 缺失列表，一覽無遺</figcaption>
+</figure>
+<h3 id="數據統計">數據統計</h3>
+<ul>
+<li>缺失處理進度統計</li>
+<li>廠商績效分析</li>
+<li>缺失類型分布圖表</li>
+</ul>
+<figure>
+<img src="8.png" alt="Fig8. 缺失相關統計KPI" />
+<figcaption aria-hidden="true">Fig8. 缺失相關統計KPI</figcaption>
+</figure>
+<figure>
+<img src="9.png" alt="Fig9. 廠商績效分析" />
+<figcaption aria-hidden="true">Fig9. 廠商績效分析</figcaption>
+</figure>
+<figure>
+<img src="10.png" alt="Fig10. 缺失分類分布" />
+<figcaption aria-hidden="true">Fig10. 缺失分類分布</figcaption>
+</figure>
+<h2 id="使用心得">使用心得</h2>
+<h3 id="導入建議">導入建議</h3>
+<ol type="1">
+<li><strong>一次建檔完整</strong> -
+建議一開始就把所有缺失建檔完成，雖然要花一些時間，但建完之後就輕鬆了</li>
+<li><strong>圖面要清晰</strong> -
+上傳高解析度的平面圖，標記才會精確</li>
+<li><strong>廠商要溝通</strong> -
+第一次使用時，簡單跟廠商說明如何操作</li>
+<li><strong>持續使用</strong> -
+不要中途放棄回到舊方法，堅持使用才能看到效益</li>
+</ol>
+<h2 id="快速參考">快速參考</h2>
+<h3 id="常用操作">常用操作</h3>
+<table>
+<thead>
+<tr class="header">
+<th>功能</th>
+<th>操作路徑</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>建立專案</td>
+<td>工程列表 → 新增工程</td>
+</tr>
+<tr class="even">
+<td>上傳圖面</td>
+<td>工程詳情 → 圖面管理 → 新增圖面</td>
+</tr>
+<tr class="odd">
+<td>建立缺失</td>
+<td>缺失 → 缺失表單 → 填寫資訊 → 建立</td>
+</tr>
+<tr class="even">
+<td>通知廠商</td>
+<td>缺失列表 → 選擇缺失 → 複製連結 → 傳給廠商</td>
+</tr>
+<tr class="odd">
+<td>驗收修繕</td>
+<td>缺失列表 → 篩選「待確認」→ 點擊確認</td>
+</tr>
+<tr class="even">
+<td>查看統計</td>
+<td>統計 → 儀表板</td>
+</tr>
+</tbody>
+</table>
+<h3 id="狀態說明">狀態說明</h3>
+<table>
+<thead>
+<tr class="header">
+<th>狀態</th>
+<th>說明</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>⚪ 等待中</td>
+<td>缺失已建立，尚未開始處理</td>
+</tr>
+<tr class="even">
+<td>🟡 改善中</td>
+<td>已通知廠商，廠商處理中</td>
+</tr>
+<tr class="odd">
+<td>🟣 待確認</td>
+<td>廠商已提交修繕，等待驗收</td>
+</tr>
+<tr class="even">
+<td>🟢 已完成</td>
+<td>驗收通過，缺失已解決</td>
+</tr>
+<tr class="odd">
+<td>🔴 已取消</td>
+<td>缺失已取消</td>
+</tr>
+</tbody>
+</table>
+<h2 id="結語">結語</h2>
+<p><span class="github-emoji" data-alias="star" style=""
+data-fallback-src="https://github.githubassets.com/images/icons/emoji/unicode/2b50.png?v8">⭐</span>
+有需要請LINE(ID:<span class="citation"
+data-cites="903qzhwa">@903qzhwa</span>)聯繫或電子郵件(apple84026113@gmail.com)聯繫</p>
+<p><strong>感謝 HUNTERCHIEN 主任協助提供諸多寶貴意見!</strong></p>
+<p><a
+href="https://hunterchien.blogspot.com/2025/07/39.html">思築之道：工程心韻</a></p>
+]]></content>
+      <categories>
+        <category>專案開發</category>
+      </categories>
+      <tags>
+        <tag>Streamlit</tag>
+        <tag>缺失追蹤</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>施工照片VBA-常見問題</title>
+    <url>/posts/823675137/</url>
+    <content><![CDATA[<h2 id="前言">前言</h2>
+<p>自從施工照片VBA開始實際投入報表製作過程後，陸陸續續有些使用回饋心得，其中有相當多的常見問題我想要撰寫於這篇文章中，讓各位能有個來源解除這些疑惑，畢竟工具很難完美，肯定是需要經過大量的操作，才會讓他變得更好!</p>
+<p>如果使用上還有些什麼更好的建議，請透過左側聯繫我~</p>
+<span id="more"></span>
+<h2
+id="資料夾照片順序與檔案順序不一致">資料夾照片順序與檔案順序不一致</h2>
+<blockquote>
+<p>從LINE相簿下載的照片名稱雖然上面有順序，但是匯入施工照片VBA之後卻不會按照原本的順序進行排列?</p>
+</blockquote>
+<figure>
+<img src="1.jpg"
+alt="Fig1. 原本的順序是(1).(2).(3)...(10)...(100)..." />
+<figcaption aria-hidden="true">Fig1.
+原本的順序是(1).(2).(3)...(10)...(100)...</figcaption>
+</figure>
+<figure>
+<img src="2.jpg" alt="Fig2. 當引入之後會變成(1).(10).(100)..." />
+<figcaption aria-hidden="true">Fig2.
+當引入之後會變成(1).(10).(100)...</figcaption>
+</figure>
+<h3 id="發生原因">發生原因</h3>
+<p>對於數字而言，1.2.3...10.11...100.101...這樣排序會正常運作，但是在excel中，名稱所有的數字都會變成<strong>文字</strong>來處理，所以1的後面是10，再來是100</p>
+<h3 id="解決方案">解決方案</h3>
+<p>把原本是數字的部分通通變成3碼，001.002.003.....010.011.....100，他就會照這樣排序上去了。</p>
+<p>可想而知，如果各位要這樣一筆一筆手動修改也是很累人的一件事，所以此時就可以寫個VBA工具將檔案名稱做關鍵字拆分，取出最後的編號部分，用格式化選項作成三碼的數字，重新併回去產製新的照片名稱。</p>
+<p>一般來說，LINE是存放檔案的最大宗，從相簿下載回電腦的名稱為<strong>LINE_ALBUN_相簿名稱_相簿日期_流水號.jpg</strong>，此時就能透過這個方式先將流水號拆出來，再將流水號修改為固定三位數的流水號。</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">Sub renameFiles()</span><br><span class="line">    Dim main_path As String</span><br><span class="line">    Dim fileName As String</span><br><span class="line">    Dim newFileName As String</span><br><span class="line">    Dim pos As Long</span><br><span class="line">    Dim posDot As Long</span><br><span class="line">    Dim numPart As String</span><br><span class="line">    Dim ext As String</span><br><span class="line">    </span><br><span class="line">    &#x27; 取得資料夾路徑</span><br><span class="line">    main_path = Sheets(&quot;Main&quot;).Range(&quot;B2&quot;).Value</span><br><span class="line">    </span><br><span class="line">    If Right(main_path, 1) &lt;&gt; &quot;\&quot; Then</span><br><span class="line">        main_path = main_path &amp; &quot;\&quot;</span><br><span class="line">    End If</span><br><span class="line">    </span><br><span class="line">    fileName = Dir(main_path &amp; &quot;*.*&quot;)</span><br><span class="line">    </span><br><span class="line">    Do While fileName &lt;&gt; &quot;&quot;</span><br><span class="line">        pos = InStrRev(fileName, &quot;_&quot;)      &#x27; 找到最後一個 &quot;_&quot;</span><br><span class="line">        posDot = InStrRev(fileName, &quot;.&quot;)   &#x27; 找到最後一個 &quot;.&quot;</span><br><span class="line">        </span><br><span class="line">        If pos &gt; 0 And posDot &gt; pos Then</span><br><span class="line"></span><br><span class="line">            numPart = mid(fileName, pos + 1, posDot - pos - 1)</span><br><span class="line">            </span><br><span class="line">            If IsNumeric(numPart) Then</span><br><span class="line"></span><br><span class="line">                numPart = Format(CLng(numPart), &quot;000&quot;)</span><br><span class="line">                </span><br><span class="line">                newFileName = Left(fileName, pos) &amp; numPart &amp; mid(fileName, posDot)</span><br><span class="line"></span><br><span class="line">                Name main_path &amp; fileName As main_path &amp; newFileName</span><br><span class="line">                </span><br><span class="line">                Debug.Print &quot;Rename: &quot; &amp; fileName &amp; &quot; -&gt; &quot; &amp; newFileName</span><br><span class="line">            End If</span><br><span class="line">        End If</span><br><span class="line">        </span><br><span class="line">        fileName = Dir</span><br><span class="line">    Loop</span><br><span class="line">    </span><br><span class="line">    MsgBox &quot;重新編號完成!&quot;, vbInformation</span><br><span class="line">End Sub</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<video src="SAMPLE.mp4" position="absolute" width="100%" height="100%" controls="controls">
+</video>
+<h2 id="相關連結">相關連結</h2>
+<p><a
+href="https://www.hanksvba.com/posts/144473154/">施工照片VBA-實作流程</a></p>
+]]></content>
+      <categories>
+        <category>基本原理</category>
+      </categories>
+      <tags>
+        <tag>Excel VBA</tag>
+        <tag>施工照片</tag>
       </tags>
   </entry>
 </search>
