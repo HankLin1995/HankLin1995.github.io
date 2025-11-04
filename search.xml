@@ -5306,7 +5306,12 @@ href="https://hunterchien.blogspot.com/2025/07/39.html">思築之道：工程心
 <p>如果使用上還有些什麼更好的建議，請透過左側聯繫我~</p>
 <span id="more"></span>
 <h2
-id="資料夾照片順序與檔案順序不一致">資料夾照片順序與檔案順序不一致</h2>
+id="一施工照片長寬比不按正確比例放大導致變形">一、施工照片長寬比不按正確比例放大導致變形。</h2>
+<h3 id="解決方法">解決方法</h3>
+<p>經查為以下該段程式碼的原因，可以將這段程式碼蓋掉本來的內容就好。</p>
+<figure class="highlight vb"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment">&#x27;位置:物件類別模組/clsReport/PastePhoto_giveRng</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">Sub</span> PastePhoto_giveRng(<span class="keyword">ByVal</span> rng <span class="keyword">As</span> <span class="type">Object</span>, <span class="keyword">ByVal</span> photo_path <span class="keyword">As</span> <span class="type">String</span>, <span class="keyword">ByVal</span> checkday <span class="keyword">As</span> <span class="type">String</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">&#x27;額外接入checkday當作text基底文字</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">With</span> shtReport</span><br><span class="line"></span><br><span class="line">    <span class="comment">&#x27;Set rng = .Range(coll_rng_address(Count))</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">If</span> rng.MergeCells <span class="keyword">Then</span></span><br><span class="line">    </span><br><span class="line">        myMergeArea = rng.MergeArea</span><br><span class="line">        dy = UBound(myMergeArea, <span class="number">1</span>)</span><br><span class="line">        dx = UBound(myMergeArea, <span class="number">2</span>)</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">End</span> <span class="keyword">If</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">Set</span> LastRng = .Cells(rng.Row + dy - <span class="number">1</span>, rng.Column + dx - <span class="number">1</span>).Offset(<span class="number">1</span>, <span class="number">1</span>)</span><br><span class="line">    </span><br><span class="line">    X0 = rng.Left</span><br><span class="line">    Y0 = rng.Top</span><br><span class="line">    </span><br><span class="line">    X1 = LastRng.Left</span><br><span class="line">    Y1 = LastRng.Top</span><br><span class="line"></span><br><span class="line">    targetWidth = X1 - X0 - <span class="number">4</span></span><br><span class="line">    targetHeight = Y1 - Y0 - <span class="number">4</span></span><br><span class="line">  </span><br><span class="line">    <span class="comment">&#x27; 加入圖片，先放大一點</span></span><br><span class="line">    <span class="keyword">Set</span> pic = .Shapes.AddPicture(photo_path, <span class="literal">True</span>, <span class="literal">True</span>, X0 + <span class="number">2</span>, Y0 + <span class="number">2</span>, -<span class="number">1</span>, -<span class="number">1</span>)</span><br><span class="line">                                     </span><br><span class="line">    <span class="comment">&#x27; 鎖定比例不變</span></span><br><span class="line">    pic.LockAspectRatio = msoTrue</span><br><span class="line">    </span><br><span class="line">    <span class="comment">&#x27; 根據原始比例決定是縮放寬還是高</span></span><br><span class="line">    <span class="keyword">If</span> (pic.Width / pic.Height) &gt; (targetWidth / targetHeight) <span class="keyword">Then</span></span><br><span class="line">        <span class="comment">&#x27; 圖片比較寬，以寬度為主</span></span><br><span class="line">        pic.Width = targetWidth</span><br><span class="line">    <span class="keyword">Else</span></span><br><span class="line">        <span class="comment">&#x27; 圖片比較高，以高度為主</span></span><br><span class="line">        pic.Height = targetHeight</span><br><span class="line">    <span class="keyword">End</span> <span class="keyword">If</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment">&#x27; 根據調整後寬度重新置中 (optional)</span></span><br><span class="line">    pic.Left = X0 + ((X1 - X0) - pic.Width) / <span class="number">2</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">Call</span> AddText(X1 - <span class="number">100</span>, Y1 - <span class="number">30</span>, <span class="number">25</span>, <span class="number">40</span>, tranDate(checkday), <span class="number">3</span>) <span class="comment">&#x27;額外接入之checkday要顯示於照片右下角</span></span><br><span class="line">    </span><br><span class="line"><span class="keyword">End</span> <span class="keyword">With</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">End</span> <span class="keyword">Sub</span></span><br></pre></td></tr></table></figure>
+<h2
+id="二資料夾照片順序與檔案順序不一致">二、資料夾照片順序與檔案順序不一致</h2>
 <blockquote>
 <p>從LINE相簿下載的照片名稱雖然上面有順序，但是匯入施工照片VBA之後卻不會按照原本的順序進行排列?</p>
 </blockquote>
@@ -5330,6 +5335,54 @@ alt="Fig1. 原本的順序是(1).(2).(3)...(10)...(100)..." />
 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">Sub renameFiles()</span><br><span class="line">    Dim main_path As String</span><br><span class="line">    Dim fileName As String</span><br><span class="line">    Dim newFileName As String</span><br><span class="line">    Dim pos As Long</span><br><span class="line">    Dim posDot As Long</span><br><span class="line">    Dim numPart As String</span><br><span class="line">    Dim ext As String</span><br><span class="line">    </span><br><span class="line">    &#x27; 取得資料夾路徑</span><br><span class="line">    main_path = Sheets(&quot;Main&quot;).Range(&quot;B2&quot;).Value</span><br><span class="line">    </span><br><span class="line">    If Right(main_path, 1) &lt;&gt; &quot;\&quot; Then</span><br><span class="line">        main_path = main_path &amp; &quot;\&quot;</span><br><span class="line">    End If</span><br><span class="line">    </span><br><span class="line">    fileName = Dir(main_path &amp; &quot;*.*&quot;)</span><br><span class="line">    </span><br><span class="line">    Do While fileName &lt;&gt; &quot;&quot;</span><br><span class="line">        pos = InStrRev(fileName, &quot;_&quot;)      &#x27; 找到最後一個 &quot;_&quot;</span><br><span class="line">        posDot = InStrRev(fileName, &quot;.&quot;)   &#x27; 找到最後一個 &quot;.&quot;</span><br><span class="line">        </span><br><span class="line">        If pos &gt; 0 And posDot &gt; pos Then</span><br><span class="line"></span><br><span class="line">            numPart = mid(fileName, pos + 1, posDot - pos - 1)</span><br><span class="line">            </span><br><span class="line">            If IsNumeric(numPart) Then</span><br><span class="line"></span><br><span class="line">                numPart = Format(CLng(numPart), &quot;000&quot;)</span><br><span class="line">                </span><br><span class="line">                newFileName = Left(fileName, pos) &amp; numPart &amp; mid(fileName, posDot)</span><br><span class="line"></span><br><span class="line">                Name main_path &amp; fileName As main_path &amp; newFileName</span><br><span class="line">                </span><br><span class="line">                Debug.Print &quot;Rename: &quot; &amp; fileName &amp; &quot; -&gt; &quot; &amp; newFileName</span><br><span class="line">            End If</span><br><span class="line">        End If</span><br><span class="line">        </span><br><span class="line">        fileName = Dir</span><br><span class="line">    Loop</span><br><span class="line">    </span><br><span class="line">    MsgBox &quot;重新編號完成!&quot;, vbInformation</span><br><span class="line">End Sub</span><br><span class="line"></span><br></pre></td></tr></table></figure>
 <video src="SAMPLE.mp4" position="absolute" width="100%" height="100%" controls="controls">
 </video>
+<hr />
+<h2
+id="三列印報表時出現不正確的檔案名稱或號碼">三、列印報表時出現不正確的檔案名稱或號碼</h2>
+<figure>
+<img src="3.jpg" alt="Fig3. 資料夾的路徑，含有古字" />
+<figcaption aria-hidden="true">Fig3. 資料夾的路徑，含有古字</figcaption>
+</figure>
+<h3 id="發生原因-1">發生原因</h3>
+<p>Excel
+VBA在描述檔案過程會用絕對路徑來進行，當絕對路徑上任一個文字出現特殊符號就會跳該錯誤訊息。</p>
+<p>即便用戶在電腦上所見名稱都正常顯示，但是當判讀路徑名稱含有<strong>古字</strong>，Excel會自動轉譯成?，此時就會變成路徑所禁止的特殊符號，導致錯誤發生。</p>
+<h3 id="解決方法-1">解決方法</h3>
+<p>不要執著於一定要把古字打出來，當你發現電腦不能打出這個文字必須要去網路作複製貼上的時候，就用別的字來代替，輸出報表後再來修改。</p>
+<hr />
+<h2
+id="四列印報表時如何讓前中後照片剛好放置於同一張報表">四、列印報表時如何讓前中後照片剛好放置於同一張報表</h2>
+<h3 id="發生原因-2">發生原因</h3>
+<p>目前的版本在列印的過程，會由使用者先針對<strong>工作表("Result")</strong>先進行排序及篩選，處理完後顯示於工作表上的內容會由上而下依序列印，如果指定的報表範本為3張照片一頁，則列印過程中每三張就會自動換頁。</p>
+<h3 id="解決方法-2">解決方法</h3>
+<p>承問題一，需要先將照片順序於資料夾中確認完畢，爾後再透過分組列印的方式，強制將前中後照片放置於同一張報表中，分組列印的過程可以在工作表("Result")中以備註或者新增一欄位作為分組列印的依據，列印過程會將相同的內容分到同一組別，達成前中後照片於同一張報表的目的。</p>
+<ol type="1">
+<li>於工作表("Main")中勾選<strong>分組列印</strong></li>
+<li>於工作表("Result")中設定某一欄作為分組欄位(同一張報表設定為同一個編號)</li>
+<li>列印報表時選擇該欄作為分組依據</li>
+</ol>
+<figure>
+<img src="4.png" alt="Fig4. 分組列印的畫面" />
+<figcaption aria-hidden="true">Fig4. 分組列印的畫面</figcaption>
+</figure>
+<figure>
+<img src="5.png" alt="Fig5. 設定某一欄作為分組欄位" />
+<figcaption aria-hidden="true">Fig5. 設定某一欄作為分組欄位</figcaption>
+</figure>
+<figure>
+<img src="6.png"
+alt="Fig6. 分組列印的成果，原本應該是2-3-4，因為分組後變成2-3-，就換到下一頁了!" />
+<figcaption aria-hidden="true">Fig6.
+分組列印的成果，原本應該是2-3-4，因為分組後變成2-3-，就換到下一頁了!</figcaption>
+</figure>
+<h2
+id="五施工前中後照片順序無法正確對應">五、施工前中後照片順序無法正確對應</h2>
+<h3 id="發生原因-3">發生原因</h3>
+<p>貼上照片的過程，他會直接由檔案名稱作為排序的依據，因此即便檔案名稱有註明OOO_施工前、OOO_施工中、OOO_施工後，他仍然會被OOO所影響他的先後順序。</p>
+<h3 id="解決方法-3">解決方法</h3>
+<p>以流水號ID作為檔案名稱的前綴文字，1_OOO_施工前、2_OOO_施工中、3_OOO_施工後，每次在匯入的時候如果發現順序有異常，再針對ID做排序一次即可回歸正確順序。</p>
+<video src="SAMPLE2.mp4" position="absolute" width="100%" height="100%" controls="controls">
+</video>
+<hr />
 <h2 id="相關連結">相關連結</h2>
 <p><a
 href="https://www.hanksvba.com/posts/144473154/">施工照片VBA-實作流程</a></p>
@@ -5340,6 +5393,75 @@ href="https://www.hanksvba.com/posts/144473154/">施工照片VBA-實作流程</a
       <tags>
         <tag>Excel VBA</tag>
         <tag>施工照片</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>工程標案分包項目整理工具</title>
+    <url>/posts/3123868186/</url>
+    <content><![CDATA[<h2 id="前言">前言</h2>
+<p>拿到標單時，<strong>通常不會按照協力廠商分類</strong>，執行標案前需要先將標單上的項目與數量挑出來，拆成各協力廠商要執行的內容，製作成
+Excel 表給他們填寫報價。</p>
+<ul>
+<li>建築工程可分為:拆除、泥作、木作、水電、消防、弱電、廚具...等</li>
+<li>土木工程可分為:測量、開挖、鋼筋、模板、機電、道路、景觀...等</li>
+</ul>
+<p>本篇說明如何利用 VBA
+來自動拆分標單、產生協力廠商標單，減少人工分類的時間，加速投標前的資料收集工作。</p>
+<span id="more"></span>
+<h2 id="遭遇痛點">遭遇痛點</h2>
+<ol type="1">
+<li>政府標案用PCCES製作，匯出的Excel格式若<strong>文字過長</strong>會出現<strong>跨行文字</strong>，未經整理的話，難以直接複製內容至其他小工具進行利用。</li>
+<li>標單拆項目時，需要手動複製到另一張Excel表後傳送給協力廠商填寫價格。</li>
+</ol>
+<p>上述兩點內容為本次所開發的工具預期解決的問題，事情都不難但就是煩，尤其當工程項目高達幾百項時...</p>
+<h2 id="操作流程">操作流程</h2>
+<blockquote>
+<p>畫面僅為示意設定方法，發包工班與工程項目之對應關係是不正確的。</p>
+</blockquote>
+<ol type="1">
+<li>打開工程標案分包項目整理工具</li>
+</ol>
+<figure>
+<img src="1.png" alt="Fig1. 取得預算書後自動整理跨行文字" />
+<figcaption aria-hidden="true">Fig1.
+取得預算書後自動整理跨行文字</figcaption>
+</figure>
+<ol start="2" type="1">
+<li>點選按鈕 <strong>取得預算書</strong> 選擇PCCES格式之活頁簿</li>
+<li>設定<strong>發包工班</strong>對應項目</li>
+<li>點選按鈕 <strong>匯出空白報價單</strong></li>
+<li>完成</li>
+</ol>
+<figure>
+<img src="2.png" alt="Fig2. 不同協力廠商的內容會被整理於不同工作表" />
+<figcaption aria-hidden="true">Fig2.
+不同協力廠商的內容會被整理於不同工作表</figcaption>
+</figure>
+<p>後續將該文件傳送給相關的協力廠商後，等他們回傳報價即可。</p>
+<h2 id="開發計畫">開發計畫</h2>
+<ol type="1">
+<li>記錄<strong>曾使用</strong>的名稱，發包工班欄位可修改為<strong>下拉式選單</strong>進行。</li>
+<li>記錄工程項目與發包工班對應歷史，取得預算書後先判釋工程項目，<strong>預先載入</strong>發包工班。</li>
+</ol>
+<blockquote>
+<p><span class="github-emoji" data-alias="star" style=""
+data-fallback-src="https://github.githubassets.com/images/icons/emoji/unicode/2b50.png?v8">⭐</span>
+有需要的人請洽作者諮詢~</p>
+</blockquote>
+<h2 id="相關文章">相關文章</h2>
+<p><a
+href="https://www.hanksvba.com/posts/3212778286/">監造報表-數量計算-引用來源</a></p>
+<p><a
+href="https://hankvba.blogspot.com/2024/02/excel-vba-pcces.html">Excel
+VBA @ PCCES契約項目後處理</a></p>
+<p><a href="https://www.hanksvba.com/posts/375550287/">PCCES XML
+後處理工具線上版</a></p>
+]]></content>
+      <categories>
+        <category>專案成果</category>
+      </categories>
+      <tags>
+        <tag>Excel VBA</tag>
       </tags>
   </entry>
 </search>
