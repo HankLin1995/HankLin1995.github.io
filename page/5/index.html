@@ -158,18 +158,18 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">50</span>
+          <span class="site-state-item-count">51</span>
           <span class="site-state-item-name">文章</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
           <a href="/categories/">
-        <span class="site-state-item-count">4</span>
+        <span class="site-state-item-count">5</span>
         <span class="site-state-item-name">分類</span></a>
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">27</span>
+        <span class="site-state-item-count">30</span>
         <span class="site-state-item-name">標籤</span></a>
       </div>
   </nav>
@@ -206,6 +206,120 @@
     </div>
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://www.hanksvba.com/posts/4262718496/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar_custom.png">
+      <meta itemprop="name" content="Hank Lin">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hank's Blog">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | Hank's Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/posts/4262718496/" class="post-title-link" itemprop="url">土方計算-方格法(VBA)</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">發表於</span>
+
+      <time title="創建時間：2024-06-10 12:09:45" itemprop="dateCreated datePublished" datetime="2024-06-10T12:09:45+08:00">2024-06-10</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新於</span>
+      <time title="修改時間：2025-06-08 12:09:45" itemprop="dateModified" datetime="2025-06-08T12:09:45+08:00">2025-06-08</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分類於</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E5%B0%88%E6%A1%88%E6%88%90%E6%9E%9C/" itemprop="url" rel="index"><span itemprop="name">專案成果</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h2 id="前言">🙌前言</h2>
+<p>本篇主要介紹利用 <strong>AutoCAD VBA</strong> 的物件操作+
+<strong>Excel VBA</strong>
+的工作表函數來簡化<strong>平坦地貌</strong>收方作業的過程。</p>
+<blockquote>
+<p>土方計算是工程施作時有關於甲乙方針對土方數量時的重要依據，分為小型工程及大型工程來討論。</p>
+</blockquote>
+<h3 id="小型工程">小型工程</h3>
+<p>土方金額佔比不高的情況下，通常契約數量多少就多少，甲乙雙方不太會有意見。</p>
+<h3 id="大型工程">大型工程</h3>
+<p>土方金額佔比高的情況下，甲乙雙方會針對設計原始地貌進行收方作業並作成土方報告，並以此作為契約數量修正的依據，再根據結構體的設計高程及圖說指定的開挖方式重新計算挖填方數量。</p>
+<h2 id="計算方法選定">計算方法選定</h2>
+<p>地形模型的建立會根據地貌狀況而定</p>
+<ul>
+<li>具有複雜地形特徵的地區，使用TIN(不規則三角網)</li>
+<li>地形變化相對平緩的地區，使用DEM(數字高程模型)</li>
+</ul>
+<p>方格法便是使用DEM的概念，透過每個方格頂點計算方格平均高程後推算求得土方體積，高程頂點則利用IDW(反距離加權法)來進行高程賦值，插值過程會需要大量的基本運算。</p>
+<blockquote>
+<p>有關不規則三角網另請參考筆者前文 <a
+target="_blank" rel="noopener" href="https://hankvba.blogspot.com/2023/01/cad-vba.html">CAD
+VBA@收方作業(不規則三角網法)</a></p>
+</blockquote>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/posts/4262718496/#more" rel="contents">
+                閱讀全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -1055,87 +1169,8 @@ target="_blank" rel="noopener" href="https://www.pcc.gov.tw/cp.aspx?n=82B82C5E13
 
 
 
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://www.hanksvba.com/posts/2051013919/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar_custom.png">
-      <meta itemprop="name" content="Hank Lin">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hank's Blog">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | Hank's Blog">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/posts/2051013919/" class="post-title-link" itemprop="url">創站首篇文章</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">發表於</span>
-
-      <time title="創建時間：2024-04-18 22:27:57" itemprop="dateCreated datePublished" datetime="2024-04-18T22:27:57+08:00">2024-04-18</time>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h2 id="前言">🙌前言</h2>
-<p>自2018年開始撰寫Blogger紀錄工作上會遇到的內容，藉由紀錄的過程也有助於加深對於某項技術的印象。想當初我遇到問題的時候也是不斷Google，受惠於很多網路大神的文章才解決了問題，期許我也能夠成為網路世界中有用的人，撰寫出一些能夠對這個世界有所幫助的文章。</p>
-<p>礙於我對於Blogger的調整不是很熟悉，常常影片上傳失敗或分頁的過程會無法完整呈現，有一天當我遇到Hexo-nexT的主題時，驚為天人，這完全就是我理想中的部落格外觀，因此就決定藉由學習一項新的技術的同時也來重建一下以前醜醜的Google
-Blogger...</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/posts/2051013919/#more" rel="contents">
-                閱讀全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
   <nav class="pagination">
-    <a class="extend prev" rel="prev" title="上一頁" aria-label="上一頁" href="/page/4/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/4/">4</a><span class="page-number current">5</span>
+    <a class="extend prev" rel="prev" title="上一頁" aria-label="上一頁" href="/page/4/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/4/">4</a><span class="page-number current">5</span><a class="page-number" href="/page/6/">6</a><a class="extend next" rel="next" title="下一頁" aria-label="下一頁" href="/page/6/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 </div>

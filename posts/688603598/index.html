@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.2.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha256-wiz7ZSCn/btzhjKDQBms9Hx4sSeUYsDrTLg7roPstac=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"www.hanksvba.com","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.19.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":"mac"},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":false,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜尋...","empty":"我們無法找到任何有關 ${query} 的搜索結果","hits_time":"${hits} 找到 ${time} 個結果","hits":"找到 ${hits} 個結果"},"path":"/search.json","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="前言 本篇文章為空拍機地形測繪第二篇，空拍照片搭配地面控制點進行換算，內業處理工具使用 WebODM ，該工具為開源軟體，可以搭配Docker進行安裝，由本地端的硬體資源進行運算。 若照片量體較大導致本地端解算不穩定，除了利用Docker本身的參數進行調校硬體配置外，也能透過訂閱 WebODM Lightning 進行穩定的輸出，相較於其他訂閱軟體也是個比較經濟的選擇。 WebODM">
+<meta property="og:type" content="article">
+<meta property="og:title" content="空拍機地形測繪-WebODM架設實戰">
+<meta property="og:url" content="https://www.hanksvba.com/posts/688603598/">
+<meta property="og:site_name" content="Hank&#39;s Blog">
+<meta property="og:description" content="前言 本篇文章為空拍機地形測繪第二篇，空拍照片搭配地面控制點進行換算，內業處理工具使用 WebODM ，該工具為開源軟體，可以搭配Docker進行安裝，由本地端的硬體資源進行運算。 若照片量體較大導致本地端解算不穩定，除了利用Docker本身的參數進行調校硬體配置外，也能透過訂閱 WebODM Lightning 進行穩定的輸出，相較於其他訂閱軟體也是個比較經濟的選擇。 WebODM">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:image" content="https://www.hanksvba.com/posts/688603598/1.png">
+<meta property="og:image" content="https://www.hanksvba.com/posts/688603598/3.png">
+<meta property="og:image" content="https://www.hanksvba.com/posts/688603598/4.png">
+<meta property="og:image" content="https://www.hanksvba.com/posts/688603598/5.png">
+<meta property="og:image" content="https://www.hanksvba.com/posts/688603598/6.png">
+<meta property="og:image" content="https://www.hanksvba.com/posts/688603598/8.png">
+<meta property="article:published_time" content="2026-01-27T01:47:34.000Z">
+<meta property="article:modified_time" content="2026-01-27T01:47:34.000Z">
+<meta property="article:author" content="Hank Lin">
+<meta property="article:tag" content="WebODM">
+<meta property="article:tag" content="Docker">
+<meta property="article:tag" content="UAV">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://www.hanksvba.com/posts/688603598/1.png">
+
+
+<link rel="canonical" href="https://www.hanksvba.com/posts/688603598/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-TW","comments":true,"permalink":"https://www.hanksvba.com/posts/688603598/","path":"posts/688603598/","title":"空拍機地形測繪-WebODM架設實戰"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>空拍機地形測繪-WebODM架設實戰 | Hank's Blog</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切換導航欄" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Hank's Blog</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">工程人的設計監造VBA工具交流區</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜尋" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-首頁"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首頁</a></li><li class="menu-item menu-item-關於"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>關於</a></li><li class="menu-item menu-item-標籤"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>標籤</a></li><li class="menu-item menu-item-分類"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分類</a></li><li class="menu-item menu-item-文章"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>文章</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜尋
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜尋..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目錄
+        </li>
+        <li class="sidebar-nav-overview">
+          本站概要
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%89%8D%E8%A8%80"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9C%AC%E5%9C%B0%E7%AB%AF%E5%AE%89%E8%A3%9D"><span class="nav-number">2.</span> <span class="nav-text">本地端安裝</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BF%85%E8%A6%81%E5%A5%97%E4%BB%B6"><span class="nav-number">2.1.</span> <span class="nav-text">必要套件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%95%9F%E5%8B%95"><span class="nav-number">2.2.</span> <span class="nav-text">啟動</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%94%A2%E8%A3%BD%E7%9B%AE%E6%A8%99"><span class="nav-number">3.</span> <span class="nav-text">產製目標</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%AD%A3%E5%B0%84%E5%BD%B1%E5%83%8F"><span class="nav-number">3.1.</span> <span class="nav-text">正射影像</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#dtm"><span class="nav-number">3.2.</span> <span class="nav-text">DTM</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#dmesh"><span class="nav-number">3.3.</span> <span class="nav-text">3DMesh</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%93%8D%E4%BD%9C%E6%AD%A5%E9%A9%9F"><span class="nav-number">4.</span> <span class="nav-text">操作步驟</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%A8%BB%E5%86%8A%E6%88%96%E7%99%BB%E5%85%A5"><span class="nav-number">4.1.</span> <span class="nav-text">註冊或登入</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%BB%9E%E9%81%B8%E5%86%8D%E6%AA%A2%E8%A6%96"><span class="nav-number">4.2.</span> <span class="nav-text">點選再檢視</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%B8%A9%E5%9D%91%E9%81%8E%E7%A8%8B%E8%A8%98%E9%8C%84"><span class="nav-number">5.</span> <span class="nav-text">踩坑過程記錄</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%81%B8%E9%A0%85%E5%8F%83%E6%95%B8%E8%A8%AD%E5%AE%9A%E8%AA%A4%E8%A7%A3"><span class="nav-number">5.1.</span> <span class="nav-text">選項參數設定誤解</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8F%AF%E8%A7%80%E6%B8%AC%E6%80%A7%E4%B8%8D%E4%BD%B3"><span class="nav-number">5.2.</span> <span class="nav-text">可觀測性不佳</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#gcp%E7%B2%BE%E5%BA%A6%E4%B8%8D%E8%B6%B3"><span class="nav-number">5.3.</span> <span class="nav-text">GCP精度不足</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%A7%E5%BB%BAgcp%E4%BB%8B%E9%9D%A2%E9%9B%A3%E7%94%A8"><span class="nav-number">5.4.</span> <span class="nav-text">內建GCP介面難用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%A8%98%E6%86%B6%E9%AB%94%E4%B8%8D%E8%B6%B3"><span class="nav-number">5.5.</span> <span class="nav-text">記憶體不足</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%A1%AC%E7%A2%9F%E4%B8%8D%E8%B6%B3"><span class="nav-number">5.6.</span> <span class="nav-text">硬碟不足</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Hank Lin"
+      src="/images/avatar_custom.png">
+  <p class="site-author-name" itemprop="name">Hank Lin</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">51</span>
+          <span class="site-state-item-name">文章</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">分類</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">30</span>
+        <span class="site-state-item-name">標籤</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="mailto:apple84026113@gmail.com" title="E-Mail → mailto:apple84026113@gmail.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.youtube.com/channel/UCWmy5KaK7Leg6lLUlWBPaSw" title="YouTube → https:&#x2F;&#x2F;www.youtube.com&#x2F;channel&#x2F;UCWmy5KaK7Leg6lLUlWBPaSw" rel="noopener me" target="_blank"><i class="fab fa-youtube fa-fw"></i>YouTube</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/images/LINE_QRCODE.PNG" title="LINE → &#x2F;images&#x2F;LINE_QRCODE.PNG" rel="noopener me"><i class="fab fa-line fa-fw"></i>LINE</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://reurl.cc/RyvvaZ" title="LINE社群 → https:&#x2F;&#x2F;reurl.cc&#x2F;RyvvaZ" rel="noopener me" target="_blank"><i class="fas fa-comment fa-fw"></i>LINE社群</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://hankvba.blogspot.com/" title="舊網站 → https:&#x2F;&#x2F;hankvba.blogspot.com&#x2F;" rel="noopener me" target="_blank"><i class="fab fa-blogger fa-fw"></i>舊網站</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://portaly.cc/hanksvba/support/" title="小額贊助 → https:&#x2F;&#x2F;portaly.cc&#x2F;hanksvba&#x2F;support&#x2F;" rel="noopener me" target="_blank"><i class="fas fa-handshake fa-fw"></i>小額贊助</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-TW">
+    <link itemprop="mainEntityOfPage" href="https://www.hanksvba.com/posts/688603598/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar_custom.png">
+      <meta itemprop="name" content="Hank Lin">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hank's Blog">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="空拍機地形測繪-WebODM架設實戰 | Hank's Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          空拍機地形測繪-WebODM架設實戰
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">發表於</span>
+
+      <time title="創建時間：2026-01-27 09:47:34" itemprop="dateCreated datePublished" datetime="2026-01-27T09:47:34+08:00">2026-01-27</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分類於</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E5%B0%88%E6%A1%88%E5%8E%9F%E7%90%86/" itemprop="url" rel="index"><span itemprop="name">專案原理</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="閱讀次數" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">閱讀次數：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h2 id="前言">前言</h2>
+<p>本篇文章為空拍機地形測繪第二篇，空拍照片搭配地面控制點進行換算，內業處理工具使用
+<strong>WebODM</strong>
+，該工具為開源軟體，可以搭配Docker進行安裝，由本地端的硬體資源進行運算。</p>
+<p>若照片量體較大導致本地端解算不穩定，除了利用Docker本身的參數進行調校硬體配置外，也能透過訂閱
+<strong>WebODM Lightning</strong>
+進行穩定的輸出，相較於其他訂閱軟體也是個比較經濟的選擇。</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/OpenDroneMap/WebODM">WebODM
+Github</a></p>
+<span id="more"></span>
+<h2 id="本地端安裝">本地端安裝</h2>
+<p>官方有提供比較簡易的一鍵安裝程式(要付費)以及Docker環境建立。</p>
+<blockquote>
+<p>以前看到WebODM想說太好了，我可以把它安裝起來操作看看，後來才知道要完全無料使用的話還需要具備Docker基礎知識，礙於當時對Docker認知不足遲遲無法進行操作。</p>
+</blockquote>
+<h3 id="必要套件">必要套件</h3>
+<ul>
+<li>python</li>
+<li>git</li>
+<li>docker</li>
+</ul>
+<h3 id="啟動">啟動</h3>
+<p>windows的CMD跟powershell不能直接用，需要在git bash中才可以</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">git clone https://github.com/OpenDroneMap/WebODM</span><br><span class="line">cd WebODM</span><br><span class="line">./webodm.sh start</span><br></pre></td></tr></table></figure>
+<h2 id="產製目標">產製目標</h2>
+<h3 id="正射影像">正射影像</h3>
+<p>如果只是單純要放在簡報用的，倒不一定要製作地面控制點</p>
+<h3 id="dtm">DTM</h3>
+<p>若精度要求至cm級，則<strong>需要搭配</strong>地面控制點進行點雲計算。</p>
+<h3 id="dmesh">3DMesh</h3>
+<p>若精度要求至cm級，則<strong>需要搭配</strong>地面控制點進行點雲計算，但這部分容易遭遇記憶體不足的問題(本人身受其害)。</p>
+<h2 id="操作步驟">操作步驟</h2>
+<h3 id="註冊或登入">註冊或登入</h3>
+<p><img src="1.png" alt="Fig1. 登入畫面" /> ### 進入主控台 <img
+src="2.png" alt="Fig2. 主控台畫面" /> ### 新增專案 <img src="3.png"
+alt="Fig3. 新增專案畫面" /> ### 選擇影像與GCP <img src="4.png"
+alt="Fig4. 影像跟GCP匯入畫面" /> ### 參數設定
+這裡需要調整的只有<strong>選項</strong>跟<strong>重新調整影像大小</strong>
+&gt;正射影像選Fast
+Orthophoto，DTM選DSM+DTM，當然也能進編輯做些更細部的調整，這部分有需要再來異動吧!</p>
+<figure>
+<img src="5.png" alt="Fig5. 參數設定畫面" />
+<figcaption aria-hidden="true">Fig5. 參數設定畫面</figcaption>
+</figure>
+<h3 id="點選再檢視">點選再檢視</h3>
+<p><img src="6.png" alt="Fig6. 再檢視位置" /> ### 點選開始處理 <img
+src="7.png" alt="Fig7. 開始處理位置" /> ### 任務完成 <img src="8.png"
+alt="Fig8. 完成後左下角會出現下載，可以將所需要的資源下載至本地，也能夠在線上查看地圖或3D模型" /></p>
+<h2 id="踩坑過程記錄">踩坑過程記錄</h2>
+<h3 id="選項參數設定誤解">選項參數設定誤解</h3>
+<p>split，讓大量照片可以切分區域進行運算後再拼接，經測試後發現變小對於記憶體反而是吃力的，split=100結果出現error，split=500結果正常。</p>
+<h3 id="可觀測性不佳">可觀測性不佳</h3>
+<p>曾經睡前開啟比較繁雜的任務，結果睡著不到1小時就出現記憶體不足或者硬碟不足導致docker
+shutdown，白白浪費一個晚上的計算時間。</p>
+<blockquote>
+<p>解法1:電腦建立好WebODM的時候可以透過localhost:8000來操作，如果不想在那邊顧機器，又突然想要進去看是不是有異常，此時可透過網關設定動態網址後並由外部連線轉發至該電腦的localhost:8000，雖然還是要人去看，但至少可以遠端操作。</p>
+</blockquote>
+<blockquote>
+<p>解法2:webODM有API可以呼叫，並且可以傳遞目前的任務進行情況，從Telegram的通道進行通知，這是不需要人去看的最佳方案，當然相對細節也比較多，涉及如何生成TelegramBot的流程以及API本身的回傳判釋操作，有機會再來寫一篇文章。</p>
+</blockquote>
+<h3 id="gcp精度不足">GCP精度不足</h3>
+<p>為照片重疊率不夠高的問題，原本的1秒1張取樣我設置為5秒1張，導致重疊率不夠高，某一個GCP點只有算到1張照片，導致該點的Z值誤差高達60cm，整份點雲不能使用，後來我改為2秒1張就可以順利通過品質報告了!</p>
+<h3 id="內建gcp介面難用">內建GCP介面難用</h3>
+<p>內建的需要用<strong>眼睛</strong>一張一張去找出點資料在哪裡然後標記、點右側面板的控制點，這實在非常的花時間，好在有國外神人針對這個問題想出從<strong>點資料</strong>與<strong>照片GPS</strong>位置進行座標換算，濾出由近而遠的照片，就只要點過濾好的照片就好，永久版一次性費用29美金，但是可以省下大量時間，已購。</p>
+<p><a target="_blank" rel="noopener" href="https://uav4geo.com/software/gcpeditorpro">UAV4GCP</a></p>
+<blockquote>
+<p>雖有提供原始碼可以自行部署，不曉得為何我用本機安裝及用docker安裝就會失敗，每次都死在建立
+eletron?!</p>
+</blockquote>
+<h3 id="記憶體不足">記憶體不足</h3>
+<p>docker預設swap為本機RAM+2swap，16GB的電腦可以保留4GB給電腦用，其他開給docker，並且可以設定為6swap</p>
+<p>在C:&lt;你的帳號&gt;下建立一個 .wslconfig</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[wsl2]</span><br><span class="line">memory=12GB       # 分配給 WSL 2 的 RAM</span><br><span class="line">processors=4      # CPU 核心數</span><br><span class="line">swap=6GB          # swap 大小</span><br><span class="line">localhostForwarding=true</span><br></pre></td></tr></table></figure>
+<h3 id="硬碟不足">硬碟不足</h3>
+<p>docker預設會將 .vhdx放置於C:，然而往往C槽很容易爆掉。</p>
+<blockquote>
+<p>電腦重新開機後，不要開啟docker，找出
+C:&lt;你的帳號&gt;，非常大的話，就可以差不多改去D:!</p>
+</blockquote>
+<p>設定方式可以透過 Docker Desktop &gt; Setting &gt; Resource &gt;
+選擇要放置Disk的位置(建議是去D槽，畢竟D槽空間通常比較大)</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>作者： </strong>Hank Lin
+  </li>
+  <li class="post-copyright-link">
+      <strong>文章連結：</strong>
+      <a href="https://www.hanksvba.com/posts/688603598/" title="空拍機地形測繪-WebODM架設實戰">https://www.hanksvba.com/posts/688603598/</a>
+  </li>
+  <li class="post-copyright-license">
+      <strong>版權聲明： </strong>本網誌所有文章除特別聲明外，均採用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 許可協議。轉載請註明出處！
+  </li>
+</ul>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/WebODM/" rel="tag"><i class="fa fa-tag"></i> WebODM</a>
+              <a href="/tags/Docker/" rel="tag"><i class="fa fa-tag"></i> Docker</a>
+              <a href="/tags/UAV/" rel="tag"><i class="fa fa-tag"></i> UAV</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/posts/3074265876/" rel="prev" title="施工照片VBA-客製化範例">
+                  <i class="fa fa-angle-left"></i> 施工照片VBA-客製化範例
+                </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2026</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Hank Lin</span>
+  </div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="訪客總數">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="總瀏覽次數">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 強力驅動
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="back-to-top" role="button" aria-label="回到頂端">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/next-boot.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.1/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+  <script class="next-config" data-name="pdf" type="application/json">{"object_url":{"url":"https://cdnjs.cloudflare.com/ajax/libs/pdfobject/2.2.12/pdfobject.min.js","integrity":"sha256-g2xji1rlE3KsGVClvuxTbcR0Kn2+wtQADSff2Tbb4zA="},"url":"/lib/pdf/web/viewer"}</script>
+  <script src="/js/third-party/tags/pdf.js"></script>
+
+  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":{"light":"default","dark":"dark"},"js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mermaid/10.7.0/mermaid.min.js","integrity":"sha256-TtLOdUA8mstPoO6sGvHIGx2ceXrrX4KgIItO06XOn8A="}}</script>
+  <script src="/js/third-party/tags/mermaid.js"></script>
+
+
+
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">false</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"ams","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+
+</body>
+</html>
