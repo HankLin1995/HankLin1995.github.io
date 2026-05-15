@@ -246,6 +246,15 @@
 
       <time title="創建時間：2026-05-15 14:10:58" itemprop="dateCreated datePublished" datetime="2026-05-15T14:10:58+08:00">2026-05-15</time>
     </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分類於</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E5%B0%88%E6%A1%88%E5%8E%9F%E7%90%86/" itemprop="url" rel="index"><span itemprop="name">專案原理</span></a>
+        </span>
+    </span>
 
   
 </div>
@@ -269,78 +278,14 @@
 <p>匯入GIS後將裸露地部分的範圍做一個範圍，並且用這個範圍作為遮罩對原始dtm做修剪，之後將dtm的像素格放大，取得像素格中心點進行dem取樣，做為不規則三角網的高程內插來源。</p>
 <p>前人測量資料如為結構體部分則須將該線段的頂點及線段加繪內插後的點資料繪出成CSV檔，之後匯入至GIS中做為不規則三角網的高程內插來源，最後與裸露地部分一併進行不規則三角網的高程內插(TIN
 Interpolation)即可完成，作為後續剖面用的地形模型。</p>
-<h2 id="操作步驟">操作步驟</h2>
-<h3 id="qgis">QGIS</h3>
-<ol type="1">
-<li>將航照測量產製出的<code>dtm.tif</code>匯入至QGIS</li>
-<li>將航照測量產製出的<code>odm_orthophoto.tif</code>匯入至QGIS</li>
-<li>繪製要留存的測量範圍(裸露地部分)，得到<code>AREA.shp</code></li>
-<li>以<code>AREA.shp</code>為遮罩範圍，使用工具
-<code>Clip raster by mask layer</code>針對<code>dtm.tif</code>進行初剪，得<code>dtm_area.tif</code>。</li>
-<li><code>Raster&gt;Projection&gt;Wrap(reproject)...</code>將<code>dtm_area.tif</code>處理成2M*2M的像素格，得到<code>dtm_area_2m.tif</code>。</li>
-<li>透過工具
-<code>Raster pixels to points</code>將<code>dtm_area_2m.tif</code>各像素格生成中心點資料，得到<code>dtm_area_2m_points.shp</code></li>
-<li>透過工具
-<code>Sample raster value</code>將<code>dtm_area_2m_points.shp</code>針對<code>dtm.tif</code>進行採樣，得到
-<code>dtm_area_2m_z.shp</code>，帶有高程資料。</li>
-</ol>
-<blockquote>
-<p>目前所得到的航拍高程資料已經初步完成，重投影的部分是將原本過於密集的像素格放大，後續要進行手動編修時才不會那麼痛苦。</p>
-</blockquote>
-<h3 id="cad部分">CAD部分</h3>
-<figure>
-<img src="1.png" alt="Fig1. 原測量成果圖" />
-<figcaption aria-hidden="true">Fig1. 原測量成果圖</figcaption>
-</figure>
-<ol type="1">
-<li>將平面圖上既有點資料收進Excel</li>
-<li>確保線段各頂點高程皆可對應到既有點資料</li>
-<li>將線段複製貼上原位置到新檔案</li>
-</ol>
-<figure>
-<img src="2.png" alt="Fig2. VBA控制畫面" />
-<figcaption aria-hidden="true">Fig2. VBA控制畫面</figcaption>
-</figure>
-<ol start="4" type="1">
-<li>點選按鈕 "頂點加密"</li>
-</ol>
-<figure>
-<img src="3.png" alt="Fig3. 頂點加密成果圖" />
-<figcaption aria-hidden="true">Fig3. 頂點加密成果圖</figcaption>
-</figure>
-<ol start="5" type="1">
-<li>點選按鈕 "匯入點位"</li>
-<li>點選按鈕 "輸出CSV"</li>
-</ol>
-<figure>
-<img src="4.png" alt="Fig4. 渠道模型點資料" />
-<figcaption aria-hidden="true">Fig4. 渠道模型點資料</figcaption>
-</figure>
-<blockquote>
-<p>CSV檔案可以直接匯入QGIS，如果不夠密則容易導致模型失真，不規則三角網會去抓最鄰近的點資料作為高程內插來源，密一點模型比較不會抓錯。</p>
-</blockquote>
-<h3 id="qgis-1">QGIS</h3>
-<p>經上述兩個步驟後，點資料初步整理內容如下，裸露地部分參考航照測量回傳內容，渠道部分參考平面測量成果，進行<code>TIN Interpolation</code>，將上述兩個資料來源一併計入高程內插即可得到一較不失真的高程模型了!</p>
-<figure>
-<img src="5.png" alt="Fig5. 初步整理後QGIS點資料" />
-<figcaption aria-hidden="true">Fig5. 初步整理後QGIS點資料</figcaption>
-</figure>
-<figure>
-<img src="6.png" alt="Fig6. TIN Interpolation畫面" />
-<figcaption aria-hidden="true">Fig6. TIN Interpolation畫面</figcaption>
-</figure>
-<figure>
-<img src="7.png" alt="Fig7. 整理後地形模型成果" />
-<figcaption aria-hidden="true">Fig7. 整理後地形模型成果</figcaption>
-</figure>
-<h3 id="頂點加密原始碼">頂點加密原始碼</h3>
-<h4 id="main-module">main module</h4>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br></pre></td><td class="code"><pre><span class="line">&#x27;TODO:</span><br><span class="line">&#x27;1.因應地形點在QGIS建模時如不夠密的話會導致建模內容出現不合理現象</span><br><span class="line">&#x27;  建議從原線段之前後頂點將點資料內插至該線段。</span><br><span class="line">&#x27;2.UAV掃描內容如遇水面或植栽容易出現不合理高程，需後續修整不合理點後重新建立</span><br><span class="line">&#x27;====</span><br><span class="line"></span><br><span class="line">Sub Polyline_Interpolate_ZPoints(ByVal ent, Optional ByVal interval As Integer = 20)</span><br><span class="line"></span><br><span class="line">    Dim pt As New clsPt</span><br><span class="line">    Dim PL_Obj As New clsPL</span><br><span class="line">    Dim x1 As Double</span><br><span class="line">    Dim y1 As Double</span><br><span class="line">    Dim x2 As Double</span><br><span class="line">    Dim y2 As Double</span><br><span class="line"></span><br><span class="line">    Call PL_Obj.getPropertiesByPL(ent)</span><br><span class="line"></span><br><span class="line">    coords = PL_Obj.getPTS</span><br><span class="line"></span><br><span class="line">    &#x27; 2D Polyline Coordinates 格式：x0,y0,x1,y1,x2,y2...</span><br><span class="line">    For i = LBound(coords) To UBound(coords) - 3 Step 2</span><br><span class="line">        </span><br><span class="line">        x1 = coords(i)</span><br><span class="line">        y1 = coords(i + 1)</span><br><span class="line">        x2 = coords(i + 2)</span><br><span class="line">        y2 = coords(i + 3)</span><br><span class="line">        </span><br><span class="line">        z1 = FindZByEN(x1, y1)</span><br><span class="line">        z2 = FindZByEN(x2, y2)</span><br><span class="line">        </span><br><span class="line">        Call pt.getPropertiesByUser(&quot;ORI&quot;, x1, y1, z1, &quot;ORI&quot;)</span><br><span class="line">        Call pt.CreatePoint(0.5)</span><br><span class="line">        </span><br><span class="line">        segLen = Distance2D(x1, y1, x2, y2)</span><br><span class="line">        </span><br><span class="line">        d = interval</span><br><span class="line">        </span><br><span class="line">        Do While d &lt; segLen</span><br><span class="line">            </span><br><span class="line">            ratio = d / segLen</span><br><span class="line">            </span><br><span class="line">            newX = x1 + (x2 - x1) * ratio</span><br><span class="line">            newY = y1 + (y2 - y1) * ratio</span><br><span class="line">            newZ = Round(z1 + (z2 - z1) * ratio, 3)</span><br><span class="line">            </span><br><span class="line">            Call pt.getPropertiesByUser(&quot;ADD&quot;, newX, newY, newZ, &quot;ADD&quot;)</span><br><span class="line">            Call pt.CreatePoint(0.5)</span><br><span class="line">            </span><br><span class="line">            outRow = outRow + 1</span><br><span class="line">            d = d + interval</span><br><span class="line">            </span><br><span class="line">        Loop</span><br><span class="line">        </span><br><span class="line">    Next i</span><br><span class="line">    </span><br><span class="line">    Call pt.getPropertiesByUser(&quot;ORI&quot;, x2, y2, z2, &quot;ORI&quot;)</span><br><span class="line">    Call pt.CreatePoint(0.5)</span><br><span class="line">    </span><br><span class="line">    Debug.Print &quot;內插完成，共產生 &quot; &amp; outRow - 2 &amp; &quot; 個新點&quot;</span><br><span class="line"></span><br><span class="line">End Sub</span><br><span class="line"></span><br><span class="line">Function Distance2D(x1 As Double, y1 As Double, x2 As Double, y2 As Double) As Double</span><br><span class="line">    Distance2D = Sqr((x2 - x1) ^ 2 + (y2 - y1) ^ 2)</span><br><span class="line">End Function</span><br><span class="line"></span><br><span class="line">Function FindZByEN(E As Double, N As Double) As Double</span><br><span class="line"></span><br><span class="line">    Dim ws As Worksheet</span><br><span class="line">    Dim lastRow As Long</span><br><span class="line">    Dim r As Long</span><br><span class="line">    Dim tol As Double</span><br><span class="line">    </span><br><span class="line">    tol = 0.001 &#x27; 座標容許誤差</span><br><span class="line">    </span><br><span class="line">    Set ws = ThisWorkbook.Worksheets(&quot;FIX_POINT&quot;)</span><br><span class="line">    lastRow = ws.Cells(ws.Rows.Count, 1).End(xlUp).Row</span><br><span class="line">    </span><br><span class="line">    For r = 2 To lastRow</span><br><span class="line">        </span><br><span class="line">        If Abs(ws.Cells(r, 2).Value - E) &lt;= tol _</span><br><span class="line">        And Abs(ws.Cells(r, 3).Value - N) &lt;= tol Then</span><br><span class="line">            </span><br><span class="line">            FindZByEN = ws.Cells(r, 4).Value</span><br><span class="line">            Exit Function</span><br><span class="line">            </span><br><span class="line">        End If</span><br><span class="line">        </span><br><span class="line">    Next r</span><br><span class="line">    </span><br><span class="line">    Err.Raise vbObjectError + 1000, , &quot;找不到座標對應的 Z：&quot; &amp; E &amp; &quot;,&quot; &amp; N</span><br><span class="line"></span><br><span class="line">End Function</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<h4 id="clspt">clsPt</h4>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">Private PT_NUM As String</span><br><span class="line">Private E As Double</span><br><span class="line">Private N As Double</span><br><span class="line">Private Z As String</span><br><span class="line">Private CD As String</span><br><span class="line"></span><br><span class="line">Private CAD As New clsACAD</span><br><span class="line">Private sht_PT As Object</span><br><span class="line"></span><br><span class="line">Const NUM_DIGIT As Integer = 4</span><br><span class="line"></span><br><span class="line">Sub getPropertiesByUser(ByVal bPT_NUM As String, ByVal bE As Double, ByVal bN As Double, ByVal bZ As Double, ByVal bCD As String)</span><br><span class="line"></span><br><span class="line">PT_NUM = bPT_NUM</span><br><span class="line">E = bE</span><br><span class="line">N = bN</span><br><span class="line">Z = bZ</span><br><span class="line">CD = bCD</span><br><span class="line"></span><br><span class="line">End Sub</span><br><span class="line"></span><br><span class="line">Sub CreatePoint(ByVal txtheight As Double)</span><br><span class="line"></span><br><span class="line">If txtheight = 0 Then txtheight = getTxtHeight</span><br><span class="line"></span><br><span class="line">Dim txtpt(2) As Double</span><br><span class="line"></span><br><span class="line">txtpt(0) = E: txtpt(1) = N</span><br><span class="line"></span><br><span class="line">&#x27;coll_attr.Add PT_NUM</span><br><span class="line">&#x27;coll_attr.Add Z</span><br><span class="line">&#x27;coll_attr.Add CD</span><br><span class="line"></span><br><span class="line">arr = Array(PT_NUM, Z, CD)</span><br><span class="line"></span><br><span class="line">Set ptObj = CAD.InsertBlock(txtpt, &quot;Point&quot;, txtheight, arr) &#x27; coll_attr)</span><br><span class="line"></span><br><span class="line">Call CAD.setLayer(ptObj, &quot;平面圖-點&quot;)</span><br><span class="line"></span><br><span class="line">&#x27;ptObj.Layer = &quot;平面圖-點&quot;</span><br><span class="line"></span><br><span class="line">End Sub</span><br></pre></td></tr></table></figure>
-<h4 id="clspl">clsPL</h4>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br></pre></td><td class="code"><pre><span class="line">Private CAD As New clsACAD</span><br><span class="line">Private Math As New clsMath</span><br><span class="line">Private pt As New clsPt</span><br><span class="line">Private myfunc As New clsMyfunction</span><br><span class="line"></span><br><span class="line">Public PL As Object</span><br><span class="line">Public PLname As String &#x27;不是那麼重要</span><br><span class="line">Private pts As Variant</span><br><span class="line">Private co As Integer</span><br><span class="line">Private totalLen As Double</span><br><span class="line"></span><br><span class="line">Private sht_PL As Object</span><br><span class="line"></span><br><span class="line">Const NUM_DIGIT As Integer = 4</span><br><span class="line"></span><br><span class="line">Sub getPropertiesByPL(bPL) &#x27;get the PL object</span><br><span class="line"></span><br><span class="line">Set PL = bPL</span><br><span class="line">pts = CAD.tranIPoints(PL.Coordinates)</span><br><span class="line">totalLen = PL.Length</span><br><span class="line">co = 3: If TypeName(PL) Like &quot;*LWPolyline&quot; Then co = 2</span><br><span class="line">PLname = PL.Layer</span><br><span class="line"></span><br><span class="line">End Sub</span><br><span class="line"></span><br><span class="line">Function getPTS()</span><br><span class="line"></span><br><span class="line">Dim coords_new() As Double</span><br><span class="line">Dim idx As Long</span><br><span class="line"></span><br><span class="line">idx = -1</span><br><span class="line"></span><br><span class="line">For j = 0 To UBound(pts) Step co</span><br><span class="line"></span><br><span class="line">    x1 = pts(j)</span><br><span class="line">    y1 = pts(j + 1)</span><br><span class="line"></span><br><span class="line">    idx = idx + 2</span><br><span class="line">    ReDim Preserve coords_new(idx)</span><br><span class="line"></span><br><span class="line">    coords_new(idx - 1) = x1</span><br><span class="line">    coords_new(idx) = y1</span><br><span class="line"></span><br><span class="line">Next</span><br><span class="line"></span><br><span class="line">getPTS = coords_new</span><br><span class="line"></span><br><span class="line">End Function</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/posts/2080342418/#more" rel="contents">
+                閱讀全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
