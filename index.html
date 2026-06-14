@@ -158,7 +158,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">52</span>
+          <span class="site-state-item-count">55</span>
           <span class="site-state-item-name">文章</span>
         </a>
       </div>
@@ -169,7 +169,7 @@
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">30</span>
+        <span class="site-state-item-count">31</span>
         <span class="site-state-item-name">標籤</span></a>
       </div>
   </nav>
@@ -206,6 +206,204 @@
     </div>
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://www.hanksvba.com/posts/1192314916/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar_custom.png">
+      <meta itemprop="name" content="Hank Lin">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hank's Blog">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | Hank's Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/posts/1192314916/" class="post-title-link" itemprop="url">QGIS地形縱橫斷面工作流</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">發表於</span>
+
+      <time title="創建時間：2026-06-14 15:59:19" itemprop="dateCreated datePublished" datetime="2026-06-14T15:59:19+08:00">2026-06-14</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分類於</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E5%B0%88%E6%A1%88%E6%88%90%E6%9E%9C/" itemprop="url" rel="index"><span itemprop="name">專案成果</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h2 id="前言">前言</h2>
+<p><a
+target="_blank" rel="noopener" href="https://qgis.org/download/">QGIS</a>是一套免費開源的自由軟體，可以在大多數的作業系統中進行使用，工具箱(<strong>ToolBox</strong>)有很多實用的運算工具，為達到運算成果目的步驟會比較多，使用者此時較容易因此放棄，直到筆者最近研究QGIS提供的模型建置器(<strong>Processing
+modeler</strong>)才發現平常需要一直重複進行的運算工具，可以在這個低度程式碼的環境中被組裝建立，讓大多數的工作變成<strong>一鍵完成</strong>。</p>
+<blockquote>
+<p>既然能夠自動化沒道理不好好研究它，<strong>工作流</strong>只要能被組裝好，對大家來說都是一件好事，畢竟學習成本降低，用的人就越多，就會越多人發現它好用XD</p>
+</blockquote>
+<figure>
+<img src="/images/QGIS_processing_modeler.png"
+alt="Fig1. Processing modeler組裝畫面" />
+<figcaption aria-hidden="true">Fig1. Processing
+modeler組裝畫面</figcaption>
+</figure>
+<h3 id="地形模型">地形模型</h3>
+<p>近期的工作場景是除了特徵線外還有散佈在周邊的各種獨立點，理論上應該要透過不規則三角網進行地形模型建置，欲建立完整的地形模型則會需要透過頂點加密搭配獨立點進行運算，<a
+href="https://www.hanksvba.com/posts/2080342418">QGIS地形模型整理請參考</a>，不在本篇討論範圍。</p>
+<h3 id="縱橫斷面">縱橫斷面</h3>
+<p>地形模型都處理好之後，後續縱橫斷面的繪製仍需要再回到CAD中進行，畢竟QGIS比較適合做運算，不適合做圖，然而<strong>HanksVBA繪圖資料庫</strong>當初就是為做圖而生，只要匯入QGIS產出的CSV後就能產出縱橫斷面，上述流程即所謂<strong>QGIS地形縱橫斷面工作流</strong>。</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/posts/1192314916/#more" rel="contents">
+                閱讀全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://www.hanksvba.com/posts/2080342418/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar_custom.png">
+      <meta itemprop="name" content="Hank Lin">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hank's Blog">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | Hank's Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/posts/2080342418/" class="post-title-link" itemprop="url">QGIS航拍地形模型整理</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">發表於</span>
+
+      <time title="創建時間：2026-05-15 14:10:58" itemprop="dateCreated datePublished" datetime="2026-05-15T14:10:58+08:00">2026-05-15</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分類於</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E5%B0%88%E6%A1%88%E5%8E%9F%E7%90%86/" itemprop="url" rel="index"><span itemprop="name">專案原理</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h2 id="專案背景">專案背景</h2>
+<p>經由航拍測量後的DEM資料經常因<strong>地表植物</strong>以及<strong>行水中</strong>等問題導致經WebODM產製出的地形模型失真，如欲進行後續的地形剖面(橫斷面、縱斷面)時會有需要<strong>手動修正</strong>的困擾。</p>
+<p>本專案當初採用全測站進行收測，但年代已久地形已有部分變動，僅可認定在<strong>結構體及山坡地等未開發區域</strong>的高程為正確值，其餘部分則先僱工進行雜樹木清除，以航拍測量套疊正射影像後的屬於裸露地的高程視為正確值，結合上述兩項測量成果進行重繪以取得較為精準的地形模型。</p>
+<h2 id="重繪方法">重繪方法</h2>
+<p>經航拍測量後所得到的結果如下:</p>
+<ul>
+<li>dtm.tif</li>
+<li>odm_orthophoto.tif</li>
+</ul>
+<p>匯入GIS後將裸露地部分的範圍做一個範圍，並且用這個範圍作為遮罩對原始dtm做修剪，之後將dtm的像素格放大，取得像素格中心點進行dem取樣，做為不規則三角網的高程內插來源。</p>
+<p>前人測量資料如為結構體部分則須將該線段的頂點及線段加繪內插後的點資料繪出成CSV檔，之後匯入至GIS中做為不規則三角網的高程內插來源，最後與裸露地部分一併進行不規則三角網的高程內插(TIN
+Interpolation)即可完成，作為後續剖面用的地形模型。</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/posts/2080342418/#more" rel="contents">
+                閱讀全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -273,6 +471,94 @@ litchi 這個APP來進行。</p>
           <!--noindex-->
             <div class="post-button">
               <a class="btn" href="/posts/2209140874/#more" rel="contents">
+                閱讀全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://www.hanksvba.com/posts/1439590747/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar_custom.png">
+      <meta itemprop="name" content="Hank Lin">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hank's Blog">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | Hank's Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/posts/1439590747/" class="post-title-link" itemprop="url">空拍機地形測繪-QGIS內業土方計算</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">發表於</span>
+
+      <time title="創建時間：2026-01-28 09:28:52" itemprop="dateCreated datePublished" datetime="2026-01-28T09:28:52+08:00">2026-01-28</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分類於</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E5%B0%88%E6%A1%88%E5%8E%9F%E7%90%86/" itemprop="url" rel="index"><span itemprop="name">專案原理</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h2 id="前言">前言</h2>
+<p>本篇文章為空拍機地形測繪第三篇，前篇介紹在這<a
+href="https://www.hanksvba.com/posts/688603598/#more">空拍機地形測繪-WebODM架設實戰</a>，在QGIS內業處理流程中需要先有個概念-<strong>土方計算很難完全準確</strong>，只能盡量讓地形地貌真實的呈現，再依照計算成果作為後續甲乙方協商的數量基準。</p>
+<p>至於如何讓地形地貌真實的呈現，主要還是透過點雲品質報告搭配正射影像套疊濾除不合理點雲的方式進行，即便如此，模型終究是一個<strong>相對合理數值</strong>，如牽涉到計價時，實務上會透過電子聯單作為數量依據。</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/posts/1439590747/#more" rel="contents">
                 閱讀全文 &raquo;
               </a>
             </div>
@@ -837,313 +1123,6 @@ Excel 表給他們填寫報價。</p>
           <!--noindex-->
             <div class="post-button">
               <a class="btn" href="/posts/823675137/#more" rel="contents">
-                閱讀全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://www.hanksvba.com/posts/3706799986/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar_custom.png">
-      <meta itemprop="name" content="Hank Lin">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hank's Blog">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | Hank's Blog">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/posts/3706799986/" class="post-title-link" itemprop="url">HanksVBA繪圖資料庫操作流程(五)</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">發表於</span>
-
-      <time title="創建時間：2025-07-31 11:42:11" itemprop="dateCreated datePublished" datetime="2025-07-31T11:42:11+08:00">2025-07-31</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分類於</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E5%B0%88%E6%A1%88%E6%88%90%E6%9E%9C/" itemprop="url" rel="index"><span itemprop="name">專案成果</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h2 id="前言">前言</h2>
-<p>承前篇<a
-href="https://www.hanksvba.com/posts/3761000123/">HanksVBA繪圖資料庫操作流程(四)</a>，我們已經可以繪製比較詳盡的縱斷面圖，接下來要進行的就是配合周邊高程進行計畫高的設計、渠道的斷面尺寸決定，過程需要考量幾個重點:</p>
-<ol type="1">
-<li>渠頂凸出路面造成路面積水。</li>
-<li>渠頂不足以支撐路面高，土方崩落問題。</li>
-<li>渠道深度過高並且可能有跌落風險時，需額外考量安全措施。</li>
-<li>田坵引水灌溉時水頭不足，引水灌溉有困難。</li>
-<li>基礎裸露於田面之上，可能會導致基礎淘空。</li>
-</ol>
-<p>假設上述內容皆以考量周全，此時就會有一個適合的渠道尺寸，就能將渠道圖擺設於橫斷面上，進行土方工程的挖填方量計算。</p>
-<p>其相關的基本流程為:</p>
-<ol start="17" type="1">
-<li>渠道型式表</li>
-<li>匯入渠道</li>
-<li>橫斷面圖</li>
-<li>土方面積</li>
-<li>顯示挖填</li>
-<li>土石方報表</li>
-</ol>
-<h2 id="主畫面">主畫面</h2>
-<figure>
-<img src="/images/hanksvba_plot_5.png" alt="Fig1. 渠道型式表主畫面" />
-<figcaption aria-hidden="true">Fig1. 渠道型式表主畫面</figcaption>
-</figure>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/posts/3706799986/#more" rel="contents">
-                閱讀全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://www.hanksvba.com/posts/3761000123/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar_custom.png">
-      <meta itemprop="name" content="Hank Lin">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hank's Blog">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | Hank's Blog">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/posts/3761000123/" class="post-title-link" itemprop="url">HanksVBA繪圖資料庫操作流程(四)</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">發表於</span>
-
-      <time title="創建時間：2025-07-18 17:06:01" itemprop="dateCreated datePublished" datetime="2025-07-18T17:06:01+08:00">2025-07-18</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分類於</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E5%B0%88%E6%A1%88%E6%88%90%E6%9E%9C/" itemprop="url" rel="index"><span itemprop="name">專案成果</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h2 id="前言">前言</h2>
-<p>承前篇<a
-href="https://www.hanksvba.com/posts/2604629158/#more">HanksVBA繪圖資料庫操作流程(三)</a>，我們已經可以得知橫斷面地形的樣貌以及初步的縱斷面圖高程相對關係，接著就是針對縱斷面圖的圖表區進行更詳細的坡度設計以及渠道樣式的幾何尺寸擇定，後續將設計成果放回到橫斷面圖上的絕對高程後就可以開始進行比較繁瑣的土方計算框選、計算。</p>
-<p>相關的基本流程將包含:</p>
-<ol start="14" type="1">
-<li>取得資料</li>
-<li>取得坡度</li>
-<li>縱斷面圖</li>
-</ol>
-<h2 id="主畫面">主畫面</h2>
-<figure>
-<img src="/images/hanksvba_plot_4.png" alt="Fig1. 主畫面" />
-<figcaption aria-hidden="true">Fig1. 主畫面</figcaption>
-</figure>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/posts/3761000123/#more" rel="contents">
-                閱讀全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://www.hanksvba.com/posts/2604629158/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar_custom.png">
-      <meta itemprop="name" content="Hank Lin">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hank's Blog">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | Hank's Blog">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/posts/2604629158/" class="post-title-link" itemprop="url">HanksVBA繪圖資料庫操作流程(三)</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">發表於</span>
-
-      <time title="創建時間：2025-07-14 14:44:26" itemprop="dateCreated datePublished" datetime="2025-07-14T14:44:26+08:00">2025-07-14</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分類於</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E5%B0%88%E6%A1%88%E6%88%90%E6%9E%9C/" itemprop="url" rel="index"><span itemprop="name">專案成果</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h2 id="前言">前言</h2>
-<p>承前篇<a
-href="https://www.hanksvba.com/posts/1687978399/#more">HanksVBA繪圖資料庫操作流程(二)</a>，在中心線與斷面樁完成之後，此時就要透過斷面樁與特徵線之間的幾何關係換算其橫向相對座標及高程，計算成果除了可以繪製橫斷面外，同時也能透過萃取出各特徵線上的高程資訊作為縱斷面之資料來源。</p>
-<p>相關的基本流程將包含:</p>
-<ol start="9" type="1">
-<li>樁號取樣</li>
-<li>高程重整</li>
-<li>橫斷面圖</li>
-<li>擷取CD碼</li>
-<li>快速縱斷面</li>
-</ol>
-<h2 id="主畫面">主畫面</h2>
-<figure>
-<img src="/images/hanksvba_plot_3.png" alt="Fig1. 主要畫面" />
-<figcaption aria-hidden="true">Fig1. 主要畫面</figcaption>
-</figure>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/posts/2604629158/#more" rel="contents">
                 閱讀全文 &raquo;
               </a>
             </div>
