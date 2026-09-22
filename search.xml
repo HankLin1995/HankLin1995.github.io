@@ -6185,4 +6185,474 @@ Studio無法登入時，會無法操作資料庫中的所有內容，儘管用pg
         <tag>SQL</tag>
       </tags>
   </entry>
+  <entry>
+    <title>AI代理人@施工日誌彙整</title>
+    <url>/posts/148859960/</url>
+    <content><![CDATA[<h2 id="想解決的問題">想解決的問題</h2>
+<p>工程現場每天都會填寫監造日報表，有些案件是一個 Excel
+檔裡面每天一張工作表。</p>
+<p>後續如果要製作施工日誌，常常需要引用監造日報表裡的資料，例如：</p>
+<ul>
+<li>日期</li>
+<li>天氣</li>
+<li>施工項目</li>
+<li>當日完成數量</li>
+<li>累計完成數量</li>
+<li>施工概要</li>
+<li>停工、雨天或特殊備註</li>
+</ul>
+<p>如果每天都人工打開不同工作表，逐項複製到施工日誌，不但耗時間，也容易貼錯日期、貼錯數量或漏掉內容。</p>
+<p>這類工作不難，但很煩，而且很適合先讓 AI 代理人協助整理。</p>
+<span id="more"></span>
+<hr />
+<h2 id="不要一開始就叫-ai-直接產施工日誌">不要一開始就叫 AI
+直接產施工日誌</h2>
+<p>一開始很容易想成：</p>
+<blockquote>
+<p>既然 AI 代理人可以讀 Excel，那就直接叫它幫我產施工日誌。</p>
+</blockquote>
+<p>但實務上我不建議一開始就這樣做。</p>
+<p>因為施工日誌是正式文件，除了資料內容，還牽涉：</p>
+<ul>
+<li>固定表格格式</li>
+<li>日期欄位</li>
+<li>天氣欄位</li>
+<li>工項與數量欄位</li>
+<li>累計數量</li>
+<li>備註文字</li>
+<li>列印版面</li>
+<li>後續批次輸出</li>
+</ul>
+<p>如果直接讓 AI
+產正式施工日誌，表面上看起來很快，但後續只要某一天資料錯了，就很難追問題是出在原始日報、AI
+擷取、公式引用，還是表單格式。</p>
+<p>所以比較穩的作法是：</p>
+<blockquote>
+<p>AI 代理人先整理出一張「監造日報彙整總表」，<br />
+施工日誌再用 Excel 公式去查詢這張總表。</p>
+</blockquote>
+<hr />
+<h2 id="流程示意圖">流程示意圖</h2>
+<figure>
+<img src="1.png" alt="監造日報表彙整流程示意圖" />
+<figcaption aria-hidden="true">監造日報表彙整流程示意圖</figcaption>
+</figure>
+<hr />
+<h2 id="ai-代理人實際協助的部分">AI 代理人實際協助的部分</h2>
+<p>AI 代理人主要負責前段的資料整理。</p>
+<p>可以請它做：</p>
+<ol type="1">
+<li>讀取監造日報表 Excel。</li>
+<li>判斷每一張工作表代表哪一天。</li>
+<li>從每天的日報表中擷取指定欄位。</li>
+<li>整理成一張總表。</li>
+<li>標記空白日、雨天、停工日或格式異常的資料。</li>
+<li>輸出成可檢查的 XLSX。</li>
+</ol>
+<p>彙整總表大概會長這樣：</p>
+<table>
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 10%" />
+<col style="width: 10%" />
+<col style="width: 10%" />
+<col style="width: 13%" />
+<col style="width: 13%" />
+<col style="width: 10%" />
+<col style="width: 10%" />
+<col style="width: 10%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>日期</th>
+<th>來源工作表</th>
+<th>天氣</th>
+<th>施工項目</th>
+<th style="text-align: right;">當日數量</th>
+<th style="text-align: right;">累計數量</th>
+<th>施工概要</th>
+<th>備註</th>
+<th>是否需人工確認</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>2026/01/01</td>
+<td>0101</td>
+<td>晴</td>
+<td>管線開挖</td>
+<td style="text-align: right;">20</td>
+<td style="text-align: right;">20</td>
+<td>今日進行管線開挖</td>
+<td></td>
+<td>否</td>
+</tr>
+<tr class="even">
+<td>2026/01/02</td>
+<td>0102</td>
+<td>陰</td>
+<td>管線埋設</td>
+<td style="text-align: right;">15</td>
+<td style="text-align: right;">35</td>
+<td>今日進行管線埋設</td>
+<td></td>
+<td>否</td>
+</tr>
+<tr class="odd">
+<td>2026/01/03</td>
+<td>0103</td>
+<td>雨</td>
+<td>停工</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">35</td>
+<td>因雨停工</td>
+<td>雨天</td>
+<td>是</td>
+</tr>
+</tbody>
+</table>
+<p>這張表不是正式成果，而是中介資料。<br />
+重點是資料集中、來源清楚、方便人工檢查。</p>
+<hr />
+<h2 id="施工日誌怎麼引用總表">施工日誌怎麼引用總表</h2>
+<p>當彙整總表確認後，施工日誌模板就可以用 Excel 公式去查詢資料。</p>
+<p>常見做法有兩種。</p>
+<h3 id="方式一用-vlookup">方式一：用 VLOOKUP</h3>
+<p>如果彙整總表是直向資料，一列代表一天，就可以用日期查資料。</p>
+<p>例如施工日誌輸入日期在：</p>
+<figure class="highlight text"><table><tr><td class="code"><pre><span class="line">B2 = 2026/01/02</span><br></pre></td></tr></table></figure>
+<p>彙整總表格式如下：</p>
+<table>
+<thead>
+<tr class="header">
+<th>A欄</th>
+<th>B欄</th>
+<th>C欄</th>
+<th>D欄</th>
+<th>E欄</th>
+<th>F欄</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>日期</td>
+<td>天氣</td>
+<td>施工項目</td>
+<td>當日數量</td>
+<td>累計數量</td>
+<td>施工概要</td>
+</tr>
+</tbody>
+</table>
+<p>施工日誌可以用：</p>
+<figure class="highlight excel"><table><tr><td class="code"><pre><span class="line">=<span class="built_in">VLOOKUP</span>($B$<span class="number">2</span>,監造日報彙整!$<span class="symbol">A:</span>$F,<span class="number">2</span>,<span class="built_in">FALSE</span>)</span><br></pre></td></tr></table></figure>
+<p>帶出天氣。</p>
+<figure class="highlight excel"><table><tr><td class="code"><pre><span class="line">=<span class="built_in">VLOOKUP</span>($B$<span class="number">2</span>,監造日報彙整!$<span class="symbol">A:</span>$F,<span class="number">3</span>,<span class="built_in">FALSE</span>)</span><br></pre></td></tr></table></figure>
+<p>帶出施工項目。</p>
+<figure class="highlight excel"><table><tr><td class="code"><pre><span class="line">=<span class="built_in">VLOOKUP</span>($B$<span class="number">2</span>,監造日報彙整!$<span class="symbol">A:</span>$F,<span class="number">4</span>,<span class="built_in">FALSE</span>)</span><br></pre></td></tr></table></figure>
+<p>帶出當日數量。</p>
+<figure class="highlight excel"><table><tr><td class="code"><pre><span class="line">=<span class="built_in">VLOOKUP</span>($B$<span class="number">2</span>,監造日報彙整!$<span class="symbol">A:</span>$F,<span class="number">5</span>,<span class="built_in">FALSE</span>)</span><br></pre></td></tr></table></figure>
+<p>帶出累計數量。</p>
+<figure class="highlight excel"><table><tr><td class="code"><pre><span class="line">=<span class="built_in">VLOOKUP</span>($B$<span class="number">2</span>,監造日報彙整!$<span class="symbol">A:</span>$F,<span class="number">6</span>,<span class="built_in">FALSE</span>)</span><br></pre></td></tr></table></figure>
+<p>帶出施工概要。</p>
+<hr />
+<h3 id="方式二用-hlookup">方式二：用 HLOOKUP</h3>
+<p>如果施工日誌模板是橫向日期欄，例如每一天一欄，就可以用 HLOOKUP。</p>
+<p>例如彙整表第一列是日期：</p>
+<table>
+<thead>
+<tr class="header">
+<th></th>
+<th>B欄</th>
+<th>C欄</th>
+<th>D欄</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>日期</td>
+<td>2026/01/01</td>
+<td>2026/01/02</td>
+<td>2026/01/03</td>
+</tr>
+<tr class="even">
+<td>天氣</td>
+<td>晴</td>
+<td>陰</td>
+<td>雨</td>
+</tr>
+<tr class="odd">
+<td>施工項目</td>
+<td>管線開挖</td>
+<td>管線埋設</td>
+<td>停工</td>
+</tr>
+<tr class="even">
+<td>當日數量</td>
+<td>20</td>
+<td>15</td>
+<td>0</td>
+</tr>
+<tr class="odd">
+<td>累計數量</td>
+<td>20</td>
+<td>35</td>
+<td>35</td>
+</tr>
+</tbody>
+</table>
+<p>若施工日誌日期在：</p>
+<figure class="highlight text"><table><tr><td class="code"><pre><span class="line">B2 = 2026/01/02</span><br></pre></td></tr></table></figure>
+<p>可以用：</p>
+<figure class="highlight excel"><table><tr><td class="code"><pre><span class="line">=<span class="built_in">HLOOKUP</span>($B$<span class="number">2</span>,監造日報彙整!$B$<span class="symbol">1:</span>$D$<span class="number">5</span>,<span class="number">2</span>,<span class="built_in">FALSE</span>)</span><br></pre></td></tr></table></figure>
+<p>帶出天氣。</p>
+<figure class="highlight excel"><table><tr><td class="code"><pre><span class="line">=<span class="built_in">HLOOKUP</span>($B$<span class="number">2</span>,監造日報彙整!$B$<span class="symbol">1:</span>$D$<span class="number">5</span>,<span class="number">3</span>,<span class="built_in">FALSE</span>)</span><br></pre></td></tr></table></figure>
+<p>帶出施工項目。</p>
+<figure class="highlight excel"><table><tr><td class="code"><pre><span class="line">=<span class="built_in">HLOOKUP</span>($B$<span class="number">2</span>,監造日報彙整!$B$<span class="symbol">1:</span>$D$<span class="number">5</span>,<span class="number">4</span>,<span class="built_in">FALSE</span>)</span><br></pre></td></tr></table></figure>
+<p>帶出當日數量。</p>
+<figure class="highlight excel"><table><tr><td class="code"><pre><span class="line">=<span class="built_in">HLOOKUP</span>($B$<span class="number">2</span>,監造日報彙整!$B$<span class="symbol">1:</span>$D$<span class="number">5</span>,<span class="number">5</span>,<span class="built_in">FALSE</span>)</span><br></pre></td></tr></table></figure>
+<p>帶出累計數量。</p>
+<hr />
+<h2 id="格式內容怎麼安排">格式內容怎麼安排</h2>
+<p>我會建議整個 Excel 至少分成三張工作表。</p>
+<h3 id="原始資料或來源說明">1. 原始資料或來源說明</h3>
+<p>這張表記錄資料來源，例如：</p>
+<ul>
+<li>原始監造日報表檔名</li>
+<li>工作表名稱</li>
+<li>對應日期</li>
+<li>是否成功讀取</li>
+<li>是否有異常</li>
+</ul>
+<p>用途是後續追資料來源。</p>
+<h3 id="監造日報彙整總表">2. 監造日報彙整總表</h3>
+<p>這張是 AI 代理人主要產出的中介表。</p>
+<p>建議欄位包含：</p>
+<table>
+<thead>
+<tr class="header">
+<th>欄位</th>
+<th>說明</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>日期</td>
+<td>作為後續公式查詢的 key</td>
+</tr>
+<tr class="even">
+<td>來源工作表</td>
+<td>保留資料來源</td>
+</tr>
+<tr class="odd">
+<td>天氣</td>
+<td>從日報表擷取</td>
+</tr>
+<tr class="even">
+<td>施工項目</td>
+<td>從日報表擷取</td>
+</tr>
+<tr class="odd">
+<td>單位</td>
+<td>若有數量項目可保留</td>
+</tr>
+<tr class="even">
+<td>當日數量</td>
+<td>本日完成數量</td>
+</tr>
+<tr class="odd">
+<td>累計數量</td>
+<td>累計完成數量</td>
+</tr>
+<tr class="even">
+<td>施工概要</td>
+<td>日報表文字內容</td>
+</tr>
+<tr class="odd">
+<td>備註</td>
+<td>雨天、停工、異常資料</td>
+</tr>
+<tr class="even">
+<td>是否需人工確認</td>
+<td>是 / 否</td>
+</tr>
+</tbody>
+</table>
+<p>這張表要盡量保持乾淨，方便公式查詢。</p>
+<h3 id="施工日誌模板">3. 施工日誌模板</h3>
+<p>這張表保留原本施工日誌格式。</p>
+<p>例如：</p>
+<ul>
+<li>工程名稱</li>
+<li>日期</li>
+<li>天氣</li>
+<li>施工項目</li>
+<li>本日完成數量</li>
+<li>累計完成數量</li>
+<li>施工概要</li>
+<li>備註</li>
+<li>簽名欄</li>
+<li>頁尾或列印範圍</li>
+</ul>
+<p>模板內只要設定日期，其餘欄位就用 VLOOKUP 或 HLOOKUP
+從彙整總表帶入。</p>
+<p>這樣之後只要改日期，就可以快速切換不同天的施工日誌內容。</p>
+<hr />
+<h2 id="操作流程">操作流程</h2>
+<p>整個流程可以整理成這樣：</p>
+<ol type="1">
+<li><p>準備監造日報表 Excel</p>
+<p>監造日報表可能是一個檔案多張工作表，也可能是多個日報檔案。</p></li>
+<li><p>提供施工日誌模板</p>
+<p>讓 AI
+代理人知道後續需要哪些欄位，例如日期、天氣、施工項目、數量與施工概要。</p></li>
+<li><p>AI 代理人讀取監造日報表</p>
+<p>AI 逐張工作表讀取資料，判斷日期與欄位位置。</p></li>
+<li><p>AI 產出監造日報彙整總表</p>
+<p>將分散在各工作表的資料整理成一張總表，並保留來源工作表。</p></li>
+<li><p>人工檢查彙整總表</p>
+<p>檢查日期、數量、施工概要、停工日、雨天與異常標記。</p></li>
+<li><p>施工日誌模板用公式查詢</p>
+<p>使用 VLOOKUP 或 HLOOKUP 依日期帶出對應資料。</p></li>
+<li><p>VBA 批次輸出</p>
+<p>若需要大量列印或輸出 PDF，可以用 VBA
+依日期逐日套用模板並批次產出。</p></li>
+</ol>
+<hr />
+<h2 id="實務上的分工">實務上的分工</h2>
+<table>
+<thead>
+<tr class="header">
+<th>工具</th>
+<th>負責內容</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>AI 代理人</td>
+<td>讀取監造日報表，整理成彙整總表</td>
+</tr>
+<tr class="even">
+<td>人工</td>
+<td>檢查日期、數量、異常與備註</td>
+</tr>
+<tr class="odd">
+<td>Excel 公式</td>
+<td>依日期查詢資料並帶入施工日誌</td>
+</tr>
+<tr class="even">
+<td>VBA</td>
+<td>批次列印或輸出 PDF</td>
+</tr>
+<tr class="odd">
+<td>工程人員</td>
+<td>最後確認正式文件</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="實務操作畫面">實務操作畫面</h2>
+<figure>
+<img src="2.png" alt="資料來源" />
+<figcaption aria-hidden="true">資料來源</figcaption>
+</figure>
+<figure>
+<img src="3.png" alt="彙整後中介資料" />
+<figcaption aria-hidden="true">彙整後中介資料</figcaption>
+</figure>
+<figure>
+<img src="5.png" alt="施工日誌模板" />
+<figcaption aria-hidden="true">施工日誌模板</figcaption>
+</figure>
+<h2 id="小結">小結</h2>
+<p>這個案例的重點不是讓 AI 代理人直接產生施工日誌。</p>
+<p>比較穩的做法是：</p>
+<blockquote>
+<p>AI 代理人先把每天的監造日報表整理成一張總表，<br />
+人工確認總表內容，<br />
+Excel 用 VLOOKUP 或 HLOOKUP 查詢資料，<br />
+VBA 再負責<a
+href="https://www.hanksvba.com/posts/997099184/">批次列印或輸出</a>。</p>
+</blockquote>
+<p>這樣資料來源清楚，錯誤也比較容易追。<br />
+AI 負責處理重複整理工作，人則保留最後確認與判斷。</p>
+]]></content>
+      <categories>
+        <category>專案原理</category>
+      </categories>
+      <tags>
+        <tag>施工日誌</tag>
+        <tag>監造報表</tag>
+        <tag>AI代理人</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>QGIS高程濾除工作流</title>
+    <url>/posts/3623242340/</url>
+    <content><![CDATA[<h2 id="前言">前言</h2>
+<p>經空拍機搭配GCP測量回來的數值地形模型即便在WebODM中可以勾選是否要設定為DTM演算法，但實際上根據QGIS上面所呈現不完全是如此，有些樹木或草叢還是會被誤判成DSM，畢竟這是空拍攝影本身的限制，除非用光達來掃，不然往往都會有異常高程出現，如何正確的排除便是一件相當耗時耗力的工作。</p>
+<p>根據空拍攝影高程識別，計算成果通常比較信任<strong>非植栽</strong>的裸露區(比如:泥土、人行道、柏油路、混凝土構造物...等等)，然而當測量範圍相當龐大時，用以往框選的方式去找出非植栽區域相當麻煩，故本篇文章便是探討是否能利用<strong>正射影像的RGB三原色</strong>及<strong>數值地形模型</strong>進行高程可信度範圍判別。</p>
+<figure>
+<img src="/images/QGIS_acceptarea.png" alt="Fig1. 高程可信度範圍判釋" />
+<figcaption aria-hidden="true">Fig1. 高程可信度範圍判釋</figcaption>
+</figure>
+<span id="more"></span>
+<h2 id="原理">原理</h2>
+<h3 id="正射影像">正射影像</h3>
+<p>在正射影像的像素格中會帶有RGB三種顏色，超綠係數則是透過Rater
+Calculator將綠色部分X2後扣除紅色與藍色，根據經驗所得到的ExG大於20以及ExG小於225的部分可以當作是綠色植物的部分，詳細的ExG分界要取多大，可以與正射影像套疊後評估。</p>
+<h3 id="數值地形模型">數值地形模型</h3>
+<p>WebODM本身的DTM演算法在邊界上他會取得鄰近的低點位置作為該點的高程值，此時的高程就是屬於正確高程，但是在正射影像上看起來卻是綠色，這時就會被排除，至於合理高程值應為多少，假設堤岸高程為EL+100，我就會抓100以下當作是合理的。</p>
+<p>經套疊正射影像後發現，原始DTM會比正射影像來的大，在影像邊界外的部分也容易出現異常高程，此時也需要進行排除處理，可以透過判釋網格是否具備紅光(R)的數值作為依據，畢竟要有光才有像。</p>
+<blockquote>
+<p>綜上兩項內容，我們可以透過幾項條件的設定來取得信任度較高的範圍。 *
+R&gt;0 * ExG&lt;20 或 ExG&gt;225 * DTM&lt;100</p>
+</blockquote>
+<h2 id="模型">模型</h2>
+<figure>
+<img src="1.png" alt="Fig1. QGIS Model Designer 模型設計" />
+<figcaption aria-hidden="true">Fig1. QGIS Model Designer
+模型設計</figcaption>
+</figure>
+<h2 id="案例">案例</h2>
+<p>此為灌溉渠道的設計案前期空拍測量成果，裸露區為土方堆置區域，經空拍內業搭配GCP演算後的高程為可信任範圍，流向為東北到西南，順流向右側為植栽密集區域且地勢較為低漥(EL&lt;100)，左側為流水面高程容易跟被判斷為裸露地陰影，後續可以挖除後套疊RTK現場實測成果進行修整，請參考<a
+href="https://www.hanksvba.com/posts/2080342418/">QGIS航拍地形模型整理</a></p>
+<figure>
+<img src="2.png" alt="Fig1. 灰階為DTM範圍，其餘為正射影像" />
+<figcaption aria-hidden="true">Fig1.
+灰階為DTM範圍，其餘為正射影像</figcaption>
+</figure>
+<figure>
+<img src="3.png" alt="Fig2. 粉紅色為可信度較高的範圍判釋成果" />
+<figcaption aria-hidden="true">Fig2.
+粉紅色為可信度較高的範圍判釋成果</figcaption>
+</figure>
+<figure>
+<img src="4.png" alt="Fig2. 可信度較高的範圍內所呈現的點資料" />
+<figcaption aria-hidden="true">Fig2.
+可信度較高的範圍內所呈現的點資料</figcaption>
+</figure>
+<h2 id="結語">結語</h2>
+<p>空拍機飛完的點資料勢必會有不合理的高程點，透過正射影像與DTM合理高程範圍內的組合技使用，可以將之前人工框選範圍進行點取樣的過程精簡，即便是人工框選也可能會有判釋錯誤的情形發生，這時候又還要進入點編輯模式逐個檢查，相當耗費精神，<a
+href="https://www.hanksvba.com/posts/1439590747/">人工刪除點資料可參考</a></p>
+<p>透過QGIS本身所提供的模型建置器(Model
+Designer)不僅可以將繁雜的步驟標準化確保每次的生成都是差不多的品質，同時又具備一鍵完成的高效作業，提升大眾使用的意願，進而吸引更多人願意接觸QGIS在生成高程的工作流，或許在接觸過程中也會發現更多有趣的應用。</p>
+<p><span class="github-emoji" data-alias="star" style=""
+data-fallback-src="https://github.githubassets.com/images/icons/emoji/unicode/2b50.png?v8">⭐</span>
+有需要這個工作流的模型建置方法再透過左側聯絡資訊聯繫我吧!</p>
+<h2 id="踩坑紀錄">踩坑紀錄</h2>
+<h3 id="一網格跟向量">一、網格跟向量</h3>
+<p>起初在摸索範圍框選時，一直停留在我要先把範圍框出來後轉成向量，然後再用向量來做合併、切割，因為範圍算出來容易出現幾何不連續的情況，雖然QGIS本身有提供工具可以進行幾何修復，不過還是很容易卡在一些面積太小，8字型幾何等等特殊情形，最後的模型建置就會相當繁瑣，不好用。</p>
+<p>網格就是網格，網格們只要像素相同，他們就可以彼此之間去做演算，就像是前面所提到的條件設定，有時候還是不要想太多。</p>
+<h3 id="二計算速度">二、計算速度</h3>
+<p>對於一般應用而言，空拍攝影經內業演算後成果往往都是cm級別的，這對於QGIS的演算過程來說負荷太大，容易算到一半就停工噴錯誤訊息，與此同時每次的演算都會有暫存檔，對我的256GB硬碟來說很容易滿，然後也會停工，雖然後來我把暫存檔移到D槽存放了，不過他還是每次的測試都算很久，後來我才意識到我根本不需要cm級別的像素計算，即便是每1平方公尺給我一個點資料都已經很精準了(透過Reproject)。</p>
+<p>速度提升不上來對於很多LAG後遺症的人很容易在測試過程中就突然<strong>牙起來</strong>，所以有時候精度與速度還是要有所取捨，對我來說，我是設定50cm的精度其實就夠用了。</p>
+]]></content>
+      <categories>
+        <category>專案成果</category>
+      </categories>
+      <tags>
+        <tag>QGIS</tag>
+      </tags>
+  </entry>
 </search>
