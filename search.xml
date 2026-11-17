@@ -6655,4 +6655,51 @@ data-fallback-src="https://github.githubassets.com/images/icons/emoji/unicode/2b
         <tag>QGIS</tag>
       </tags>
   </entry>
+  <entry>
+    <title>空拍點雲模型雲端瀏覽器</title>
+    <url>/posts/803993938/</url>
+    <content><![CDATA[<h2 id="前言">前言</h2>
+<p>空拍測繪經過WebODM完成後，手上除了會有正射影像、數值地形模型以外，也會出現點雲跟3D紋理模型，有關正射影像與數值地形模型的利用在前幾篇文章已有相關介紹，此篇文章不再贅述，僅針對點雲與3D紋理模型的利用方式做說明，點雲為很多點所形成的模型，3D紋理模型則是3D物件透過紋理照片貼附而形成的一個檔案，通常為OBJ檔案。</p>
+<p>3D模型主要目的是讓觀看者能更好的切入實際的現況地貌，想當然爾要透過如此多的照片檔案來匯集成一個模型，其所需要的運算需求、圖片渲染需求自是不在少數，在桌機的使用下肯定能正常使用，但若要讓現場的人員也能操作就勢必得上雲端才可能做到了，這就是今天這篇文章的主角-空拍點雲檔案雲端瀏覽器。</p>
+<span id="more"></span>
+<h2 id="畫面">畫面</h2>
+<figure>
+<img src="1.png" alt="Fig1. 瀏覽器" />
+<figcaption aria-hidden="true">Fig1. 瀏覽器</figcaption>
+</figure>
+<h2 id="操作">操作</h2>
+<ol type="1">
+<li>webODM演算完成後下載整份文件，理論上會出現這樣的資料結構</li>
+</ol>
+<figure>
+<img src="2.png" alt="Fig2. 檔案結構" />
+<figcaption aria-hidden="true">Fig2. 檔案結構</figcaption>
+</figure>
+<ol start="2" type="1">
+<li>將entwine_pointcloud資料夾進行壓縮，副檔名為.zip</li>
+<li>將該壓縮檔丟到<a
+href="https://ept-zip-viewer.biggercurlew8.chatgpt.site/">3D點雲瀏覽器</a></li>
+<li>左鍵壓住可以旋轉</li>
+<li>右鍵壓住可以平移</li>
+<li>如要量測可以使用下方按鈕</li>
+</ol>
+<h2 id="結論">結論</h2>
+<p>webODM在跑玩後就可以有這些3D畫面可以操作，他也可以直接在webODM中進行模型分享，就是差異在你的電腦都要一直開著，而且還要做一次內網穿透別人才有辦法進到你的畫面查看，這對於沒有管理過伺服器的人來說是一件不容易的事情，因此若是將檔案傳遞出去後，只需要有個空間可以進行查看的話，就可以多利用這個瀏覽器進行點雲的說明，這是chatGPT提供的Site功能，目前也還不知道它可以撐多久，只知道他是個類似Vercel可以部署靜態網站服務的平台，資料都會留在你的電腦裡面，這個網站就只是提供渲染的套件讓你可以查閱，不用擔心資料會流出去。</p>
+<p>之前我在看模型的時候也會使用cloudcompare來進行，就是檔案肥了點，介面全英文，對於某些人來說會略顯吃力，這次去蕪存菁只留下真正對使用者會關心的功能(點、長度、面積)，歡迎使用看看!</p>
+<h2 id="展望">展望</h2>
+<p>既然現況模型可以處理好，那若能夠將新建工程模型一併套疊放入，那後續我想對於周邊環境的高程控制以及未來長相大概也會比較有個概念，至少牆身興建好會如何影響視野或者道路的銜接處是否平順都會很幫助的!</p>
+<figure>
+<img src="3.png" alt="Fig3. 套疊模型" />
+<figcaption aria-hidden="true">Fig3. 套疊模型</figcaption>
+</figure>
+]]></content>
+      <categories>
+        <category>專案原理</category>
+      </categories>
+      <tags>
+        <tag>UAV</tag>
+        <tag>WebODM</tag>
+        <tag>3D</tag>
+      </tags>
+  </entry>
 </search>
